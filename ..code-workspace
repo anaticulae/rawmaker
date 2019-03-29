@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "name": "Convert PDF to raw data",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.cache": true,
+      "**/.coverage": true,
+      "**/.git": true,
+      "**/.pytest_cache": true,
+      "**/.vscode": true,
+      "**/build": true,
+      "**/tmp": true
+    },
+    "python.unitTest.pyTestEnabled": true
+  }
+}

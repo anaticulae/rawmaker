@@ -11,9 +11,11 @@
       "**/.coverage": true,
       "**/.git": true,
       "**/.pytest_cache": true,
+      "**/.tmp": true,
+      "**/.virtual": true,
       "**/.vscode": true,
       "**/build": true,
-      "**/tmp": true
+      "**/tmp": true,
     },
     "python.unitTest.pyTestEnabled": true
   }

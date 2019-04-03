@@ -8,6 +8,8 @@
 
 from iamraw.toc import Section
 
+from rawmaker.complex.toc import dump_yaml
+from rawmaker.complex.toc import load_yaml
 from rawmaker.complex.toc import parse_toc
 
 
@@ -20,7 +22,7 @@ def create_section(level: int, title: str) -> Section:
     Returns:
         Section(level, str)
     """
-    return Section(level, title, None, None, None)
+    return Section(level=level, title=title)
 
 
 TOC = [
@@ -97,16 +99,23 @@ def test_parse_invalid_toc():
 
 def test_toc_minimal():
     outline = [create_section(3, 'Kapitel 1.1.1')]
-
     root = parse_toc(outline)
     assert_children(root, 1)
 
 
 def test_toc_empty():
     outline = []
-
     root = parse_toc(outline)
     assert_children(root, 0)
+
+
+def test_dump_and_load_toc():
+    """Serialize toc and load it afterwards"""
+    root = parse_toc(TOC)
+    content = dump_yaml(root)
+    loaded = load_yaml(content)
+    assert str(loaded) == str(root)
+    assert loaded == root
 
 
 def assert_children(component: Section, count: int):

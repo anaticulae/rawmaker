@@ -11,26 +11,13 @@
 Basic structure of get_outlines: (level, title, args, children)
 """
 
-from dataclasses import dataclass
-from dataclasses import field
-from typing import Any
-from typing import Dict
-from typing import List
-
+from iamraw import Section
+from iamraw import Toc
+from yaml import dump
+from yaml import FullLoader
+from yaml import load
 
 # TODO: Move Section to `IAmRaw`
-@dataclass
-class Section:
-    level: int
-    title: str
-    args: Dict[str, str] = Dict[str, str]
-    parent: Any = None
-    children: List[Any] = field(default_factory=list)
-
-
-def add_children(section: Section, item):
-    assert section, item
-    section.children.append(item)
 
 
 def parse_toc(outlines):
@@ -39,7 +26,7 @@ def parse_toc(outlines):
     The highest level is 0 the document root. Higher number level means more
     distance to root.
     """
-    root = Section(parent=None, level=0, title=None)
+    root = Toc()
     current = root
     for item in outlines:
         level = item.level

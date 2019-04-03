@@ -6,8 +6,9 @@
 # company confidential.
 #==============================================================================
 
+from iamraw.toc import Section
+
 from rawmaker.complex.toc import parse_toc
-from rawmaker.complex.toc import Section
 
 
 def create_section(level: int, title: str) -> Section:

@@ -1,1 +1,2 @@
-pdfminer==20181108
+PyYAML==5.1
+pdfminer.six==20181108

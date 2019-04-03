@@ -13,11 +13,6 @@ Basic structure of get_outlines: (level, title, args, children)
 
 from iamraw import Section
 from iamraw import Toc
-from yaml import dump
-from yaml import FullLoader
-from yaml import load
-
-# TODO: Move Section to `IAmRaw`
 
 
 def parse_toc(outlines):
@@ -74,46 +69,3 @@ def parse_toc(outlines):
 def add_children(section: Section, item):
     assert section, item
     section.children.append(item)
-
-
-def dump_yaml(content: Toc):
-    raw = _dump(content)
-    return dump(raw)
-
-
-def load_yaml(content: str):
-    loaded = load(content, Loader=FullLoader)
-    return _load(loaded, parent=None)
-
-
-def _dump(current: Section):
-    """Convert to raw python to have more clear yaml output"""
-    children = [_dump(item) for item in current.children]
-    try:
-        result = {'level': current.level, 'title': current.title}
-    except AttributeError:
-        # Toc ROOT node
-        result = {'level': 0}
-
-    if children:
-        result['children'] = children
-    return result
-
-
-def _load(current: dict, parent: Section):
-    """Load from raw python without complex objects"""
-    try:
-        result = Section(
-            level=current['level'],
-            title=current['title'],
-            parent=parent,
-        )
-    except KeyError:
-        result = Toc()
-
-    try:
-        result.children = [_load(item, result) for item in current['children']]
-    except KeyError:
-        # A leaf has no childre
-        pass
-    return result

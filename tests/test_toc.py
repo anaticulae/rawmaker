@@ -8,8 +8,6 @@
 
 from iamraw.toc import Section
 
-from rawmaker.complex.toc import dump_yaml
-from rawmaker.complex.toc import load_yaml
 from rawmaker.complex.toc import parse_toc
 
 
@@ -107,15 +105,6 @@ def test_toc_empty():
     outline = []
     root = parse_toc(outline)
     assert_children(root, 0)
-
-
-def test_dump_and_load_toc():
-    """Serialize toc and load it afterwards"""
-    root = parse_toc(TOC)
-    content = dump_yaml(root)
-    loaded = load_yaml(content)
-    assert str(loaded) == str(root)
-    assert loaded == root
 
 
 def assert_children(component: Section, count: int):

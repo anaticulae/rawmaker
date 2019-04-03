@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.1.1
+
+### Feature
+
+* add setup.py to build and deliver package (185dc1abe960)
+
 ## v0.1.0
 
 ### Feature

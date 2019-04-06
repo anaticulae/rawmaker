@@ -23,3 +23,5 @@ __version__ = '0.1.1'
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 FEATURE_PATH = os.path.join(ROOT, 'rawmaker/features')
+
+assert os.path.exists(FEATURE_PATH)

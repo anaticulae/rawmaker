@@ -56,7 +56,8 @@ def features(path: str):
     features = find_features(path)
     result = []
     for item in features:
-        current = import_module(FEATURE_PATH + '.' + item, FEATURE_PATH)
+        current = import_module(FEATURE_PATH_PACKAGE + '.' + item,
+                                FEATURE_PATH_PACKAGE)
 
         try:
             result.append((current.name(), current.commandline, current.work))
@@ -93,12 +94,12 @@ def load_features(feature_root: str, features: List[str]):
     ret = 0
     for item in features:
         path = join(feature_root, item + '.py')
-        ret += load_module(path, FEATURE_PATH)
+        ret += load_module(path, FEATURE_PATH_PACKAGE)
 
     return ret
 
 
-FEATURE_PATH = 'rawmaker.features'
+FEATURE_PATH_PACKAGE = 'rawmaker.features'
 REQUIRED_METHODS = {'commandline', 'work'}
 
 
@@ -107,7 +108,8 @@ def load_module(path: str, sub_module: str):
 
     Args:
         path(str): absoulte path to feature
-        sub_module(str): packagename of the featurelocation, see FEATURE_PATH
+        sub_module(str): packagename of the featurelocation, see
+                         FEATURE_PATH_PACKAGE
     Returns:
         SUCCESS if the feature provide all REQUIRED_METHODS else FAILURE
     """

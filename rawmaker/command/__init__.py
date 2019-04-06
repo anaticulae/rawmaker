@@ -40,6 +40,7 @@ from utila import saveme
 from utila import SUCCESS
 
 from rawmaker import __version__
+from rawmaker import FEATURE_PATH
 from rawmaker import ROOT
 from rawmaker.features import commandline
 from rawmaker.features import features
@@ -66,9 +67,6 @@ def stdin_reader():
             break
     return NEWLINE.join(source)
 
-
-FEATURE_PATH = join(ROOT, 'rawmaker/features')
-assert exists(FEATURE_PATH)
 
 FEATURES = features(FEATURE_PATH)
 

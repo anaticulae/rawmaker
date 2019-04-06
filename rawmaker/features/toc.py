@@ -11,11 +11,16 @@
 Basic structure of get_outlines: (level, title, args, children)
 """
 
+from typing import List
+
 from iamraw import Section
 from iamraw import Toc
+from pdfminer.pdfdocument import PDFDocument
+from serializeraw.toc import dump_yaml as dump_toc
+from utila import Command
 
 
-def parse_toc(outlines):
+def parse_toc(outlines: List[Section]):
     """Extract toc out of pdf-outlines
 
     The highest level is 0 the document root. Higher number level means more
@@ -69,3 +74,23 @@ def parse_toc(outlines):
 def add_children(section: Section, item):
     assert section, item
     section.children.append(item)
+
+
+def commandline():
+    return Command('-t', '--%s' % name(), 'Table of content')
+
+
+def work(document: PDFDocument):
+    outlines = document.get_outlines()
+
+    data = [Section(level, title) for (level, title, dest, a, se) in outlines]
+
+    toc = parse_toc(data)
+
+    # toc to yaml
+    yaml = dump_toc(toc)
+    return yaml
+
+
+def name():
+    return 'toc'

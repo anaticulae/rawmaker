@@ -31,6 +31,8 @@ if __name__ == "__main__":
         long_description=README,
         packages=[
             'rawmaker',
+            'rawmaker.command',
+            'rawmaker.features',
         ],
         include_package_data=True,
         zip_safe=False,  # create 'zip'-file if True. Don't do it!

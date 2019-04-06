@@ -23,5 +23,9 @@ VIM_GUIDE = join(DATA, 'vimguide.pdf')
 VIM_GUIDE_PAGES = 13
 VIM_GUIDE_OUTLINES = 42
 
+HELLO_WORLD = join(DATA, 'hello_world.pdf')
+HELLO_WORLD_PAGES = 1
+HELLO_WORLD_OUTLINES = 0
+
 for item in [NO_PDF, VIM_GUIDE]:
     assert exists(item), item

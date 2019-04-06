@@ -8,7 +8,7 @@
 
 from iamraw.toc import Section
 
-from rawmaker.complex.toc import parse_toc
+from rawmaker.features.toc import parse_toc
 
 
 def create_section(level: int, title: str) -> Section:

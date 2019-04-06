@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v0.2.0
+
+### Feature
+
+* include command and feature in delivery (c98279e3a59f)
+* add commandline interface run to rawmaker (b5d8133000c1)
+* add feature detector and move toc to features (7659e6dfb398)
+
+### Fix
+
+* clarify difference between package location and package name (10203af2cf2b)
+* add missing code (25fc1bd581af)
+
 ## v0.1.1
 
 ### Feature

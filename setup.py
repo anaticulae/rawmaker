@@ -33,6 +33,7 @@ if __name__ == "__main__":
             'rawmaker',
             'rawmaker.command',
             'rawmaker.features',
+            'rawmaker.miner',
         ],
         include_package_data=True,
         zip_safe=False,  # create 'zip'-file if True. Don't do it!

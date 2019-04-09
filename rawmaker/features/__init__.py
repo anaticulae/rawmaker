@@ -72,12 +72,8 @@ def commandline(features):
     result = []
 
     # name, cmd, work
-    for name, _, _ in features:
-        short = '-%s' % name[0]
-        longcut = '--%s' % name
-        help_ = 'Run feature %s' % name
-
-        result.append(Command(short, longcut, help_))
+    for _, command, _ in features:
+        result.append(command())
 
     return result
 

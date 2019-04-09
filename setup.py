@@ -40,6 +40,7 @@ if __name__ == "__main__":
         install_requires=[],
         setup_requires=[],
         tests_require=[],
+        url='https://dev.packages/checkitweg.de/rawmaker',
         classifiers=[
             'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: 3.7',

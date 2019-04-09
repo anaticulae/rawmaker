@@ -77,7 +77,7 @@ def add_children(section: Section, item):
 
 
 def commandline():
-    return Command('-t', '--%s' % name(), 'Table of content')
+    return Command('-to', '--%s' % name(), 'Extract table of content.')
 
 
 def work(document: PDFDocument):

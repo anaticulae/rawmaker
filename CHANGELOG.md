@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v0.3.0
+
+### Feature
+
+* extract text out of pdf resource (96b60b8449ab)
+
+### Fix
+
+* add missing package url and clean up cmd interface (3a1d53d1b426)
+
 ## v0.2.0
 
 ### Feature

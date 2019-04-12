@@ -13,10 +13,9 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
-from utila import Command
-
-from rawmaker.miner.mining import dump_yaml
 from rawmaker.miner.mining import IAmRawConverter
+from serializeraw import dump_document
+from utila import Command
 
 
 def work(document: PDFDocument) -> str:
@@ -40,7 +39,7 @@ def work(document: PDFDocument) -> str:
         interpreter.process_page(page)
     document = device.finish_document()
 
-    dumped = dump_yaml(document)
+    dumped = dump_document(document)
 
     return dumped
 

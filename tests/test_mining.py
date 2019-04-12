@@ -12,67 +12,9 @@ from tests.resource import HELLO_WORLD_PAGES
 from tests.resource import VIM_GUIDE
 
 from rawmaker.features.text import work
-from rawmaker.miner.mining import _dump_line
-from rawmaker.miner.mining import _dump_page
-from rawmaker.miner.mining import _dump_textcontainer
-from rawmaker.miner.mining import _load_line
-from rawmaker.miner.mining import _load_page
-from rawmaker.miner.mining import _load_textcontainer
-from rawmaker.miner.mining import dump_yaml
-from rawmaker.miner.mining import Line
-from rawmaker.miner.mining import load_yaml
-from rawmaker.miner.mining import Page
-from rawmaker.miner.mining import TextContainer
 from rawmaker.reader import read
-
-
-def test_load_and_dump_line():
-    text = 'I am a Line'
-
-    loaded = _load_line(text)
-
-    assert len(loaded.chars) == len(text)
-
-    dumped = _dump_line(loaded)
-
-    assert dumped[1] == text
-
-
-@pytest.fixture
-def simple_textcontainer():
-    container = TextContainer()
-    container.lines.append(Line.from_str('I am a beautiful Line'))
-    container.lines.append(Line.from_str('I am a more beautiful Line'))
-    container.lines.append(Line.from_str('I am a the most beautiful Line'))
-    return container
-
-
-@pytest.fixture
-def simple_page(simple_textcontainer):
-    page = Page()
-
-    page.children.append(simple_textcontainer)
-    page.children.append(simple_textcontainer)
-    page.children.append(simple_textcontainer)
-
-    return page
-
-
-def test_dump_and_load_textcontainer(simple_textcontainer):
-    container = simple_textcontainer
-
-    specifier, dumped = _dump_textcontainer(container)
-
-    loaded = _load_textcontainer(dumped)
-
-    assert loaded == container
-
-
-def test_dump_and_load_page(simple_page):
-    dumped = _dump_page(simple_page)
-    loaded = _load_page(dumped)
-
-    assert loaded == simple_page
+from serializeraw import dump_document
+from serializeraw import load_document
 
 
 def test_miner_pdf():
@@ -85,7 +27,7 @@ def test_mine_hello_world_pdf():
     with read(HELLO_WORLD) as pdf:
         data = work(pdf)
 
-    loaded = load_yaml(data)
+    loaded = load_document(data)
 
     assert loaded.page_count
     assert loaded.page_count == HELLO_WORLD_PAGES
@@ -97,9 +39,8 @@ def test_dump_and_load_hello_word(pdf_resource):
         dumped = work(pdf)
 
     assert dumped
-    # dumpped = dump_yaml(data)
 
-    loaded_yaml = load_yaml(dumped)
-    another_dump = dump_yaml(loaded_yaml)
+    loaded_yaml = load_document(dumped)
+    another_dump = dump_document(loaded_yaml)
 
     assert another_dump == dumped

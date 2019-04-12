@@ -14,7 +14,7 @@ Basic structure of get_outlines: (level, title, args, children)
 from iamraw import Section
 from iamraw import create_toc
 from pdfminer.pdfdocument import PDFDocument
-from serializeraw.toc import dump_yaml as dump_toc
+from serializeraw import dump_toc
 from utila import Command
 
 

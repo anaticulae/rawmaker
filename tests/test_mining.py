@@ -11,14 +11,13 @@ from tests.resource import HELLO_WORLD
 from tests.resource import HELLO_WORLD_PAGES
 from tests.resource import VIM_GUIDE
 
+from rawmaker import read
 from rawmaker.features.text import work
-from rawmaker.reader import read
 from serializeraw import dump_document
 from serializeraw import load_document
 
 
 def test_miner_pdf():
-
     with read(VIM_GUIDE) as pdf:
         parsed_file = work(pdf)
 

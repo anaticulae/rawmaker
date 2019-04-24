@@ -46,8 +46,6 @@ from rawmaker.features import commandline
 from rawmaker.features import features
 from rawmaker.reader import read
 
-INVALID_COMMAND = 2  # TODO: MOVE to utila
-
 COMMANDS = [
     Command('-c', '--compression', 'Write complete output to one file'),
 ]

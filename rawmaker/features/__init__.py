@@ -18,11 +18,11 @@ from os.path import split
 from sys import modules
 from typing import List
 
-from utila import Command
 from utila import FAILURE
+from utila import SUCCESS
+from utila import Command
 from utila import logging
 from utila import logging_error
-from utila import SUCCESS
 
 import rawmaker.features
 from rawmaker import ROOT

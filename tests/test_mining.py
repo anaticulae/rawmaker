@@ -7,14 +7,14 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 import pytest
-from tests.resource import HELLO_WORLD
-from tests.resource import HELLO_WORLD_PAGES
-from tests.resource import VIM_GUIDE
+from serializeraw import dump_document
+from serializeraw import load_document
 
 from rawmaker import read
 from rawmaker.features.text import work
-from serializeraw import dump_document
-from serializeraw import load_document
+from tests.resource import HELLO_WORLD
+from tests.resource import HELLO_WORLD_PAGES
+from tests.resource import VIM_GUIDE
 
 
 def test_miner_pdf():

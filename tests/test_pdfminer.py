@@ -12,14 +12,14 @@ The functionality is encapsulated by `rawmaker` api.
 """
 
 from pytest import raises
-from tests.resource import NO_PDF
-from tests.resource import VIM_GUIDE
-from tests.resource import VIM_GUIDE_OUTLINES
-from tests.resource import VIM_GUIDE_PAGES
 
 from rawmaker import InvalidPDF
 from rawmaker import pages
 from rawmaker import read
+from tests.resource import NO_PDF
+from tests.resource import VIM_GUIDE
+from tests.resource import VIM_GUIDE_OUTLINES
+from tests.resource import VIM_GUIDE_PAGES
 
 
 def test_read_file():

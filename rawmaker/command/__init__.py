@@ -18,30 +18,30 @@ from os.path import exists
 from os.path import isabs
 from os.path import isfile
 from os.path import join
-from subprocess import PIPE
 from sys import argv
 from sys import stdin
 from threading import Thread
 
 from pdfminer.pdfdocument import PDFDocument
-from utila import Command
-from utila import create_parser
 from utila import FAILURE
+from utila import INVALID_COMMAND
+from utila import NEWLINE
+from utila import SUCCESS
+from utila import Command
+from utila import RequiredCommand
+from utila import create_parser
 from utila import file_append
 from utila import file_create
 from utila import file_read
 from utila import logging
 from utila import logging_error
 from utila import logging_stacktrace
-from utila import NEWLINE
 from utila import parse
-from utila import RequiredCommand
 from utila import saveme
-from utila import SUCCESS
 
-from rawmaker import __version__
 from rawmaker import FEATURE_PATH
 from rawmaker import ROOT
+from rawmaker import __version__
 from rawmaker.features import commandline
 from rawmaker.features import features
 from rawmaker.reader import read

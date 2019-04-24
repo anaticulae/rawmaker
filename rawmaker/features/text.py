@@ -13,9 +13,10 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
-from rawmaker.miner.mining import IAmRawConverter
 from serializeraw import dump_document
 from utila import Command
+
+from rawmaker.miner.mining import IAmRawConverter
 
 
 def work(document: PDFDocument) -> str:

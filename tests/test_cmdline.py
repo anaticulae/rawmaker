@@ -9,11 +9,11 @@
 
 from os.path import join
 
-from tests.resource import HELLO_WORLD
 from utila.test import run
 from utila.test import skip_not_virtual
 
 from rawmaker import ROOT
+from tests.resource import HELLO_WORLD
 
 
 @skip_not_virtual

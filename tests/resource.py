@@ -23,7 +23,8 @@ VIM_GUIDE = join(DATA, 'vimguide.pdf')
 VIM_GUIDE_PAGES = 13
 VIM_GUIDE_OUTLINES = 42
 
-HELLO_WORLD = join(DATA, 'hello_world.pdf')
+HELLO_WORLD = join(DATA, 'helloworld')
+HELLO_WORLD_PDF = join(HELLO_WORLD, 'hello_world.pdf')
 HELLO_WORLD_PAGES = 1
 HELLO_WORLD_OUTLINES = 0
 

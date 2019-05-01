@@ -15,6 +15,7 @@ from pdfminer.pdfdocument import PDFSyntaxError
 from pdfminer.pdfparser import PDFParser
 
 from rawmaker.error import InvalidPDF
+from rawmaker.error import TextExtractionNotAllowed
 
 
 @contextmanager

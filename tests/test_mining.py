@@ -6,37 +6,36 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-import pytest
+from pytest import mark
 from serializeraw import dump_document
 from serializeraw import load_document
 
 from rawmaker import read
 from rawmaker.features.text import work
-from tests.resource import HELLO_WORLD
 from tests.resource import HELLO_WORLD_PAGES
+from tests.resource import HELLO_WORLD_PDF
 from tests.resource import VIM_GUIDE
 
 
 def test_miner_pdf():
     with read(VIM_GUIDE) as pdf:
         parsed_file = work(pdf)
+    assert parsed_file
 
 
 def test_mine_hello_world_pdf():
-    with read(HELLO_WORLD) as pdf:
+    with read(HELLO_WORLD_PDF) as pdf:
         data = work(pdf)
-
     loaded = load_document(data)
 
     assert loaded.page_count
     assert loaded.page_count == HELLO_WORLD_PAGES
 
 
-@pytest.mark.parametrize('pdf_resource', [HELLO_WORLD, VIM_GUIDE])
+@mark.parametrize('pdf_resource', [HELLO_WORLD_PDF, VIM_GUIDE])
 def test_dump_and_load_hello_word(pdf_resource):
     with read(pdf_resource) as pdf:
         dumped = work(pdf)
-
     assert dumped
 
     loaded_yaml = load_document(dumped)

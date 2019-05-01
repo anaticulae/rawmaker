@@ -18,9 +18,9 @@ from tests.resource import HELLO_WORLD
 
 
 @skip_nonvirtual
-def test_install_and_run_rawmaker(testdir):
+def test_install_and_run_rawmaker():
     install_and_run = 'python setup.py install && rawmaker --help'
-    completed = run(install_and_run)
+    completed = run(install_and_run, cwd=ROOT)
     assert completed.returncode == 0, completed.stdout + completed.stderr
 
 

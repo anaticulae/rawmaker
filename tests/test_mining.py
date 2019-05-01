@@ -14,11 +14,11 @@ from rawmaker import read
 from rawmaker.features.text import work
 from tests.resource import HELLO_WORLD_PAGES
 from tests.resource import HELLO_WORLD_PDF
-from tests.resource import VIM_GUIDE
+from tests.resource import VIM_GUIDE_PDF
 
 
 def test_miner_pdf():
-    with read(VIM_GUIDE) as pdf:
+    with read(VIM_GUIDE_PDF) as pdf:
         parsed_file = work(pdf)
     assert parsed_file
 
@@ -32,7 +32,7 @@ def test_mine_hello_world_pdf():
     assert loaded.page_count == HELLO_WORLD_PAGES
 
 
-@mark.parametrize('pdf_resource', [HELLO_WORLD_PDF, VIM_GUIDE])
+@mark.parametrize('pdf_resource', [HELLO_WORLD_PDF, VIM_GUIDE_PDF])
 def test_dump_and_load_hello_word(pdf_resource):
     with read(pdf_resource) as pdf:
         dumped = work(pdf)

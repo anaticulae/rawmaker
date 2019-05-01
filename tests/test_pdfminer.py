@@ -17,14 +17,14 @@ from rawmaker import InvalidPDF
 from rawmaker import pages
 from rawmaker import read
 from tests.resource import NO_PDF
-from tests.resource import VIM_GUIDE
 from tests.resource import VIM_GUIDE_OUTLINES
 from tests.resource import VIM_GUIDE_PAGES
+from tests.resource import VIM_GUIDE_PDF
 
 
 def test_read_file():
     """Read pdf and check the size of pages"""
-    with read(VIM_GUIDE) as document:
+    with read(VIM_GUIDE_PDF) as document:
         items = list(pages(document))  # extract all pages from iterator
         assert items
 
@@ -34,7 +34,7 @@ def test_read_file():
 
 def test_outline_count():
     """Test reading outlines from document"""
-    with read(VIM_GUIDE) as document:
+    with read(VIM_GUIDE_PDF) as document:
         outlines = document.get_outlines()
         for (level, title, dest, a, se) in outlines:
             # print(level, title, dest, a, se)

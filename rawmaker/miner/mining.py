@@ -25,8 +25,6 @@ from pdfminer.converter import PDFConverter
 from pdfminer.layout import LTChar
 from pdfminer.layout import LTPage
 from pdfminer.layout import LTTextBox
-from utila import NEWLINE
-from utila import logging_error
 
 
 class IAmRawConverter(PDFConverter):
@@ -76,6 +74,7 @@ class Lookup:
     def create(self, box: BoundingBox, **kargs):
         look = (box, kargs)
         self.looks.append(look)
+        # TODO: use len?
         return self.looks.size() - 1
 
 
@@ -90,7 +89,7 @@ def render_char(item: LTChar) -> Char:
 
 def render_textline(item: LTTextBox):
     line = Line(BoundingBox(*item.bbox))
-    for char in item._objs:
+    for char in item._objs:  # pylint: disable=protected-access
         line.chars.append(render_char(char))
     return line
 
@@ -108,7 +107,6 @@ def render(item):
         for child in item:
             page.children.append(render(child))
         return page
-    elif isinstance(item, LTTextBox):
+    if isinstance(item, LTTextBox):
         return render_textcontainer(item)
-    else:
-        return PageObject(content=str(item))
+    return PageObject(content=str(item))

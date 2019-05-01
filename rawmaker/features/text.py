@@ -20,7 +20,7 @@ from rawmaker.miner.mining import IAmRawConverter
 
 
 def work(document: PDFDocument) -> str:
-    """Extract strctured text out of document
+    """Extract structured text out of document
 
     Args:
         document: pdf-document to run parsing
@@ -31,7 +31,7 @@ def work(document: PDFDocument) -> str:
     rsrcmgr = PDFResourceManager()
     laparams = LAParams()
 
-    device = IAmRawConverter(rsrcmgr, codec='utf8', laparams=laparams)
+    device = IAmRawConverter(rsrcmgr, laparams=laparams)
     device.new_document()
     interpreter = PDFPageInterpreter(rsrcmgr, device)
 
@@ -41,7 +41,6 @@ def work(document: PDFDocument) -> str:
     document = device.finish_document()
 
     dumped = dump_document(document)
-
     return dumped
 
 

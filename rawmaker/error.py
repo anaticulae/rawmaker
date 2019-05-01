@@ -14,7 +14,6 @@ class RawMakerError(Exception):
     Exceptions of this type are handled by the command line tool
     and result in clear error messages, as opposed to backtraces.
     """
-    pass
 
 
 class TextExtractionNotAllowed(RawMakerError):

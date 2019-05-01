@@ -7,4 +7,26 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-from utila.test import run
+import sys
+from functools import partial
+
+from pytest import raises
+from utila import run_command
+
+from rawmaker import PROCESS_NAME
+from rawmaker.command import main
+
+#pylint: disable=invalid-name
+run_success = partial(
+    run_command,
+    main=main,
+    process=PROCESS_NAME,
+    success=True,
+)
+
+run_failure = partial(
+    run_command,
+    main=main,
+    process=PROCESS_NAME,
+    success=False,
+)

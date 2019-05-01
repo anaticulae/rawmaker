@@ -7,42 +7,35 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-from os.path import join
-
-from utila.test import run
-from utila.test import skip_not_virtual
+from pytest import mark
+from utila import run
+from utila.test import skip_nonvirtual
 
 from rawmaker import ROOT
+from tests import run_failure
+from tests import run_success
 from tests.resource import HELLO_WORLD
 
 
-@skip_not_virtual
-def test_run_rawmaker():
+@skip_nonvirtual
+def test_install_and_run_rawmaker(testdir):
     install_and_run = 'python setup.py install && rawmaker --help'
-
-    completed = run(install_and_run, cwd=ROOT)
+    completed = run(install_and_run)
     assert completed.returncode == 0, completed.stdout + completed.stderr
 
 
-@skip_not_virtual
-def test_pipe_from_and_into(tmpdir):
-    result = join(tmpdir, 'raw.yaml')
-
-    # command = 'cat %s | rawmaker > %s' % (HELLO_WORLD, result)
-    command = 'cat %s | rawmaker ' % (HELLO_WORLD)
-
-    completed = run(command, cwd=ROOT)
-    msg = 'cmd: %s\n%s' % (command, str(completed))
-    assert 'NotImplemented' in completed.stderr
-    # assert completed.returncode == 0, msg
+@mark.parametrize('command', [
+    ['--help'],
+    ['-i', HELLO_WORLD, '-o', 'output'],
+])
+def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
+    """Run help and version and format command to reach basic test coverage"""
+    run_success(command, monkeypatch)
 
 
-@skip_not_virtual
-def test_input_and_pipe_into(tmpdir):
-    result = join(tmpdir, 'raw.yaml')
-
-    command = 'rawmaker -i %s > %s' % (HELLO_WORLD, result)
-
-    completed = run(command, cwd=ROOT)
-    msg = 'cmd: %s\n%s' % (command, str(completed))
-    assert completed.returncode == 0, msg
+@mark.parametrize('command', [
+    [],
+])
+def test_run_rawmaker_failed(command, testdir, monkeypatch):  #pylint: disable=W0613
+    """Run help and version and format command to reach basic test coverage"""
+    run_failure(command, monkeypatch)

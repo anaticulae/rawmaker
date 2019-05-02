@@ -15,6 +15,7 @@ from rawmaker import ROOT
 from tests import run_failure
 from tests import run_success
 from tests.resource import HELLO_WORLD
+from tests.resource import HELLO_WORLD_PDF
 
 
 @skip_nonvirtual
@@ -33,9 +34,22 @@ def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
     run_success(command, monkeypatch)
 
 
-@mark.parametrize('command', [
-    [],
-])
+@mark.parametrize(
+    'command',
+    [
+        [],
+        ['-i', HELLO_WORLD_PDF, '-o', 'output'],  # no pdf input
+    ])
 def test_run_rawmaker_failed(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
     run_failure(command, monkeypatch)
+
+
+def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):  #pylint: disable=W0613
+    """Run help and version and format command to reach basic test coverage"""
+    testdir.mkdir('empty')
+    command = ['-i', 'empty', '-o', 'output']  # no pdf input
+    run_failure(command, monkeypatch)
+
+    stderr = capsys.readouterr().err
+    assert '[ERROR]' in stderr

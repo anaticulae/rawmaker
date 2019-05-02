@@ -8,13 +8,41 @@
 #==============================================================================
 
 import sys
+from contextlib import suppress
 from functools import partial
 
 from pytest import raises
-from utila import run_command
 
 from rawmaker import PROCESS_NAME
 from rawmaker.command import main
+
+# from utila import run_command
+
+
+# TODO: Remove after utila update
+def run_command(command, monkeypatch, process, main, success=True):
+    """Run `main` with `command`
+
+    Args:
+        command([str] or str): command to run
+        monkeypatch: pytest patch feature
+        process(str): name of executed tool
+        main(callable): method to run
+        success(bool): expectation that process succed or failes
+    """
+    with suppress(AttributeError):
+        command = command.split()
+    assert callable(main), str(main)
+
+    with monkeypatch.context() as context:
+        # proccess is removed as first arg
+        context.setattr(sys, 'argv', [process] + command)
+        with raises(SystemExit) as result:
+            main()
+        result = str(result)
+
+    assert ('SystemExit: 0' in result) == success
+
 
 #pylint: disable=invalid-name
 run_success = partial(

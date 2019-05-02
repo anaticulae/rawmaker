@@ -86,6 +86,10 @@ def process(inputpath: str, outputpath: str, todo):
 
     # Search pdf's in input folder
     pdfs = glob(inputpath + '/*.pdf')
+    if not pdfs:
+        # Exit rawmaker when input folder is empty
+        logging_error('Empty input folder: %s' % inputpath)
+        exit(FAILURE)
     ret = 0
     for pdf_path in pdfs:
         with read(pdf_path) as pdf:

@@ -3,7 +3,7 @@
 # C O P Y R I G H T
 #------------------------------------------------------------------------------
 # Copyright (c) 2019 by Helmut Konrad Fahrendholz. All rights reserved.
-# Tis file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
@@ -21,27 +21,36 @@ with open(join(ROOT, 'README.md'), 'rt', encoding='utf8') as fp:
 with open(join(ROOT, 'rawmaker/__init__.py'), 'rt', encoding='utf8') as fp:
     VERSION = search(r'__version__ = \'(.*?)\'', fp.read()).group(1)
 
+with open(join(ROOT, "requirements.txt"), mode='rt', encoding='utf8') as fp:
+    INSTALL_REQUIRES = [
+        line for line in fp.readlines() if line and '#' not in line
+    ]
+
+
+def datafiles():
+    return [('.', [
+        'BUGS.md',
+        'CHANGELOG.md',
+        'README.md',
+        'TODO.md',
+        'requirements.txt',
+    ])]
+
+
 if __name__ == "__main__":
     setup(
-        name='rawmaker',
-        version=VERSION,
         author='Helmut Konrad Fahrendholz',
         author_email='kiwi@derspanier.de',
+        data_files=datafiles(),
         description='Covert PDF to raw data',
-        long_description=README,
-        packages=[
-            'rawmaker',
-            'rawmaker.command',
-            'rawmaker.features',
-            'rawmaker.miner',
-        ],
         include_package_data=True,
-        zip_safe=False,  # create 'zip'-file if True. Don't do it!
+        install_requires=INSTALL_REQUIRES,
+        long_description=README,
+        name='rawmaker',
         platforms='any',
-        install_requires=[],
-        setup_requires=[],
-        tests_require=[],
         url='https://dev.packages/checkitweg.de/rawmaker',
+        version=VERSION,
+        zip_safe=False,  # create 'zip'-file if True. Don't do it!
         classifiers=[
             'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: 3.7',
@@ -50,4 +59,10 @@ if __name__ == "__main__":
         entry_points={
             'console_scripts': ['rawmaker = rawmaker.command:main'],
         },
+        packages=[
+            'rawmaker',
+            'rawmaker.command',
+            'rawmaker.features',
+            'rawmaker.miner',
+        ],
     )

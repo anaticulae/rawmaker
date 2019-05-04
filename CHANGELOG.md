@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v0.4.1
+
+### Fix
+
+* include requirements file to setup process (cb72ff105376)
+* fix utila till using new release (fbc087d21b54)
+
 ## v0.4.0
 
 ### Feature

@@ -70,17 +70,22 @@ def main():
     )
     args = parse(parser)
 
-    inputpath, output = sources(args)
+    # evaluate the verbose flag
+    inputpath, output, verbose = sources(args, verbose=True)
     if not inputpath and not output:
         return FAILURE
 
     todolist = todo(args)
-    failure = process(inputpath, output, todolist)
-
+    failure = process(inputpath, output, todolist, verbose=verbose)
     return failure
 
 
-def process(inputpath: str, outputpath: str, todo):
+def process(
+        inputpath: str,
+        outputpath: str,
+        todo,
+        verbose: bool = False,
+):
     assert inputpath, outputpath
     makedirs(outputpath, exist_ok=True)
 
@@ -93,6 +98,8 @@ def process(inputpath: str, outputpath: str, todo):
     ret = 0
     for pdf_path in pdfs:
         with read(pdf_path) as pdf:
+            if verbose:
+                logging('read: %s' % pdf_path)
             for name, _, worker in FEATURES:
                 # name is not a registered commando
                 if name not in todo:
@@ -100,7 +107,13 @@ def process(inputpath: str, outputpath: str, todo):
                         logging('Skipping %s' % name)
                     continue
                 # compute feature
-                ret += process_feature(name, worker, pdf, outputpath)
+                ret += process_feature(
+                    name,
+                    worker,
+                    pdf,
+                    outputpath,
+                    verbose=verbose,
+                )
     return ret
 
 
@@ -109,6 +122,7 @@ def process_feature(
         worker: callable,
         ressource: PDFDocument,
         output: str,
+        verbose: bool = False,
 ):
     """Process feature `name` with `worker` and write it to `output`
 
@@ -117,6 +131,7 @@ def process_feature(
         worker(callable): method to run
         ressource(PDFDocument): ressource to run feature on
         output(str): path to write feature
+        verbose(bool): if true, logging file operation
     Returns:
         SUCCESS or FAILURE
     """
@@ -125,8 +140,8 @@ def process_feature(
         result = worker(pdf)
         filename = '%s__%s.yaml' % (PROCESS_NAME, name)
         feature_output = join(output, filename)
-        logging('write result to: %s' % feature_output)
-
+        if verbose:
+            logging('write: %s' % feature_output)
         # Write content to file.
         file_create(feature_output, result)
         return SUCCESS

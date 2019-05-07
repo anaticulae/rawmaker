@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+from pdfminer.pdfdocument import PDFNoOutlines
+
 
 class RawMakerError(Exception):
     """Parent class for user errors or input errors.
@@ -21,4 +23,8 @@ class TextExtractionNotAllowed(RawMakerError):
 
 
 class InvalidPDF(RawMakerError):
+    pass
+
+
+class MissingOutlines(RawMakerError, PDFNoOutlines):
     pass

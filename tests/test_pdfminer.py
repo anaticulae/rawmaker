@@ -36,7 +36,9 @@ def test_outline_count():
     """Test reading outlines from document"""
     with read(VIM_GUIDE_PDF) as document:
         outlines = document.get_outlines()
-        for (level, title, dest, a, se) in outlines:
+        # pylint: disable=unused-variable
+        # pylint: disable=invalid-name
+        for (level, title, dest, reference, se) in outlines:
             # print(level, title, dest, a, se)
             # 1 Table of contents None <PDFObjRef:2> None
             # 1 Vim Commands None <PDFObjRef:7> None
@@ -56,5 +58,5 @@ def test_read_no_pdf():
 
     The example contains some raw text."""
     with raises(InvalidPDF):
-        with read(NO_PDF) as fp:
+        with read(NO_PDF):
             pass

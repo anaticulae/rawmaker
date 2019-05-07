@@ -90,14 +90,14 @@ def render_char(item: LTChar) -> Char:
 def render_textline(item: LTTextBox):
     line = Line(BoundingBox(*item.bbox))
     for char in item._objs:  # pylint: disable=protected-access
-        line.chars.append(render_char(char))
+        line.chars.append(render_char(char))  # pylint:disable=E1101
     return line
 
 
 def render_textcontainer(item: LTTextBox):
     container = TextContainer(box=BoundingBox(*item.bbox))
     for line in item:
-        container.lines.append(render_textline(line))
+        container.lines.append(render_textline(line))  # pylint:disable=E1101
     return container
 
 
@@ -105,7 +105,7 @@ def render(item):
     if isinstance(item, LTPage):
         page = Page(item.pageid, BoundingBox(*item.bbox))
         for child in item:
-            page.children.append(render(child))
+            page.children.append(render(child))  # pylint:disable=E1101
         return page
     if isinstance(item, LTTextBox):
         return render_textcontainer(item)

@@ -33,7 +33,10 @@ def test_mine_hello_world_pdf():
 
 
 @mark.parametrize('pdf_resource', [HELLO_WORLD_PDF, VIM_GUIDE_PDF])
-def test_dump_and_load_hello_word(pdf_resource):
+def test_dump_and_load_pdf(pdf_resource):
+    """Parse text from pdf file and write the result. Load the result after
+    and compare with item to save"""
+
     with read(pdf_resource) as pdf:
         dumped = work(pdf)
     assert dumped

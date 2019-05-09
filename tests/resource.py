@@ -28,5 +28,9 @@ HELLO_WORLD_PDF = join(HELLO_WORLD, 'hello_world.pdf')
 HELLO_WORLD_PAGES = 1
 HELLO_WORLD_OUTLINES = 0
 
+DOCUMENTATION_TWINE = join(DATA, 'technical/twine')
+DOCUMENTATION_TWINE_PDF = join(DOCUMENTATION_TWINE, 'documentation_twine.pdf')
+DOCUMENTATION_TWINE_PAGES = 35
+
 for item in [NO_PDF, VIM_GUIDE_PDF]:
     assert exists(item), item

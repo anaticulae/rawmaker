@@ -14,6 +14,7 @@ from utila.test import skip_nonvirtual
 from rawmaker import ROOT
 from tests import run_failure
 from tests import run_success
+from tests.resource import DOCUMENTATION_TWINE
 from tests.resource import HELLO_WORLD
 from tests.resource import HELLO_WORLD_PDF
 
@@ -27,7 +28,7 @@ def test_install_and_run_rawmaker():
 
 @mark.parametrize('command', [
     ['--help'],
-    ['-i', HELLO_WORLD, '-o', 'output'],
+    ['-i', DOCUMENTATION_TWINE, '-o', 'output'],
 ])
 def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""

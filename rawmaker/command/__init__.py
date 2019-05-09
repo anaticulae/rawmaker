@@ -9,8 +9,9 @@
 """The `rawmaker` takes pdf's from the input folder an parse the raw structure
 of the pdf and provide them as yaml file for further analysation-processes.
 
-- toc:  tableofcontent
-- text: text content from pdf file
+- toc:    tableofcontent
+- text:   text content from pdf file
+- border: determine page size and bounding boxes from page content
 
 """
 import subprocess

@@ -139,18 +139,41 @@ def process_feature(
     pdf = ressource
     try:
         result = worker(pdf)
-        filename = '%s__%s.yaml' % (PROCESS_NAME, name)
-        feature_output = join(output, filename)
-        if verbose:
-            logging('write: %s' % feature_output)
-        # Write content to file.
-        file_create(feature_output, result)
+        try:
+            # Support multiple file output from feature
+            for special_name, value in result.items():
+                write_feature_result(
+                    name,
+                    output,
+                    result=value,
+                    special_name=special_name,
+                    verbose=verbose,
+                )
+        except AttributeError:
+            # Only single result is ready for writing
+            write_feature_result(name, output, result, verbose)
         return SUCCESS
     except Exception as error:  # pylint: disable=broad-except
         logging_error('while processing %s' % name)
         logging_error(error)
         logging_stacktrace()
         return FAILURE
+
+
+def write_feature_result(
+        name,
+        output,
+        result,
+        special_name='',
+        verbose: bool = False,
+):
+    special_name = '_%s' % special_name if special_name else ''
+    filename = '%s__%s%s.yaml' % (PROCESS_NAME, name, special_name)
+    feature_output = join(output, filename)
+    if verbose:
+        logging('write: %s' % feature_output)
+    # Write content to file.
+    file_create(feature_output, result)
 
 
 def todo(args):

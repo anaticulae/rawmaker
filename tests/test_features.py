@@ -6,7 +6,6 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-
 from os import listdir
 
 from rawmaker import FEATURE_PATH
@@ -23,6 +22,19 @@ def test_feature_interface():
 
     working_features = find_features(FEATURE_PATH)
     assert len(working_features) == python_files_in_feature_path
+
+
+def test_find_corrupted_feature(testdir, capsys, monkeypatch):
+    testdir.makefile(".py", corrupted_feature="# Empty")
+    result = []
+
+    with monkeypatch.context() as context:
+        context.setattr('importlib.import_module', lambda _, __: object())
+        result = find_features(str(testdir))
+    assert result == []
+
+    output, err = capsys.readouterr()
+    assert 'SKIP' in output + err
 
 
 # Minimal feature header

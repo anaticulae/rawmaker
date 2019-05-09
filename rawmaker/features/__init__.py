@@ -6,7 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-from importlib import import_module
+import importlib
 from importlib.util import find_spec
 from importlib.util import module_from_spec
 from importlib.util import spec_from_file_location
@@ -27,6 +27,7 @@ from utila import logging_error
 from rawmaker import ROOT
 
 FEATURE_PATH_PACKAGE = 'rawmaker.features'
+
 REQUIRED_METHODS = {'commandline', 'work'}
 
 
@@ -41,8 +42,8 @@ def find_features(path: str):
     ]
     result = []
     for item in collected:
-        current = import_module(FEATURE_PATH_PACKAGE + '.' + item,
-                                FEATURE_PATH_PACKAGE)
+        current = importlib.import_module(FEATURE_PATH_PACKAGE + '.' + item,
+                                          FEATURE_PATH_PACKAGE)
         try:
             result.append((current.name(), current.commandline, current.work))
         except AttributeError as exception:

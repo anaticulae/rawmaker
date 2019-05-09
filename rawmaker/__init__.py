@@ -18,7 +18,7 @@ from rawmaker.error import TextExtractionNotAllowed
 from rawmaker.parser import pages
 from rawmaker.reader import read
 
-__version__ = '0.4.2'
+__version__ = '0.4.3'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 

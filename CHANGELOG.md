@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v0.4.3
+
+### Feature
+
+* add border extractor (75c7fb9ff538)
+* add assertion to ensure parser interface (bb78fac81d5e)
+* support mocking importlib (1e8c5ce5f2a2)
+* add multiple return files to save in different files (6015936e0773)
+* add bigger pdf file with empty page to coverer more cases (3a3a9aa55afd)
+* catch error that pdf does not contains outlines (f445b4a181f8)
+
 ## v0.4.2
 
 ## v0.4.1

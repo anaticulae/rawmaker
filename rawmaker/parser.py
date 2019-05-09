@@ -17,6 +17,7 @@ from pdfminer.pdfpage import PDFPage
 def pages(pdf: PDFDocument):
     """Split document into several pages"""
     assert pdf
+    assert isinstance(pdf, PDFDocument), type(pdf)
 
     # Process each page contained in the document.
     for page in PDFPage.create_pages(pdf):

@@ -80,7 +80,7 @@ class Lookup:
 
 def render_char(item: LTChar) -> Char:
     try:
-        char = Char(box=BoundingBox(*item.bbox))
+        char = Char(box=BoundingBox(*item.bbox), font=item.fontname)
         char.value = item.get_text()
     except AttributeError:
         char = VirtualChar(item.get_text())

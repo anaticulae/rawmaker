@@ -24,6 +24,7 @@ from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_fonts
 from serializeraw import dump_fontstore
 from utila import Command
+from utila import logging_error
 
 from rawmaker.miner.mining import IAmRawConverter
 
@@ -149,20 +150,32 @@ def font_fromraw(font: str, scale: float) -> Font:
     except ValueError:
         # No extra style
         fontname, raw_style = font, ''
+    # save origin type to display on error
+    save = raw_style
+    if 'Regular' in raw_style:
+        stretch = Stretch.REGULAR
+        raw_style = raw_style.replace('Regular', '')
     if 'Regu' in raw_style:
         stretch = Stretch.REGULAR
         raw_style = raw_style.replace('Regu', '')
     if 'Bold' in raw_style:
         weight = Weight.BOLD
         raw_style = raw_style.replace('Bold', '')
+    if 'Italic' in raw_style:
+        style = Style.ITALIC
+        raw_style = raw_style.replace('Italic', '')
     if 'Ital' in raw_style:
         style = Style.ITALIC
         raw_style = raw_style.replace('Ital', '')
     if 'Medi' in raw_style:
         weight = Weight.MEDIUM
         raw_style = raw_style.replace('Medi', '')
+    if 'Oblique' in raw_style:
+        style = Style.OBLIQUE
+        raw_style = raw_style.replace('Oblique', '')
 
     if raw_style:  # TODO: Remove before going live
+        logging_error(save)
         raise ValueError('Unsupported format %s' % raw_style)
 
     font = Font(

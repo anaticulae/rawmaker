@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v0.4.6
+
+### Feature
+
+* determine fonts for every character (1c7115820817)
+* add font extractor/miner (f82e89ae2312)
+
 ## v0.4.5
 
 ## v0.4.4

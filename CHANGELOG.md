@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v0.4.7
+
+### Feature
+
+* extend parser to detect more types of style (b46ad9866882)
+
 ## v0.4.6
 
 ### Feature

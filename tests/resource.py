@@ -34,3 +34,16 @@ DOCUMENTATION_TWINE_PAGES = 35
 
 for item in [NO_PDF, VIM_GUIDE_PDF]:
     assert exists(item), item
+
+INCREASING_FONT = join(DATA, 'increasing_fonts')
+INCREASING_FONT_A3 = join(INCREASING_FONT, 'increasing_fonts_a3.pdf')
+INCREASING_FONT_A4 = join(INCREASING_FONT, 'increasing_fonts_a4.pdf')
+INCREASING_FONT_A5 = join(INCREASING_FONT, 'increasing_fonts_a5.pdf')
+
+for item in [
+        INCREASING_FONT,
+        INCREASING_FONT_A3,
+        INCREASING_FONT_A4,
+        INCREASING_FONT_A5,
+]:
+    assert exists(item), item

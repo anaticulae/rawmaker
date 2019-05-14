@@ -18,6 +18,13 @@ from os.path import split
 from sys import modules
 from typing import List
 
+from iamraw import Document
+from pdfminer.converter import PDFPageAggregator
+from pdfminer.layout import LAParams
+from pdfminer.pdfdocument import PDFDocument
+from pdfminer.pdfinterp import PDFPageInterpreter
+from pdfminer.pdfinterp import PDFResourceManager
+from pdfminer.pdfpage import PDFPage
 from utila import FAILURE
 from utila import SUCCESS
 from utila import Command
@@ -25,6 +32,7 @@ from utila import logging
 from utila import logging_error
 
 from rawmaker import ROOT
+from rawmaker.miner.mining import IAmRawConverter
 
 FEATURE_PATH_PACKAGE = 'rawmaker.features'
 
@@ -61,3 +69,35 @@ def commandline(features):
         result.append(command())
 
     return result
+
+
+DEFAULT_PARSER_CONFIG = LAParams()
+
+
+def parse_document(document: PDFDocument) -> Document:
+    # Create a PDF resource manager object that stores shared resources.
+    rsrcmgr = PDFResourceManager()
+
+    device = IAmRawConverter(rsrcmgr, laparams=DEFAULT_PARSER_CONFIG)
+    device.new_document()
+    interpreter = PDFPageInterpreter(rsrcmgr, device)
+
+    # Processing layout
+    for page in PDFPage.create_pages(document):
+        interpreter.process_page(page)
+    document = device.finish_document()
+    return document
+
+
+def create_interpreter() -> PDFPageInterpreter:
+    rsrcmgr = PDFResourceManager()
+    device = PDFPageAggregator(rsrcmgr, laparams=DEFAULT_PARSER_CONFIG)
+    interpreter = PDFPageInterpreter(rsrcmgr, device)
+    return interpreter, device
+
+
+def process_document(document: PDFDocument):
+    interpreter, device = create_interpreter()
+    for page in PDFPage.create_pages(document):
+        interpreter.process_page(page)
+        yield (page, device.get_result())

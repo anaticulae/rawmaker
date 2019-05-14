@@ -9,16 +9,13 @@
 
 from iamraw import Border
 from iamraw import PageSize
-from pdfminer.converter import PDFPageAggregator
-from pdfminer.layout import LAParams
 from pdfminer.pdfdocument import PDFDocument
-from pdfminer.pdfinterp import PDFPageInterpreter
-from pdfminer.pdfinterp import PDFResourceManager
-from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_boundingboxes
 from serializeraw import dump_pageborders
 from serializeraw.border import NDIGITS
 from utila import Flag
+
+from rawmaker.features import process_document
 
 
 def work(document: PDFDocument):
@@ -30,7 +27,6 @@ def work(document: PDFDocument):
         tuple(pages, boxes): page size and list of bounding boxes for page
         content
     """
-
     size, border, boxes = determine_bounding_box(document)
     return {
         'pages': dump_pageborders(size, border),
@@ -40,16 +36,9 @@ def work(document: PDFDocument):
 
 def determine_bounding_box(document: PDFDocument):
     """Extract pagesizes and boundingboxes from `PDFDocument`"""
-    rsrcmgr = PDFResourceManager()
-    laparams = LAParams()  # TODO: Define common ones
-    device = PDFPageAggregator(rsrcmgr, laparams=laparams)
-    interpreter = PDFPageInterpreter(rsrcmgr, device)
     pagesize, border, boxes = [], [], []
     contentid = 0
-    for page in PDFPage.create_pages(document):
-        interpreter.process_page(page)
-        content = device.get_result()
-
+    for page, content in process_document(document):
         pagesize.append(pagesize_from_page(page))
         boxes.append(boxes_from_page(content, contentid))
         contentid += len(content)

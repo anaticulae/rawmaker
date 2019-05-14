@@ -139,9 +139,18 @@ def process_feature(
     pdf = ressource
     try:
         result = worker(pdf)
+        if not result:
+            logging_error('No result for %s' % name)
+            logging_error('Implementation of feature `%s` is missing' % name)
+            return FAILURE
         try:
             # Support multiple file output from feature
             for special_name, value in result.items():
+                if not isinstance(value, str):
+                    msg = 'Feature %s, file %s; must return str not %s'
+                    logging_error(msg % (name, special_name, type(value)))
+                    return FAILURE
+
                 write_feature_result(
                     name,
                     output,

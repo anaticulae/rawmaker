@@ -15,6 +15,7 @@ from pdfminer.pdfdocument import PDFSyntaxError
 from pdfminer.pdfparser import PDFParser
 
 from rawmaker.error import InvalidPDF
+from rawmaker.error import PDFParserImplementationError
 from rawmaker.error import TextExtractionNotAllowed
 
 
@@ -39,6 +40,9 @@ def read(path: str, password: str = '') -> PDFDocument:
             document = PDFDocument(parser, password)
         except PDFSyntaxError:
             raise InvalidPDF(path)
+        except Exception:
+            raise PDFParserImplementationError(path)
+
         # Check if the document allows text extraction. If not, abort.
         if not document.is_extractable:
             raise TextExtractionNotAllowed(path)

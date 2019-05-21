@@ -26,5 +26,9 @@ class InvalidPDF(RawMakerError):
     pass
 
 
+class PDFParserImplementationError(RawMakerError):
+    pass
+
+
 class MissingOutlines(RawMakerError, PDFNoOutlines):
     pass

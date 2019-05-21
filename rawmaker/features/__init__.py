@@ -97,6 +97,7 @@ def create_interpreter() -> PDFPageInterpreter:
 
 
 def process_document(document: PDFDocument):
+    assert isinstance(document, PDFDocument), type(document)
     interpreter, device = create_interpreter()
     for page in PDFPage.create_pages(document):
         interpreter.process_page(page)

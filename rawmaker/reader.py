@@ -9,6 +9,7 @@
 
 from contextlib import contextmanager
 from os.path import exists
+from os.path import isfile
 
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfdocument import PDFSyntaxError
@@ -30,6 +31,8 @@ def read(path: str, password: str = '') -> PDFDocument:
         TextExtractNotAllowed if not extraction is allowed"""
     if not exists(path):
         raise FileNotFoundError('Path does not exists %s' % path)
+    if not isfile(path):
+        raise ValueError('Read requires an pdf document, not %s' % path)
 
     with open(path, 'rb') as fp:
         # Create a PDF parser object associated with the file object.

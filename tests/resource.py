@@ -47,3 +47,8 @@ for item in [
         INCREASING_FONT_A5,
 ]:
     assert exists(item), item
+
+HOW_TO_CPORTING = join(DATA, 'boxes')
+HOW_TO_CPORTING_PDF = join(HOW_TO_CPORTING, 'howto_cporting.pdf')
+assert exists(HOW_TO_CPORTING), HOW_TO_CPORTING
+assert exists(HOW_TO_CPORTING_PDF), HOW_TO_CPORTING_PDF

@@ -42,44 +42,75 @@ def work(document: PDFDocument):
     return {'feature_box': ''}
 
 
-def distance(x0, y0, x1, y1):
-    return sqrt(pow((x0 - x1), 2) + pow((y0 - y1), 2))
+# TODO: Move to iamraw
+@dataclass
+class HorizontalLine(Boxed):
+
+    @property
+    def width(self):
+        return abs(self.box.x1 - self.box.x0)
 
 
-MIN_DISTANCE = 3
+@dataclass
+class Box(Boxed):
+    # TODO: Textbox?
+    pass
 
 
-def intersecting_lines(first: BoundingBox, second: BoundingBox):
-    """Check if start or end point of two line match
-
-    Args:
-        first(BoundingBox):
-        second(BoundingBox):
-    Returns:
-        True if least one elements matches, else False
-    """
-    # Check only if points intersects
-    x0, y0, x2, y2 = first
-    x1, y1, x3, y3 = second
-
-    first_distance = min(distance(x0, y0, x1, y1), distance(x0, y0, x3, y3))
-    second_distance = min(distance(x2, y2, x3, y3), distance(x2, y2, x1, y1))
-    if first_distance < 0.00001 and second_distance < 0.00001:
-        # intersecting with themself
-        return None
-
-    if first_distance < MIN_DISTANCE:
-        return True
-
-    if second_distance < MIN_DISTANCE:
-        return True
-
-    return False
+def determine_boxes(document: PDFDocument):
+    return determine_clusteritem(document, determine_pageboxes)
 
 
-def bounding(items):
-    """Extract boundingbox out of LT-Element"""
-    result = [item.bbox for item in items]
+def determine_horizontal(document: PDFDocument):
+    return determine_clusteritem(document, determine_pagehorizontal)
+
+
+def determine_clusteritem(document: PDFDocument, collector: callable):
+    result = []
+    document_lines = lines(document)
+    for lines_in_page in document_lines:
+        lines_in_page = bounding(lines_in_page)
+        grouped = determine_cluster(lines_in_page)
+        boxes = collector(grouped)
+        result.append(boxes)
+    return result
+
+
+def determine_pageboxes(cluster: List[LTLine]):
+    result = []
+    for item in cluster:
+        count = len(item)
+        if count != 4:
+            continue
+
+        x0 = min([min(line[0], line[2]) for line in item])
+        y0 = min([min(line[1], line[3]) for line in item])
+        x1 = max([max(line[0], line[2]) for line in item])
+        y1 = max([max(line[1], line[3]) for line in item])
+
+        box = Box(box=BoundingBox.from_list([x0, y0, x1, y1]))
+        result.append(box)
+        logging('Box %.2f %.2f %.2f %.2f' % (x0, y0, x1, y1))
+    return result
+
+
+def determine_pagehorizontal(cluster: List[List[LTLine]],
+                            ) -> List[HorizontalLine]:
+    result = []
+    for merged in cluster:
+        if len(merged) != 1:
+            continue
+        x0, y0, x1, y1 = merged[0]
+        xleft = min([x0, y1])
+        height = abs(y0 - y1)
+        width = abs(x0 - x1)
+        if height < HORIZONTAL_MAX_ERROR and width > HORIZONTAL_MIN_WIDTH:
+            logging('Horizontal %.2f %.2f width: %d' % (xleft, y0, width))
+            result.append(HorizontalLine(box=BoundingBox.from_list(merged[0])))
+            xleft = min([x0, x1])
+        else:
+            msg = 'No horizontal line %.2f %.2f %.2f %.2f' % (x0, y0, x1, y1)
+            logging_error(msg)
     return result
 
 
@@ -126,23 +157,46 @@ def determine_cluster(lines: List[BoundingBox]) -> List[BoundingBox]:
     return result
 
 
+MIN_DISTANCE = 3
+
+
+def intersecting_lines(first: BoundingBox, second: BoundingBox):
+    """Check if start or end point of two line match
+
+    Args:
+        first(BoundingBox):
+        second(BoundingBox):
+    Returns:
+        True if least one elements matches, else False
+    """
+    # Check only if points intersects
+    x0, y0, x2, y2 = first
+    x1, y1, x3, y3 = second
+
+    first_distance = min(distance(x0, y0, x1, y1), distance(x0, y0, x3, y3))
+    second_distance = min(distance(x2, y2, x3, y3), distance(x2, y2, x1, y1))
+    if first_distance < 0.00001 and second_distance < 0.00001:
+        # intersecting with themself
+        return None
+
+    if first_distance < MIN_DISTANCE:
+        return True
+
+    if second_distance < MIN_DISTANCE:
+        return True
+
+    return False
+
+
+def bounding(items):
+    """Extract boundingbox out of LT-Element"""
+    result = [item.bbox for item in items]
+    return result
+
+
 HORIZONTAL_MAX_ERROR = 1.0
 # TODO: Make dependend on page size
 HORIZONTAL_MIN_WIDTH = 400
-
-
-@dataclass
-class HorizontalLine(Boxed):
-
-    @property
-    def width(self):
-        return abs(self.box.x1 - self.box.x0)
-
-
-@dataclass
-class Box(Boxed):
-    # TODO: Textbox?
-    pass
 
 
 def type_in_document(document: PDFDocument, datatype):
@@ -159,70 +213,8 @@ def lines(document: PDFDocument):
     return type_in_document(document, LTLine)
 
 
-def rectangle(document: PDFDocument):
-    assert isinstance(document, PDFDocument), type(document)
-    return type_in_document(document, LTRect)
-
-
-def determine_textboxes(document: PDFDocument):
-    result = []
-
-    # rect = [item for item in rectangle(document) if item]
-    # for page in rect:
-    #     for item in page:
-    #         result.append(item)
-
-    document_lines = lines(document)
-    for lines_in_page in document_lines:
-        lines_in_page = bounding(lines_in_page)
-        grouped = determine_cluster(lines_in_page)
-        boxes = determine_boxes(grouped)
-        result.extend(boxes)
-    return result
-
-
-def determine_boxes(cluster: List[LTLine]):
-    # cluster = determine_cluster(lines)
-    result = []
-    for item in cluster:
-        count = len(item)
-        if count != 4:
-            continue
-
-        x0 = min([min(line[0], line[2]) for line in item])
-        y0 = min([min(line[1], line[3]) for line in item])
-        x1 = max([max(line[0], line[2]) for line in item])
-        y1 = max([max(line[1], line[3]) for line in item])
-
-        box = Box(box=BoundingBox.from_list([x0, y0, x1, y1]))
-        result.append(box)
-        logging('Box %.2f %.2f %.2f %.2f' % (x0, y0, x1, y1))
-    return result
-
-
-def determine_horizontal_lines(cluster: List[List[LTLine]]):
-    result = []
-    for merged in cluster:
-        if len(merged) != 1:
-            continue
-        x0, y0, x1, y1 = merged[0]
-        xleft = min([x0, y1])
-        height = abs(y0 - y1)
-        width = abs(x0 - x1)
-        if height < HORIZONTAL_MAX_ERROR and width > HORIZONTAL_MIN_WIDTH:
-            logging('Horizontal %.2f %.2f width: %d' % (xleft, y0, width))
-            result.append(HorizontalLine(box=from_list(merged[0])))
-            xleft = min([x0, x1])
-        else:
-            msg = 'No horizontal line %.2f %.2f %.2f %.2f' % (x0, y0, x1, y1)
-            logging_error(msg)
-    return result
-
-
-# TODO: Remove after iamraw upgrade!
-def from_list(data):
-    BoundingBox(
-        x_bottom=data[0], y_bottom=data[1], x_top=data[2], y_top=data[3])
+def distance(x0, y0, x1, y1):
+    return sqrt(pow((x0 - x1), 2) + pow((y0 - y1), 2))
 
 
 def commandline():

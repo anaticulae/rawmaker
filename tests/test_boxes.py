@@ -13,8 +13,8 @@ from pytest import fixture
 from rawmaker.features.boxes import bounding
 from rawmaker.features.boxes import determine_boxes
 from rawmaker.features.boxes import determine_cluster
-from rawmaker.features.boxes import determine_horizontal_lines
-from rawmaker.features.boxes import determine_textboxes
+from rawmaker.features.boxes import determine_pageboxes
+from rawmaker.features.boxes import determine_pagehorizontal
 from rawmaker.features.boxes import intersecting_lines
 from rawmaker.features.boxes import lines
 from rawmaker.reader import read
@@ -38,7 +38,7 @@ def linecluster():
 def test_determine_boxes(linecluster):  # pylint:disable=W0621
     result = []
     for page in linecluster:
-        boxes = determine_boxes(page)
+        boxes = determine_pageboxes(page)
         result.extend(boxes)
     # single raw box in document, the rest is rect
     assert len(result) == BOX_COUNT
@@ -80,7 +80,7 @@ def test_determine_single_cluster():
 def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
     document_lines = []
     for page in linecluster:
-        horizontal = determine_horizontal_lines(page)
+        horizontal = determine_pagehorizontal(page)
         document_lines.extend(horizontal)
     assert len(document_lines) == LINES_COUNT
 
@@ -88,9 +88,11 @@ def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
 def test_determine_textboxes():
     boxes = None
     with read(TEST_DOCUMENT) as doc:
-        boxes = determine_textboxes(doc)
-    assert boxes
-    assert len(boxes) == BOX_COUNT
+        boxes = determine_boxes(doc)
+
+    # flatten boxes to compute box count of document
+    count = sum([len(item) for item in boxes])
+    assert count == BOX_COUNT
 
 
 def test_intersecting_lines():

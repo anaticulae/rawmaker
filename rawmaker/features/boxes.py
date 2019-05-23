@@ -14,7 +14,6 @@ from iamraw import BoundingBox
 # TODO: Update after upgrade utila
 from iamraw.document.utils import Boxed
 from pdfminer.layout import LTLine
-from pdfminer.layout import LTRect
 from pdfminer.pdfdocument import PDFDocument
 from utila import Flag
 from utila import logging

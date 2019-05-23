@@ -48,7 +48,11 @@ class HorizontalLine(Boxed):
 
     @property
     def width(self):
-        return abs(self.box.x1 - self.box.x0)
+        return abs(self.box.x_top - self.box.x_bottom)
+
+    def __str__(self):
+        xleft = min([self.box.x_bottom, self.box.x_top])
+        return 'HorizontalLine[xleft=%d, width=%d]' % (xleft, self.width)
 
 
 @dataclass
@@ -90,7 +94,7 @@ def determine_pageboxes(cluster: List[LTLine]):
 
         box = Box(box=BoundingBox.from_list([x0, y0, x1, y1]))
         result.append(box)
-        logging('Box %.2f %.2f %.2f %.2f' % (x0, y0, x1, y1))
+        logging(str(box))
     return result
 
 
@@ -101,13 +105,12 @@ def determine_pagehorizontal(cluster: List[List[LTLine]],
         if len(merged) != 1:
             continue
         x0, y0, x1, y1 = merged[0]
-        xleft = min([x0, y1])
         height = abs(y0 - y1)
         width = abs(x0 - x1)
         if height < HORIZONTAL_MAX_ERROR and width > HORIZONTAL_MIN_WIDTH:
-            logging('Horizontal %.2f %.2f width: %d' % (xleft, y0, width))
-            result.append(HorizontalLine(box=BoundingBox.from_list(merged[0])))
-            xleft = min([x0, x1])
+            horizontal = HorizontalLine(box=BoundingBox.from_list(merged[0]))
+            result.append(horizontal)
+            logging(str(horizontal))
         else:
             msg = 'No horizontal line %.2f %.2f %.2f %.2f' % (x0, y0, x1, y1)
             logging_error(msg)

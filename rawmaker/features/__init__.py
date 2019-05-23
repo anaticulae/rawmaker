@@ -102,3 +102,9 @@ def process_document(document: PDFDocument):
     for page in PDFPage.create_pages(document):
         interpreter.process_page(page)
         yield (page, device.get_result())
+
+
+def process_pagecontent(document: PDFDocument):
+    assert isinstance(document, PDFDocument), type(document)
+    for _, content in process_document(document):
+        yield content

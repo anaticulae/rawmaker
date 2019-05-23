@@ -7,6 +7,22 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 from utila import Flag
+from utila import logging
+from utila import logging_error
+
+from rawmaker.features import process_pagecontent
+
+
+# TODO: Remove after upgrading iamraw
+@classmethod
+def from_list(cls, data):
+    """Create Box from list"""
+    return cls(
+        x_bottom=data[0],
+        y_bottom=data[1],
+        x_top=data[2],
+        y_top=data[3],
+    )
 
 
 def work(document):

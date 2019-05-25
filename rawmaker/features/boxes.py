@@ -16,8 +16,12 @@ from iamraw.document.utils import Boxed
 from pdfminer.layout import LTLine
 from pdfminer.pdfdocument import PDFDocument
 from utila import Flag
+from utila import from_raw_or_path
 from utila import logging
 from utila import logging_error
+from yaml import FullLoader
+from yaml import dump
+from yaml import load
 
 from rawmaker.features import process_pagecontent
 
@@ -57,7 +61,9 @@ class HorizontalLine(Boxed):
 @dataclass
 class Box(Boxed):
     # TODO: Textbox?
-    pass
+
+    def __str__(self):
+        return 'Box(box=%s)' % str(self.box)
 
 
 def determine_boxes(document: PDFDocument):
@@ -66,6 +72,63 @@ def determine_boxes(document: PDFDocument):
 
 def determine_horizontal(document: PDFDocument):
     return determine_clusteritem(document, determine_pagehorizontal)
+
+
+def dump_boxes(pages):
+    raw = []
+    for index, page in enumerate(pages):
+        print(page)
+        result = [box.box.raw() for box in page]
+        raw.append({
+            'page': index,
+            'boxes': result,
+        })
+    dumped = dump(raw)
+    return dumped
+
+
+def dump_horizontal(pages):
+    raw = []
+    for index, page in enumerate(pages):
+        result = [horizontal.box.raw() for horizontal in page]
+        raw.append({
+            'page': index,
+            'horizontal': result,
+        })
+    dumped = dump(raw)
+    return dumped
+
+
+def load_boxes(content: str):
+    content = from_raw_or_path(content, ftype='yaml')
+    loaded = load(content, Loader=FullLoader)
+
+    pages = []
+    for page in loaded:
+        box = [
+            Box(box=BoundingBox.from_list(
+                [float(splitted)
+                 for splitted in item.split()]),)
+            for item in page['boxes']
+        ]
+        pages.append(box)
+    return pages
+
+
+def load_horizontals(content: str):
+    content = from_raw_or_path(content, ftype='yaml')
+    loaded = load(content, Loader=FullLoader)
+    pages = []
+    for page in loaded:
+        box = [
+            HorizontalLine(
+                box=BoundingBox.from_list(
+                    [float(splitted)
+                     for splitted in item.split()]))
+            for item in page['horizontal']
+        ]
+        pages.append(box)
+    return pages
 
 
 def determine_clusteritem(document: PDFDocument, collector: callable):

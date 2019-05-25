@@ -42,7 +42,16 @@ BoundingBox.from_list = from_list
 
 
 def work(document: PDFDocument):
-    return {'feature_box': ''}
+    boxes = determine_boxes(document)
+    dumped_boxes = dump_boxes(boxes)
+
+    horizontal = determine_horizontal(document)
+    dumped_horizontal = dump_horizontal(horizontal)
+
+    return {
+        'boxes': dumped_boxes,
+        'horizontal': dumped_horizontal,
+    }
 
 
 # TODO: Move to iamraw

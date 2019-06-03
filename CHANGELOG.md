@@ -2,6 +2,25 @@
 
 Every noteable change is logged here.
 
+## v0.4.8
+
+### Feature
+
+* activate determine boxes and horizontal lines (1a380d191251)
+* load and dump boxes and horizontal lines (49caf2878492)
+* add method to process document content (1252fc1fb118)
+* add parser to determine horizontal lines and boxes (1878858a48ca)
+* add guard to cover all exceptions from pdf reader API (26eafd07e911)
+* add feature interface for box parser functionality (bb0e2bee22d4)
+* make feature scheduler more robust against broken interface (1fdff3f6667c)
+* add converter to convert pixel in millimeter (918c856bbd66)
+
+### Fix
+
+* improve logging of collected items (eaf0ba45d006)
+* fix BoundingBox of `iamraw`, remove after upgrade (07cb52336498)
+* move file to correct location (d7f166bd5274)
+
 ## v0.4.7
 
 ### Feature

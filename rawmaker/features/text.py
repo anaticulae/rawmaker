@@ -6,7 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-"""Extract test out of pdf document to gather information"""
+"""Extract text out of pdf document to gather information"""
 
 from pdfminer.layout import LAParams
 from pdfminer.pdfdocument import PDFDocument

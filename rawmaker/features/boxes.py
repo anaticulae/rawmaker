@@ -282,6 +282,7 @@ def type_in_document(document: PDFDocument, datatype):
 
 
 def lines(document: PDFDocument):
+    """Extract all `LTLine` out of `PDFDocument` pagewise"""
     assert isinstance(document, PDFDocument), type(document)
     return type_in_document(document, LTLine)
 

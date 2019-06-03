@@ -90,7 +90,7 @@ def cropborder_from_page(content) -> Border:
 
 
 def commandline():
-    return Flag(longcut=name(), message='Extract border for every page')
+    return Flag(longcut=name(), message='Extract border for every page.')
 
 
 def name():

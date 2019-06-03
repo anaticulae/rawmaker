@@ -16,7 +16,7 @@ from iamraw import create_toc
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfdocument import PDFNoOutlines
 from serializeraw import dump_toc
-from utila import Command
+from utila import Flag
 from utila import logging
 
 
@@ -38,7 +38,7 @@ def work(document: PDFDocument):
 
 
 def commandline():
-    return Command('-to', '--%s' % name(), 'Extract table of content.')
+    return Flag(longcut=name(), message='Extract table of content.')
 
 
 def name():

@@ -292,7 +292,7 @@ def distance(x0, y0, x1, y1):
 
 
 def commandline():
-    return Flag(longcut='%s' % name(), message='Extract boxes out of document.')
+    return Flag(longcut=name(), message='Extract boxes out of document.')
 
 
 def name():

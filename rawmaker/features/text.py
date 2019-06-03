@@ -14,7 +14,7 @@ from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_document
-from utila import Command
+from utila import Flag
 
 from rawmaker.miner.mining import IAmRawConverter
 
@@ -45,7 +45,7 @@ def work(document: PDFDocument) -> str:
 
 
 def commandline():
-    return Command('-te', '--%s' % name(), 'Extract text of document.')
+    return Flag(longcut=name(), message='Extract text of document.')
 
 
 def name():

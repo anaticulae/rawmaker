@@ -23,7 +23,7 @@ from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_fonts
 from serializeraw import dump_fontstore
-from utila import Command
+from utila import Flag
 from utila import logging_error
 
 from rawmaker.miner.mining import IAmRawConverter
@@ -189,7 +189,7 @@ def font_fromraw(font: str, scale: float) -> Font:
 
 
 def commandline():
-    return Command('-fo', '--%s' % name(), 'Extract fonts of document.')
+    return Flag(longcut=name(), message='Extract fonts of document.')
 
 
 def name():

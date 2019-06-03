@@ -86,7 +86,6 @@ def determine_horizontal(document: PDFDocument):
 def dump_boxes(pages):
     raw = []
     for index, page in enumerate(pages):
-        print(page)
         result = [box.box.raw() for box in page]
         raw.append({
             'page': index,

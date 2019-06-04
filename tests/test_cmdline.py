@@ -32,7 +32,7 @@ def test_install_and_run_rawmaker():
 ])
 def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
-    run_success(command, monkeypatch)
+    run_success(command, monkeypatch=monkeypatch)
 
 
 @mark.parametrize(
@@ -43,14 +43,14 @@ def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
     ])
 def test_run_rawmaker_failed(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
-    run_failure(command, monkeypatch)
+    run_failure(command, monkeypatch=monkeypatch)
 
 
 def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
     testdir.mkdir('empty')
     command = ['-i', 'empty', '-o', 'output']  # no pdf input
-    run_failure(command, monkeypatch)
+    run_failure(command, monkeypatch=monkeypatch)
 
     stderr = capsys.readouterr().err
     assert '[ERROR]' in stderr

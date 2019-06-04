@@ -11,8 +11,7 @@ from math import sqrt
 from typing import List
 
 from iamraw import BoundingBox
-# TODO: Update after upgrade utila
-from iamraw.document.utils import Boxed
+from iamraw import Boxed
 from pdfminer.layout import LTLine
 from pdfminer.pdfdocument import PDFDocument
 from utila import Flag
@@ -24,21 +23,6 @@ from yaml import dump
 from yaml import load
 
 from rawmaker.features import process_pagecontent
-
-
-# TODO: Remove after upgrading iamraw
-@classmethod
-def from_list(cls, data):
-    """Create Box from list"""
-    return cls(
-        x_bottom=data[0],
-        y_bottom=data[1],
-        x_top=data[2],
-        y_top=data[3],
-    )
-
-
-BoundingBox.from_list = from_list
 
 
 def work(document: PDFDocument):

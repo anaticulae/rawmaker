@@ -1,10 +1,10 @@
-# rawmaker - Convert PDF to raw data
+# rawmaker - convert PDF to raw data
 
-Welcome to rawmaker!
+This package extract information out of a pdf-file and write them to
+yaml-files.
 
 ## Introduction
 
-This package extract information pdf-file and write them to yaml-files.
 
 Supported functions:
 

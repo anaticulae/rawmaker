@@ -15,7 +15,6 @@ from rawmaker import ROOT
 from tests import run_failure
 from tests import run_success
 from tests.resource import DOCUMENTATION_TWINE
-from tests.resource import HELLO_WORLD
 from tests.resource import HELLO_WORLD_PDF
 
 

@@ -7,22 +7,16 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from iamraw.document.utils import BoundingBox
+from iamraw import BoundingBox
 from pytest import fixture
 
-from rawmaker.features.boxes import Box
-from rawmaker.features.boxes import HorizontalLine
 from rawmaker.features.boxes import bounding
 from rawmaker.features.boxes import determine_boxes
 from rawmaker.features.boxes import determine_cluster
 from rawmaker.features.boxes import determine_pageboxes
 from rawmaker.features.boxes import determine_pagehorizontal
-from rawmaker.features.boxes import dump_boxes
-from rawmaker.features.boxes import dump_horizontal
 from rawmaker.features.boxes import intersecting_lines
 from rawmaker.features.boxes import lines
-from rawmaker.features.boxes import load_boxes
-from rawmaker.features.boxes import load_horizontals
 from rawmaker.reader import read
 from tests.resource import HOW_TO_CPORTING_BOX_COUNT as BOX_COUNT
 from tests.resource import HOW_TO_CPORTING_HORIZONTAL_COUNT as LINES_COUNT
@@ -105,54 +99,3 @@ def test_intersecting_lines():
     vertical = (10, 0, 10, 30)
     intersected = intersecting_lines(horizontal, vertical)
     assert intersected
-
-
-def test_dump_and_load_boxes():
-    pages = [
-        [Box(box=BoundingBox(72.20, 160.88, 539.80, 238.48))],
-        [
-            Box(box=BoundingBox(68.61, 673.57, 543.39, 715.82)),
-            Box(box=BoundingBox(68.61, 83.07, 543.39, 448.10))
-        ],
-        [
-            Box(box=BoundingBox(68.61, 640.70, 543.39, 706.85)),
-            Box(box=BoundingBox(68.61, 80.17, 543.39, 457.16))
-        ],
-        [Box(box=BoundingBox(68.61, 90.76, 543.39, 706.85))],
-        [Box(box=BoundingBox(68.61, 80.17, 543.39, 347.04))],
-        [Box(box=BoundingBox(68.61, 80.17, 543.39, 706.85))],
-        [Box(box=BoundingBox(68.61, 80.17, 543.39, 706.85))],
-        [Box(box=BoundingBox(68.61, 604.83, 543.39, 706.85))],
-        [],
-    ]
-
-    dumped = dump_boxes(pages)
-
-    assert dumped
-    assert len(dumped) > 100
-
-    loaded = load_boxes(dumped)
-    assert loaded == pages
-
-
-def test_dump_and_load_horizontal():
-    pages = [
-        [
-            HorizontalLine(box=BoundingBox(72.00, 298.76, 540.00, 298.76)),
-            HorizontalLine(box=BoundingBox(72.00, 710.53, 540.00, 710.53))
-        ],
-        [],
-        [
-            HorizontalLine(box=BoundingBox(72.00, 298.76, 540.00, 298.76)),
-        ],
-        [],
-        [],
-    ]
-
-    dumped = dump_horizontal(pages)
-
-    assert dumped
-    assert len(dumped) > 100
-
-    loaded = load_horizontals(dumped)
-    assert loaded == pages

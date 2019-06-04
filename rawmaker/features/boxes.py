@@ -6,21 +6,19 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-from dataclasses import dataclass
 from math import sqrt
 from typing import List
 
 from iamraw import BoundingBox
-from iamraw import Boxed
+from iamraw import Box
+from iamraw import HorizontalLine
 from pdfminer.layout import LTLine
 from pdfminer.pdfdocument import PDFDocument
+from serializeraw import dump_boxes
+from serializeraw import dump_horizontals
 from utila import Flag
-from utila import from_raw_or_path
 from utila import logging
 from utila import logging_error
-from yaml import FullLoader
-from yaml import dump
-from yaml import load
 
 from rawmaker.features import process_pagecontent
 
@@ -30,33 +28,12 @@ def work(document: PDFDocument):
     dumped_boxes = dump_boxes(boxes)
 
     horizontal = determine_horizontal(document)
-    dumped_horizontal = dump_horizontal(horizontal)
+    dumped_horizontal = dump_horizontals(horizontal)
 
     return {
         'boxes': dumped_boxes,
         'horizontal': dumped_horizontal,
     }
-
-
-# TODO: Move to iamraw
-@dataclass
-class HorizontalLine(Boxed):
-
-    @property
-    def width(self):
-        return abs(self.box.x_top - self.box.x_bottom)
-
-    def __str__(self):
-        xleft = min([self.box.x_bottom, self.box.x_top])
-        return 'HorizontalLine[xleft=%d, width=%d]' % (xleft, self.width)
-
-
-@dataclass
-class Box(Boxed):
-    # TODO: Textbox?
-
-    def __str__(self):
-        return 'Box(box=%s)' % str(self.box)
 
 
 def determine_boxes(document: PDFDocument):
@@ -65,62 +42,6 @@ def determine_boxes(document: PDFDocument):
 
 def determine_horizontal(document: PDFDocument):
     return determine_clusteritem(document, determine_pagehorizontal)
-
-
-def dump_boxes(pages):
-    raw = []
-    for index, page in enumerate(pages):
-        result = [box.box.raw() for box in page]
-        raw.append({
-            'page': index,
-            'boxes': result,
-        })
-    dumped = dump(raw)
-    return dumped
-
-
-def dump_horizontal(pages):
-    raw = []
-    for index, page in enumerate(pages):
-        result = [horizontal.box.raw() for horizontal in page]
-        raw.append({
-            'page': index,
-            'horizontal': result,
-        })
-    dumped = dump(raw)
-    return dumped
-
-
-def load_boxes(content: str):
-    content = from_raw_or_path(content, ftype='yaml')
-    loaded = load(content, Loader=FullLoader)
-
-    pages = []
-    for page in loaded:
-        box = [
-            Box(box=BoundingBox.from_list(
-                [float(splitted)
-                 for splitted in item.split()]),)
-            for item in page['boxes']
-        ]
-        pages.append(box)
-    return pages
-
-
-def load_horizontals(content: str):
-    content = from_raw_or_path(content, ftype='yaml')
-    loaded = load(content, Loader=FullLoader)
-    pages = []
-    for page in loaded:
-        box = [
-            HorizontalLine(
-                box=BoundingBox.from_list(
-                    [float(splitted)
-                     for splitted in item.split()]))
-            for item in page['horizontal']
-        ]
-        pages.append(box)
-    return pages
 
 
 def determine_clusteritem(document: PDFDocument, collector: callable):

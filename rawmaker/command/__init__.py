@@ -139,7 +139,7 @@ def process_feature(
     pdf = ressource
     try:
         result = worker(pdf)
-        if not result:
+        if result is None:  # None, because empty string can be a valid resul
             logging_error('No result for %s' % name)
             logging_error('Implementation of feature `%s` is missing' % name)
             return FAILURE

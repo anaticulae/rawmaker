@@ -50,13 +50,14 @@ class IAmRawConverter(PDFConverter):
         self.stripcontrol = stripcontrol
 
         self.page = 0
-
         self.document = None
 
     def new_document(self):
+        """Clear the current `Document` and initialze a new one"""
         self.document = Document()
 
-    def finish_document(self):
+    def finish_document(self) -> Document:
+        """Return the current `Document` and clear the current one"""
         document = self.document
         self.document = None
         return document

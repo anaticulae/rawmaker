@@ -9,7 +9,6 @@
 """Extract test out of pdf document to gather information"""
 
 from functools import lru_cache
-from typing import Tuple
 
 from iamraw import Font
 from iamraw import Stretch

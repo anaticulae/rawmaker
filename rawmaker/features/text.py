@@ -8,6 +8,7 @@
 #==============================================================================
 """Extract text out of pdf document to gather information"""
 
+from iamraw import Document
 from pdfminer.layout import LAParams
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter
@@ -27,6 +28,20 @@ def work(document: PDFDocument) -> str:
     Returns:
         parsed document as yaml output
     """
+    document = extract_content(document)
+
+    dumped = dump_document(document)
+    return dumped
+
+
+def extract_content(document: PDFDocument) -> Document:
+    """Extract content from PDF file
+
+    Args:
+        document(PDFDocument): PDF file to work on
+    Returns:
+        analysed document
+    """
     # Create a PDF resource manager object that stores shared resources.
     rsrcmgr = PDFResourceManager()
     laparams = LAParams()
@@ -39,9 +54,7 @@ def work(document: PDFDocument) -> str:
     for page in PDFPage.create_pages(document):
         interpreter.process_page(page)
     document = device.finish_document()
-
-    dumped = dump_document(document)
-    return dumped
+    return document
 
 
 def commandline():

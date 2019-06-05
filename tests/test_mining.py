@@ -25,7 +25,7 @@ def test_miner_pdf():
 
 def test_mine_hello_world_pdf():
     with read(HELLO_WORLD_PDF) as pdf:
-        data = work(pdf)
+        data = work(pdf)['text']
     loaded = load_document(data)
 
     assert loaded.page_count
@@ -38,7 +38,7 @@ def test_dump_and_load_pdf(pdf_resource):
     and compare with item to save"""
 
     with read(pdf_resource) as pdf:
-        dumped = work(pdf)
+        dumped = work(pdf)['text']
     assert dumped
 
     loaded_yaml = load_document(dumped)

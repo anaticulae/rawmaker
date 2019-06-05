@@ -36,9 +36,9 @@ def test_itemhasher():
     item, position = 'ThisIsJustATest', '10.0 20.0 30.0 40.0'
     hasher.hashitem(item, position)
 
-    hashed_position = hasher.position(item)
+    hashed = hasher.position(item)
 
-    assert hashed_position == position
+    assert hashed == position
 
 
 def test_key_does_not_exists():

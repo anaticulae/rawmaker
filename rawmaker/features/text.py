@@ -18,6 +18,8 @@ from serializeraw import dump_document
 from utila import Flag
 
 from rawmaker.miner.mining import IAmRawConverter
+from rawmaker.miner.position import dump_hasher
+from rawmaker.miner.position import hash_positions
 
 
 def work(document: PDFDocument) -> str:
@@ -27,11 +29,15 @@ def work(document: PDFDocument) -> str:
         document: pdf-document to run parsing
     Returns:
         parsed document as yaml output
+        parsed positions of text container
     """
     document = extract_content(document)
+    positions = hash_positions(document)
 
-    dumped = dump_document(document)
-    return dumped
+    return {
+        'text': dump_document(document),
+        'positions': dump_hasher(positions),
+    }
 
 
 def extract_content(document: PDFDocument) -> Document:

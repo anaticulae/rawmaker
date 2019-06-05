@@ -13,12 +13,12 @@ from pytest import raises
 from serializeraw import load_document
 
 from rawmaker import read
-from rawmaker.features.position import DocumentItemHasher
-from rawmaker.features.position import ItemNotFound
-from rawmaker.features.position import dump_hasher
-from rawmaker.features.position import hash_document
-from rawmaker.features.position import load_hasher
 from rawmaker.features.text import extract_content
+from rawmaker.miner.position import DocumentItemHasher
+from rawmaker.miner.position import ItemNotFound
+from rawmaker.miner.position import dump_hasher
+from rawmaker.miner.position import hash_positions
+from rawmaker.miner.position import load_hasher
 from tests.resource import VIM_GUIDE_PDF
 
 

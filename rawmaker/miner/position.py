@@ -13,15 +13,10 @@ Save position of element by object hash
 from typing import List
 
 from iamraw import Document
-from utila import Flag
 from utila import from_raw_or_path
 from yaml import FullLoader
 from yaml import dump
 from yaml import load
-
-
-def work(document: Document) -> str:
-    return ''
 
 
 class DocumentItemHasher:
@@ -33,7 +28,7 @@ class DocumentItemHasher:
         hashid = hash(item)
         # assert that hashid is not saved before, 'collision %s'  % item
         # TODO: Investigate later, how to avoid collision
-        assert hashid not in self.data, 'collision %s' % item
+        assert hashid not in self.data, 'collision "%s"' % item
         # while hashid in self.data:
         #     hashid += 1
         self.data[hashid] = position
@@ -71,7 +66,7 @@ def load_hasher(content: str) -> DocumentItemHasher:
     return result
 
 
-def dump_hasher(itemhashers):
+def dump_hasher(itemhashers: List[DocumentItemHasher]):
     result = []
     for index, item in enumerate(itemhashers):
         page = [
@@ -85,26 +80,23 @@ def dump_hasher(itemhashers):
     return dumped
 
 
-def hash_document(document: Document) -> List[DocumentItemHasher]:
+def hash_positions(document: Document) -> List[DocumentItemHasher]:
+    assert isinstance(document, Document), type(document)
     result = []
     for page in document:
         hasher = DocumentItemHasher()
         result.append(hasher)
+        index = 0
         for item in page:
-            print(item)
+            try:
+                text = item.text
+                hasher.hashitem(index, item.box.raw())
+                index += 1
+            except AttributeError:
+                # Not every element have text
+                pass
     return result
 
 
 class ItemNotFound(ValueError):
     pass
-
-
-def commandline():
-    return Flag(
-        longcut=name(),
-        message='Extract position for evey element in document',
-    )
-
-
-def name():
-    return 'position'

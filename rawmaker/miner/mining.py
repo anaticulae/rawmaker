@@ -110,4 +110,7 @@ def render(item):
         return page
     if isinstance(item, LTTextBox):
         return render_textcontainer(item)
-    return PageObject(content=str(item))
+    return PageObject(
+        box=BoundingBox(*item.bbox),
+        content=str(item),
+    )

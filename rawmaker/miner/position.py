@@ -12,7 +12,9 @@ Save position of element by object hash
 
 from typing import List
 
+from iamraw import BoundingBox
 from iamraw import Document
+from utila import NEWLINE
 from utila import from_raw_or_path
 from yaml import FullLoader
 from yaml import dump
@@ -50,6 +52,12 @@ class DocumentItemHasher:
         if str(sorted(value.data.values())) != str(sorted(self.data.values())):
             return False
         return True
+
+    def __str__(self):
+        result = ['DocumentItemHasher, size: %d' % len(self.data)]
+        for key, value in self.data.items():
+            result.append('%s %s' % (key, value))
+        return NEWLINE.join(result)
 
 
 def load_hasher(content: str) -> DocumentItemHasher:

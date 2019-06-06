@@ -26,7 +26,8 @@ class DocumentItemHasher:
     def __init__(self):
         self.data = {}
 
-    def hashitem(self, item, position):
+    def hashitem(self, item: str, position: BoundingBox):
+        assert isinstance(position, BoundingBox), type(position)
         hashid = hash(item)
         # assert that hashid is not saved before, 'collision %s'  % item
         # TODO: Investigate later, how to avoid collision
@@ -69,7 +70,7 @@ def load_hasher(content: str) -> DocumentItemHasher:
         hasher = DocumentItemHasher()
         for item in page['content']:
             key, position = item.split(maxsplit=1)
-            hasher.data[int(key)] = position
+            hasher.data[int(key)] = BoundingBox.from_str(position)
         result.append(hasher)
     return result
 
@@ -78,7 +79,9 @@ def dump_hasher(itemhashers: List[DocumentItemHasher]):
     result = []
     for index, item in enumerate(itemhashers):
         page = [
-            '%s %s' % (key, position) for key, position in item.data.items()
+            # Save raw representation
+            '%s %s' % (key, position.raw())
+            for key, position in item.data.items()
         ]
         result.append({
             'page': index,
@@ -98,7 +101,7 @@ def hash_positions(document: Document) -> List[DocumentItemHasher]:
         for item in page:
             try:
                 text = item.text
-                hasher.hashitem(index, item.box.raw())
+                hasher.hashitem(index, item.box)
                 index += 1
             except AttributeError:
                 # Not every element have text

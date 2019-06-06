@@ -7,10 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+from iamraw import BoundingBox
 from iamraw import Document
 from pytest import fixture
 from pytest import raises
-from serializeraw import load_document
 
 from rawmaker import read
 from rawmaker.features.text import extract_content
@@ -21,19 +21,20 @@ from rawmaker.miner.position import hash_positions
 from rawmaker.miner.position import load_hasher
 from tests.resource import VIM_GUIDE_PDF
 
+BBox = BoundingBox.from_str  # pylint:disable=invalid-name
+
 
 @fixture
 def sample_hasher() -> DocumentItemHasher:
     hasher = DocumentItemHasher()
-    item, position = 'ThisIsJustATest', '10.0 20.0 30.0 40.0'
+    item, position = 'ThisIsJustATest', BBox('10.0 20.0 30.0 40.0')
     hasher.hashitem(item, position)
     return hasher
 
 
 def test_itemhasher():
     hasher = DocumentItemHasher()
-
-    item, position = 'ThisIsJustATest', '10.0 20.0 30.0 40.0'
+    item, position = 'ThisIsJustATest', BBox('10.0 20.0 30.0 40.0')
     hasher.hashitem(item, position)
 
     hashed = hasher.position(item)
@@ -53,7 +54,6 @@ def test_dump_and_load_hasher(sample_hasher):
     dumped = dump_hasher(sample_hashers)
     assert len(dumped) > 20
     loaded = load_hasher(dumped)
-
     assert loaded == sample_hashers
 
 

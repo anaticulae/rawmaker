@@ -19,7 +19,7 @@ from rawmaker.features import process_document
 
 
 def work(document: PDFDocument):
-    """Extract bounding boxes of page content and page size of `document`
+    """Extract page-size of `document` bounding boxes of page-content
 
     Args:
         document: pdf-document to run parsing
@@ -30,7 +30,7 @@ def work(document: PDFDocument):
     size, border, boxes = determine_bounding_box(document)
     return {
         'pages': dump_pageborders(size, border),
-        'boxes': dump_boundingboxes(boxes),
+        'boundingboxes': dump_boundingboxes(boxes),
     }
 
 

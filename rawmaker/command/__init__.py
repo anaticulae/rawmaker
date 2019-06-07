@@ -74,6 +74,7 @@ def main():
     # evaluate the verbose flag
     inputpath, output, verbose = sources(args, singleinput=True, verbose=True)
     if not inputpath and not output:
+        parser.print_usage()
         return FAILURE
 
     todolist = todo(args)

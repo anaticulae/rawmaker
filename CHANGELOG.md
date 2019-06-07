@@ -2,6 +2,28 @@
 
 Every noteable change is logged here.
 
+## v0.4.9
+
+### Feature
+
+* support single pdf as input parameter (4abe865e0100)
+* use BoundingBox instead of raw-representation (166af80c2cc8)
+* add method to print content of DocumentItemHasher (e86f30b9edc3)
+* add position as a sub feature of text (6e8b9e0c469a)
+* add hasher to identify the position of object via hash-value (36e806731ed7)
+* separate extracting the feature from dumping (ebc2549f771e)
+
+### Fix
+
+* add missing bbox to PageObject (561b5ac93c05)
+* allow the empty string as a result from a feature (33f64ce67ff4)
+* use `Flag` instead of useless shortcuts (ae6dfb889f3b)
+
+### Documentation
+
+* fix spelling and correct sentence (2eccf000cb20)
+* extend documentation and fix spelling (fb8ffce9a186)
+
 ## v0.4.8
 
 ### Feature

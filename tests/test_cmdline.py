@@ -15,6 +15,8 @@ from rawmaker import ROOT
 from tests import run_failure
 from tests import run_success
 from tests.resource import DOCUMENTATION_TWINE
+from tests.resource import DOCUMENTATION_TWINE_PDF
+from tests.resource import EMPTY_PDF_FOLDER
 from tests.resource import HELLO_WORLD_PDF
 
 
@@ -28,18 +30,17 @@ def test_install_and_run_rawmaker():
 @mark.parametrize('command', [
     ['--help'],
     ['-i', DOCUMENTATION_TWINE, '-o', 'output'],
+    ['-i', DOCUMENTATION_TWINE_PDF, '-o', 'output'],
 ])
 def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
     run_success(command, monkeypatch=monkeypatch)
 
 
-@mark.parametrize(
-    'command',
-    [
-        [],
-        ['-i', HELLO_WORLD_PDF, '-o', 'output'],  # no pdf input
-    ])
+@mark.parametrize('command', [
+    [],
+    ['-i', EMPTY_PDF_FOLDER, '-o', 'output'],
+])
 def test_run_rawmaker_failed(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
     run_failure(command, monkeypatch=monkeypatch)

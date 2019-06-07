@@ -72,7 +72,7 @@ def main():
     args = parse(parser)
 
     # evaluate the verbose flag
-    inputpath, output, verbose = sources(args, verbose=True)
+    inputpath, output, verbose = sources(args, singleinput=True, verbose=True)
     if not inputpath and not output:
         return FAILURE
 
@@ -90,13 +90,18 @@ def process(
     assert inputpath, outputpath
     makedirs(outputpath, exist_ok=True)
 
-    # Search pdf's in input folder
-    pdfs = glob(inputpath + '/*.pdf')
-    if not pdfs:
-        # Exit rawmaker when input folder is empty
-        logging_error('Empty input folder: %s' % inputpath)
-        exit(FAILURE)
-    ret = 0
+    pdfs = []
+    if isfile(inputpath):
+        # Single file
+        pdfs.append(inputpath)
+    else:
+        # Search pdf's in input folder
+        pdfs.extend(glob(inputpath + '/*.pdf'))
+        if not pdfs:
+            # Exit rawmaker when input folder is empty
+            logging_error('Empty input folder: %s' % inputpath)
+            exit(FAILURE)
+    ret = SUCCESS
     for pdf_path in pdfs:
         with read(pdf_path) as pdf:
             if verbose:

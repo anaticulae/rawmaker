@@ -18,6 +18,7 @@ assert exists(DATA), DATA
 NEGATIVE = join(DATA, 'negative')
 
 NO_PDF = join(NEGATIVE, 'no_pdf.pdf')
+EMPTY_PDF_FOLDER = join(NEGATIVE, 'empty')
 
 VIM_GUIDE_PDF = join(DATA, 'vimguide.pdf')
 VIM_GUIDE_PAGES = 13
@@ -32,7 +33,11 @@ DOCUMENTATION_TWINE = join(DATA, 'technical/twine')
 DOCUMENTATION_TWINE_PDF = join(DOCUMENTATION_TWINE, 'documentation_twine.pdf')
 DOCUMENTATION_TWINE_PAGES = 35
 
-for item in [NO_PDF, VIM_GUIDE_PDF]:
+for item in [
+        EMPTY_PDF_FOLDER,
+        NO_PDF,
+        VIM_GUIDE_PDF,
+]:
     assert exists(item), item
 
 INCREASING_FONT = join(DATA, 'increasing_fonts')

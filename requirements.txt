@@ -3,4 +3,4 @@ pdfminer.six==20181108
 
 # Internal packages
 iamraw==0.4.15
-utila==0.6.1
+utila==0.6.2

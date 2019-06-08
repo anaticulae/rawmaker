@@ -40,19 +40,26 @@ def work(document: PDFDocument) -> str:
     }
 
 
-def extract_content(document: PDFDocument) -> Document:
+def extract_content(
+        document: PDFDocument,
+        layout_parameter: LAParams = None,
+) -> Document:
     """Extract content from PDF file
 
     Args:
         document(PDFDocument): PDF file to work on
+        layout_parameter(LAParams): Parameterization for layout analysis. This
+                                    parameter defines how chars are matched
+                                    together in words and sentences.
     Returns:
-        analysed document
+        Document: parsed and layouted document
     """
+    if layout_parameter is None:
+        layout_parameter = LAParams()
     # Create a PDF resource manager object that stores shared resources.
     rsrcmgr = PDFResourceManager()
-    laparams = LAParams()
 
-    device = IAmRawConverter(rsrcmgr, laparams=laparams)
+    device = IAmRawConverter(rsrcmgr, laparams=layout_parameter)
     device.new_document()
     interpreter = PDFPageInterpreter(rsrcmgr, device)
 

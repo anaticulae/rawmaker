@@ -33,9 +33,12 @@ DOCUMENTATION_TWINE = join(DATA, 'technical/twine')
 DOCUMENTATION_TWINE_PDF = join(DOCUMENTATION_TWINE, 'documentation_twine.pdf')
 DOCUMENTATION_TWINE_PAGES = 35
 
+TOC_PDF = join(DATA, 'toc/restructuredtext.pdf')
+
 for item in [
         EMPTY_PDF_FOLDER,
         NO_PDF,
+        TOC_PDF,
         VIM_GUIDE_PDF,
 ]:
     assert exists(item), item

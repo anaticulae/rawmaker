@@ -31,7 +31,10 @@ def work(document: PDFDocument) -> str:
         parsed document as yaml output
         parsed positions of text container
     """
-    document = extract_content(document)
+    # Diff between chars which build a word
+    layout = LAParams(char_margin=10.0)
+    document = extract_content(document, layout_parameter=layout)
+
     positions = hash_positions(document)
 
     return {

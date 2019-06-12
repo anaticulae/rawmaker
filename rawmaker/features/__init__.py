@@ -16,7 +16,9 @@ from os.path import exists
 from os.path import join
 from os.path import split
 from sys import modules
+from typing import Iterable
 from typing import List
+from typing import Tuple
 
 from iamraw import Document
 from pdfminer.converter import PDFPageAggregator
@@ -62,13 +64,30 @@ def find_features(path: str):
     return result
 
 
-def commandline(features):
-    result = []
+Name = str
+CommandLineInterface = List[Command]
+Worker = callable  #pylint:disable=C0103
+Feature = Tuple[Name, CommandLineInterface, Worker]
 
+
+def commandline(features: List[Feature]) -> List[Command]:
+    """Build command line interface due iterating searched features
+
+    Args:
+        features: list of parsed features
+    Returns:
+        list of `Command`s
+    """
+    result = []
     # name, cmd, work
     for _, command, _ in features:
-        result.append(command())
-
+        commands = command()
+        # one single command is iterable, testing of Iterable is not possible
+        if isinstance(commands, (list, tuple)):
+            # support adding commands from iterable and single command
+            result.extend(commands)
+        else:
+            result.append(commands)
     return result
 
 

@@ -16,13 +16,14 @@ from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_document
 from utila import Flag
+from utila import Parameter
 
 from rawmaker.miner.mining import IAmRawConverter
 from rawmaker.miner.position import dump_hasher
 from rawmaker.miner.position import hash_positions
 
 
-def work(document: PDFDocument) -> str:
+def work(document: PDFDocument, parameter: dict = None) -> str:
     """Extract structured text out of document
 
     Args:
@@ -31,8 +32,12 @@ def work(document: PDFDocument) -> str:
         parsed document as yaml output
         parsed positions of text container
     """
+    parameter = {} if parameter is None else parameter
+    # TODO: implement general parameter concept
     # Diff between chars which build a word
-    layout = LAParams(char_margin=10.0)
+    char_margin = get(parameter, 'char_margin', 5.0)
+    # boxes_flow: 1.0 only the vertical position matters
+    layout = LAParams(char_margin=char_margin, boxes_flow=1.0)
     document = extract_content(document, layout_parameter=layout)
 
     positions = hash_positions(document)
@@ -41,6 +46,14 @@ def work(document: PDFDocument) -> str:
         'text': dump_document(document),
         'positions': dump_hasher(positions),
     }
+
+
+def get(args, parameter: str, default):
+    try:
+        # TODO: inherit type from default, search for pythonic way
+        return default if args[parameter] is None else float(args[parameter])
+    except KeyError:
+        return default
 
 
 def extract_content(
@@ -74,7 +87,22 @@ def extract_content(
 
 
 def commandline():
-    return Flag(longcut=name(), message='Extract text of document.')
+    return [
+        Flag(longcut=name(), message='Extract text of document.'),
+        # TODO: Support default value/ datatype
+        Parameter(
+            longcut='char_margin',
+            message='maximum distance between 2 chars to build a word',
+        ),
+        Parameter(
+            longcut='word_margin',
+            message='maximum distance between 2 words to build a sentence',
+        ),
+        Parameter(
+            longcut='line_margin',
+            message='maximum distance between 2 sentence to build a paragraph',
+        ),
+    ]
 
 
 def name():

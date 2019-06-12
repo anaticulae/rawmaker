@@ -76,9 +76,15 @@ def main():
     if not inputpath and not output:
         parser.print_usage()
         return FAILURE
-
     todolist = todo(args)
-    failure = process(inputpath, output, todolist, verbose=verbose)
+    # TODO: Do not pass all kwargs, pass only the right one to the right module
+    failure = process(
+        inputpath,
+        output,
+        todolist,
+        verbose=verbose,
+        parameter=args,
+    )
     return failure
 
 
@@ -87,7 +93,9 @@ def process(
         outputpath: str,
         todo,
         verbose: bool = False,
+        parameter: dict = None,
 ):
+    parameter = {} if parameter is None else parameter
     assert inputpath, outputpath
     makedirs(outputpath, exist_ok=True)
 
@@ -120,6 +128,7 @@ def process(
                     pdf,
                     outputpath,
                     verbose=verbose,
+                    parameter=parameter,
                 )
     return ret
 
@@ -130,6 +139,7 @@ def process_feature(
         ressource: PDFDocument,
         output: str,
         verbose: bool = False,
+        parameter: dict = None,
 ):
     """Process feature `name` with `worker` and write it to `output`
 
@@ -142,10 +152,14 @@ def process_feature(
     Returns:
         SUCCESS or FAILURE
     """
+    parameter = {} if parameter is None else parameter
     pdf = ressource
     try:
-        result = worker(pdf)
-        if result is None:  # None, because empty string can be a valid resul
+        try:
+            result = worker(pdf, parameter=parameter)
+        except TypeError:
+            result = worker(pdf)
+        if result is None:  # None, because empty string is a valid result
             logging_error('No result for %s' % name)
             logging_error('Implementation of feature `%s` is missing' % name)
             return FAILURE

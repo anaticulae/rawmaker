@@ -17,7 +17,7 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfdocument import PDFNoOutlines
 from serializeraw import dump_toc
 from utila import Flag
-from utila import logging
+from utila import logging_error
 
 
 def work(document: PDFDocument):
@@ -27,7 +27,7 @@ def work(document: PDFDocument):
     try:
         outlines = document.get_outlines()
     except PDFNoOutlines:
-        logging('Could not locatate any outlines')
+        logging_error('Could not locatate any outlines')
 
     data = [Section(level, title) for (level, title, dest, a, se) in outlines]
     toc = create_toc(data)

@@ -172,6 +172,9 @@ def font_fromraw(font: str, scale: float) -> Font:
     if 'Oblique' in raw_style:
         style = Style.OBLIQUE
         raw_style = raw_style.replace('Oblique', '')
+    if 'Obli' in raw_style:
+        style = Style.OBLIQUE
+        raw_style = raw_style.replace('Obli', '')
 
     if raw_style:  # TODO: Remove before going live
         logging_error(save)

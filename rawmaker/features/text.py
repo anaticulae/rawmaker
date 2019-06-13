@@ -15,14 +15,13 @@ from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_document
-from utila import FAILURE
 from utila import Flag
 from utila import Parameter
-from utila import logging_error
 
 from rawmaker.miner.mining import IAmRawConverter
 from rawmaker.miner.position import dump_hasher
 from rawmaker.miner.position import hash_positions
+from rawmaker.parameter import create_layout
 
 
 def work(document: PDFDocument, parameter: dict = None) -> str:
@@ -36,10 +35,8 @@ def work(document: PDFDocument, parameter: dict = None) -> str:
     """
     parameter = {} if parameter is None else parameter
     # TODO: implement general parameter concept
+    layout = create_layout(parameter)
     # Diff between chars which build a word
-    char_margin = get(parameter, 'char_margin', default=5.0, min_value=0.1)
-    # boxes_flow: 1.0 only the vertical position matters
-    layout = LAParams(char_margin=char_margin, boxes_flow=1.0)
     document = extract_content(document, layout_parameter=layout)
 
     positions = hash_positions(document)
@@ -48,20 +45,6 @@ def work(document: PDFDocument, parameter: dict = None) -> str:
         'text': dump_document(document),
         'positions': dump_hasher(positions),
     }
-
-
-def get(args, parameter: str, default, min_value=None):
-    value = None
-    try:
-        # TODO: inherit type from default, search for pythonic way
-        value = default if args[parameter] is None else float(args[parameter])
-    except KeyError:
-        value = default
-
-    if min_value is not None and value < min_value:
-        logging_error('%s %.2f is to little' % (parameter, value))
-        exit(FAILURE)
-    return value
 
 
 def extract_content(

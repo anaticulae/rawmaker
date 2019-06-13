@@ -15,7 +15,6 @@ from iamraw import Stretch
 from iamraw import Style
 from iamraw import TextContainer
 from iamraw import Weight
-from pdfminer.layout import LAParams
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
@@ -26,9 +25,10 @@ from utila import Flag
 from utila import logging_error
 
 from rawmaker.miner.mining import IAmRawConverter
+from rawmaker.parameter import create_layout
 
 
-def work(document: PDFDocument):
+def work(document: PDFDocument, parameter: dict = None):
     """Extract structured text out of document
 
     Args:
@@ -38,9 +38,10 @@ def work(document: PDFDocument):
     """
     # Create a PDF resource manager object that stores shared resources.
     rsrcmgr = PDFResourceManager()
-    laparams = LAParams()
+    parameter = {} if parameter is None else parameter
+    layout = create_layout(parameter)
 
-    device = IAmRawConverter(rsrcmgr, laparams=laparams)
+    device = IAmRawConverter(rsrcmgr, laparams=layout)
     device.new_document()
     interpreter = PDFPageInterpreter(rsrcmgr, device)
 

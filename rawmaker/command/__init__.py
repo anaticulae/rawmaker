@@ -35,8 +35,7 @@ from utila import FAILURE
 from utila import INVALID_COMMAND
 from utila import NEWLINE
 from utila import SUCCESS
-from utila import Command
-from utila import RequiredCommand
+from utila import Parameter
 from utila import create_parser
 from utila import file_append
 from utila import file_create
@@ -62,6 +61,11 @@ FEATURES = find_features(FEATURE_PATH)
 @saveme
 def main():
     commands = commandline(FEATURES)
+    commands.append(
+        Parameter(
+            longcut='prefix',
+            message='add prefix to separate different output files',
+        ))
     parser = create_parser(
         commands,
         prog=PROCESS_NAME,
@@ -96,6 +100,7 @@ def process(
         parameter: dict = None,
 ):
     parameter = {} if parameter is None else parameter
+
     assert inputpath, outputpath
     makedirs(outputpath, exist_ok=True)
 
@@ -153,6 +158,7 @@ def process_feature(
         SUCCESS or FAILURE
     """
     parameter = {} if parameter is None else parameter
+    prefix = parameter['prefix']
     pdf = ressource
     try:
         try:
@@ -175,12 +181,19 @@ def process_feature(
                     name,
                     output,
                     result=value,
+                    prefix=prefix,
                     special_name=special_name,
                     verbose=verbose,
                 )
         except AttributeError:
             # Only single result is ready for writing
-            write_feature_result(name, output, result, verbose)
+            write_feature_result(
+                name,
+                output,
+                result,
+                prefix=prefix,
+                verbose=verbose,
+            )
         return SUCCESS
     except Exception as error:  # pylint: disable=broad-except
         logging_error('while processing %s' % name)
@@ -193,11 +206,13 @@ def write_feature_result(
         name,
         output,
         result,
-        special_name='',
+        prefix: str = '',
+        special_name: str = '',
         verbose: bool = False,
 ):
     special_name = '_%s' % special_name if special_name else ''
-    filename = '%s__%s%s.yaml' % (PROCESS_NAME, name, special_name)
+    prefix = '%s_' % prefix if prefix else ''
+    filename = '%s__%s%s%s.yaml' % (PROCESS_NAME, prefix, name, special_name)
     feature_output = join(output, filename)
     if verbose:
         logging('write: %s' % feature_output)

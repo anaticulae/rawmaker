@@ -37,9 +37,7 @@ from utila import NEWLINE
 from utila import SUCCESS
 from utila import Parameter
 from utila import create_parser
-from utila import file_append
-from utila import file_create
-from utila import file_read
+from utila import file_replace
 from utila import logging
 from utila import logging_error
 from utila import logging_stacktrace
@@ -217,7 +215,7 @@ def write_feature_result(
     if verbose:
         logging('write: %s' % feature_output)
     # Write content to file.
-    file_create(feature_output, result)
+    file_replace(feature_output, result)
 
 
 def todo(args):

@@ -14,26 +14,14 @@ of the pdf and provide them as yaml file for further analysation-processes.
 - border: determine page size and bounding boxes from page content
 
 """
-import subprocess
-from contextlib import contextmanager
-from functools import wraps
 from glob import glob
 from multiprocessing import Process
-from os import getcwd
 from os import makedirs
-from os.path import abspath
-from os.path import exists
-from os.path import isabs
 from os.path import isfile
 from os.path import join
-from sys import argv
-from sys import stdin
-from threading import Thread
 
 from pdfminer.pdfdocument import PDFDocument
 from utila import FAILURE
-from utila import INVALID_COMMAND
-from utila import NEWLINE
 from utila import SUCCESS
 from utila import Parameter
 from utila import create_parser
@@ -47,7 +35,6 @@ from utila import sources
 
 from rawmaker import FEATURE_PATH
 from rawmaker import PROCESS_NAME
-from rawmaker import ROOT
 from rawmaker import __version__
 from rawmaker.features import commandline
 from rawmaker.features import find_features

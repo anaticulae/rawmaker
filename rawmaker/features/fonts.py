@@ -6,7 +6,21 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-"""Extract test out of pdf document to gather information"""
+"""Extract fonts out of pdf document to gather information
+
+Stored format:
+    (
+     container,
+     line,
+     char,
+     fontkey
+     )
+
+Stored item is the first different item.
+
+The font container indexing indexes only on text-container, other pages
+objects are ignored.
+"""
 
 from functools import lru_cache
 

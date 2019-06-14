@@ -115,15 +115,15 @@ def process_page(page, fontstore):
                 # Font type or size changed
                 if font_cur != font or scale_cur != scale:
                     result.append((determine_font(
-                        font,
-                        scale,
+                        font_cur,
+                        scale_cur,
                         container_index,
                         line_index,
                         char_index,
                         fontstore,
                     )))
                     # Reset current front
-                    font_cur, scale_cur = None, None
+                    font_cur, scale_cur = font, scale
         container_index += 1
     if font_cur:
         result.append((determine_font(

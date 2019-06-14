@@ -104,7 +104,8 @@ def render_textcontainer(item: LTTextBox):
 
 def render(item):
     if isinstance(item, LTPage):
-        page = Page(item.pageid, BoundingBox(*item.bbox))
+        pagenumber = item.pageid - 1  # zero based index
+        page = Page(pagenumber, BoundingBox(*item.bbox))
         for child in item:
             page.children.append(render(child))  # pylint:disable=E1101
         return page

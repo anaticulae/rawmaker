@@ -13,8 +13,13 @@ from yaml import FullLoader
 from yaml import load
 
 from rawmaker import read
+from rawmaker.features.fonts import FontStore
+from rawmaker.features.fonts import font_fromraw
+from rawmaker.features.fonts import parse_document
+from rawmaker.features.fonts import process_page
 from rawmaker.features.fonts import work
 from tests.resource import DOCUMENTATION_TWINE_PDF
+from tests.resource import HOW_TO_CPORTING_PDF
 from tests.resource import INCREASING_FONT_A4
 
 
@@ -29,6 +34,34 @@ def test_mining_fonts(testdir):
 
     file_create('header.yaml', header)
     file_create('content.yaml', content)
+
+
+def test_mining_fonts_cporting(testdir):
+    header, content = None, None
+    with read(HOW_TO_CPORTING_PDF) as pdf:
+        result = work(pdf)
+        header, content = result['header'], result['content']
+    # print(header)
+    # assert 0
+
+
+def test_minining_fonts_cporting_first_page():
+    """Mine the first font of the document at the first page"""
+    # TODO: Test mining last font of document
+    with read(HOW_TO_CPORTING_PDF) as pdf:
+        document = parse_document(pdf)
+
+    fontstore = FontStore(font_fromraw)
+    first_page = document[0]
+
+    fonts = process_page(first_page, fontstore)
+    assert fonts
+
+    first_font = fontstore.fonts[0].scale
+
+    first_font_expected = round(704.02 - 668.55, 1)
+
+    assert first_font == first_font_expected
 
 
 @mark.xfail()

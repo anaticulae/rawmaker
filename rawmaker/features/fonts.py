@@ -24,6 +24,7 @@ objects are ignored.
 
 from functools import lru_cache
 
+from iamraw import Document
 from iamraw import Font
 from iamraw import Stretch
 from iamraw import Style
@@ -50,6 +51,17 @@ def work(document: PDFDocument, parameter: dict = None):
     Returns:
         parsed document as yaml output
     """
+    document = parse_document(document, parameter)
+
+    header, content = parse_fonts(document)
+    header, content = dump_fontstore(header), dump_fonts(content)
+    return {
+        'header': header,
+        'content': content,
+    }
+
+
+def parse_document(pdf: PDFDocument, parameter: dict = None) -> Document:
     # Create a PDF resource manager object that stores shared resources.
     rsrcmgr = PDFResourceManager()
     parameter = {} if parameter is None else parameter
@@ -60,22 +72,19 @@ def work(document: PDFDocument, parameter: dict = None):
     interpreter = PDFPageInterpreter(rsrcmgr, device)
 
     # Processing layout
-    for page in PDFPage.create_pages(document):
+    for page in PDFPage.create_pages(pdf):
         interpreter.process_page(page)
     document = device.finish_document()
+    return document
 
+
+def parse_fonts(document: Document):
     fontstore = FontStore(font_fromraw)
 
-    result = []
-    for page in document.pages:
-        result.append(process_page(page, fontstore))
+    content = [process_page(page, fontstore) for page in document.pages]
+    header = fontstore.fonts
 
-    header = dump_fontstore(fontstore.fonts)
-    content = dump_fonts(result)
-    return {
-        'header': header,
-        'content': content,
-    }
+    return header, content
 
 
 def process_page(page, fontstore):
@@ -83,6 +92,7 @@ def process_page(page, fontstore):
     container_index, line_index, char_index, font, scale, = 0, 0, 0, None, None
     result = []
     font_cur, scale_cur = None, None
+    # TODO: use TextPageIter from groupme/hey! to iterate only over text boxes
     for item in page.children:
         if not isinstance(item, TextContainer):
             continue

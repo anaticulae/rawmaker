@@ -69,7 +69,6 @@ def determine_pageboxes(cluster: List[LTLine]):
 
         box = Box(box=BoundingBox.from_list([x0, y0, x1, y1]))
         result.append(box)
-        logging(str(box))
     return result
 
 
@@ -85,7 +84,6 @@ def determine_pagehorizontal(cluster: List[List[LTLine]],
         if height < HORIZONTAL_MAX_ERROR and width > HORIZONTAL_MIN_WIDTH:
             horizontal = HorizontalLine(box=BoundingBox.from_list(merged[0]))
             result.append(horizontal)
-            logging(str(horizontal))
         else:
             msg = 'No horizontal line %.2f %.2f %.2f %.2f' % (x0, y0, x1, y1)
             logging_error(msg)

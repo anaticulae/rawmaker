@@ -41,8 +41,6 @@ def test_mining_fonts_cporting(testdir):
     with read(HOW_TO_CPORTING_PDF) as pdf:
         result = work(pdf)
         header, content = result['header'], result['content']
-    # print(header)
-    # assert 0
 
 
 def test_minining_fonts_cporting_first_page():

@@ -17,7 +17,6 @@ from tests import run_success
 from tests.resource import DOCUMENTATION_TWINE
 from tests.resource import DOCUMENTATION_TWINE_PDF
 from tests.resource import EMPTY_PDF_FOLDER
-from tests.resource import HELLO_WORLD_PDF
 
 
 @skip_nonvirtual

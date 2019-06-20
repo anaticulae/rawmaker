@@ -19,7 +19,7 @@ from tests.resource import DOCUMENTATION_TWINE_PDF
 from tests.resource import INCREASING_FONT_A3
 from tests.resource import INCREASING_FONT_A4
 from tests.resource import INCREASING_FONT_A5
-from tests.resource import VIM_GUIDE_PAGES
+from tests.resource import VIM_GUIDE_PAGE_COUNT
 from tests.resource import VIM_GUIDE_PDF
 
 

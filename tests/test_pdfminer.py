@@ -18,7 +18,7 @@ from rawmaker import pages
 from rawmaker import read
 from tests.resource import NO_PDF
 from tests.resource import VIM_GUIDE_OUTLINES
-from tests.resource import VIM_GUIDE_PAGES
+from tests.resource import VIM_GUIDE_PAGE_COUNT
 from tests.resource import VIM_GUIDE_PDF
 
 
@@ -29,7 +29,7 @@ def test_read_file():
         assert items
 
         number_of_pages = len(items)
-        assert number_of_pages == VIM_GUIDE_PAGES
+        assert number_of_pages == VIM_GUIDE_PAGE_COUNT
 
 
 def test_outline_count():

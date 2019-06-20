@@ -23,6 +23,7 @@ from typing import Tuple
 from iamraw import Document
 from pdfminer.converter import PDFPageAggregator
 from pdfminer.layout import LAParams
+from pdfminer.layout import LTPage
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
@@ -116,10 +117,18 @@ def create_interpreter() -> PDFPageInterpreter:
     return interpreter, device
 
 
-def process_document(document: PDFDocument):
+def process_pdfpages(document: PDFDocument) -> PDFPage:
+    """Yield `PDFPAge` of every single page of `PDFDocument`"""
+    assert isinstance(document, PDFDocument), type(document)
+    for page in PDFPage.create_pages(document):
+        yield page
+
+
+def process_document(document: PDFDocument) -> Tuple[int, LTPage]:
+    """Yield (pagenumber, LTPage) for every single page of `PDFDocument`"""
     assert isinstance(document, PDFDocument), type(document)
     interpreter, device = create_interpreter()
-    for page in PDFPage.create_pages(document):
+    for page in process_pdfpages(document):
         interpreter.process_page(page)
         yield (page, device.get_result())
 

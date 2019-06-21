@@ -24,7 +24,8 @@ from pdfminer.pdfdocument import PDFDocument
 from utila import FAILURE
 from utila import SUCCESS
 from utila import Parameter
-from utila import create_parser
+from utila import create_step
+from utila import featurepack
 from utila import file_replace
 from utila import logging
 from utila import logging_error
@@ -35,184 +36,34 @@ from utila import sources
 
 from rawmaker import FEATURE_PATH
 from rawmaker import PROCESS_NAME
+from rawmaker import ROOT
 from rawmaker import __version__
 from rawmaker.features import commandline
 from rawmaker.features import find_features
+from rawmaker.features.annotation import work as annotation_work
 from rawmaker.reader import read
 
 FEATURES = find_features(FEATURE_PATH)
 
+WORKPLAN = [
+    create_step(
+        PROCESS_NAME,
+        annotation_work,
+        inputs=[
+            ('PDF'),
+        ],
+        output=('annotation',),
+    ),
+]
 
-@saveme
+
 def main():
-    commands = commandline(FEATURES)
-    commands.append(
-        Parameter(
-            longcut='prefix',
-            message='add prefix to separate different output files',
-        ))
-    parser = create_parser(
-        commands,
-        prog=PROCESS_NAME,
+    result = featurepack(
+        workplan=WORKPLAN,
+        root=ROOT,
+        feature_package='rawmaker.features',
+        name=PROCESS_NAME,
+        description='TODO',
         version=__version__,
-        outputparameter=True,
-        inputparameter=True,
     )
-    args = parse(parser)
-
-    # evaluate the verbose flag
-    inputpath, output, verbose = sources(args, singleinput=True, verbose=True)
-    if not inputpath and not output:
-        parser.print_usage()
-        return FAILURE
-    todolist = todo(args)
-    # TODO: Do not pass all kwargs, pass only the right one to the right module
-    failure = process(
-        inputpath,
-        output,
-        todolist,
-        verbose=verbose,
-        parameter=args,
-    )
-    return failure
-
-
-def process(
-        inputpath: str,
-        outputpath: str,
-        todo,
-        verbose: bool = False,
-        parameter: dict = None,
-):
-    parameter = {} if parameter is None else parameter
-
-    assert inputpath, outputpath
-    makedirs(outputpath, exist_ok=True)
-
-    pdfs = []
-    if isfile(inputpath):
-        # Single file
-        pdfs.append(inputpath)
-    else:
-        # Search pdf's in input folder
-        pdfs.extend(glob(inputpath + '/*.pdf'))
-        if not pdfs:
-            # Exit rawmaker when input folder is empty
-            logging_error('Empty input folder: %s' % inputpath)
-            exit(FAILURE)
-    ret = SUCCESS
-    for pdf_path in pdfs:
-        with read(pdf_path) as pdf:
-            if verbose:
-                logging('read: %s' % pdf_path)
-            for name, _, worker in FEATURES:
-                # name is not a registered commando
-                if name not in todo:
-                    if outputpath:
-                        logging('Skipping %s' % name)
-                    continue
-                # compute feature
-                ret += process_feature(
-                    name,
-                    worker,
-                    pdf,
-                    outputpath,
-                    verbose=verbose,
-                    parameter=parameter,
-                )
-    return ret
-
-
-def process_feature(
-        name: str,
-        worker: callable,
-        ressource: PDFDocument,
-        output: str,
-        verbose: bool = False,
-        parameter: dict = None,
-):
-    """Process feature `name` with `worker` and write it to `output`
-
-    Args:
-        name(str): feature to run. Examle: toc
-        worker(callable): method to run
-        ressource(PDFDocument): ressource to run feature on
-        output(str): path to write feature
-        verbose(bool): if true, logging file operation
-    Returns:
-        SUCCESS or FAILURE
-    """
-    parameter = {} if parameter is None else parameter
-    prefix = parameter['prefix']
-    pdf = ressource
-    try:
-        try:
-            result = worker(pdf, parameter=parameter)
-        except TypeError:
-            result = worker(pdf)
-        if result is None:  # None, because empty string is a valid result
-            logging_error('No result for %s' % name)
-            logging_error('Implementation of feature `%s` is missing' % name)
-            return FAILURE
-        try:
-            # Support multiple file output from feature
-            for special_name, value in result.items():
-                if not isinstance(value, str):
-                    msg = 'Feature %s, file %s; must return str not %s'
-                    logging_error(msg % (name, special_name, type(value)))
-                    return FAILURE
-
-                write_feature_result(
-                    name,
-                    output,
-                    result=value,
-                    prefix=prefix,
-                    special_name=special_name,
-                    verbose=verbose,
-                )
-        except AttributeError:
-            # Only single result is ready for writing
-            write_feature_result(
-                name,
-                output,
-                result,
-                prefix=prefix,
-                verbose=verbose,
-            )
-        return SUCCESS
-    except Exception as error:  # pylint: disable=broad-except
-        logging_error('while processing %s' % name)
-        logging_error(error)
-        logging_stacktrace()
-        return FAILURE
-
-
-def write_feature_result(
-        name,
-        output,
-        result,
-        prefix: str = '',
-        special_name: str = '',
-        verbose: bool = False,
-):
-    special_name = '_%s' % special_name if special_name else ''
-    prefix = '%s_' % prefix if prefix else ''
-    filename = '%s__%s%s%s.yaml' % (PROCESS_NAME, prefix, name, special_name)
-    feature_output = join(output, filename)
-    if verbose:
-        logging('write: %s' % feature_output)
-    # Write content to file.
-    file_replace(feature_output, result)
-
-
-def todo(args):
-    args = dict(args)
-    del args['input']
-    del args['output']
-
-    if not any(args.values()):
-        # run all features
-        result = [key for key, value in args.items()]
-    else:
-        result = [key for key, value in args.items() if value]
     return result

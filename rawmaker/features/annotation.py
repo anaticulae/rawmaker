@@ -9,59 +9,29 @@
 """Add parser to parse non annotated links to inform user about
 broken/malformated links."""
 from contextlib import suppress
-from dataclasses import dataclass
-from enum import Enum
-from typing import List
-from typing import Tuple
 
 from iamraw import BoundingBox
+from iamraw import HyperLink
+from iamraw import PageAnnotations
+from iamraw import PageLink
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfpage import PDFPage
+from serializeraw import dump_annotations
 from utila import Flag
-from utila import from_raw_or_path
 from utila import logging_error
 from utila.utils import UTF8
-from yaml import FullLoader
-from yaml import dump
-from yaml import load
 
 from rawmaker.features import process_pdfpages
+from rawmaker.reader import read
 
 
-def work(document: PDFDocument):
-    annotations = extract_annotations(document)
+def work(document: str) -> str:
+    assert isinstance(document, str), str(document)
+    with read(document) as pdf:
+        annotations = extract_annotations(pdf)
     dumped = dump_annotations(annotations)
 
-    return {
-        'annotations': dumped,
-    }
-
-
-class Link(Enum):
-    UNDEFINED = -1
-    INTERNAL = 0
-    HYPERLINK = 1
-
-
-@dataclass
-class Annotation:
-    goal: str
-    bounds: BoundingBox
-    typ: Link = Link.UNDEFINED
-
-
-@dataclass
-class HyperLink(Annotation):
-    typ: Link = Link.HYPERLINK
-
-
-@dataclass
-class PageLink(Annotation):
-    typ: Link = Link.INTERNAL
-
-
-PageAnnotation = Tuple[List[PageLink], List[HyperLink]]
-PageAnnotations = List[PageAnnotation]
+    return dumped
 
 
 def extract_annotations(document: PDFDocument) -> PageAnnotations:
@@ -72,12 +42,7 @@ def extract_annotations(document: PDFDocument) -> PageAnnotations:
     return result
 
 
-def hyperlink_annotations(annotations: PageAnnotations) -> List[HyperLink]:
-    return [item[1] for item in annotations]
-
-
-def pagelink_annotations(annotations: PageAnnotations) -> List[PageLink]:
-    return [item[0] for item in annotations]
+ANNOTATION_LABEL = 'Annot'
 
 
 def parse_page(page: PDFPage):
@@ -132,59 +97,6 @@ def parse_page(page: PDFPage):
         logging_error('Unhandeld annotation %s' % pageobject)
 
     return [pagelinks, hyperlinks]
-
-
-ANNOTATION_LABEL = 'Annot'
-
-HYPERLINK = 'Type'
-PAGE_LINK = 'S'
-
-
-def dump_annotations(annotations: PageAnnotations) -> str:
-    raw = []
-    for page in annotations:
-        pagelink, hyperlink = [], []
-        if page:
-            pagelink, hyperlink = page
-
-        rawpage = [{
-            'goto': link.goal,
-            'bounds': link.bounds.raw(),
-        } for link in pagelink]
-
-        rawhyper = [{
-            'href': link.goal,
-            'bounds': link.bounds.raw(),
-        } for link in hyperlink]
-
-        raw.append([
-            rawpage,
-            rawhyper,
-        ])
-    dumped = dump(raw)
-    return dumped
-
-
-def load_annotations(content: str) -> PageAnnotations:
-    content = from_raw_or_path(content, ftype='yaml')
-    loaded = load(content, Loader=FullLoader)
-    result = []
-    for page in loaded:
-        pagelinks = [
-            PageLink(
-                goal=item['goto'], bounds=BoundingBox.from_str(item['bounds']))
-            for item in page[0]
-        ]
-        hyperlinks = [
-            HyperLink(
-                goal=item['href'], bounds=BoundingBox.from_str(item['bounds']))
-            for item in page[1]
-        ]
-        result.append([
-            pagelinks,
-            hyperlinks,
-        ])
-    return result
 
 
 def commandline():

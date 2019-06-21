@@ -8,11 +8,12 @@
 # =============================================================================
 
 from pytest import fixture
+from serializeraw import dump_annotations
+from serializeraw import load_annotations
 
 from rawmaker import read
-from rawmaker.features.annotation import dump_annotations
 from rawmaker.features.annotation import extract_annotations
-from rawmaker.features.annotation import load_annotations
+from rawmaker.features.annotation import work
 from tests.resource import VIM_GUIDE_PAGE_COUNT
 from tests.resource import VIM_GUIDE_PDF
 
@@ -27,6 +28,11 @@ def test_annotation_mining_annotations(capsys):
     out, err = capsys.readouterr()
     assert not out
     assert not err
+
+
+def test_annotation_work():
+    result = work(VIM_GUIDE_PDF)
+    assert len(result) > 200
 
 
 @fixture

@@ -17,7 +17,6 @@ from pdfminer.pdfdocument import PDFDocument
 from serializeraw import dump_boxes
 from serializeraw import dump_horizontals
 from utila import Flag
-from utila import logging
 from utila import logging_error
 
 from rawmaker.features import process_pagecontent

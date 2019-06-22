@@ -47,10 +47,9 @@ FEATURES = find_features(FEATURE_PATH)
 
 WORKPLAN = [
     create_step(
-        PROCESS_NAME,
-        annotation_work,
+        'annotation',
         inputs=[
-            ('PDF'),
+            ('*', 'PDF'),
         ],
         output=('annotation',),
     ),
@@ -61,9 +60,10 @@ def main():
     result = featurepack(
         workplan=WORKPLAN,
         root=ROOT,
-        feature_package='rawmaker.features',
+        featurepackage='rawmaker.features',
         name=PROCESS_NAME,
         description='TODO',
         version=__version__,
+        singleinput=True,
     )
     return result

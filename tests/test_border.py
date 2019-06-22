@@ -45,11 +45,17 @@ def test_maximize_bounding_box(boxdata_from_pdf):  #pylint:disable=W0621
     assert len(border) == DOCUMENTATION_TWINE_PAGES
 
 
-@mark.parametrize('increasing_fonts, expected_size_in_mm', [
-    (INCREASING_FONT_A3, (297, 420)),
-    (INCREASING_FONT_A4, (210, 297)),
-    (INCREASING_FONT_A5, (148, 210)),
-])
+@mark.parametrize(
+    'increasing_fonts, expected_size_in_mm', [
+        (INCREASING_FONT_A3, (297, 420)),
+        (INCREASING_FONT_A4, (210, 297)),
+        (INCREASING_FONT_A5, (148, 210)),
+    ],
+    ids=[
+        'A3',
+        'A4',
+        'A5',
+    ])
 def test_page_size(increasing_fonts, expected_size_in_mm):
     with read(increasing_fonts) as pdf:
         size, _, __ = determine_bounding_box(pdf)

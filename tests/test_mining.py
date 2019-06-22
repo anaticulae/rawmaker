@@ -32,7 +32,15 @@ def test_mine_hello_world_pdf():
     assert loaded.page_count == HELLO_WORLD_PAGES
 
 
-@mark.parametrize('pdf_resource', [HELLO_WORLD_PDF, VIM_GUIDE_PDF])
+@mark.parametrize(
+    'pdf_resource', [
+        HELLO_WORLD_PDF,
+        VIM_GUIDE_PDF,
+    ],
+    ids=[
+        'hello_world.pdf',
+        'vimguide.pdf',
+    ])
 def test_dump_and_load_pdf(pdf_resource):
     """Parse text from pdf file and write the result. Load the result after
     and compare with item to save"""

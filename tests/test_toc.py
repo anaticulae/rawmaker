@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pdfminer
 from pdfminer.layout import LAParams
 
 from rawmaker import read
@@ -17,16 +18,24 @@ from tests.resource import TOC_PDF
 from tests.resource import VIM_GUIDE_PDF
 
 
-def test_toc_from_document_no_outlines(monkeypatch):
-    """Remove outlines from pdf document"""
+def test_toc_from_document_no_outlines(monkeypatch, capsys):
+    """Test that no outlines produces an error log"""
 
-    def get_outlines():
+    def get_outlines(self):
         raise MissingOutlines()
 
     with monkeypatch.context():
-        with read(VIM_GUIDE_PDF) as document:
-            document.get_outlines = get_outlines
-            work(document)
+        monkeypatch.setattr(
+            pdfminer.pdfdocument.PDFDocument,
+            'get_outlines',
+            get_outlines,
+        )
+        # from pdfminer.pdfdocument import PDFDocument
+        work(VIM_GUIDE_PDF)
+    _, error = capsys.readouterr()
+
+    assert 'error' in error.lower(), error
+    assert 'outlines' in error.lower(), error
 
 
 def test_toc_parameterization():

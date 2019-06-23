@@ -8,6 +8,7 @@
 # =============================================================================
 from math import sqrt
 from typing import List
+from typing import Tuple
 
 from iamraw import BoundingBox
 from iamraw import Box
@@ -20,19 +21,19 @@ from utila import Flag
 from utila import logging_error
 
 from rawmaker.features import process_pagecontent
+from rawmaker.reader import read
 
 
-def work(document: PDFDocument):
-    boxes = determine_boxes(document)
+def work(document: str) -> Tuple[str, str]:
+    assert isinstance(document, str), str(document)
+    with read(document) as pdf:
+        boxes = determine_boxes(pdf)
+        horizontal = determine_horizontal(pdf)
+
     dumped_boxes = dump_boxes(boxes)
-
-    horizontal = determine_horizontal(document)
     dumped_horizontal = dump_horizontals(horizontal)
 
-    return {
-        'boxes': dumped_boxes,
-        'horizontal': dumped_horizontal,
-    }
+    return dumped_boxes, dumped_horizontal
 
 
 def determine_boxes(document: PDFDocument):

@@ -13,21 +13,24 @@ Basic structure of get_outlines: (level, title, args, children)
 
 from iamraw import Section
 from iamraw import create_toc
-from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfdocument import PDFNoOutlines
 from serializeraw import dump_toc
 from utila import Flag
 from utila import logging_error
 
+from rawmaker.reader import read
 
-def work(document: PDFDocument):
+
+def work(document: str) -> str:
     """Extract table of content from pdf document. If no outlines are provided
     by the document, an empty list is returned"""
+    assert isinstance(document, str), str(document)
     outlines = []
-    try:
-        outlines = document.get_outlines()
-    except PDFNoOutlines:
-        logging_error('Could not locatate any outlines')
+    with read(document) as pdf:
+        try:
+            outlines = pdf.get_outlines()
+        except PDFNoOutlines:
+            logging_error('Could not locatate any outlines')
 
     data = [Section(level, title) for (level, title, dest, a, se) in outlines]
     toc = create_toc(data)

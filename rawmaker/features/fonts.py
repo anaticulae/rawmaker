@@ -23,6 +23,7 @@ objects are ignored.
 """
 
 from functools import lru_cache
+from typing import Tuple
 
 from iamraw import Document
 from iamraw import Font
@@ -41,9 +42,10 @@ from utila import logging_error
 
 from rawmaker.miner.mining import IAmRawConverter
 from rawmaker.parameter import create_layout
+from rawmaker.reader import read
 
 
-def work(document: PDFDocument, parameter: dict = None):
+def work(document: str, char_margin: float) -> Tuple[str, str]:
     """Extract structured text out of document
 
     Args:
@@ -51,21 +53,19 @@ def work(document: PDFDocument, parameter: dict = None):
     Returns:
         parsed document as yaml output
     """
-    document = parse_document(document, parameter)
+    assert isinstance(document, str), str(document)
+    with read(document) as pdf:
+        document = parse_document(pdf, char_margin)
 
     header, content = parse_fonts(document)
     header, content = dump_fontstore(header), dump_fonts(content)
-    return {
-        'header': header,
-        'content': content,
-    }
+    return header, content
 
 
-def parse_document(pdf: PDFDocument, parameter: dict = None) -> Document:
+def parse_document(pdf: PDFDocument, char_margin: float) -> Document:
     # Create a PDF resource manager object that stores shared resources.
     rsrcmgr = PDFResourceManager()
-    parameter = {} if parameter is None else parameter
-    layout = create_layout(parameter)
+    layout = create_layout(char_margin=char_margin)
 
     device = IAmRawConverter(rsrcmgr, laparams=layout)
     device.new_document()

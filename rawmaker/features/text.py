@@ -8,6 +8,8 @@
 #==============================================================================
 """Extract text out of pdf document to gather information"""
 
+from typing import Tuple
+
 from iamraw import Document
 from pdfminer.layout import LAParams
 from pdfminer.pdfdocument import PDFDocument
@@ -22,9 +24,10 @@ from rawmaker.miner.mining import IAmRawConverter
 from rawmaker.miner.position import dump_hasher
 from rawmaker.miner.position import hash_positions
 from rawmaker.parameter import create_layout
+from rawmaker.reader import read
 
 
-def work(document: PDFDocument, parameter: dict = None) -> str:
+def work(document: str, char_margin: float) -> Tuple[str, str]:
     """Extract structured text out of document
 
     Args:
@@ -33,18 +36,19 @@ def work(document: PDFDocument, parameter: dict = None) -> str:
         parsed document as yaml output
         parsed positions of text container
     """
-    parameter = {} if parameter is None else parameter
-    # TODO: implement general parameter concept
-    layout = create_layout(parameter)
+    layout = create_layout(char_margin)
     # Diff between chars which build a word
-    document = extract_content(document, layout_parameter=layout)
+
+    assert isinstance(document, str), str(document)
+    with read(document) as pdf:
+        document = extract_content(pdf, layout_parameter=layout)
 
     positions = hash_positions(document)
 
-    return {
-        'text': dump_document(document),
-        'positions': dump_hasher(positions),
-    }
+    dumped_text = dump_document(document)
+    dumped_positions = dump_hasher(positions)
+
+    return dumped_text, dumped_positions
 
 
 def extract_content(

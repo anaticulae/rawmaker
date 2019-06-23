@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+from typing import Tuple
+
 from iamraw import Border
 from iamraw import PageSize
 from pdfminer.pdfdocument import PDFDocument
@@ -16,9 +18,10 @@ from serializeraw.border import NDIGITS
 from utila import Flag
 
 from rawmaker.features import process_document
+from rawmaker.reader import read
 
 
-def work(document: PDFDocument):
+def work(document: str) -> Tuple[str, str]:
     """Extract page-size of `document` bounding boxes of page-content
 
     Args:
@@ -27,11 +30,14 @@ def work(document: PDFDocument):
         tuple(pages, boxes): page size and list of bounding boxes for page
         content
     """
-    size, border, boxes = determine_bounding_box(document)
-    return {
-        'pages': dump_pageborders(size, border),
-        'boundingboxes': dump_boundingboxes(boxes),
-    }
+    assert isinstance(document, str), str(document)
+    with read(document) as pdf:
+        size, border, boxes = determine_bounding_box(pdf)
+
+    pages = dump_pageborders(size, border)
+    boundingboxes = dump_boundingboxes(boxes)
+
+    return pages, boundingboxes
 
 
 def determine_bounding_box(document: PDFDocument):

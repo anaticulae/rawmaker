@@ -90,6 +90,9 @@ def determine_pagehorizontal(cluster: List[List[LTLine]],
     return result
 
 
+# TODO: Use `utila` cluster code
+
+
 def determine_cluster(lines: List[BoundingBox]) -> List[BoundingBox]:
     if not lines:
         return []

@@ -27,7 +27,7 @@ from rawmaker.parameter import create_layout
 from rawmaker.reader import read
 
 
-def work(document: str, char_margin: float = 0.1) -> Tuple[str, str]:
+def work(document: str, char_margin: float = 5.0) -> Tuple[str, str]:
     """Extract structured text out of document
 
     Args:

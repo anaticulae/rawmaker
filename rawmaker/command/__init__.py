@@ -46,7 +46,7 @@ from rawmaker.features.annotation import work as annotation_work
 from rawmaker.reader import read
 
 PDF = Pattern('*', 'pdf')
-CHAR_MARGIN = Value('char_margin', float, defaultvar=0.11, minimum=0.1)
+CHAR_MARGIN = Value('char_margin', float, defaultvar=5.0, minimum=0.1)
 
 WORKPLAN = [
     create_step(

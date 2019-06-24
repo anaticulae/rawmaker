@@ -28,56 +28,10 @@ from rawmaker.miner.mining import IAmRawConverter
 
 FEATURE_PATH_PACKAGE = 'rawmaker.features'
 
-
-# TODO: replace with utila code!
-def find_features(path: str):
-    """Locate all feautures in given path
-    """
-    assert exists(path), path
-    collected = [
-        item.replace('.py', '')
-        for item in listdir(path)
-        if not '__init__' in item and item.endswith('.py')
-    ]
-    result = []
-    for item in collected:
-        current = importlib.import_module(FEATURE_PATH_PACKAGE + '.' + item,
-                                          FEATURE_PATH_PACKAGE)
-        try:
-            result.append((current.name(), current.commandline, current.work))
-        except AttributeError as exception:
-            logging_error('SKIP LOADING %s' % item)
-            logging_error(exception)
-
-    return result
-
-
-Name = str
-CommandLineInterface = List[Command]
-Worker = callable  #pylint:disable=C0103
-Feature = Tuple[Name, CommandLineInterface, Worker]
-
-
-def commandline(features: List[Feature]) -> List[Command]:
-    """Build command line interface due iterating searched features
-
-    Args:
-        features: list of parsed features
-    Returns:
-        list of `Command`s
-    """
-    result = []
-    # name, cmd, work
-    for _, command, _ in features:
-        commands = command()
-        # one single command is iterable, testing of Iterable is not possible
-        if isinstance(commands, (list, tuple)):
-            # support adding commands from iterable and single command
-            result.extend(commands)
-        else:
-            result.append(commands)
-    return result
-
+# Name = str
+# CommandLineInterface = List[Command]
+# Worker = callable  #pylint:disable=C0103
+# Feature = Tuple[Name, CommandLineInterface, Worker]
 
 DEFAULT_PARSER_CONFIG = LAParams()
 

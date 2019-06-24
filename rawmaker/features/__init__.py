@@ -7,15 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 import importlib
-from importlib.util import find_spec
-from importlib.util import module_from_spec
-from importlib.util import spec_from_file_location
 from os import listdir
-from os.path import basename
 from os.path import exists
-from os.path import join
-from os.path import split
-from sys import modules
 from typing import Iterable
 from typing import List
 from typing import Tuple
@@ -28,18 +21,12 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
-from utila import FAILURE
-from utila import SUCCESS
 from utila import Command
-from utila import logging
 from utila import logging_error
 
-from rawmaker import ROOT
 from rawmaker.miner.mining import IAmRawConverter
 
 FEATURE_PATH_PACKAGE = 'rawmaker.features'
-
-REQUIRED_METHODS = {'commandline', 'work'}
 
 
 # TODO: replace with utila code!

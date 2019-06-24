@@ -28,7 +28,8 @@ def work(document: str) -> str:
     outlines = []
     with read(document) as pdf:
         try:
-            outlines = pdf.get_outlines()
+            # extract all outlines from pdf
+            outlines = list(pdf.get_outlines())
         except PDFNoOutlines:
             logging_error('Could not locatate any outlines')
 

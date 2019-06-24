@@ -14,6 +14,7 @@ of the pdf and provide them as yaml file for further analysation-processes.
 - border: determine page size and bounding boxes from page content
 
 """
+from dataclasses import dataclass
 from glob import glob
 from multiprocessing import Process
 from os import makedirs
@@ -24,6 +25,8 @@ from pdfminer.pdfdocument import PDFDocument
 from utila import FAILURE
 from utila import SUCCESS
 from utila import Parameter
+from utila import Pattern
+from utila import Value
 from utila import create_step
 from utila import featurepack
 from utila import file_replace
@@ -34,7 +37,6 @@ from utila import parse
 from utila import saveme
 from utila import sources
 
-from rawmaker import FEATURE_PATH
 from rawmaker import PROCESS_NAME
 from rawmaker import ROOT
 from rawmaker import __version__
@@ -43,17 +45,65 @@ from rawmaker.features import find_features
 from rawmaker.features.annotation import work as annotation_work
 from rawmaker.reader import read
 
-FEATURES = find_features(FEATURE_PATH)
+PDF = Pattern('*', 'pdf')
+CHAR_MARGIN = Value('char_margin', float, defaultvar=0.11, minimum=0.1)
 
 WORKPLAN = [
     create_step(
         'annotation',
-        inputs=[
-            ('*', 'PDF'),
-        ],
+        inputs=[PDF],
         output=('annotation',),
     ),
+    create_step(
+        'border',
+        inputs=[PDF],
+        output=(
+            'pages',
+            'boundingboxes',
+        ),
+    ),
+    create_step(
+        'boxes',
+        inputs=[PDF],
+        output=(
+            'boxes',
+            'horizontal',
+        ),
+    ),
+    create_step(
+        'fonts',
+        inputs=[
+            PDF,
+            CHAR_MARGIN,
+        ],
+        output=(
+            'header',
+            'content',
+        ),
+    ),
+    create_step(
+        'text',
+        inputs=[
+            PDF,
+            CHAR_MARGIN,
+        ],
+        output=(
+            'text',
+            'positions',
+        ),
+    ),
+    create_step(
+        'toc',
+        inputs=[
+            PDF,
+        ],
+        output=('toc',),
+    ),
 ]
+
+RAWMAKER_DESCRIPTION = """
+Extract features from pdf document.
+"""
 
 
 def main():
@@ -62,7 +112,7 @@ def main():
         root=ROOT,
         featurepackage='rawmaker.features',
         name=PROCESS_NAME,
-        description='TODO',
+        description=RAWMAKER_DESCRIPTION,
         version=__version__,
         singleinput=True,
     )

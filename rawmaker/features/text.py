@@ -27,11 +27,12 @@ from rawmaker.parameter import create_layout
 from rawmaker.reader import read
 
 
-def work(document: str, char_margin: float) -> Tuple[str, str]:
+def work(document: str, char_margin: float = 0.1) -> Tuple[str, str]:
     """Extract structured text out of document
 
     Args:
         document: pdf-document to run parsing
+        char_margin(float): XXX Why 5.0?
     Returns:
         parsed document as yaml output
         parsed positions of text container
@@ -84,11 +85,6 @@ def extract_content(
 def commandline():
     return [
         Flag(longcut=name(), message='Extract text of document.'),
-        # TODO: Support default value/ datatype
-        Parameter(
-            longcut='char_margin',
-            message='maximum distance between 2 chars to build a word',
-        ),
         Parameter(
             longcut='word_margin',
             message='maximum distance between 2 words to build a sentence',

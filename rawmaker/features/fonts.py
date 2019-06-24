@@ -45,11 +45,12 @@ from rawmaker.parameter import create_layout
 from rawmaker.reader import read
 
 
-def work(document: str, char_margin: float) -> Tuple[str, str]:
+def work(document: str, char_margin: float = 0.1) -> Tuple[str, str]:
     """Extract structured text out of document
 
     Args:
         document: pdf-document to run parsing
+        char_margin(float): XXX:5.0 why?
     Returns:
         parsed document as yaml output
     """
@@ -62,7 +63,12 @@ def work(document: str, char_margin: float) -> Tuple[str, str]:
     return header, content
 
 
-def parse_document(pdf: PDFDocument, char_margin: float) -> Document:
+def parse_document(pdf: PDFDocument, char_margin: float = 0.1) -> Document:
+    """
+
+    Args:
+        char_margin(float): XXX:5.0 why?
+    """
     # Create a PDF resource manager object that stores shared resources.
     rsrcmgr = PDFResourceManager()
     layout = create_layout(char_margin=char_margin)

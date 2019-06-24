@@ -6,8 +6,9 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-"""The `rawmaker` takes pdf's from the input folder an parse the raw structure
-of the pdf and provide them as yaml file for further analysation-processes.
+"""The `rawmaker` takes pdf's from the input folder or direct file and parse
+the raw structure of the pdf and provide them as yaml file for further
+analyze-processes.
 
 - toc:    tableofcontent
 - text:   text content from pdf file
@@ -47,14 +48,15 @@ from rawmaker.reader import read
 
 PDF = Pattern('*', 'pdf')
 CHAR_MARGIN = Value('char_margin', float, defaultvar=5.0, minimum=0.1)
+step = create_step  #pylint:disable=C0103
 
 WORKPLAN = [
-    create_step(
+    step(
         'annotation',
         inputs=[PDF],
         output=('annotation',),
     ),
-    create_step(
+    step(
         'border',
         inputs=[PDF],
         output=(
@@ -62,7 +64,7 @@ WORKPLAN = [
             'boundingboxes',
         ),
     ),
-    create_step(
+    step(
         'boxes',
         inputs=[PDF],
         output=(
@@ -70,7 +72,7 @@ WORKPLAN = [
             'horizontal',
         ),
     ),
-    create_step(
+    step(
         'fonts',
         inputs=[
             PDF,
@@ -81,7 +83,7 @@ WORKPLAN = [
             'content',
         ),
     ),
-    create_step(
+    step(
         'text',
         inputs=[
             PDF,
@@ -92,7 +94,7 @@ WORKPLAN = [
             'positions',
         ),
     ),
-    create_step(
+    step(
         'toc',
         inputs=[
             PDF,

@@ -2,6 +2,35 @@
 
 Every noteable change is logged here.
 
+## v0.5.1
+
+### Feature
+
+* add all feature to feature plan (4a6962e5f686)
+* add parameter `char_margin` to support different configuration (aa5f34eadbdc)
+* use new feature pack implementation (2c38d1af5c9d)
+* use new featurepack/workplan syntax (1669f2f5b198)
+* add annotation to extract page links and hyperlink (a898c19125b2)
+* add method to process every single PDFPage of PDFDocument (bd1f05e3117a)
+* ensure that font size is positive (d078cd3293cb)
+* replace existing items, do not throw an error (f0eddbd074b1)
+* add --prefix to separate output file names (781d4373ba4a)
+* add Obli/Oblique as font type (3bc701bbac03)
+* add min value to text extractor (bc6d7e44f337)
+
+### Fix
+
+* increase char_margin to avoid `single words` (b03f3a5066fe)
+* use new feature interface (0ca8b7e6f147)
+* remove verbose logging of bounding box and horizontal line (11b58d780a5d)
+* change page numbers to zero based (e787d63bdaff)
+* fix font size calculation - index error (617f74d199f6)
+* font and text must use the same layout configuration (414f9168aa11)
+
+### Documentation
+
+* add documentation how extracted fonts are stored (28e82c08a6b1)
+
 ## v0.5.0
 
 ### Feature

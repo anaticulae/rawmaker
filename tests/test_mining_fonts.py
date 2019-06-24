@@ -24,10 +24,7 @@ from tests.resource import INCREASING_FONT_A4
 
 
 def test_mining_fonts(testdir):
-    header, content = None, None
-    with read(DOCUMENTATION_TWINE_PDF) as pdf:
-        result = work(pdf)
-        header, content = result['header'], result['content']
+    header, content = work(DOCUMENTATION_TWINE_PDF)
 
     assert len(header) > 100
     assert len(content) > 300
@@ -37,10 +34,10 @@ def test_mining_fonts(testdir):
 
 
 def test_mining_fonts_cporting(testdir):
-    header, content = None, None
-    with read(HOW_TO_CPORTING_PDF) as pdf:
-        result = work(pdf)
-        header, content = result['header'], result['content']
+    header, content = work(HOW_TO_CPORTING_PDF)
+    # XXX: Define good numbers
+    assert len(header) > 100
+    assert len(content) > 200
 
 
 def test_minining_fonts_cporting_first_page():

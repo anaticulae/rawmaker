@@ -18,15 +18,13 @@ from tests.resource import VIM_GUIDE_PDF
 
 
 def test_miner_pdf():
-    with read(VIM_GUIDE_PDF) as pdf:
-        parsed_file = work(pdf)
+    parsed_file = work(VIM_GUIDE_PDF)
     assert parsed_file
 
 
 def test_mine_hello_world_pdf():
-    with read(HELLO_WORLD_PDF) as pdf:
-        data = work(pdf)['text']
-    loaded = load_document(data)
+    text, _ = work(HELLO_WORLD_PDF)
+    loaded = load_document(text)
 
     assert loaded.page_count
     assert loaded.page_count == HELLO_WORLD_PAGES
@@ -45,11 +43,10 @@ def test_dump_and_load_pdf(pdf_resource):
     """Parse text from pdf file and write the result. Load the result after
     and compare with item to save"""
 
-    with read(pdf_resource) as pdf:
-        dumped = work(pdf)['text']
-    assert dumped
+    text, _ = work(pdf_resource)
+    assert text
 
-    loaded_yaml = load_document(dumped)
+    loaded_yaml = load_document(text)
     another_dump = dump_document(loaded_yaml)
 
-    assert another_dump == dumped
+    assert another_dump == text

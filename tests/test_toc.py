@@ -10,10 +10,10 @@
 import pdfminer
 from pdfminer.layout import LAParams
 
-from rawmaker import read
 from rawmaker.error import MissingOutlines
 from rawmaker.features.text import extract_content
 from rawmaker.features.toc import work
+from rawmaker.reader import read
 from tests.resource import TOC_PDF
 from tests.resource import VIM_GUIDE_PDF
 

@@ -12,13 +12,13 @@ from iamraw import Document
 from pytest import fixture
 from pytest import raises
 
-from rawmaker import read
 from rawmaker.features.text import extract_content
 from rawmaker.miner.position import DocumentItemHasher
 from rawmaker.miner.position import ItemNotFound
 from rawmaker.miner.position import dump_hasher
 from rawmaker.miner.position import hash_positions
 from rawmaker.miner.position import load_hasher
+from rawmaker.reader import read
 from tests.resource import VIM_GUIDE_PDF
 
 BBox = BoundingBox.from_str  # pylint:disable=invalid-name

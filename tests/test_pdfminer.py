@@ -13,9 +13,9 @@ The functionality is encapsulated by `rawmaker` api.
 
 from pytest import raises
 
-from rawmaker import InvalidPDF
-from rawmaker import pages
-from rawmaker import read
+from rawmaker.error import InvalidPDF
+from rawmaker.parser import pages
+from rawmaker.reader import read
 from tests.resource import NO_PDF
 from tests.resource import VIM_GUIDE_OUTLINES
 from tests.resource import VIM_GUIDE_PAGE_COUNT

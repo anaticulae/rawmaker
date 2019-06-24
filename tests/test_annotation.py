@@ -11,9 +11,9 @@ from pytest import fixture
 from serializeraw import dump_annotations
 from serializeraw import load_annotations
 
-from rawmaker import read
 from rawmaker.features.annotation import extract_annotations
 from rawmaker.features.annotation import work
+from rawmaker.reader import read
 from tests.resource import VIM_GUIDE_PAGE_COUNT
 from tests.resource import VIM_GUIDE_PDF
 

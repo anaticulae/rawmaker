@@ -7,15 +7,12 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-import sys
-from contextlib import suppress
 from functools import partial
 
-from pytest import raises
 from utila import run_command
 
 from rawmaker import PROCESS_NAME
-from rawmaker.command import main
+from rawmaker.cli import main
 
 #pylint: disable=invalid-name
 run_success = partial(

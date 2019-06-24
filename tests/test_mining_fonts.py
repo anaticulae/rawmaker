@@ -12,12 +12,12 @@ from utila import file_create
 from yaml import FullLoader
 from yaml import load
 
-from rawmaker import read
 from rawmaker.features.fonts import FontStore
 from rawmaker.features.fonts import font_fromraw
 from rawmaker.features.fonts import parse_document
 from rawmaker.features.fonts import process_page
 from rawmaker.features.fonts import work
+from rawmaker.reader import read
 from tests.resource import DOCUMENTATION_TWINE_PDF
 from tests.resource import HOW_TO_CPORTING_PDF
 from tests.resource import INCREASING_FONT_A4

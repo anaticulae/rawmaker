@@ -27,7 +27,14 @@ from rawmaker.parameter import create_layout
 from rawmaker.reader import read
 
 
-def work(document: str, char_margin: float = 5.0) -> Tuple[str, str]:
+def work(
+        document: str,
+        boxes_flow: float = 0.5,
+        char_margin: float = 2.0,
+        line_margin: float = 0.5,
+        line_overlap: float = 0.5,
+        word_margin: float = 0.1,
+) -> Tuple[str, str]:
     """Extract structured text out of document
 
     Args:
@@ -37,7 +44,14 @@ def work(document: str, char_margin: float = 5.0) -> Tuple[str, str]:
         parsed document as yaml output
         parsed positions of text container
     """
-    layout = create_layout(char_margin)
+    layout = create_layout(
+        boxes_flow=boxes_flow,
+        char_margin=char_margin,
+        line_margin=line_margin,
+        line_overlap=line_overlap,
+        word_margin=word_margin,
+    )
+    print_layout(layout)
     # Diff between chars which build a word
 
     assert isinstance(document, str), str(document)
@@ -83,17 +97,7 @@ def extract_content(
 
 
 def commandline():
-    return [
-        Flag(longcut=name(), message='Extract text of document.'),
-        Parameter(
-            longcut='word_margin',
-            message='maximum distance between 2 words to build a sentence',
-        ),
-        Parameter(
-            longcut='line_margin',
-            message='maximum distance between 2 sentence to build a paragraph',
-        ),
-    ]
+    return Flag(longcut=name(), message='Extract text of document.')
 
 
 def name():

@@ -45,7 +45,14 @@ from rawmaker.parameter import create_layout
 from rawmaker.reader import read
 
 
-def work(document: str, char_margin: float = 5.0) -> Tuple[str, str]:
+def work(
+        document: str,
+        boxes_flow: float = 0.5,
+        char_margin: float = 2.0,
+        line_margin: float = 0.5,
+        line_overlap: float = 0.5,
+        word_margin: float = 0.1,
+) -> Tuple[str, str]:
     """Extract structured text out of document
 
     Args:
@@ -55,6 +62,13 @@ def work(document: str, char_margin: float = 5.0) -> Tuple[str, str]:
         parsed document as yaml output
     """
     assert isinstance(document, str), str(document)
+    layout = create_layout(
+        boxes_flow=boxes_flow,
+        char_margin=char_margin,
+        line_margin=line_margin,
+        line_overlap=line_overlap,
+        word_margin=word_margin,
+    )
     with read(document) as pdf:
         document = parse_document(pdf, char_margin)
 

@@ -26,7 +26,13 @@ from rawmaker import ROOT
 from rawmaker import __version__
 
 PDF = Pattern('*', 'pdf')
-CHAR_MARGIN = Value('char_margin', float, defaultvar=5.0, minimum=0.1)
+
+CHAR_MARGIN = Value('char_margin', float, defaultvar=2.0, minimum=0.1)
+LINE_OVERLAP = Value('line_overlap', float, defaultvar=0.5, minimum=0.1)
+LINE_MARGIN = Value('line_margin', float, defaultvar=0.5, minimum=0.1)
+WORD_MARGIN = Value('word_margin', float, defaultvar=0.1, minimum=0.1)
+BOXES_FLOW = Value('boxes_flow', float, defaultvar=0.5, minimum=0.1)
+
 step = create_step  #pylint:disable=C0103
 
 WORKPLAN = [
@@ -55,7 +61,11 @@ WORKPLAN = [
         'fonts',
         inputs=[
             PDF,
+            BOXES_FLOW,
             CHAR_MARGIN,
+            LINE_MARGIN,
+            LINE_OVERLAP,
+            WORD_MARGIN,
         ],
         output=(
             'header',
@@ -66,7 +76,11 @@ WORKPLAN = [
         'text',
         inputs=[
             PDF,
+            BOXES_FLOW,
             CHAR_MARGIN,
+            LINE_MARGIN,
+            LINE_OVERLAP,
+            WORD_MARGIN,
         ],
         output=(
             'text',

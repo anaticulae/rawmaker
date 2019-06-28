@@ -2,5 +2,5 @@ PyYAML==5.1
 pdfminer.six==20181108
 
 # Internal packages
-iamraw==0.4.23
+iamraw==0.4.24
 utila==0.7.6

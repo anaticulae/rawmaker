@@ -36,8 +36,8 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
-from serializeraw import dump_fonts
-from serializeraw import dump_fontstore
+from serializeraw import dump_font_content
+from serializeraw import dump_font_header
 from utila import Flag
 from utila import logging_error
 
@@ -75,7 +75,7 @@ def work(
         document = parse_document(pdf, layout=layout)
 
     header, content = parse_fonts(document)
-    header, content = dump_fontstore(header), dump_fonts(content)
+    header, content = dump_font_header(header), dump_font_content(content)
     return header, content
 
 

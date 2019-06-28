@@ -31,6 +31,7 @@ from iamraw import Stretch
 from iamraw import Style
 from iamraw import TextContainer
 from iamraw import Weight
+from pdfminer.layout import LAParams
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
@@ -40,6 +41,7 @@ from serializeraw import dump_fontstore
 from utila import Flag
 from utila import logging_error
 
+from rawmaker.features import default_parser_config
 from rawmaker.miner.mining import IAmRawConverter
 from rawmaker.parameter import create_layout
 from rawmaker.reader import read
@@ -70,23 +72,26 @@ def work(
         word_margin=word_margin,
     )
     with read(document) as pdf:
-        document = parse_document(pdf, char_margin)
+        document = parse_document(pdf, layout=layout)
 
     header, content = parse_fonts(document)
     header, content = dump_fontstore(header), dump_fonts(content)
     return header, content
 
 
-def parse_document(pdf: PDFDocument, char_margin: float = 5.0) -> Document:
+def parse_document(pdf: PDFDocument, layout: LAParams = None) -> Document:
     """
 
     Args:
-        char_margin(float): XXX:5.0 why?
+        pdf(PDFDocument):
+        layout(LAParams): configuration to analyze layout
+    Returns:
+        document
     """
+    if layout is None:
+        layout = default_parser_config()
     # Create a PDF resource manager object that stores shared resources.
     rsrcmgr = PDFResourceManager()
-    layout = create_layout(char_margin=char_margin)
-
     device = IAmRawConverter(rsrcmgr, laparams=layout)
     device.new_document()
     interpreter = PDFPageInterpreter(rsrcmgr, device)

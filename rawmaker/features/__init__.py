@@ -20,11 +20,16 @@ from pdfminer.pdfpage import PDFPage
 from rawmaker.miner.mining import IAmRawConverter
 
 
+def default_parser_config():
+    # TODO: define a good default one
+    return LAParams()
 
-DEFAULT_PARSER_CONFIG = LAParams()
 
+def create_interpreter(layout=None) -> PDFPageInterpreter:
+    if not layout:
+        layout = default_parser_config()
     rsrcmgr = PDFResourceManager()
-    device = PDFPageAggregator(rsrcmgr, laparams=DEFAULT_PARSER_CONFIG)
+    device = PDFPageAggregator(rsrcmgr, laparams=layout)
     interpreter = PDFPageInterpreter(rsrcmgr, device)
     return interpreter, device
 

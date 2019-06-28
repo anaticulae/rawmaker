@@ -20,6 +20,7 @@ from iamraw import Line
 from iamraw import Page
 from iamraw import PageObject
 from iamraw import TextContainer
+from iamraw import UnicodeChar
 from iamraw import VirtualChar
 from pdfminer.converter import PDFConverter
 from pdfminer.layout import LTChar
@@ -79,12 +80,34 @@ class Lookup:
         return self.looks.size() - 1
 
 
+SPECIAL_CHAR_TABLE = {
+    '\uFB01': 'fi',
+}
+
+FAST_KEY = set(SPECIAL_CHAR_TABLE.keys())
+
+
 def render_char(item: LTChar) -> Char:
+    char = None
     try:
-        char = Char(box=BoundingBox(*item.bbox), font=item.fontname)
-        char.value = item.get_text()
+        value = item.get_text()
+        if value in FAST_KEY:
+            # Unicode character
+            replaced = SPECIAL_CHAR_TABLE[value]
+            char = UnicodeChar(
+                box=BoundingBox(*item.bbox),
+                font=item.fontname,
+                special=value,
+                value=replaced,
+            )
+        else:
+            char = Char(
+                box=BoundingBox(*item.bbox),
+                font=item.fontname,
+                value=value,
+            )
     except AttributeError:
-        char = VirtualChar(item.get_text())
+        char = VirtualChar(value=item.get_text())
     return char
 
 

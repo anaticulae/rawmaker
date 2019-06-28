@@ -142,7 +142,7 @@ def process_page(page, fontstore):
 
                 # fontscale = y1 - y0
                 scale = round((char.box[3] - char.box[1]), 1)
-                assert scale, 'negative font size'
+                assert scale > 0, 'negative font size'
                 # No font type or size is selected
                 if font_cur is None:
                     font_cur, scale_cur = font, scale

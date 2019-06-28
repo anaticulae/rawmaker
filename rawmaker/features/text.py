@@ -18,7 +18,6 @@ from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_document
 from utila import Flag
-from utila import Parameter
 
 from rawmaker.miner.mining import IAmRawConverter
 from rawmaker.miner.position import dump_hasher

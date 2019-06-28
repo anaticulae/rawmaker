@@ -6,11 +6,6 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-import importlib
-from os import listdir
-from os.path import exists
-from typing import Iterable
-from typing import List
 from typing import Tuple
 
 from iamraw import Document
@@ -21,37 +16,13 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
-from utila import Command
-from utila import logging_error
 
 from rawmaker.miner.mining import IAmRawConverter
 
-FEATURE_PATH_PACKAGE = 'rawmaker.features'
 
-# Name = str
-# CommandLineInterface = List[Command]
-# Worker = callable  #pylint:disable=C0103
-# Feature = Tuple[Name, CommandLineInterface, Worker]
 
 DEFAULT_PARSER_CONFIG = LAParams()
 
-
-def parse_document(document: PDFDocument) -> Document:
-    # Create a PDF resource manager object that stores shared resources.
-    rsrcmgr = PDFResourceManager()
-
-    device = IAmRawConverter(rsrcmgr, laparams=DEFAULT_PARSER_CONFIG)
-    device.new_document()
-    interpreter = PDFPageInterpreter(rsrcmgr, device)
-
-    # Processing layout
-    for page in PDFPage.create_pages(document):
-        interpreter.process_page(page)
-    document = device.finish_document()
-    return document
-
-
-def create_interpreter() -> PDFPageInterpreter:
     rsrcmgr = PDFResourceManager()
     device = PDFPageAggregator(rsrcmgr, laparams=DEFAULT_PARSER_CONFIG)
     interpreter = PDFPageInterpreter(rsrcmgr, device)

@@ -23,6 +23,7 @@ from rawmaker.miner.mining import IAmRawConverter
 from rawmaker.miner.position import dump_hasher
 from rawmaker.miner.position import hash_positions
 from rawmaker.parameter import create_layout
+from rawmaker.parameter import print_layout
 from rawmaker.reader import read
 
 

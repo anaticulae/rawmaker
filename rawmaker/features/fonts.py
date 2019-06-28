@@ -113,14 +113,25 @@ def parse_fonts(document: Document):
 
 
 def process_page(page, fontstore):
+    """Iterate throw text container and save the different fonts and positions
+
+    Args:
+        page(Page): current pdf page
+        fontstore(): fontstore to save new fonts
+
+    """
     assert page
-    container_index, line_index, char_index, font, scale, = 0, 0, 0, None, None
-    result = []
+    container_index, line_index, char_index = 0, 0, 0
+    font, scale = None, None
     font_cur, scale_cur = None, None
+    result = []
     # TODO: use TextPageIter from groupme/hey! to iterate only over text boxes
-    for item in page.children:
-        if not isinstance(item, TextContainer):
-            continue
+
+    textcontainer = [
+        # remove non TextContainer items
+        item for item in page.children if isinstance(item, TextContainer)
+    ]
+    for item in textcontainer:
         for line_index, line in enumerate(item.lines):
             for char_index, char in enumerate(line):
                 try:
@@ -139,26 +150,28 @@ def process_page(page, fontstore):
 
                 # Font type or size changed
                 if font_cur != font or scale_cur != scale:
-                    result.append((determine_font(
-                        font_cur,
-                        scale_cur,
-                        container_index,
-                        line_index,
-                        char_index,
-                        fontstore,
-                    )))
+                    result.append(
+                        determine_font(
+                            font_cur,
+                            scale_cur,
+                            container_index,
+                            line_index,
+                            char_index,
+                            fontstore,
+                        ))
                     # Reset current front
                     font_cur, scale_cur = font, scale
         container_index += 1
     if font_cur:
-        result.append((determine_font(
-            font,
-            scale,
-            container_index,
-            line_index,
-            char_index,
-            fontstore,
-        )))
+        result.append(
+            determine_font(
+                font,
+                scale,
+                container_index,
+                line_index,
+                char_index,
+                fontstore,
+            ))
 
     return result
 

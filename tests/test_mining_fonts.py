@@ -85,3 +85,31 @@ def test_mining_increasing_fonts():
     font_size = [int(item) for item in font_size]
     expected_fontsizes = list(range(8, 21))
     assert font_size == expected_fontsizes
+
+
+@fixture
+def restructed_fonts():
+    result = work(RESTRUCT_FONT_MINING)
+    header, content = load_font_header(result[0]), load_font_content(result[1])
+    return header, content
+
+
+def test_mining_fonts_restruct_page_5(restructed_fonts):
+    """Mine the fifths page, compare only `Weight` for not beeing to
+    specific"""
+    header, content = restructed_fonts
+    fifths_page = content[4]
+
+    expected = [
+        Weight.BOLD,
+        Weight.LIGHT,
+        Weight.MEDIUM,
+        Weight.LIGHT,
+        Weight.MEDIUM,
+        Weight.LIGHT,
+        Weight.BOLD,
+    ]
+
+    result = [header[fontid].weight for _, __, ___, fontid in fifths_page]
+
+    assert result == expected

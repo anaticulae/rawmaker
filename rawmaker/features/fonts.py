@@ -162,12 +162,13 @@ def process_page(page, fontstore):
                     # Reset current front
                     font_cur, scale_cur = font, scale
         container_index += 1
+    # add last text line of a page, because there is nothing changing
     if font_cur:
         result.append(
             determine_font(
                 font,
                 scale,
-                container_index,
+                container_index - 1,  # revert last index incrementation
                 line_index,
                 char_index,
                 fontstore,

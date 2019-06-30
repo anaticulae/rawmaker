@@ -7,7 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+from iamraw import Weight
+from pytest import fixture
 from pytest import mark
+from serializeraw import load_font_content
+from serializeraw import load_font_header
 from utila import file_create
 from yaml import FullLoader
 from yaml import load
@@ -21,6 +25,7 @@ from rawmaker.reader import read
 from tests.resource import DOCUMENTATION_TWINE_PDF
 from tests.resource import HOW_TO_CPORTING_PDF
 from tests.resource import INCREASING_FONT_A4
+from tests.resource import TOC_PDF as RESTRUCT_FONT_MINING
 
 
 def test_mining_fonts(testdir):
@@ -59,15 +64,24 @@ def test_minining_fonts_cporting_first_page():
     assert first_font == first_font_expected
 
 
-@mark.xfail()
+@mark.xfail(raises=AssertionError)
 def test_mining_increasing_fonts():
-    # TODO: Investiga later
-    with read(INCREASING_FONT_A4) as pdf:
-        result = work(pdf)
-        header, content = result['header'], result['content']
+    """The example contains the same sentences in fontsizes(8pt - 20pt)"""
+    # TODO: Improve font size detection
+    result = work(INCREASING_FONT_A4)
+    header, _ = result
 
-    for item in load(header, Loader=FullLoader):
-        # print(item['font']['scale'])
-        # print(round(item['font']['scale'] - 3.15))
-        print('%0.0f' % (item['font']['scale'] - 3.1))
-    assert 0
+    font_size = [
+        item['font']['scale'] for item in load(header, Loader=FullLoader)
+    ]
+    font_size = font_size[0:-1]  # remove the last one(page number)
+
+    increases = [
+        first < second
+        for (first, second) in zip(font_size[0:-1], font_size[1:])
+    ]
+    assert all(increases), str(font_size)
+
+    font_size = [int(item) for item in font_size]
+    expected_fontsizes = list(range(8, 21))
+    assert font_size == expected_fontsizes

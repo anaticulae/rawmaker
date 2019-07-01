@@ -80,7 +80,7 @@ def dump_hasher(itemhashers: List[DocumentItemHasher]):
     for index, item in enumerate(itemhashers):
         page = [
             # Save raw representation
-            '%s %s' % (key, position.raw())
+            '%s %s' % (key, str(position))
             for key, position in item.data.items()
         ]
         result.append({

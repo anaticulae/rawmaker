@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v0.5.2
+
+### Feature
+
+* support mining explicit unicode chars (af94073521fa)
+* group layout parameter into class (9a15194faccc)
+
+### Fix
+
+* fix container index of the last item on a page (36434bf2a2d6)
+* fix negative font assertion (6bd5e226217f)
+* extend parametrization of layout parser (7d9aa275c9ee)
+
+### Documentation
+
+* add hint to use `utila` cluster code (6b60245e5b1e)
+
 ## v0.5.1
 
 ### Feature

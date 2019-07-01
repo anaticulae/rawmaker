@@ -37,7 +37,9 @@ TOC_PDF = join(DATA, 'toc/restructuredtext.pdf')
 RESTRUCTURED_PDF = TOC_PDF
 
 for item in [
+        DOCUMENTATION_TWINE_PDF,
         EMPTY_PDF_FOLDER,
+        HELLO_WORLD_PDF,
         NO_PDF,
         TOC_PDF,
         VIM_GUIDE_PDF,

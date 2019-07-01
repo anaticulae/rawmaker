@@ -87,54 +87,86 @@ SPECIAL_CHAR_TABLE = {
 FAST_KEY = set(SPECIAL_CHAR_TABLE.keys())
 
 
-def render_char(item: LTChar) -> Char:
+def render_char(item: LTChar, pageheight: float) -> Char:
     char = None
     try:
         value = item.get_text()
+        bounding = convert_bounding(*item.bbox, pageheight=pageheight)
         if value in FAST_KEY:
             # Unicode character
             replaced = SPECIAL_CHAR_TABLE[value]
             char = UnicodeChar(
-                box=BoundingBox(*item.bbox),
+                box=bounding,
                 font=item.fontname,
                 special=value,
                 value=replaced,
             )
         else:
             char = Char(
-                box=BoundingBox(*item.bbox),
+                box=bounding,
                 font=item.fontname,
                 value=value,
             )
     except AttributeError:
+        # VirtualChar has no `BoundingBox`
         char = VirtualChar(value=item.get_text())
     return char
 
 
-def render_textline(item: LTTextBox):
-    line = Line(BoundingBox(*item.bbox))
+def render_textline(item: LTTextBox, pageheight: float):
+    bounding = convert_bounding(*item.bbox, pageheight=pageheight)
+    line = Line(box=bounding)
     for char in item._objs:  # pylint: disable=protected-access
-        line.chars.append(render_char(char))  # pylint:disable=E1101
+        # pylint:disable=E1101
+        line.chars.append(render_char(char, pageheight=pageheight))
     return line
 
 
-def render_textcontainer(item: LTTextBox):
-    container = TextContainer(box=BoundingBox(*item.bbox))
+def render_textcontainer(item: LTTextBox, pageheight: float):
+    bounding = convert_bounding(*item.bbox, pageheight=pageheight)
+    container = TextContainer(box=bounding)
     for line in item:
-        container.lines.append(render_textline(line))  # pylint:disable=E1101
+        # pylint:disable=E1101
+        container.lines.append(render_textline(line, pageheight=pageheight))
     return container
 
 
-def render(item):
+def render(item, pageheight: float = None):
     if isinstance(item, LTPage):
         pagenumber = item.pageid - 1  # zero based index
         page = Page(pagenumber, BoundingBox(*item.bbox))
+        pageheight = item.bbox[3]
         for child in item:
-            page.children.append(render(child))  # pylint:disable=E1101
+            # pylint:disable=E1101
+            rendered = render(child, pageheight=pageheight)
+            page.children.append(rendered)
         return page
     if isinstance(item, LTTextBox):
-        return render_textcontainer(item)
-    return PageObject(
-        box=BoundingBox(*item.bbox),
+        textcontainer = render_textcontainer(item, pageheight=pageheight)
+        return textcontainer
+
+    pageobject = PageObject(
+        box=convert_bounding(*item.bbox, pageheight=pageheight),
         content=str(item),
     )
+    return pageobject
+
+
+def convert_bounding(*bounding, pageheight: float) -> BoundingBox:
+    """Flip vertical y-component.
+
+    Args:
+        bounding(tuple(4)): tuple with computed location of `pdfminer`
+        pageheight(float): pageheight from bottom to top
+    Returns:
+        flipped `BoundingBox`
+    """
+    xbottom, ybottom, xtop, ytop = bounding
+    height = ytop - ybottom
+    assert height >= 0
+    x0 = round(xbottom, 2)
+    y0 = round(pageheight - ytop, 2)
+    x1 = round(xtop, 2)
+    y1 = round(y0 + height, 2)
+    bounding = BoundingBox(x0=x0, y0=y0, x1=x1, y1=y1)
+    return bounding

@@ -79,8 +79,10 @@ def determine_pagehorizontal(cluster: List[List[LTLine]],
         if len(merged) != 1:
             continue
         x0, y0, x1, y1 = merged[0]
-        height = abs(y0 - y1)
-        width = abs(x0 - x1)
+        height = y1 - y0
+        width = x1 - x0
+        assert height >= 0, str(height)
+        assert width >= 0, str(width)
         if height < HORIZONTAL_MAX_ERROR and width > HORIZONTAL_MIN_WIDTH:
             horizontal = HorizontalLine(box=BoundingBox.from_list(merged[0]))
             result.append(horizontal)
@@ -91,8 +93,6 @@ def determine_pagehorizontal(cluster: List[List[LTLine]],
 
 
 # TODO: Use `utila` cluster code
-
-
 def determine_cluster(lines: List[BoundingBox]) -> List[BoundingBox]:
     if not lines:
         return []
@@ -178,11 +178,37 @@ HORIZONTAL_MAX_ERROR = 1.0
 HORIZONTAL_MIN_WIDTH = 400
 
 
+def pagesize(page: LTPage) -> Tuple[float, float]:
+    """Determine `pagesize` from `LTPage`
+
+    Args:
+        page(LTPage):
+    Returns:
+        width and height in 'pixel'
+    """
+    return (
+        page.bbox[2],
+        page.bbox[3],
+    )
+
+
 def type_in_document(document: PDFDocument, datatype):
     assert isinstance(document, PDFDocument), type(document)
     result = []
     for page in process_pagecontent(document):
+        _, height = pagesize(page)
         data = [item for item in page if isinstance(item, datatype)]
+        # the root of a `PDFDocument` from pdfminer is the left/down-position,
+        # a better approach is to define the left/top-position. Therefore the
+        # position must flipped.
+        for item in data:
+            box = item.bbox
+            item.bbox = (
+                box[0],
+                height - box[1],
+                box[2],
+                height - box[3],
+            )
         result.append(data)
     return result
 
@@ -194,7 +220,7 @@ def lines(document: PDFDocument):
 
 
 def distance(x0, y0, x1, y1):
-    return sqrt(pow((x0 - x1), 2) + pow((y0 - y1), 2))
+    return sqrt(pow((x0 - x1), 2) + pow((y1 - y0), 2))
 
 
 def commandline():

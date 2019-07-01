@@ -92,7 +92,7 @@ def cropborder_from_page(content) -> Border:
     assert x0 < x1
     assert y0 < y1
 
-    return Border(left=x0, right=x1, top=y1, bottom=y0)
+    return Border(left=x0, right=x1, top=y0, bottom=y1)
 
 
 def commandline():

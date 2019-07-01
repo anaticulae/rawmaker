@@ -34,6 +34,7 @@ DOCUMENTATION_TWINE_PDF = join(DOCUMENTATION_TWINE, 'documentation_twine.pdf')
 DOCUMENTATION_TWINE_PAGES = 35
 
 TOC_PDF = join(DATA, 'toc/restructuredtext.pdf')
+RESTRUCTURED_PDF = TOC_PDF
 
 for item in [
         EMPTY_PDF_FOLDER,

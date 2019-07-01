@@ -17,6 +17,7 @@ from tests import run_success
 from tests.resource import DOCUMENTATION_TWINE
 from tests.resource import DOCUMENTATION_TWINE_PDF
 from tests.resource import EMPTY_PDF_FOLDER
+from tests.resource import RESTRUCTURED_PDF
 
 
 @skip_nonvirtual
@@ -30,6 +31,7 @@ def test_install_and_run_rawmaker():
     ['--help'],
     ['-i', DOCUMENTATION_TWINE, '-o', 'output'],
     ['-i', DOCUMENTATION_TWINE_PDF, '-o', 'output'],
+    ['-i', RESTRUCTURED_PDF, '-o', 'output'],
 ])
 def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""

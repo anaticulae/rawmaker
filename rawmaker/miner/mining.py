@@ -6,12 +6,12 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-import re
+"""
+Parses the pdf-document and determine the layout of the different
+components.
+"""
 import sys
-from dataclasses import dataclass
-from dataclasses import field
-from typing import Any
-from typing import List
+from re import compile as re_compile
 
 from iamraw import BoundingBox
 from iamraw import Char
@@ -30,26 +30,22 @@ from pdfminer.layout import LTTextBox
 
 class IAmRawConverter(PDFConverter):
 
-    CONTROL = re.compile(u'[\x00-\x08\x0b-\x0c\x0e-\x1f]')
+    CONTROL = re_compile(u'[\x00-\x08\x0b-\x0c\x0e-\x1f]')
 
-    def __init__(self,
-                 rsrcmgr,
-                 codec='utf-8',
-                 pageno=1,
-                 laparams=None,
-                 imagewriter=None,
-                 stripcontrol=False):
-
+    def __init__(
+            self,
+            rsrcmgr,
+            laparams=None,
+            imagewriter=None,
+    ):
         PDFConverter.__init__(
             self,
             rsrcmgr,
             outfp=sys.stdout.buffer,
-            codec=codec,
-            pageno=pageno,
+            codec='utf-8',
+            pageno=1,
             laparams=laparams)
         self.imagewriter = imagewriter
-        self.stripcontrol = stripcontrol
-
         self.page = 0
         self.document = None
 
@@ -66,18 +62,6 @@ class IAmRawConverter(PDFConverter):
     def receive_layout(self, ltpage):
         page = render(ltpage)
         self.document.pages.append(page)
-
-
-@dataclass
-class Lookup:
-
-    looks: List[Any] = field(default_factory=list)
-
-    def create(self, box: BoundingBox, **kargs):
-        look = (box, kargs)
-        self.looks.append(look)
-        # TODO: use len?
-        return self.looks.size() - 1
 
 
 SPECIAL_CHAR_TABLE = {

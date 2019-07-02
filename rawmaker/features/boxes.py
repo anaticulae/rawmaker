@@ -194,6 +194,16 @@ def pagesize(page: LTPage) -> Tuple[float, float]:
 
 
 def type_in_document(document: PDFDocument, datatype):
+    """Extract defined `datatype` out of `PDFDocument`
+
+    Hint: the location of pdfminer will be flipped
+
+    Args:
+        document(PDFDocument):
+        datatype: selected item type
+    Returns:
+        list with selected item `datatype`
+    """
     assert isinstance(document, PDFDocument), type(document)
     result = []
     for page in process_pagecontent(document):
@@ -215,7 +225,7 @@ def type_in_document(document: PDFDocument, datatype):
 
 
 def lines(document: PDFDocument):
-    """Extract all `LTLine` out of `PDFDocument` pagewise"""
+    """Extract all `LTLine` out of `PDFDocument` page wise"""
     assert isinstance(document, PDFDocument), type(document)
     return type_in_document(document, LTLine)
 

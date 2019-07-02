@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.0.0
+
+### Feature
+
+* flip vertical y component (5d3f47b6d9b2)
+
+### Documentation
+
+* extend public interface documentation (177d7150ed81)
+
 ## v0.5.2
 
 ### Feature

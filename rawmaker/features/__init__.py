@@ -50,7 +50,7 @@ def process_document(document: PDFDocument) -> Tuple[int, LTPage]:
         yield (page, device.get_result())
 
 
-def process_pagecontent(document: PDFDocument):
+def process_pagecontent(document: PDFDocument) -> LTPage:
     assert isinstance(document, PDFDocument), type(document)
     for _, content in process_document(document):
         yield content

@@ -37,12 +37,13 @@ def print_layout(layout: LAParams = None):
         logging_error('Missing layout')
         return
     logging('   layout:', end=' ', level=Level.INFORMATION)
-    for (text, value) in [
+    information = [
         ('boxes_flow', layout.boxes_flow),
         ('char_margin', layout.char_margin),
         ('line_margin', layout.line_margin),
         ('line_overlap', layout.line_overlap),
         ('word_margin', layout.word_margin),
-    ]:
+    ]
+    for (text, value) in information:
         logging('%s %.2f' % (text, value), end=' ', level=Level.INFORMATION)
     logging(level=Level.INFORMATION)  # newline

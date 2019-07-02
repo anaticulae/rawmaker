@@ -14,6 +14,7 @@ from iamraw import BoundingBox
 from iamraw import Box
 from iamraw import HorizontalLine
 from pdfminer.layout import LTLine
+from pdfminer.layout import LTPage
 from pdfminer.pdfdocument import PDFDocument
 from serializeraw import dump_boxes
 from serializeraw import dump_horizontals

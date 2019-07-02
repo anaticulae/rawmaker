@@ -10,6 +10,7 @@
 Save position of element by object hash
 """
 
+from contextlib import suppress
 from typing import List
 
 from iamraw import BoundingBox
@@ -99,13 +100,11 @@ def hash_positions(document: Document) -> List[DocumentItemHasher]:
         result.append(hasher)
         index = 0
         for item in page:
-            try:
-                text = item.text
+            with suppress(AttributeError):
+                # Not every element has text
+                _ = item.text
                 hasher.hashitem(index, item.box)
                 index += 1
-            except AttributeError:
-                # Not every element have text
-                pass
     return result
 
 

@@ -11,7 +11,6 @@ from serializeraw import dump_document
 from serializeraw import load_document
 
 from rawmaker.features.text import work
-from rawmaker.reader import read
 from tests.resource import HELLO_WORLD_PAGES
 from tests.resource import HELLO_WORLD_PDF
 from tests.resource import VIM_GUIDE_PDF

@@ -37,8 +37,8 @@ def linecluster():
 
 def test_determine_boxes(linecluster):  # pylint:disable=W0621
     result = []
-    for page in linecluster:
-        boxes = determine_pageboxes(page)
+    for index, page in enumerate(linecluster):
+        boxes = determine_pageboxes(page, index)
         result.extend(boxes)
     # single raw box in document, the rest is rect
     assert len(result) == BOX_COUNT
@@ -79,8 +79,8 @@ def test_determine_single_cluster():
 
 def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
     document_lines = []
-    for page in linecluster:
-        horizontal = determine_pagehorizontal(page)
+    for index, page in enumerate(linecluster):
+        horizontal = determine_pagehorizontal(page, index)
         document_lines.extend(horizontal)
     assert len(document_lines) == LINES_COUNT
 

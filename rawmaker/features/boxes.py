@@ -24,6 +24,10 @@ from utila import logging_error
 from rawmaker.features import process_pagecontent
 from rawmaker.reader import read
 
+# TODO: LTLine - replace with own data structure to reduce dependencies to
+# rawmaker
+LineClusters = List[List[LTLine]]
+
 
 def work(document: str) -> Tuple[str, str]:
     assert isinstance(document, str), str(document)
@@ -48,15 +52,18 @@ def determine_horizontal(document: PDFDocument):
 def determine_clusteritem(document: PDFDocument, collector: callable):
     result = []
     document_lines = lines(document)
-    for lines_in_page in document_lines:
+    for page, lines_in_page in enumerate(document_lines):
         lines_in_page = bounding(lines_in_page)
         grouped = determine_cluster(lines_in_page)
-        boxes = collector(grouped)
-        result.append(boxes)
+        collected = collector(grouped, page)
+        result.append(collected)
     return result
 
 
-def determine_pageboxes(cluster: List[LTLine]):
+def determine_pageboxes(
+        cluster: List[LTLine],
+        page: int,
+):
     result = []
     for item in cluster:
         count = len(item)
@@ -73,8 +80,18 @@ def determine_pageboxes(cluster: List[LTLine]):
     return result
 
 
-def determine_pagehorizontal(cluster: List[List[LTLine]],
-                            ) -> List[HorizontalLine]:
+def determine_pagehorizontal(
+        cluster: LineClusters,
+        page: int,
+) -> List[HorizontalLine]:
+    """Collect single line which are expanded horizontal
+
+    Args:
+        cluster: list of line cluster
+        page(int): current analyzed page
+    Returns:
+        list with horizontal line
+    """
     result = []
     for merged in cluster:
         if len(merged) != 1:
@@ -88,8 +105,8 @@ def determine_pagehorizontal(cluster: List[List[LTLine]],
             horizontal = HorizontalLine(box=BoundingBox.from_list(merged[0]))
             result.append(horizontal)
         else:
-            msg = 'No horizontal line %.2f %.2f %.2f %.2f' % (x0, y0, x1, y1)
-            logging_error(msg)
+            msg = 'No horizontal line %.2f %.2f %.2f %.2f on page: %d'
+            logging_error(msg % (x0, y0, x1, y1, page))
     return result
 
 

@@ -191,6 +191,7 @@ def bounding(items):
     return result
 
 
+# TODO: HOLY VALUE
 HORIZONTAL_MAX_ERROR = 1.0
 # TODO: Make dependend on page size
 HORIZONTAL_MIN_WIDTH = 400

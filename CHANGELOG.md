@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.0.2
+
+### Feature
+
+* log page with wrong horizontal line (930c30f4ed5c)
+
+### Fix
+
+* fix border cropping (91b665519ec7)
+
 ## v1.0.1
 
 ## v1.0.0

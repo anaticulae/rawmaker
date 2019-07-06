@@ -78,11 +78,15 @@ def cropborder_from_page(content) -> Border:
     if not content:
         return Border(None, None, None, None)
 
+    # Convert pdfminer coordinate to own system, see `BoundingBox`
+    # TODO: Create convertion method in `BoundingBox`
+    # left, bottom, right, top
+    height = content.bbox[3]
     x0 = min([item.bbox[0] for item in content])
-    y0 = min([item.bbox[1] for item in content])
+    y0 = min([height - item.bbox[3] for item in content])
     x1 = max([item.bbox[2] for item in content])
-    y1 = max([item.bbox[3] for item in content])
-
+    y1 = max([height - item.bbox[1] for item in content])
+    # left, right, top, bottom
     x0, y0, x1, y1 = (
         round(x0, NDIGITS),
         round(y0, NDIGITS),

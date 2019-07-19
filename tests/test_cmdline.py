@@ -17,6 +17,7 @@ from tests import run_success
 from tests.resource import DOCUMENTATION_TWINE
 from tests.resource import DOCUMENTATION_TWINE_PDF
 from tests.resource import EMPTY_PDF_FOLDER
+from tests.resource import PORTING_PYTHON3
 from tests.resource import RESTRUCTURED_PDF
 
 
@@ -55,3 +56,15 @@ def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):  #pylint: disab
 
     stderr = capsys.readouterr().err
     assert '[ERROR]' in stderr
+
+
+@mark.parametrize(
+    'command',
+    [
+        # DO NOT REMOVE A SINGLE SOURCE OF THIS TEST
+        ['-i', PORTING_PYTHON3, '-o', 'output'],
+    ])
+def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: disable=W0613
+    """This test run the rawmaker with problematic resources which led to an
+    error on parsing/converting the document in the past."""
+    run_success(command, monkeypatch=monkeypatch)

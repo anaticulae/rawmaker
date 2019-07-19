@@ -44,6 +44,8 @@ def extract_annotations(document: PDFDocument) -> PageAnnotations:
 
 ANNOTATION_LABEL = 'Annot'
 
+NO_ANNOTATIONS = [[], []]
+
 
 def parse_page(page: PDFPage):
     """Parse annoation from `PDFPage`
@@ -65,12 +67,18 @@ def parse_page(page: PDFPage):
     Returns:
 
     """
-    if not page.annots:
-        return [[], []]
+    pageannotation = page.annots
+    if not pageannotation:
+        return NO_ANNOTATIONS
+
+    # WORKAROUND: THIS IS A FIX WHEN PAGE ANNOTATIONS ARE NESTED IN A SINGLE
+    # REFERENCE, DON'T KNOW WHY THIS CAN HAPPEN. TODO: INVESTIGATE LATER
+    if not isinstance(pageannotation, list):
+        getobj = page.doc.getobj
+        pageannotation = [item for item in getobj(page.annots.objid)]
 
     pagelinks, hyperlinks = [], []
-
-    for reference in page.annots:
+    for reference in pageannotation:
         pageobject = page.doc.getobj(reference.objid)
         bounds = BoundingBox.from_list(pageobject['Rect'])
         typ = pageobject['Type'].name

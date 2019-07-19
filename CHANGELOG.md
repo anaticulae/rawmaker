@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.0.8
+
+### Fix
+
+* fix annotation parser to support reference lists (7325f4da8ed7)
+
 ## v1.0.7
 
 ## v1.0.6

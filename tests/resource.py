@@ -36,11 +36,14 @@ DOCUMENTATION_TWINE_PAGES = 35
 TOC_PDF = join(DATA, 'toc/restructuredtext.pdf')
 RESTRUCTURED_PDF = TOC_PDF
 
+PORTING_PYTHON3 = join(DATA, 'broken/broken_annotation/porting_python3.pdf')
+
 for item in [
         DOCUMENTATION_TWINE_PDF,
         EMPTY_PDF_FOLDER,
         HELLO_WORLD_PDF,
         NO_PDF,
+        PORTING_PYTHON3,
         TOC_PDF,
         VIM_GUIDE_PDF,
 ]:

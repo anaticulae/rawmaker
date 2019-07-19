@@ -18,7 +18,7 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_annotations
 from utila import Flag
-from utila import logging_error
+from utila import error
 from utila.utils import UTF8
 
 from rawmaker.features import process_pdfpages
@@ -30,7 +30,6 @@ def work(document: str) -> str:
     with read(document) as pdf:
         annotations = extract_annotations(pdf)
     dumped = dump_annotations(annotations)
-
     return dumped
 
 
@@ -102,7 +101,7 @@ def parse_page(page: PDFPage):
                 pagelink = str(annotated['D'])
             pagelinks.append(PageLink(bounds=bounds, goal=pagelink))
             continue
-        logging_error('Unhandeld annotation %s' % pageobject)
+        error('Unhandeld annotation %s' % pageobject)
 
     return [pagelinks, hyperlinks]
 

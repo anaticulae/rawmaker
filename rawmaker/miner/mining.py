@@ -19,6 +19,7 @@ from iamraw import Document
 from iamraw import Line
 from iamraw import Page
 from iamraw import PageObject
+from iamraw import PageSize
 from iamraw import TextContainer
 from iamraw import UnicodeChar
 from iamraw import VirtualChar
@@ -26,6 +27,7 @@ from pdfminer.converter import PDFConverter
 from pdfminer.layout import LTChar
 from pdfminer.layout import LTPage
 from pdfminer.layout import LTTextBox
+from utila import INF
 
 
 class IAmRawConverter(PDFConverter):
@@ -56,12 +58,25 @@ class IAmRawConverter(PDFConverter):
     def finish_document(self) -> Document:
         """Return the current `Document` and clear the current one"""
         document = self.document
+        document.dimension = page_size(document)
         self.document = None
         return document
 
     def receive_layout(self, ltpage):
         page = render(ltpage)
         self.document.pages.append(page)
+
+
+def page_size(document: Document) -> PageSize:
+    """Determine maximum bounding of document. Iterate throw the page and
+    determine the largest page"""
+
+    # TODO ?support multiple page sizes in document?
+    width, height = -INF, -INF
+    for page in document.pages:
+        width = max(width, page.dimension[2])
+        height = max(height, page.dimension[3])
+    return PageSize(width, height)
 
 
 SPECIAL_CHAR_TABLE = {

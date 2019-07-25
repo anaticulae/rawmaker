@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.1.0
+
+### Feature
+
+* add external test data provider (52bbc6e3091e)
+
 ## v1.0.11
 
 ## v1.0.10

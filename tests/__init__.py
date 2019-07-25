@@ -9,7 +9,9 @@
 
 from functools import partial
 
+from pytest import mark
 from utila import run_command
+from utila.test import NON_VIRTUAL
 
 from rawmaker import PROCESS_NAME
 from rawmaker.cli import main
@@ -27,4 +29,9 @@ run_failure = partial(
     main=main,
     process=PROCESS_NAME,
     success=False,
+)
+
+skip_virtual = mark.skipif(
+    not NON_VIRTUAL,
+    reason="require non virtual environment",
 )

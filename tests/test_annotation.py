@@ -14,8 +14,8 @@ from serializeraw import load_annotations
 from rawmaker.features.annotation import extract_annotations
 from rawmaker.features.annotation import work
 from rawmaker.reader import read
-from tests.resource import VIM_GUIDE_PAGE_COUNT
-from tests.resource import VIM_GUIDE_PDF
+from tests.resources import VIM_GUIDE_PAGE_COUNT
+from tests.resources import VIM_GUIDE_PDF
 
 
 def test_annotation_mining_annotations(capsys):

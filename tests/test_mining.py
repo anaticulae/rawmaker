@@ -11,9 +11,9 @@ from serializeraw import dump_document
 from serializeraw import load_document
 
 from rawmaker.features.text import work
-from tests.resource import HELLO_WORLD_PAGES
-from tests.resource import HELLO_WORLD_PDF
-from tests.resource import VIM_GUIDE_PDF
+from tests.resources import HELLO_WORLD_PAGES
+from tests.resources import HELLO_WORLD_PDF
+from tests.resources import VIM_GUIDE_PDF
 
 
 def test_miner_pdf():

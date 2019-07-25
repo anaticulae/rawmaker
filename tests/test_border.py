@@ -14,11 +14,11 @@ from rawmaker.features.border import determine_bounding_box
 from rawmaker.reader import read
 from rawmaker.utils import tomilimeter
 from rawmaker.utils import topixel
-from tests.resource import DOCUMENTATION_TWINE_PAGES
-from tests.resource import DOCUMENTATION_TWINE_PDF
-from tests.resource import INCREASING_FONT_A3
-from tests.resource import INCREASING_FONT_A4
-from tests.resource import INCREASING_FONT_A5
+from tests.resources import DOCUMENTATION_TWINE_PAGES
+from tests.resources import DOCUMENTATION_TWINE_PDF
+from tests.resources import INCREASING_FONT_A3
+from tests.resources import INCREASING_FONT_A4
+from tests.resources import INCREASING_FONT_A5
 
 
 @fixture

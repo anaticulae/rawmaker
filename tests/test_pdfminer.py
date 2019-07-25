@@ -16,10 +16,10 @@ from pytest import raises
 from rawmaker.error import InvalidPDF
 from rawmaker.parser import pages
 from rawmaker.reader import read
-from tests.resource import NO_PDF
-from tests.resource import VIM_GUIDE_OUTLINES
-from tests.resource import VIM_GUIDE_PAGE_COUNT
-from tests.resource import VIM_GUIDE_PDF
+from tests.resources import NO_PDF
+from tests.resources import VIM_GUIDE_OUTLINES
+from tests.resources import VIM_GUIDE_PAGE_COUNT
+from tests.resources import VIM_GUIDE_PDF
 
 
 def test_read_file():

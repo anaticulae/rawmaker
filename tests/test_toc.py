@@ -14,8 +14,8 @@ from rawmaker.error import MissingOutlines
 from rawmaker.features.text import extract_content
 from rawmaker.features.toc import work
 from rawmaker.reader import read
-from tests.resource import TOC_PDF
-from tests.resource import VIM_GUIDE_PDF
+from tests.resources import TOC_PDF
+from tests.resources import VIM_GUIDE_PDF
 
 
 def test_toc_from_document_no_outlines(monkeypatch, capsys):

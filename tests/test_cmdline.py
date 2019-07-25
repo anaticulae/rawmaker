@@ -14,11 +14,11 @@ from utila.test import skip_nonvirtual
 from rawmaker import ROOT
 from tests import run_failure
 from tests import run_success
-from tests.resource import DOCUMENTATION_TWINE
-from tests.resource import DOCUMENTATION_TWINE_PDF
-from tests.resource import EMPTY_PDF_FOLDER
-from tests.resource import PORTING_PYTHON3
-from tests.resource import RESTRUCTURED_PDF
+from tests.resources import DOCUMENTATION_TWINE
+from tests.resources import DOCUMENTATION_TWINE_PDF
+from tests.resources import EMPTY_PDF_FOLDER
+from tests.resources import PORTING_PYTHON3
+from tests.resources import RESTRUCTURED_PDF
 
 
 @skip_nonvirtual

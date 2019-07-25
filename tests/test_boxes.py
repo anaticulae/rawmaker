@@ -18,9 +18,9 @@ from rawmaker.features.boxes import determine_pagehorizontal
 from rawmaker.features.boxes import intersecting_lines
 from rawmaker.features.boxes import lines
 from rawmaker.reader import read
-from tests.resource import HOW_TO_CPORTING_BOX_COUNT as BOX_COUNT
-from tests.resource import HOW_TO_CPORTING_HORIZONTAL_COUNT as LINES_COUNT
-from tests.resource import HOW_TO_CPORTING_PDF as TEST_DOCUMENT
+from tests.resources import HOW_TO_CPORTING_BOX_COUNT as BOX_COUNT
+from tests.resources import HOW_TO_CPORTING_HORIZONTAL_COUNT as LINES_COUNT
+from tests.resources import HOW_TO_CPORTING_PDF as TEST_DOCUMENT
 
 
 @fixture

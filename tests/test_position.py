@@ -19,7 +19,7 @@ from rawmaker.miner.position import dump_hasher
 from rawmaker.miner.position import hash_positions
 from rawmaker.miner.position import load_hasher
 from rawmaker.reader import read
-from tests.resource import VIM_GUIDE_PDF
+from tests.resources import VIM_GUIDE_PDF
 
 BBox = BoundingBox.from_str  # pylint:disable=invalid-name
 

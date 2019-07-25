@@ -16,7 +16,6 @@ from tests import run_failure
 from tests import run_success
 from tests.resources import DOCUMENTATION_TWINE
 from tests.resources import DOCUMENTATION_TWINE_PDF
-from tests.resources import EMPTY_PDF_FOLDER
 from tests.resources import PORTING_PYTHON3
 from tests.resources import RESTRUCTURED_PDF
 
@@ -41,9 +40,9 @@ def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
 
 @mark.parametrize('command', [
     [],
-    ['-i', EMPTY_PDF_FOLDER, '-o', 'output'],
+    ['-i', '.', '-o', 'output'],
 ])
-def test_run_rawmaker_failed(command, testdir, monkeypatch):  #pylint: disable=W0613
+def test_run_rawmaker_failed_empty_folder(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
     run_failure(command, monkeypatch=monkeypatch)
 

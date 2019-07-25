@@ -17,8 +17,7 @@ assert exists(RESOURCES), RESOURCES
 
 NEGATIVE = join(RESOURCES, 'negative')
 
-NO_PDF = join(NEGATIVE, 'no_pdf.pdf')
-EMPTY_PDF_FOLDER = join(NEGATIVE, 'empty')
+NO_PDF = join(NEGATIVE, 'no_pdf')
 
 VIM_GUIDE_PDF = join(RESOURCES, 'vimguide.pdf')
 VIM_GUIDE_PAGE_COUNT = 13
@@ -41,7 +40,6 @@ PORTING_PYTHON3 = join(RESOURCES,
 
 for item in [
         DOCUMENTATION_TWINE_PDF,
-        EMPTY_PDF_FOLDER,
         HELLO_WORLD_PDF,
         NO_PDF,
         PORTING_PYTHON3,

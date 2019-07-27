@@ -64,7 +64,7 @@ HUGE_RUN_PARAMETER = [
 # TODO: Installing requirements via pip does not install the packages as wheel,
 # therefore the project structure got lost. This is required, that power can
 # access `repository` path.
-@skip_virtual  # TODO: REMOVE AFTER FIXING PROBLEM WITH SETUP TOOLS
+# @skip_virtual  # TODO: REMOVE AFTER FIXING PROBLEM WITH SETUP TOOLS
 @mark.parametrize('pdffile', HUGE_RUN_PARAMETER)
 @mark.slow
 def test_run_huge(testdir, pdffile, layout):

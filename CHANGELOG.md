@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.1.2
+
+### Fix
+
+* skip unsupported annotation (17fac8d0a655)
+
 ## v1.1.1
 
 ## v1.1.0

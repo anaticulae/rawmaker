@@ -80,7 +80,12 @@ def parse_page(page: PDFPage):
     for reference in pageannotation:
         pageobject = page.doc.getobj(reference.objid)
         bounds = BoundingBox.from_list(pageobject['Rect'])
-        typ = pageobject['Type'].name
+        try:
+            typ = pageobject['Type'].name
+        except KeyError:
+            # TODO: REMOVE THIS PART OF CODE
+            error('skip annotation %s' % pageobject)
+            continue
         assert typ == ANNOTATION_LABEL, typ
         annotated = pageobject['A']
 

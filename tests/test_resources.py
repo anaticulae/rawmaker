@@ -20,8 +20,8 @@ from pytest import mark
 from pytest import param
 from utila import SUCCESS
 from utila import run
+from utila import skip_longrun
 
-from tests import skip_virtual
 from tests.resources import RESOURCES
 
 COMMAND = 'power'
@@ -66,8 +66,8 @@ HUGE_RUN_PARAMETER = [
 # access `repository` path.
 # @skip_virtual  # TODO: REMOVE AFTER FIXING PROBLEM WITH SETUP TOOLS
 @mark.parametrize('pdffile', HUGE_RUN_PARAMETER)
-@mark.slow
-def test_run_huge(testdir, pdffile, layout):
+@skip_longrun
+def test_run_huge(testdir, pdffile, layout):  # pylint:disable=W0621
     command = 'rawmaker -i %s %s' % (pdffile, layout)
     completed = run(command)
     assert completed.returncode == SUCCESS, str(completed)

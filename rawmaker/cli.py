@@ -38,12 +38,16 @@ step = create_step  #pylint:disable=C0103
 WORKPLAN = [
     step(
         'annotation',
-        inputs=[PDF],
+        inputs=[
+            PDF,
+        ],
         output=('annotation',),
     ),
     step(
         'border',
-        inputs=[PDF],
+        inputs=[
+            PDF,
+        ],
         output=(
             'pages',
             'boundingboxes',
@@ -51,7 +55,9 @@ WORKPLAN = [
     ),
     step(
         'boxes',
-        inputs=[PDF],
+        inputs=[
+            PDF,
+        ],
         output=(
             'boxes',
             'horizontal',

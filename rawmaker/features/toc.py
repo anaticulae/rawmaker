@@ -16,7 +16,7 @@ from iamraw import create_toc
 from pdfminer.pdfdocument import PDFNoOutlines
 from serializeraw import dump_toc
 from utila import Flag
-from utila import logging_error
+from utila import error
 
 from rawmaker.reader import read
 
@@ -31,7 +31,7 @@ def work(document: str) -> str:
             # extract all outlines from pdf
             outlines = list(pdf.get_outlines())
         except PDFNoOutlines:
-            logging_error('Could not locatate any outlines')
+            error('Could not locatate any outlines')
 
     data = [Section(level, title) for (level, title, dest, a, se) in outlines]
     toc = create_toc(data)

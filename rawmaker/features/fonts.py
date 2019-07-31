@@ -39,7 +39,7 @@ from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_font_content
 from serializeraw import dump_font_header
 from utila import Flag
-from utila import logging_error
+from utila import error
 
 from rawmaker.features import default_parser_config
 from rawmaker.miner.mining import IAmRawConverter
@@ -242,7 +242,7 @@ def font_fromraw(font: str, scale: float) -> Font:
         raw_style = raw_style.replace('Obli', '')
 
     if raw_style:  # TODO: Remove before going live
-        logging_error(save)
+        error(save)
         raise ValueError('Unsupported format %s' % raw_style)
 
     font = Font(

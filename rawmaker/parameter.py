@@ -9,8 +9,8 @@
 
 from pdfminer.layout import LAParams
 from utila import Level
-from utila import logging
-from utila import logging_error
+from utila import log
+from utila import error
 
 
 def create_layout(
@@ -34,9 +34,9 @@ def create_layout(
 
 def print_layout(layout: LAParams = None):
     if layout is None:
-        logging_error('Missing layout')
+        error('Missing layout')
         return
-    logging('   layout:', end=' ', level=Level.INFORMATION)
+    log('   layout:', end=' ', level=Level.INFORMATION)
     information = [
         ('boxes_flow', layout.boxes_flow),
         ('char_margin', layout.char_margin),
@@ -45,5 +45,5 @@ def print_layout(layout: LAParams = None):
         ('word_margin', layout.word_margin),
     ]
     for (text, value) in information:
-        logging('%s %.2f' % (text, value), end=' ', level=Level.INFORMATION)
-    logging(level=Level.INFORMATION)  # newline
+        log('%s %.2f' % (text, value), end=' ', level=Level.INFORMATION)
+    log(level=Level.INFORMATION)  # newline

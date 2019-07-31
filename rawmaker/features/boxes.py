@@ -19,7 +19,7 @@ from pdfminer.pdfdocument import PDFDocument
 from serializeraw import dump_boxes
 from serializeraw import dump_horizontals
 from utila import Flag
-from utila import logging_error
+from utila import error
 
 from rawmaker.features import process_pagecontent
 from rawmaker.reader import read
@@ -106,7 +106,7 @@ def determine_pagehorizontal(
             result.append(horizontal)
         else:
             msg = 'No horizontal line %.2f %.2f %.2f %.2f on page: %d'
-            logging_error(msg % (x0, y0, x1, y1, page))
+            error(msg % (x0, y0, x1, y1, page))
     return result
 
 

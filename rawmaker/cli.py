@@ -115,6 +115,7 @@ def main():
         name=PROCESS_NAME,
         description=RAWMAKER_DESCRIPTION,
         version=__version__,
+        multiprocessed=True,
         singleinput=True,
     )
     return result

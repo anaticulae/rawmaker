@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.1.5
+
+### Feature
+
+* use multiprocessing to reduce single runtime (6e295f08f79d)
+
 ## v1.1.4
 
 ## v1.1.3

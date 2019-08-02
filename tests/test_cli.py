@@ -29,7 +29,7 @@ def test_install_and_run_rawmaker():
 
 @mark.parametrize('command', [
     ['--help'],
-    ['-i', DOCUMENTATION_TWINE, '-o', 'output', '--processes', '5'],
+    ['-i', DOCUMENTATION_TWINE, '-o', 'output', '-p', '5'],
     ['-i', DOCUMENTATION_TWINE_PDF, '-o', 'output'],
     ['-i', RESTRUCTURED_PDF, '-o', 'output'],
 ])

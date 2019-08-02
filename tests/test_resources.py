@@ -68,6 +68,6 @@ HUGE_RUN_PARAMETER = [
 @mark.parametrize('pdffile', HUGE_RUN_PARAMETER)
 @skip_longrun
 def test_run_huge(testdir, pdffile, layout):  # pylint:disable=W0621
-    command = 'rawmaker -i %s %s --processes=4' % (pdffile, layout)
+    command = 'rawmaker -i %s %s -p=4' % (pdffile, layout)
     completed = run(command)
     assert completed.returncode == SUCCESS, str(completed)

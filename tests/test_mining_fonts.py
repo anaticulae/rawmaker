@@ -10,6 +10,7 @@
 from iamraw import Weight
 from pytest import fixture
 from pytest import mark
+from pytest import param
 from serializeraw import load_font_content
 from serializeraw import load_font_header
 from utila import file_create
@@ -113,3 +114,40 @@ def test_mining_fonts_restruct_page_5(restructed_fonts):
     result = [header[fontid].weight for _, __, ___, fontid in fifths_page]
 
     assert result == expected
+
+
+@mark.parametrize(
+    'font, scale, expected_name',
+    [
+        ('WTUVLZ + NimbusRomNo9L - Regu', 9.60, 'NimbusRomNo9L'),
+        ('CGWFDF + NimbusRomNo9L - ReguItal', 11.90, 'NimbusRomNo9L'),
+        ('GAGKNR + NimbusRomNo9L - Medi', 13.00, 'NimbusRomNo9L'),
+        ('ZTJCPR + NimbusRomNo9L - MediItal', 11.50, 'NimbusRomNo9L'),
+        param(
+            'KCXMNX + TeX - feymr10',
+            10.70,
+            'TeX',
+            marks=mark.xfail(
+                reason="dont not how to handle feym10, read more docs!",),
+        ),
+        ('CHABPE + TimesNewRomanPSMT', 14.40, 'TimesNewRomanPSMT'),
+        # TODO: Investigate this font name
+        ('TimesNewRomanPS - ItalicMT', 13.30, 'TimesNewRomanPS-ItalicMT'),
+        ('LGAZPG + SegoeUI, Bold', 27.50, 'SegoeUI'),
+        ('ALONFR + SegoeUI', 13.10, 'SegoeUI'),
+        ('LGAZPG + SegoeUI, Bold', 13.80, 'SegoeUI'),
+        ('Helvetica - Bold', 16.70, 'Helvetica-Bold'),
+        ('Times - Roman', 13.40, 'Times-Roman'),
+        ('CIDFont+F1', 6.60, 'F1'),
+        ('Arial,Bold', 15.00, 'Arial'),
+        ('ABCDEE + Verdana,Bold', 15.00, 'Verdana'),
+    ])
+def test_convert_font_from_raw(font, scale, expected_name):
+    parsed = font_fromraw(font, scale)
+
+    assert parsed
+
+    assert '+' not in parsed.name, str(parsed)
+    assert ',' not in parsed.name, str(parsed)
+
+    assert expected_name == parsed.name, str(expected_name)

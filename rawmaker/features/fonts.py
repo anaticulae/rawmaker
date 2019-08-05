@@ -20,8 +20,67 @@ Stored item is the first different item.
 
 The font container indexing indexes only on text-container, other pages
 objects are ignored.
+
+
+PDF Font description:
+
+9.5. Introduction into Font Data Structures
+
+Font types
+
+    Type0
+    Type1           Type1
+                    MMType1: MultiMaster Font
+    Type3           stream of pdf graphic operators
+    TrueType        Based on TrueType font format
+    CIDFont         CIDFontType0
+                    CIDFontType2
+
+9.6.2.2 Standard Type 1 Fonts
+
+    uses compact encoding for glyph description and additonal hints to print
+    on small sizes and solutions well.
+
+    PostScript 14 standard types:
+        Times-Roman, Helvectica, Courier, Symbol, Times-Bold,
+        Helvetica-Bold, Courier-Bold, ZapfDingbats, Times-Italic,
+        Helvetica-Oblique, Courier-Oblique, Times-BoldItalic,
+        Helvetica-BoldOblique, Courier-BoldOblique.
+
+9.6.2.3 MultiMasterFonts
+
+9.6.3. TrueTypeFonts
+
+9.6.4. Font Subsets
+
+    BaseFont
+    FontName
+
+    Tag(6 chars) +
+
+    Example: EOODIA+Poetica - name of a subset of Poetica, a Type 1 font.
+
+9.6.5 Type 3 Fonts
+
+    Defined by a stream of pdf graphic commands, no special support or hint
+    for very small characters.
+
+9.7.4 CIDFonts
+
+    CIDFont program contains glyph descriptions that are accessed using a CID
+    as a character selector.
+
+Summary:
+
+    Font Type 0
+        ('Helvetica - Bold', 16.70),
+        ('Times - Roman', 13.40),
+    Font Type 1, TrueType Fonts:
+        ('ZTJCPR + NimbusRomNo9L - MediItal', 11.60),
+        ('KCXMNX + TeX - feymr10', 10.70),
 """
 
+from contextlib import suppress
 from functools import lru_cache
 from typing import Tuple
 
@@ -39,6 +98,8 @@ from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_font_content
 from serializeraw import dump_font_header
 from utila import Flag
+from utila import call
+from utila import debug
 from utila import error
 
 from rawmaker.features import default_parser_config
@@ -205,45 +266,81 @@ class FontStore:
         return self.fonts[index]
 
 
+POSTSCRIPT_14_DEFAULT = {
+    'Courier',
+    'Courier-Bold',
+    'Courier-BoldOblique',
+    'Courier-Oblique',
+    'Helvectica',
+    'Helvetica-Bold',
+    'Helvetica-BoldOblique',
+    'Helvetica-Oblique',
+    'Symbol',
+    'Times-Bold',
+    'Times-BoldItalic',
+    'Times-Italic',
+    'Times-Roman',
+    'ZapfDingbats',
+}
+
+
 def font_fromraw(font: str, scale: float) -> Font:
-    """Parse `Font` from pdfminer representation"""
-    weight, style, stretch = Weight.LIGHT, Style.NORMAL, Stretch.REGULAR
+    """Parse `Font` from pdf representation, read the description above.
 
-    try:
-        fontname, raw_style = font.split('-')
-    except ValueError:
-        # No extra style
-        fontname, raw_style = font, ''
+    Args:
+        font(str): pdf standard font definition
+        scale(float): size of font(unit?)
+    Returns:
+        returns internal `Font` object with detected style and scale
+    """
+    call('font_fromraw')
+    debug('%s %.2f' % (str(font), scale))
+
+    def remove_whitespaces(content):
+        # remove whitespaces to avoid missing PostScript 14 language cause of
+        # containg whitespaces, for example `Times - Roman` instead of
+        # `Times-Roman`.
+        return content.replace(' ', '')
+
+    font = remove_whitespaces(font)
+
+    basefont = True
+    with suppress(IndexError):
+        # see above
+        # ('WTUVLZ+NimbusRomNo9L-Regu', 9.60),
+        basefont = font[6] != '+'
+
+    cidfont = font.startswith('CIDFont+')
+
     # save origin type to display on error
-    save = raw_style
-    if 'Regular' in raw_style:
-        stretch = Stretch.REGULAR
-        raw_style = raw_style.replace('Regular', '')
-    if 'Regu' in raw_style:
-        stretch = Stretch.REGULAR
-        raw_style = raw_style.replace('Regu', '')
-    if 'Bold' in raw_style:
-        weight = Weight.BOLD
-        raw_style = raw_style.replace('Bold', '')
-    if 'Italic' in raw_style:
-        style = Style.ITALIC
-        raw_style = raw_style.replace('Italic', '')
-    if 'Ital' in raw_style:
-        style = Style.ITALIC
-        raw_style = raw_style.replace('Ital', '')
-    if 'Medi' in raw_style:
-        weight = Weight.MEDIUM
-        raw_style = raw_style.replace('Medi', '')
-    if 'Oblique' in raw_style:
-        style = Style.OBLIQUE
-        raw_style = raw_style.replace('Oblique', '')
-    if 'Obli' in raw_style:
-        style = Style.OBLIQUE
-        raw_style = raw_style.replace('Obli', '')
+    save = font
 
-    if raw_style:  # TODO: Remove before going live
-        error(save)
-        raise ValueError('Unsupported format %s' % raw_style)
+    weight, style, stretch = None, None, None
+    if cidfont:
+        # Example: CIDFont+F1
+        # remove cid tag and plus sign
+        font = font[8:]
+        fontname = font
+    elif basefont:
+        # Example: Arial,Bold
+        fontname, raw_style = font, ''
+        with suppress(ValueError):
+            fontname, raw_style = font.split(',')
+        weight, style, stretch = parse_style(raw_style)
+    else:
+        # Example: LGAZPG + SegoeUI, Bold
+        # remove base tag and plus sign
+        font = font[7:]
+        fontname, raw_style = font, ''
+        with suppress(ValueError):
+            fontname, raw_style = font.split(',')
+        with suppress(ValueError):
+            fontname, raw_style = font.split('-')
+        weight, style, stretch = parse_style(raw_style)
+
+    msg = 'detected fontname %s; input material %s' % (fontname, save)
+    assert '+' not in fontname, msg
+    assert ',' not in fontname, msg
 
     font = Font(
         name=fontname,
@@ -253,6 +350,46 @@ def font_fromraw(font: str, scale: float) -> Font:
         weight=weight,
     )
     return font
+
+
+def parse_style(raw_style):
+    save = raw_style
+    weight, style, stretch = Weight.LIGHT, Style.NORMAL, Stretch.REGULAR
+    if 'Regular' in raw_style:
+        stretch = Stretch.REGULAR
+        raw_style = raw_style.replace('Regular', '')
+    if 'Regu' in raw_style:
+        stretch = Stretch.REGULAR
+        raw_style = raw_style.replace('Regu', '')
+
+    if 'Italic' in raw_style:
+        style = Style.ITALIC
+        raw_style = raw_style.replace('Italic', '')
+    if 'Ital' in raw_style:
+        style = Style.ITALIC
+        raw_style = raw_style.replace('Ital', '')
+    if 'Oblique' in raw_style:
+        style = Style.OBLIQUE
+        raw_style = raw_style.replace('Oblique', '')
+    if 'Obli' in raw_style:
+        style = Style.OBLIQUE
+        raw_style = raw_style.replace('Obli', '')
+
+    if 'Bold' in raw_style:
+        weight = Weight.BOLD
+        raw_style = raw_style.replace('Bold', '')
+    if 'Medium' in raw_style:
+        weight = Weight.MEDIUM
+        raw_style = raw_style.replace('Medium', '')
+    if 'Medi' in raw_style:
+        weight = Weight.MEDIUM
+        raw_style = raw_style.replace('Medi', '')
+
+    if raw_style:  # TODO: Remove before going live
+        # at the end, everything must be replaced
+        error(save)
+        raise ValueError('Unsupported format %s' % raw_style)
+    return weight, style, stretch
 
 
 def commandline():

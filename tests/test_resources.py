@@ -46,7 +46,9 @@ def test_locate_test_resources():
 
 
 @fixture(params=[
-    param('--char_margin 100.0 --boxes_flow 1.0', id='toc'),
+    # TODO: do not run rawmaker twice to reduce required test power, activate
+    # later.
+    # param('--char_margin 100.0 --boxes_flow 1.0', id='toc'),
     param('--char_margin 5.0 --boxes_flow 1.0 --line_margin 0.3', id='default'),
 ])
 def layout(request):
@@ -84,6 +86,6 @@ HUGE_RUN_PARAMETER = [
 @mark.parametrize('pdffile', HUGE_RUN_PARAMETER)
 @skip_longrun
 def test_run_huge(testdir, pdffile, layout):  # pylint:disable=W0621
-    command = 'rawmaker -i %s %s -p=4' % (pdffile, layout)
+    command = 'rawmaker -i %s %s -p=4 -VVV' % (pdffile, layout)
     completed = run(command)
     assert completed.returncode == SUCCESS, str(completed)

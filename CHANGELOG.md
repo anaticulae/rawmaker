@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.2.0
+
+### Feature
+
+* extend font style parser to support type1, typ2 and mmfonts (baaab90e9707)
+
 ## v1.1.9
 
 ## v1.1.8

@@ -67,3 +67,13 @@ def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: d
     """This test run the rawmaker with problematic resources which led to an
     error on parsing/converting the document in the past."""
     run_success(command, monkeypatch=monkeypatch)
+
+
+@mark.parametrize('pages', [
+    '5:10',
+    '0',
+])
+def test_run_rawmaker_with_pages(testdir, monkeypatch, pages):  #pylint: disable=W0613
+    """Extract special pages"""
+    cmd = ['-i', RESTRUCTURED_PDF, '-o', 'output', '--pages', pages, '-VVV']
+    run_success(cmd, monkeypatch=monkeypatch)

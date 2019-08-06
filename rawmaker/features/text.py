@@ -18,6 +18,7 @@ from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_document
 from utila import Flag
+from utila import debug
 
 from rawmaker.miner.mining import IAmRawConverter
 from rawmaker.miner.position import dump_hasher
@@ -34,6 +35,7 @@ def work(
         line_margin: float = 0.5,
         line_overlap: float = 0.5,
         word_margin: float = 0.1,
+        pages: list = None,
 ) -> Tuple[str, str]:
     """Extract structured text out of document
 
@@ -56,7 +58,7 @@ def work(
 
     assert isinstance(document, str), str(document)
     with read(document) as pdf:
-        document = extract_content(pdf, layout_parameter=layout)
+        document = extract_content(pdf, layout_parameter=layout, pages=pages)
 
     positions = hash_positions(document)
 
@@ -69,6 +71,7 @@ def work(
 def extract_content(
         document: PDFDocument,
         layout_parameter: LAParams = None,
+        pages: list = None,
 ) -> Document:
     """Extract content from PDF file
 
@@ -90,7 +93,11 @@ def extract_content(
     interpreter = PDFPageInterpreter(rsrcmgr, device)
 
     # Processing layout
-    for page in PDFPage.create_pages(document):
+    for index, page in enumerate(PDFPage.create_pages(document)):
+        # if pages is empty, just process all pages
+        if pages and not index in pages:
+            debug('skip %d' % index)
+            continue
         interpreter.process_page(page)
     document = device.finish_document()
     return document

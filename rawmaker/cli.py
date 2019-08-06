@@ -117,5 +117,6 @@ def main():
         version=__version__,
         multiprocessed=True,
         singleinput=True,
+        pages=True,
     )
     return result

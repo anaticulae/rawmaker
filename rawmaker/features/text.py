@@ -100,6 +100,12 @@ def extract_content(
             continue
         interpreter.process_page(page)
     document = device.finish_document()
+    # upgrade page number
+    if pages is None:
+        # if pages is None, every page must processed
+        pages = list(range(len(document.pages)))
+    for (page, pagenumber) in zip(document.pages, pages):
+        page.number = pagenumber
     return document
 
 

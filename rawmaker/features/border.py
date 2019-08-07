@@ -10,12 +10,15 @@
 from typing import Tuple
 
 from iamraw import Border
+from iamraw import PageBoundings
+from iamraw import PageBoundingsList
 from iamraw import PageSize
+from iamraw import PageSizeBorder
 from pdfminer.pdfdocument import PDFDocument
 from serializeraw import dump_boundingboxes
 from serializeraw import dump_pageborders
-from serializeraw.border import NDIGITS
 from utila import Flag
+from utila import roundme
 
 from rawmaker.features import process_document
 from rawmaker.reader import read
@@ -32,27 +35,43 @@ def work(document: str) -> Tuple[str, str]:
     """
     assert isinstance(document, str), str(document)
     with read(document) as pdf:
-        size, border, boxes = determine_bounding_box(pdf)
+        sizeandborders, boxes = determine_boundingboxes(pdf)
 
-    pages = dump_pageborders(size, border)
+    pages = dump_pageborders(sizeandborders)
     boundingboxes = dump_boundingboxes(boxes)
 
     return pages, boundingboxes
 
 
-def determine_bounding_box(document: PDFDocument):
-    """Extract pagesizes and boundingboxes from `PDFDocument`"""
-    pagesize, border, boxes = [], [], []
+def determine_boundingboxes(document: PDFDocument) -> PageBoundingsList:
+    """Extract page size, border and boundingboxes from `PDFDocument`
+
+    Args:
+        document(PDFDocument):
+    Returns:
+        sizeandborder(List[PageSizeBorder]) a list for every page with page
+                border and a list of the BoundingBoxes of the objects on the
+                current page.
+        boxes(PageBoundings)
+    """
+    sizeborders, boxes = [], []
     contentid = 0
-    for page, content in process_document(document):
-        pagesize.append(pagesize_from_page(page))
-        boxes.append(boxes_from_page(content, contentid))
+    for index, (page, content) in enumerate(process_document(document)):
+        size = pagesize_from_page(page)
+
+        pagebounding = PageBoundings(
+            boundings=boundingboxes_from_page(content, contentid),
+            page=index,
+        )
+        boxes.append(pagebounding)
+
         contentid += len(content)
-        border.append(cropborder_from_page(content))
-    return pagesize, border, boxes
+        border = cropborder_from_page(content)
+        sizeborders.append(PageSizeBorder(size=size, border=border, page=index))
+    return sizeborders, boxes
 
 
-def boxes_from_page(content, contentid: int):
+def boundingboxes_from_page(content, contentid: int):
     """Extract bounding boxes from page `content`
 
     Args:
@@ -61,15 +80,15 @@ def boxes_from_page(content, contentid: int):
     """
     result = []
     for index, item in enumerate(content, start=contentid):
-        rounded = [round(value, NDIGITS) for value in item.bbox]
+        rounded = [roundme(value) for value in item.bbox]
         result.append([index, rounded])
     return result
 
 
 def pagesize_from_page(page) -> PageSize:
     # x, y, width, height
-    pagewidth = round(page.mediabox[2], NDIGITS)
-    pageheight = round(page.mediabox[3], NDIGITS)
+    pagewidth = roundme(page.mediabox[2])
+    pageheight = roundme(page.mediabox[3])
 
     return PageSize(width=pagewidth, height=pageheight)
 
@@ -88,10 +107,10 @@ def cropborder_from_page(content) -> Border:
     y1 = max([height - item.bbox[1] for item in content])
     # left, right, top, bottom
     x0, y0, x1, y1 = (
-        round(x0, NDIGITS),
-        round(y0, NDIGITS),
-        round(x1, NDIGITS),
-        round(y1, NDIGITS),
+        roundme(x0),
+        roundme(y0),
+        roundme(x1),
+        roundme(y1),
     )
     assert x0 < x1
     assert y0 < y1

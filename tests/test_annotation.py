@@ -45,6 +45,9 @@ def vim_guide_annotation():
 
 def test_annotation_dump_and_load(vim_guide_annotation):  #pylint:disable=W0621
     annotation = vim_guide_annotation
+    without_none = [
+        item for item in annotation if item.pagelinks or item.hyperlinks
+    ]
 
     dumped = dump_annotations(annotation)
 
@@ -52,4 +55,4 @@ def test_annotation_dump_and_load(vim_guide_annotation):  #pylint:disable=W0621
 
     # TODO: investigate here, why str matches and without str it does not
     # match?
-    assert str(loaded) == str(annotation)
+    assert str(loaded) == str(without_none)

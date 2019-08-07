@@ -10,7 +10,7 @@
 from pytest import fixture
 from pytest import mark
 
-from rawmaker.features.border import determine_bounding_box
+from rawmaker.features.border import determine_boundingboxes
 from rawmaker.reader import read
 from rawmaker.utils import tomilimeter
 from rawmaker.utils import topixel
@@ -24,23 +24,22 @@ from tests.resources import INCREASING_FONT_A5
 @fixture
 def boxdata_from_pdf():
     with read(DOCUMENTATION_TWINE_PDF) as pdf:
-        size, border, boxes = determine_bounding_box(pdf)
-    assert size, border
-    assert len(size) == DOCUMENTATION_TWINE_PAGES
-    assert len(border) == DOCUMENTATION_TWINE_PAGES
+        sizeandborders, boxes = determine_boundingboxes(pdf)
+    assert sizeandborders
+    assert len(sizeandborders) == DOCUMENTATION_TWINE_PAGES
 
-    return size, border, boxes
+    return sizeandborders, boxes
 
 
 def test_border_work(boxdata_from_pdf):  #pylint:disable=W0621
-    assert len(boxdata_from_pdf) == 3
+    assert len(boxdata_from_pdf) == 2
 
 
 def test_maximize_bounding_box(boxdata_from_pdf):  #pylint:disable=W0621
-    pagesize, border, _ = boxdata_from_pdf
-    assert pagesize, border
-    assert len(pagesize) == DOCUMENTATION_TWINE_PAGES
-    assert len(border) == DOCUMENTATION_TWINE_PAGES
+    # TODO: Remove this test?
+    pageandborders, _ = boxdata_from_pdf
+    assert pageandborders
+    assert len(pageandborders) == DOCUMENTATION_TWINE_PAGES
 
 
 @mark.parametrize(
@@ -56,8 +55,8 @@ def test_maximize_bounding_box(boxdata_from_pdf):  #pylint:disable=W0621
     ])
 def test_page_size(increasing_fonts, expected_size_in_mm):
     with read(increasing_fonts) as pdf:
-        size, _, __ = determine_bounding_box(pdf)
-    size = size[0]  # First page
+        sizeandborders, _ = determine_boundingboxes(pdf)
+    size = sizeandborders[0].size  # First page
 
     assert tomilimeter(*size) == expected_size_in_mm
 

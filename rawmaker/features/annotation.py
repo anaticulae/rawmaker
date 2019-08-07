@@ -12,6 +12,7 @@ from contextlib import suppress
 
 from iamraw import BoundingBox
 from iamraw import HyperLink
+from iamraw import PageAnnotation
 from iamraw import PageAnnotations
 from iamraw import PageLink
 from pdfminer.pdfdocument import PDFDocument
@@ -35,18 +36,16 @@ def work(document: str) -> str:
 
 def extract_annotations(document: PDFDocument) -> PageAnnotations:
     result = []
-    for page in process_pdfpages(document):
-        parsed = parse_page(page)
+    for index, page in enumerate(process_pdfpages(document)):
+        parsed = parse_page(page, pagenumber=index)
         result.append(parsed)
     return result
 
 
 ANNOTATION_LABEL = 'Annot'
 
-NO_ANNOTATIONS = [[], []]
 
-
-def parse_page(page: PDFPage):
+def parse_page(page: PDFPage, pagenumber: int):
     """Parse annoation from `PDFPage`
 
     There are 2 different types of annotation, the internal and external
@@ -68,7 +67,7 @@ def parse_page(page: PDFPage):
     """
     pageannotation = page.annots
     if not pageannotation:
-        return NO_ANNOTATIONS
+        return PageAnnotation(None, None, pagenumber)
 
     # WORKAROUND: THIS IS A FIX WHEN PAGE ANNOTATIONS ARE NESTED IN A SINGLE
     # REFERENCE, DON'T KNOW WHY THIS CAN HAPPEN. TODO: INVESTIGATE LATER
@@ -108,7 +107,7 @@ def parse_page(page: PDFPage):
             continue
         error('Unhandeld annotation %s' % pageobject)
 
-    return [pagelinks, hyperlinks]
+    return PageAnnotation(pagelinks, hyperlinks, page=pagenumber)
 
 
 def commandline():

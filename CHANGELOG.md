@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.2.1
+
+### Feature
+
+* add current page number to extracted pages (f202a94d6ac5)
+* activate --pages flag to specify pages to extract (e221ad4de5ea)
+
 ## v1.2.0
 
 ### Feature

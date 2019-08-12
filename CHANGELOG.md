@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.2.2
+
+### Feature
+
+* make FontStore font indexing page independent (52f7fd6be1d4)
+* add page limitation option to fonts extractor (ac319f674061)
+
 ## v1.2.1
 
 ### Feature

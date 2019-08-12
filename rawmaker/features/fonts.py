@@ -90,11 +90,6 @@ from iamraw import Stretch
 from iamraw import Style
 from iamraw import TextContainer
 from iamraw import Weight
-from pdfminer.layout import LAParams
-from pdfminer.pdfdocument import PDFDocument
-from pdfminer.pdfinterp import PDFPageInterpreter
-from pdfminer.pdfinterp import PDFResourceManager
-from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_font_content
 from serializeraw import dump_font_header
 from utila import Flag
@@ -102,8 +97,7 @@ from utila import call
 from utila import debug
 from utila import error
 
-from rawmaker.features import default_parser_config
-from rawmaker.miner.mining import IAmRawConverter
+from rawmaker.features import extract_content
 from rawmaker.parameter import create_layout
 from rawmaker.reader import read
 
@@ -115,12 +109,14 @@ def work(
         line_margin: float = 0.5,
         line_overlap: float = 0.5,
         word_margin: float = 0.1,
+        pages: list = None,
 ) -> Tuple[str, str]:
     """Extract structured text out of document
 
     Args:
         document: pdf-document to run parsing
         char_margin(float): XXX:5.0 why?
+        pages: limit analyzed area, if None every page is analyzed
     Returns:
         parsed document as yaml output
     """
@@ -133,35 +129,11 @@ def work(
         word_margin=word_margin,
     )
     with read(document) as pdf:
-        document = parse_document(pdf, layout=layout)
+        document = extract_content(pdf, layout_parameter=layout, pages=pages)
 
     header, content = parse_fonts(document)
     header, content = dump_font_header(header), dump_font_content(content)
     return header, content
-
-
-def parse_document(pdf: PDFDocument, layout: LAParams = None) -> Document:
-    """
-
-    Args:
-        pdf(PDFDocument):
-        layout(LAParams): configuration to analyze layout
-    Returns:
-        document
-    """
-    if layout is None:
-        layout = default_parser_config()
-    # Create a PDF resource manager object that stores shared resources.
-    rsrcmgr = PDFResourceManager()
-    device = IAmRawConverter(rsrcmgr, laparams=layout)
-    device.new_document()
-    interpreter = PDFPageInterpreter(rsrcmgr, device)
-
-    # Processing layout
-    for page in PDFPage.create_pages(pdf):
-        interpreter.process_page(page)
-    document = device.finish_document()
-    return document
 
 
 def parse_fonts(document: Document):

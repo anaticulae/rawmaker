@@ -10,17 +10,10 @@
 
 from typing import Tuple
 
-from iamraw import Document
-from pdfminer.layout import LAParams
-from pdfminer.pdfdocument import PDFDocument
-from pdfminer.pdfinterp import PDFPageInterpreter
-from pdfminer.pdfinterp import PDFResourceManager
-from pdfminer.pdfpage import PDFPage
 from serializeraw import dump_document
 from utila import Flag
-from utila import debug
 
-from rawmaker.miner.mining import IAmRawConverter
+from rawmaker.features import extract_content
 from rawmaker.miner.position import dump_hasher
 from rawmaker.miner.position import hash_positions
 from rawmaker.parameter import create_layout
@@ -66,47 +59,6 @@ def work(
     dumped_positions = dump_hasher(positions)
 
     return dumped_text, dumped_positions
-
-
-def extract_content(
-        document: PDFDocument,
-        layout_parameter: LAParams = None,
-        pages: list = None,
-) -> Document:
-    """Extract content from PDF file
-
-    Args:
-        document(PDFDocument): PDF file to work on
-        layout_parameter(LAParams): Parameterization for layout analysis. This
-                                    parameter defines how chars are matched
-                                    together in words and sentences.
-    Returns:
-        Document: parsed and layouted document
-    """
-    if layout_parameter is None:
-        layout_parameter = LAParams()
-    # Create a PDF resource manager object that stores shared resources.
-    rsrcmgr = PDFResourceManager()
-
-    device = IAmRawConverter(rsrcmgr, laparams=layout_parameter)
-    device.new_document()
-    interpreter = PDFPageInterpreter(rsrcmgr, device)
-
-    # Processing layout
-    for index, page in enumerate(PDFPage.create_pages(document)):
-        # if pages is empty, just process all pages
-        if pages and not index in pages:
-            debug('skip %d' % index)
-            continue
-        interpreter.process_page(page)
-    document = device.finish_document()
-    # upgrade page number
-    if pages is None:
-        # if pages is None, every page must processed
-        pages = list(range(len(document.pages)))
-    for (page, pagenumber) in zip(document.pages, pages):
-        page.number = pagenumber
-    return document
 
 
 def commandline():

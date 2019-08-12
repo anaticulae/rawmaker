@@ -17,9 +17,9 @@ from utila import file_create
 from yaml import FullLoader
 from yaml import load
 
+from rawmaker.features import extract_content
 from rawmaker.features.fonts import FontStore
 from rawmaker.features.fonts import font_fromraw
-from rawmaker.features.fonts import parse_document
 from rawmaker.features.fonts import process_page
 from rawmaker.features.fonts import work
 from rawmaker.reader import read
@@ -50,7 +50,7 @@ def test_minining_fonts_cporting_first_page():
     """Mine the first font of the document at the first page"""
     # TODO: Test mining last font of document
     with read(HOW_TO_CPORTING_PDF) as pdf:
-        document = parse_document(pdf)
+        document = extract_content(pdf)
 
     fontstore = FontStore(font_fromraw)
     first_page = document[0]

@@ -16,6 +16,7 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
+from utila import debug
 
 from rawmaker.miner.mining import IAmRawConverter
 
@@ -54,3 +55,63 @@ def process_pagecontent(document: PDFDocument) -> LTPage:
     assert isinstance(document, PDFDocument), type(document)
     for _, content in process_document(document):
         yield content
+
+
+def page_selection(document: Document, pages):
+    assert isinstance(document, Document), type(document)
+    if pages:
+        return pages
+    # if pages is None, every page must processed
+    return list(range(len(document.pages)))
+
+
+def extract_content(
+        document: PDFDocument,
+        layout_parameter: LAParams = None,
+        pages: list = None,
+) -> Document:
+    """Extract content from PDF file
+
+    Args:
+        document(PDFDocument): PDF file to process
+        layout_parameter(LAParams): Parameterization for layout analysis. This
+                                    parameter defines how chars are matched
+                                    together in words and sentences.
+                                    See pdf reference documentation.
+    Returns:
+        Document: parsed and layouted document
+    """
+    # prepare parser
+    interpreter, device = setup_parser(layout_parameter)
+    # Processing layout
+    extracted = process_pages(document, pages, interpreter, device)
+    return extracted
+
+
+def setup_parser(layout_parameter):
+    if layout_parameter is None:
+        layout_parameter = LAParams()
+    # Create a PDF resource manager object that stores shared resources.
+    rsrcmgr = PDFResourceManager()
+
+    device = IAmRawConverter(rsrcmgr, laparams=layout_parameter)
+    device.new_document()
+    interpreter = PDFPageInterpreter(rsrcmgr, device)
+    return interpreter, device
+
+
+def process_pages(document, pages, interpreter, device):
+    # Processing layout
+    for index, page in enumerate(PDFPage.create_pages(document)):
+        # if pages is empty, just process all pages
+        if pages and not index in pages:
+            debug('skip %d' % index)
+            continue
+        interpreter.process_page(page)
+    document = device.finish_document()
+    # upgrade page number
+
+    pages = page_selection(document, pages)
+    for (page, pagenumber) in zip(document.pages, pages):
+        page.number = pagenumber
+    return document

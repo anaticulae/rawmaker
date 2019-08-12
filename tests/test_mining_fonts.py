@@ -58,11 +58,15 @@ def test_minining_fonts_cporting_first_page():
     fonts = process_page(first_page, fontstore)
     assert fonts
 
-    first_font = fontstore.fonts[0].scale
+    first_font_page = fonts[0]
+    first_font = first_font_page[0]
+    first_font_key = first_font[3]
+
+    first_font_scale = fontstore.font(first_font_key).scale
 
     first_font_expected = round(704.02 - 668.55, 1)
 
-    assert first_font == first_font_expected
+    assert first_font_scale == first_font_expected
 
 
 @mark.xfail(raises=AssertionError)
@@ -95,7 +99,7 @@ def restructed_fonts():
     return header, content
 
 
-def test_mining_fonts_restruct_page_5(restructed_fonts):
+def test_mining_fonts_restruct_page_5(restructed_fonts):  # pylint:disable=W0621
     """Mine the fifths page, compare only `Weight` for not beeing to
     specific"""
     header, content = restructed_fonts
@@ -110,7 +114,8 @@ def test_mining_fonts_restruct_page_5(restructed_fonts):
         Weight.LIGHT,
         Weight.BOLD,
     ]
-
+    header = {hash(font): font for font in header}
+    fifths_page, _ = fifths_page
     result = [header[fontid].weight for _, __, ___, fontid in fifths_page]
 
     assert result == expected

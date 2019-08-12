@@ -86,6 +86,8 @@ from typing import Tuple
 
 from iamraw import Document
 from iamraw import Font
+from iamraw import Page
+from iamraw import PageFontContent
 from iamraw import Stretch
 from iamraw import Style
 from iamraw import TextContainer
@@ -136,16 +138,32 @@ def work(
     return header, content
 
 
-def parse_fonts(document: Document):
-    fontstore = FontStore(font_fromraw)
+class FontStore:
 
-    content = [process_page(page, fontstore) for page in document.pages]
-    header = fontstore.fonts
+    def __init__(self, parser=None):
+        parser = parser if parser else font_fromraw
+        self.data = {}
+        self.parser = parser
 
-    return header, content
+    @lru_cache(maxsize=128)
+    def font_key(self, raw_font: str, scale: float) -> int:
+        # parsed = font_fromraw(raw_font, scale)
+        parsed = self.parser(raw_font, scale)
+        hashed = hash(parsed)
+        try:
+            self.data[hashed]
+        except KeyError:
+            self.data[hashed] = parsed
+        return hashed
+
+    def font(self, hashed: int):
+        return self.data[hashed]
+
+    def fonts(self):
+        return list(self.data.values())
 
 
-def process_page(page, fontstore):
+def process_page(page: Page, fontstore: FontStore) -> PageFontContent:
     """Iterate throw text container and save the different fonts and positions
 
     Args:
@@ -153,7 +171,7 @@ def process_page(page, fontstore):
         fontstore(): fontstore to save new fonts
 
     """
-    assert page
+    assert isinstance(page, Page), type(page)
     container_index, line_index, char_index = 0, 0, 0
     font, scale = None, None
     font_cur, scale_cur = None, None
@@ -207,35 +225,21 @@ def process_page(page, fontstore):
                 fontstore,
             ))
 
-    return result
+    return PageFontContent(content=result, page=page.number)
+
+
+def parse_fonts(document: Document):
+    fontstore = FontStore(font_fromraw)
+
+    content = [process_page(page, fontstore) for page in document.pages]
+    header = fontstore.fonts()
+
+    return header, content
 
 
 def determine_font(font, scale, container, line, char, fontstore):
     fontkey = fontstore.font_key(font, scale)
     return (container, line, char, fontkey)
-
-
-class FontStore:
-
-    def __init__(self, parser):
-        self.fonts = []
-        self.fast = {}
-        self.parser = parser
-
-    @lru_cache(maxsize=128)
-    def font_key(self, raw_font: str, scale: float) -> int:
-        # parsed = font_fromraw(raw_font, scale)
-        parsed = self.parser(raw_font, scale)
-        hashed = '%s' % parsed
-        try:
-            return self.fast[hashed]
-        except KeyError:
-            self.fast[hashed] = len(self.fonts)
-            self.fonts.append(parsed)
-        return self.fast[hashed]
-
-    def font(self, index: int) -> Font:
-        return self.fonts[index]
 
 
 POSTSCRIPT_14_DEFAULT = {

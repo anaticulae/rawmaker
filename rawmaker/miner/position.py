@@ -24,8 +24,9 @@ from yaml import load
 
 class DocumentItemHasher:
 
-    def __init__(self):
+    def __init__(self, page: int = -1):
         self.data = {}
+        self.page = page
 
     def hashitem(self, item: str, position: BoundingBox):
         assert isinstance(position, BoundingBox), type(position)
@@ -68,7 +69,8 @@ def load_hasher(content: str) -> DocumentItemHasher:
 
     result = []
     for page in loaded:
-        hasher = DocumentItemHasher()
+        pagenumber = int(page['page'])
+        hasher = DocumentItemHasher(page=pagenumber)
         for item in page['content']:
             key, position = item.split(maxsplit=1)
             hasher.data[int(key)] = BoundingBox.from_str(position)
@@ -76,16 +78,16 @@ def load_hasher(content: str) -> DocumentItemHasher:
     return result
 
 
-def dump_hasher(itemhashers: List[DocumentItemHasher]):
+def dump_hasher(hashers: List[DocumentItemHasher]):
     result = []
-    for index, item in enumerate(itemhashers):
+    for hasher in hashers:
         page = [
             # Save raw representation
             '%s %s' % (key, str(position))
-            for key, position in item.data.items()
+            for key, position in hasher.data.items()
         ]
         result.append({
-            'page': index,
+            'page': hasher.page,
             'content': page,
         })
     dumped = dump(result)
@@ -96,7 +98,7 @@ def hash_positions(document: Document) -> List[DocumentItemHasher]:
     assert isinstance(document, Document), type(document)
     result = []
     for page in document:
-        hasher = DocumentItemHasher()
+        hasher = DocumentItemHasher(page=page.number)
         result.append(hasher)
         index = 0
         for item in page:

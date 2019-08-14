@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.2.4
+
+### Feature
+
+* use serializeraw and make position page specific (e4ab4493c335)
+
 ## v1.2.3
 
 ### Feature

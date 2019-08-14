@@ -26,18 +26,18 @@ from rawmaker.features import process_pdfpages
 from rawmaker.reader import read
 
 
-def work(document: str) -> str:
+def work(document: str, pages=None) -> str:
     assert isinstance(document, str), str(document)
     with read(document) as pdf:
-        annotations = extract_annotations(pdf)
+        annotations = extract_annotations(pdf, pages=pages)
     dumped = dump_annotations(annotations)
     return dumped
 
 
-def extract_annotations(document: PDFDocument) -> PageAnnotations:
+def extract_annotations(document: PDFDocument, pages=None) -> PageAnnotations:
     result = []
-    for index, page in enumerate(process_pdfpages(document)):
-        parsed = parse_page(page, pagenumber=index)
+    for page, number in process_pdfpages(document, pages=pages):
+        parsed = parse_page(page, pagenumber=number)
         result.append(parsed)
     return result
 
@@ -68,7 +68,6 @@ def parse_page(page: PDFPage, pagenumber: int):
     pageannotation = page.annots
     if not pageannotation:
         return PageAnnotation(None, None, pagenumber)
-
     # WORKAROUND: THIS IS A FIX WHEN PAGE ANNOTATIONS ARE NESTED IN A SINGLE
     # REFERENCE, DON'T KNOW WHY THIS CAN HAPPEN. TODO: INVESTIGATE LATER
     if not isinstance(pageannotation, list):

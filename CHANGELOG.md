@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v1.2.3
+
+### Feature
+
+* add page selector to border feature (2c4c0a0eba4c)
+* add page selector to border and boxes feature (96b07352652e)
+* add page selector to annotation feature (e5aa7ae8f672)
+
 ## v1.2.2
 
 ### Feature

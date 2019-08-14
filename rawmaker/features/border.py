@@ -28,7 +28,7 @@ from rawmaker.reader import read
 PagePageSize = namedtuple('PagePageSize', 'size page')
 
 
-def work(document: str) -> Tuple[str, str]:
+def work(document: str, pages=None) -> Tuple[str, str]:
     """Extract page-size of `document` bounding boxes of page-content
 
     Args:
@@ -39,7 +39,7 @@ def work(document: str) -> Tuple[str, str]:
     """
     assert isinstance(document, str), str(document)
     with read(document) as pdf:
-        sizeandborders, boxes = determine_boundingboxes(pdf)
+        sizeandborders, boxes = determine_boundingboxes(pdf, pages=pages)
 
     pages = dump_pageborders(sizeandborders)
     boundingboxes = dump_boundingboxes(boxes)
@@ -47,7 +47,10 @@ def work(document: str) -> Tuple[str, str]:
     return pages, boundingboxes
 
 
-def determine_boundingboxes(document: PDFDocument) -> PageBoundingsList:
+def determine_boundingboxes(
+        document: PDFDocument,
+        pages=None,
+) -> PageBoundingsList:
     """Extract page size, border and boundingboxes from `PDFDocument`
 
     Args:
@@ -60,7 +63,7 @@ def determine_boundingboxes(document: PDFDocument) -> PageBoundingsList:
     """
     sizeborders, boxes = [], []
     contentid = 0
-    for page, content in process_document(document):
+    for page, content in process_document(document, pages=pages):
         content, pagenumber = content.content, content.page
         size = pagesize_from_page(page)
 
@@ -90,7 +93,7 @@ def pagesizes(document: PDFDocument, pages=None) -> List[PageSize]:
     Returns:
     """
     result = []
-    for page, content in process_document(document):
+    for page, content in process_document(document, pages=pages):
         content, pagenumber = content.content, content.page
         size = pagesize_from_page(page)
         result.append(PagePageSize(size=size, page=pagenumber))

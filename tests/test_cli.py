@@ -73,7 +73,10 @@ def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: d
     '5:10',
     '0',
 ])
-def test_run_rawmaker_with_pages(testdir, monkeypatch, pages):  #pylint: disable=W0613
+def test_run_rawmaker_with_pages(testdir, monkeypatch, pages, capsys):  #pylint: disable=W0613
     """Extract special pages"""
     cmd = ['-i', RESTRUCTURED_PDF, '-o', 'output', '--pages', pages, '-VVV']
     run_success(cmd, monkeypatch=monkeypatch)
+    out, err = capsys.readouterr()
+    print(out)
+    print(err)

@@ -6,6 +6,8 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+from collections import namedtuple
+from functools import partial
 from math import sqrt
 from typing import List
 from typing import Tuple
@@ -13,6 +15,8 @@ from typing import Tuple
 from iamraw import BoundingBox
 from iamraw import Box
 from iamraw import HorizontalLine
+from iamraw import PageContentBoxes
+from iamraw import PageContentHorizontals
 from pdfminer.layout import LTLine
 from pdfminer.layout import LTPage
 from pdfminer.pdfdocument import PDFDocument
@@ -22,18 +26,32 @@ from utila import Flag
 from utila import error
 
 from rawmaker.features import process_pagecontent
+from rawmaker.features.border import pagesizes
 from rawmaker.reader import read
 
 # TODO: LTLine - replace with own data structure to reduce dependencies to
 # rawmaker
 LineClusters = List[List[LTLine]]
 
+# TODO: HOLY VALUE
+VERTICAL_MAX_ERROR = 1.0
+# TODO: HOLY VALUE
+HORIZONTAL_MIN_WIDTH = 0.6
 
-def work(document: str) -> Tuple[str, str]:
+
+def work(document: str, pages) -> Tuple[str, str]:
+    """Extract content boxes and horizontal lines from given `document`
+
+    Args:
+        document(str): path to document
+        pages: pages to analyze
+    Returns:
+        dumped parsed boxes, dumped parsed horizontals
+    """
     assert isinstance(document, str), str(document)
     with read(document) as pdf:
-        boxes = determine_boxes(pdf)
-        horizontal = determine_horizontal(pdf)
+        boxes = determine_boxes(pdf, pages=pages)
+        horizontal = determine_horizontal(pdf, pages=pages)
 
     dumped_boxes = dump_boxes(boxes)
     dumped_horizontal = dump_horizontals(horizontal)
@@ -41,18 +59,36 @@ def work(document: str) -> Tuple[str, str]:
     return dumped_boxes, dumped_horizontal
 
 
-def determine_boxes(document: PDFDocument):
-    return determine_clusteritem(document, determine_pageboxes)
+def determine_boxes(document: PDFDocument, pages=None):
+    result = determine_clusteritem(
+        document,
+        determine_pageboxes,
+        pages=pages,
+    )
+    return result
 
 
-def determine_horizontal(document: PDFDocument):
-    return determine_clusteritem(document, determine_pagehorizontal)
+def determine_horizontal(document: PDFDocument, pages=None):
+    # prepare worker
+    pagewidth = pagesizes(document, pages=pages)[0].size.width
+    worker = partial(determine_pagehorizontals, page_width=pagewidth)
+    # run worker
+    result = determine_clusteritem(
+        document,
+        worker,
+        pages=pages,
+    )
+    return result
 
 
-def determine_clusteritem(document: PDFDocument, collector: callable):
+def determine_clusteritem(
+        document: PDFDocument,
+        collector: callable,
+        pages=None,
+):
     result = []
-    document_lines = lines(document)
-    for page, lines_in_page in enumerate(document_lines):
+    document_lines = lines(document, pages=pages)
+    for lines_in_page, page in document_lines:
         lines_in_page = bounding(lines_in_page)
         grouped = determine_cluster(lines_in_page)
         collected = collector(grouped, page)
@@ -63,7 +99,7 @@ def determine_clusteritem(document: PDFDocument, collector: callable):
 def determine_pageboxes(
         cluster: List[LTLine],
         page: int,
-):
+) -> PageContentBoxes:
     result = []
     for item in cluster:
         count = len(item)
@@ -77,21 +113,32 @@ def determine_pageboxes(
 
         box = Box(box=BoundingBox.from_list([x0, y0, x1, y1]))
         result.append(box)
-    return result
+    return PageContentBoxes(content=result, page=page)
 
 
-def determine_pagehorizontal(
+def determine_pagehorizontals(
         cluster: LineClusters,
         page: int,
-) -> List[HorizontalLine]:
+        *,
+        page_width: float = 1000,
+        vertical_maxerror: float = VERTICAL_MAX_ERROR,
+        horizontal_minwidth: float = HORIZONTAL_MIN_WIDTH,
+) -> PageContentHorizontals:
     """Collect single line which are expanded horizontal
 
     Args:
         cluster: list of line cluster
         page(int): current analyzed page
+
+        page_width(float):
+        vertical_maxerror(float): maximal vertical difference of the left and
+                                  right y-component [0.0,1.0].
+        horizontal_minwidth(float): minimum distance between left and right
+                                    x-component [0.0,1.0].
     Returns:
         list with horizontal line
     """
+    horizontal_minwidth = horizontal_minwidth * page_width
     result = []
     for merged in cluster:
         if len(merged) != 1:
@@ -101,13 +148,13 @@ def determine_pagehorizontal(
         width = x1 - x0
         assert height >= 0, str(height)
         assert width >= 0, str(width)
-        if height < HORIZONTAL_MAX_ERROR and width > HORIZONTAL_MIN_WIDTH:
+        if height < vertical_maxerror and width > horizontal_minwidth:
             horizontal = HorizontalLine(box=BoundingBox.from_list(merged[0]))
             result.append(horizontal)
         else:
-            msg = 'No horizontal line %.2f %.2f %.2f %.2f on page: %d'
+            msg = 'no horizontal line %.2f %.2f %.2f %.2f on page: %d'
             error(msg % (x0, y0, x1, y1, page))
-    return result
+    return PageContentHorizontals(content=result, page=page)
 
 
 # TODO: Use `utila` cluster code
@@ -191,12 +238,6 @@ def bounding(items):
     return result
 
 
-# TODO: HOLY VALUE
-HORIZONTAL_MAX_ERROR = 1.0
-# TODO: Make dependend on page size
-HORIZONTAL_MIN_WIDTH = 400
-
-
 def pagesize(page: LTPage) -> Tuple[float, float]:
     """Determine `pagesize` from `LTPage`
 
@@ -211,7 +252,11 @@ def pagesize(page: LTPage) -> Tuple[float, float]:
     )
 
 
-def type_in_document(document: PDFDocument, datatype):
+def type_in_document(
+        document: PDFDocument,
+        datatype,
+        pages=None,
+) -> List[Tuple[LTPage, int]]:
     """Extract defined `datatype` out of `PDFDocument`
 
     Hint: the location of pdfminer will be flipped
@@ -224,9 +269,9 @@ def type_in_document(document: PDFDocument, datatype):
     """
     assert isinstance(document, PDFDocument), type(document)
     result = []
-    for page in process_pagecontent(document):
-        _, height = pagesize(page)
-        data = [item for item in page if isinstance(item, datatype)]
+    for page in process_pagecontent(document, pages=pages):
+        _, height = pagesize(page.content)
+        data = [item for item in page.content if isinstance(item, datatype)]
         # the root of a `PDFDocument` from pdfminer is the left/down-position,
         # a better approach is to define the left/top-position. Therefore the
         # position must flipped.
@@ -238,14 +283,14 @@ def type_in_document(document: PDFDocument, datatype):
                 box[2],
                 height - box[3],
             )
-        result.append(data)
+        result.append((data, page.page))
     return result
 
 
-def lines(document: PDFDocument):
+def lines(document: PDFDocument, pages=None):
     """Extract all `LTLine` out of `PDFDocument` page wise"""
     assert isinstance(document, PDFDocument), type(document)
-    return type_in_document(document, LTLine)
+    return type_in_document(document, LTLine, pages=pages)
 
 
 def distance(x0, y0, x1, y1):

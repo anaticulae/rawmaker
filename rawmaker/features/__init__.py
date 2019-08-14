@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+from collections import namedtuple
 from typing import Tuple
 
 from iamraw import Document
@@ -16,9 +17,13 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
+from utila import call
 from utila import debug
 
 from rawmaker.miner.mining import IAmRawConverter
+from rawmaker.utils import SkipCollector
+
+PageContent = namedtuple('PageContent', 'content, page')
 
 
 def default_parser_config():
@@ -35,25 +40,39 @@ def create_interpreter(layout=None) -> PDFPageInterpreter:
     return interpreter, device
 
 
-def process_pdfpages(document: PDFDocument) -> PDFPage:
-    """Yield `PDFPAge` of every single page of `PDFDocument`"""
+def process_pdfpages(document: PDFDocument, pages=None) -> PDFPage:
+    """Contextmanager to yield `PDFPage` of every selected page of
+    `PDFDocument`.
+
+    Args:
+        document:
+        pages: number of pages to procress, if None every page is processed
+    Returns:
+        selected pages
+    """
+    call('process_pdfpages')
     assert isinstance(document, PDFDocument), type(document)
-    for page in PDFPage.create_pages(document):
-        yield page
+
+    with SkipCollector(pages) as collector:
+        for number, page in enumerate(PDFPage.create_pages(document), start=0):
+            if collector.skip(number):
+                continue
+            yield (page, number)
 
 
-def process_document(document: PDFDocument) -> Tuple[int, LTPage]:
-    """Yield (pagenumber, LTPage) for every single page of `PDFDocument`"""
+def process_document(document: PDFDocument, pages=None) -> Tuple[int, LTPage]:
+    """Yield (pagenumber, LTPage) for every selected page of `PDFDocument`"""
     assert isinstance(document, PDFDocument), type(document)
     interpreter, device = create_interpreter()
-    for page in process_pdfpages(document):
-        interpreter.process_page(page)
-        yield (page, device.get_result())
+    for content, number in process_pdfpages(document, pages=pages):
+        interpreter.process_page(content)
+        pagecontent = PageContent(content=device.get_result(), page=number)
+        yield (content, pagecontent)
 
 
-def process_pagecontent(document: PDFDocument) -> LTPage:
+def process_pagecontent(document: PDFDocument, pages=None) -> LTPage:
     assert isinstance(document, PDFDocument), type(document)
-    for _, content in process_document(document):
+    for _, content in process_document(document, pages=pages):
         yield content
 
 
@@ -101,17 +120,18 @@ def setup_parser(layout_parameter):
 
 
 def process_pages(document, pages, interpreter, device):
+    call('process_pages')
     # Processing layout
-    for index, page in enumerate(PDFPage.create_pages(document)):
-        # if pages is empty, just process all pages
-        if pages and not index in pages:
-            debug('skip %d' % index)
-            continue
-        interpreter.process_page(page)
+    with SkipCollector(pages) as collector:
+        for index, page in enumerate(PDFPage.create_pages(document)):
+            if collector.skip(index):
+                continue
+            interpreter.process_page(page)
     document = device.finish_document()
     # upgrade page number
 
     pages = page_selection(document, pages)
+    # TODO: REPLACE PAGE WITH ENDLESS ITER AND CHANGE ZIP TO ZIP_LONGEST
     for (page, pagenumber) in zip(document.pages, pages):
         page.number = pagenumber
     return document

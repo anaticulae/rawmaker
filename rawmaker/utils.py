@@ -14,6 +14,8 @@
 
 MILI_TO_PIX = 0.35278413424866517, 0.3527514613989115
 
+from utila import debug
+
 
 def tomilimeter(width: float, height: float):
     return round(width * MILI_TO_PIX[0]), round(height * MILI_TO_PIX[1])
@@ -22,3 +24,30 @@ def tomilimeter(width: float, height: float):
 def topixel(width: float, height: float) -> float:
     return (round(1.0 / MILI_TO_PIX[0] * width),
             round(1.0 / MILI_TO_PIX[1] * height))
+
+
+# TODO: MOVE TO UTILA
+class SkipCollector:
+
+    def __init__(self, pages):
+        self.pages = pages
+        self.data = []
+
+    def log(self):
+        if self.data:
+            msg = ', '.join(self.data)
+            debug('skip: %s' % msg)
+        self.data = []
+
+    def skip(self, page):
+        if self.pages and page not in self.pages:
+            self.data.append(str(page))
+            return True
+        self.log()
+        return False
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.log()

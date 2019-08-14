@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+from collections import namedtuple
+from typing import List
 from typing import Tuple
 
 from iamraw import Border
@@ -22,6 +24,8 @@ from utila import roundme
 
 from rawmaker.features import process_document
 from rawmaker.reader import read
+
+PagePageSize = namedtuple('PagePageSize', 'size page')
 
 
 def work(document: str) -> Tuple[str, str]:
@@ -56,19 +60,41 @@ def determine_boundingboxes(document: PDFDocument) -> PageBoundingsList:
     """
     sizeborders, boxes = [], []
     contentid = 0
-    for index, (page, content) in enumerate(process_document(document)):
+    for page, content in process_document(document):
+        content, pagenumber = content.content, content.page
         size = pagesize_from_page(page)
 
         pagebounding = PageBoundings(
             boundings=boundingboxes_from_page(content, contentid),
-            page=index,
+            page=pagenumber,
         )
         boxes.append(pagebounding)
 
         contentid += len(content)
         border = cropborder_from_page(content)
-        sizeborders.append(PageSizeBorder(size=size, border=border, page=index))
+        sizeborders.append(
+            PageSizeBorder(
+                size=size,
+                border=border,
+                page=pagenumber,
+            ))
     return sizeborders, boxes
+
+
+def pagesizes(document: PDFDocument, pages=None) -> List[PageSize]:
+    """Extract page sizes of `PDFDocument`
+
+    Args:
+        document(PDFDocument):
+        pages:
+    Returns:
+    """
+    result = []
+    for page, content in process_document(document):
+        content, pagenumber = content.content, content.page
+        size = pagesize_from_page(page)
+        result.append(PagePageSize(size=size, page=pagenumber))
+    return result
 
 
 def boundingboxes_from_page(content, contentid: int):

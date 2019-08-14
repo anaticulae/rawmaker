@@ -10,13 +10,15 @@
 from iamraw import BoundingBox
 from pytest import fixture
 
+from rawmaker.features.border import pagesizes
 from rawmaker.features.boxes import bounding
 from rawmaker.features.boxes import determine_boxes
 from rawmaker.features.boxes import determine_cluster
 from rawmaker.features.boxes import determine_pageboxes
-from rawmaker.features.boxes import determine_pagehorizontal
+from rawmaker.features.boxes import determine_pagehorizontals
 from rawmaker.features.boxes import intersecting_lines
 from rawmaker.features.boxes import lines
+from rawmaker.features.boxes import pagesize
 from rawmaker.reader import read
 from tests.resources import HOW_TO_CPORTING_BOX_COUNT as BOX_COUNT
 from tests.resources import HOW_TO_CPORTING_HORIZONTAL_COUNT as LINES_COUNT
@@ -28,23 +30,26 @@ def linecluster():
     result = []
     with read(TEST_DOCUMENT) as doc:
         parsed = lines(doc)
-        for page in parsed:
-            cluster = determine_cluster(bounding(page))
+        size = pagesizes(doc)[0].size
+        for pagelines, _ in parsed:
+            cluster = determine_cluster(bounding(pagelines))
             result.append(cluster)
     assert result
-    return result
+    return result, size
 
 
 def test_determine_boxes(linecluster):  # pylint:disable=W0621
+    linecluster, _ = linecluster
     result = []
     for index, page in enumerate(linecluster):
         boxes = determine_pageboxes(page, index)
-        result.extend(boxes)
+        result.extend(boxes.content)
     # single raw box in document, the rest is rect
     assert len(result) == BOX_COUNT
 
 
 def test_determine_cluster_per_pages(linecluster):  # pylint:disable=W0621
+    linecluster, _ = linecluster
     expected = [4, 2, 2, 1, 1, 1, 1, 1, 0]
     for index, item in enumerate(linecluster):
         assert len(item) == expected[index], 'Page %d' % index
@@ -78,10 +83,16 @@ def test_determine_single_cluster():
 
 
 def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
+    linecluster, size = linecluster
+    pagewidth = size.width
     document_lines = []
     for index, page in enumerate(linecluster):
-        horizontal = determine_pagehorizontal(page, index)
-        document_lines.extend(horizontal)
+        horizontal = determine_pagehorizontals(
+            cluster=page,
+            page=index,
+            page_width=pagewidth,
+        )
+        document_lines.extend(horizontal.content)
     assert len(document_lines) == LINES_COUNT
 
 
@@ -90,6 +101,7 @@ def test_determine_textboxes():
     with read(TEST_DOCUMENT) as doc:
         boxes = determine_boxes(doc)
     # flatten boxes to compute box count of document
+    boxes = [page.content for page in boxes]
     count = sum([len(item) for item in boxes])
     assert count == BOX_COUNT
 

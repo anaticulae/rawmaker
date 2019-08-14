@@ -66,9 +66,9 @@ def document() -> Document:
     return extracted
 
 
-def test_hash_document(document: Document):
+def test_hash_document(document: Document):  # pylint:disable=W0621
     hashed = hash_positions(document)
-    assert len(hashed) == document.page_count
+    assert len(hashed) == len(document)
     # sum all the data count of the page hasher
     items = sum([len(item.data) for item in hashed])
     # There are a lot of items in this document

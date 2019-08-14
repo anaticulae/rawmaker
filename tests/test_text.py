@@ -25,8 +25,8 @@ def test_mine_hello_world_pdf():
     text, _ = work(HELLO_WORLD_PDF)
     loaded = load_document(text)
 
-    assert loaded.page_count
-    assert loaded.page_count == HELLO_WORLD_PAGES
+    assert loaded
+    assert len(loaded) == HELLO_WORLD_PAGES
 
 
 @mark.parametrize(

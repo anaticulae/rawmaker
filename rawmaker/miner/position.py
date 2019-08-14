@@ -11,15 +11,19 @@ Save position of element by object hash
 """
 
 from contextlib import suppress
-from typing import List
 
 from iamraw import BoundingBox
 from iamraw import Document
+from iamraw import PageContentTextPosition
+from iamraw import PageContentTextPositions
+from serializeraw import dump_textpositions
 from utila import NEWLINE
 from utila import from_raw_or_path
 from yaml import FullLoader
 from yaml import dump
 from yaml import load
+
+from rawmaker.utils import SkipCollector
 
 
 class DocumentItemHasher:
@@ -78,35 +82,28 @@ def load_hasher(content: str) -> DocumentItemHasher:
     return result
 
 
-def dump_hasher(hashers: List[DocumentItemHasher]):
-    result = []
-    for hasher in hashers:
-        page = [
-            # Save raw representation
-            '%s %s' % (key, str(position))
-            for key, position in hasher.data.items()
-        ]
-        result.append({
-            'page': hasher.page,
-            'content': page,
-        })
-    dumped = dump(result)
-    return dumped
-
-
-def hash_positions(document: Document) -> List[DocumentItemHasher]:
+def hash_positions(document: Document, pages=None) -> PageContentTextPositions:
     assert isinstance(document, Document), type(document)
+    collected = []
+    with SkipCollector(pages) as collector:
+        for page in document:
+            pagenumber = page.number
+            if collector.skip(pagenumber):
+                continue
+            hasher = DocumentItemHasher(pagenumber)
+            collected.append(hasher)
+            index = 0
+            for item in page:
+                with suppress(AttributeError):
+                    # Not every element has text
+                    _ = item.text
+                    hasher.hashitem(index, item.box)
+                    index += 1
     result = []
-    for page in document:
-        hasher = DocumentItemHasher(page=page.number)
-        result.append(hasher)
-        index = 0
-        for item in page:
-            with suppress(AttributeError):
-                # Not every element has text
-                _ = item.text
-                hasher.hashitem(index, item.box)
-                index += 1
+    for page in collected:
+        pagenumber = page.page
+        content = dict(page.data)
+        result.append(PageContentTextPosition(content=content, page=pagenumber))
     return result
 
 

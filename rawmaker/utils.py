@@ -12,9 +12,9 @@
 # A5 = (148, 210)
 # A6 = (104, 148)
 
-MILI_TO_PIX = 0.35278413424866517, 0.3527514613989115
-
 from utila import debug
+
+MILI_TO_PIX = 0.35278413424866517, 0.3527514613989115
 
 
 def tomilimeter(width: float, height: float):

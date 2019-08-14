@@ -15,9 +15,7 @@ from pytest import raises
 from rawmaker.features.text import extract_content
 from rawmaker.miner.position import DocumentItemHasher
 from rawmaker.miner.position import ItemNotFound
-from rawmaker.miner.position import dump_hasher
 from rawmaker.miner.position import hash_positions
-from rawmaker.miner.position import load_hasher
 from rawmaker.reader import read
 from tests.resources import VIM_GUIDE_PDF
 
@@ -49,14 +47,6 @@ def test_key_does_not_exists():
         hasher.position('ItemDoesNotExits')
 
 
-def test_dump_and_load_hasher(sample_hasher):
-    sample_hashers = [sample_hasher]
-    dumped = dump_hasher(sample_hashers)
-    assert len(dumped) > 20
-    loaded = load_hasher(dumped)
-    assert loaded == sample_hashers
-
-
 @fixture
 def document() -> Document:
     extracted = None
@@ -70,6 +60,6 @@ def test_hash_document(document: Document):  # pylint:disable=W0621
     hashed = hash_positions(document)
     assert len(hashed) == len(document)
     # sum all the data count of the page hasher
-    items = sum([len(item.data) for item in hashed])
+    items = sum([len(item.content) for item in hashed])
     # There are a lot of items in this document
     assert items > 30

@@ -11,10 +11,10 @@
 from typing import Tuple
 
 from serializeraw import dump_document
+from serializeraw import dump_textpositions
 from utila import Flag
 
 from rawmaker.features import extract_content
-from rawmaker.miner.position import dump_hasher
 from rawmaker.miner.position import hash_positions
 from rawmaker.parameter import create_layout
 from rawmaker.parameter import print_layout
@@ -53,10 +53,10 @@ def work(
     with read(document) as pdf:
         document = extract_content(pdf, layout_parameter=layout, pages=pages)
 
-    positions = hash_positions(document)
+    positions = hash_positions(document, pages=pages)
 
     dumped_text = dump_document(document)
-    dumped_positions = dump_hasher(positions)
+    dumped_positions = dump_textpositions(positions)
 
     return dumped_text, dumped_positions
 

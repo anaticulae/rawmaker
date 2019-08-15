@@ -33,9 +33,7 @@ def create_layout(
 
 
 def print_layout(layout: LAParams = None):
-    if layout is None:
-        error('Missing layout')
-        return
+    assert layout, 'missing layout'
     log('   layout:', end=' ', level=Level.INFORMATION)
     information = [
         ('boxes_flow', layout.boxes_flow),

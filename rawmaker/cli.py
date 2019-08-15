@@ -108,7 +108,7 @@ Extract features from pdf document.
 
 
 def main():
-    result = featurepack(
+    featurepack(
         workplan=WORKPLAN,
         root=ROOT,
         featurepackage='rawmaker.features',
@@ -119,4 +119,3 @@ def main():
         singleinput=True,
         pages=True,
     )
-    return result

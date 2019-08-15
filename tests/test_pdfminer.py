@@ -14,22 +14,10 @@ The functionality is encapsulated by `rawmaker` api.
 from pytest import raises
 
 from rawmaker.error import InvalidPDF
-from rawmaker.parser import pages
 from rawmaker.reader import read
 from tests.resources import NO_PDF
 from tests.resources import VIM_GUIDE_OUTLINES
-from tests.resources import VIM_GUIDE_PAGE_COUNT
 from tests.resources import VIM_GUIDE_PDF
-
-
-def test_read_file():
-    """Read pdf and check the size of pages"""
-    with read(VIM_GUIDE_PDF) as document:
-        items = list(pages(document))  # extract all pages from iterator
-        assert items
-
-        number_of_pages = len(items)
-        assert number_of_pages == VIM_GUIDE_PAGE_COUNT
 
 
 def test_outline_count():

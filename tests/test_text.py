@@ -54,8 +54,7 @@ def test_dump_and_load_pdf(pdf_resource):
 def test_text_mine_pdf_page_0():
     selected_pages = [3, 4, 5]
     parsed = work(VIM_GUIDE_PDF, pages=selected_pages)
-    dumped_text, dumped_positions = parsed
-
+    dumped_text, _ = parsed
     text = load_document(dumped_text)
     assert len(text) == len(selected_pages)
 

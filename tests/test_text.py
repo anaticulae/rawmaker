@@ -57,6 +57,5 @@ def test_text_mine_pdf_page_0():
     dumped_text, _ = parsed
     text = load_document(dumped_text)
     assert len(text) == len(selected_pages)
-
-    text_page_numbers = [item.number for item in text]
+    text_page_numbers = [item.page for item in text]
     assert text_page_numbers == selected_pages, str(text_page_numbers)

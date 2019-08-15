@@ -17,11 +17,11 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfpage import PDFPage
+from utila import SkipCollector
 from utila import call
 from utila import debug
 
 from rawmaker.miner.mining import IAmRawConverter
-from rawmaker.utils import SkipCollector
 
 PageContent = namedtuple('PageContent', 'content, page')
 
@@ -133,5 +133,5 @@ def process_pages(document, pages, interpreter, device):
     pages = page_selection(document, pages)
     # TODO: REPLACE PAGE WITH ENDLESS ITER AND CHANGE ZIP TO ZIP_LONGEST
     for (page, pagenumber) in zip(document.pages, pages):
-        page.number = pagenumber
+        page.page = pagenumber
     return document

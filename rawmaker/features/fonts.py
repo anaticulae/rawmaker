@@ -225,7 +225,7 @@ def process_page(page: Page, fontstore: FontStore) -> PageFontContent:
                 fontstore,
             ))
 
-    return PageFontContent(content=result, page=page.number)
+    return PageFontContent(content=result, page=page.page)
 
 
 def parse_fonts(document: Document):

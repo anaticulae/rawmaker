@@ -18,12 +18,11 @@ from iamraw import PageContentTextPosition
 from iamraw import PageContentTextPositions
 from serializeraw import dump_textpositions
 from utila import NEWLINE
+from utila import SkipCollector
 from utila import from_raw_or_path
 from yaml import FullLoader
 from yaml import dump
 from yaml import load
-
-from rawmaker.utils import SkipCollector
 
 
 class DocumentItemHasher:
@@ -87,7 +86,7 @@ def hash_positions(document: Document, pages=None) -> PageContentTextPositions:
     collected = []
     with SkipCollector(pages) as collector:
         for page in document:
-            pagenumber = page.number
+            pagenumber = page.page
             if collector.skip(pagenumber):
                 continue
             hasher = DocumentItemHasher(pagenumber)

@@ -14,7 +14,9 @@ from utila import run_command
 from utila.test import NON_VIRTUAL
 
 from rawmaker import PROCESS_NAME
+from rawmaker import ROOT
 from rawmaker.cli import main
+from tests.resources import RESOURCES
 
 #pylint: disable=invalid-name
 run_success = partial(
@@ -35,3 +37,12 @@ skip_virtual = mark.skipif(
     not NON_VIRTUAL,
     reason="require non virtual environment",
 )
+
+# TODO: CONVERT TO PYTEST PLUGIN
+SETUP_LONGRUN = f"""
+uninstall rawmaker
+
+install {ROOT}
+
+run power --all {RESOURCES}
+"""

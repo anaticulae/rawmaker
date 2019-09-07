@@ -314,7 +314,10 @@ def font_fromraw(font: str, scale: float) -> Font:
                 fontname, raw_style = font.split(',')
             with suppress(ValueError):
                 fontname, raw_style = font.split('-')
-            weight, style, stretch = parse_style(raw_style)
+            try:
+                weight, style, stretch = parse_style(raw_style)
+            except ValueError:
+                fontname = font
 
     msg = 'detected fontname %s; input material %s' % (fontname, save)
     assert '+' not in fontname, msg

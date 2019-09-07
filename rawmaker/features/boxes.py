@@ -6,12 +6,12 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-from collections import namedtuple
 from functools import partial
 from math import sqrt
 from typing import List
 from typing import Tuple
 
+import utila
 from iamraw import BoundingBox
 from iamraw import Box
 from iamraw import HorizontalLine
@@ -22,8 +22,6 @@ from pdfminer.layout import LTPage
 from pdfminer.pdfdocument import PDFDocument
 from serializeraw import dump_boxes
 from serializeraw import dump_horizontals
-from utila import Flag
-from utila import error
 
 from rawmaker.features import process_pagecontent
 from rawmaker.features.border import pagesizes
@@ -144,8 +142,8 @@ def determine_pagehorizontals(
         if len(merged) != 1:
             continue
         x0, y0, x1, y1 = merged[0]
-        height = y1 - y0
-        width = x1 - x0
+        height = abs(y1 - y0)
+        width = abs(x1 - x0)
         assert height >= 0, str(height)
         assert width >= 0, str(width)
         if height < vertical_maxerror and width > horizontal_minwidth:
@@ -153,7 +151,7 @@ def determine_pagehorizontals(
             result.append(horizontal)
         else:
             msg = 'no horizontal line %.2f %.2f %.2f %.2f on page: %d'
-            error(msg % (x0, y0, x1, y1, page))
+            utila.debug(msg % (x0, y0, x1, y1, page))
     return PageContentHorizontals(content=result, page=page)
 
 
@@ -298,7 +296,7 @@ def distance(x0, y0, x1, y1):
 
 
 def commandline():
-    return Flag(longcut=name(), message='Extract boxes out of document.')
+    return utila.Flag(longcut=name(), message='Extract boxes out of document.')
 
 
 def name():

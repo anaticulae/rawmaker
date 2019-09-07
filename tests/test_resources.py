@@ -15,6 +15,7 @@ Use multiprocessing to reduce test duration.
 from glob import glob
 from os.path import join
 
+import utila
 from pytest import fixture
 from pytest import mark
 from pytest import param
@@ -85,7 +86,10 @@ HUGE_RUN_PARAMETER = [
 @mark.parametrize('pdffile', HUGE_RUN_PARAMETER)
 @skip_longrun
 def test_run_huge(testdir, pdffile, layout):  # pylint:disable=W0621
-    command = 'rawmaker -i %s %s -j=4 --pages=0:10 -VVV' % (pdffile, layout)
-    completed = run(command)
+    # use first 10 pages for normal testing and extract complete document
+    # only in nighly tests.
+    pages = '' if utila.NIGHTLY else '--page=0:10'
+    cmd = f'rawmaker -i {pdffile} {layout} -j=4 {pages} -VVV'
+    completed = run(cmd)
 
     assert completed.returncode == SUCCESS, tests.print_error(completed)

@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.2.9
+
+### Feature
+
+* mine complete document in NIGHTLY tests (37060ad1e20a)
+
 ## v1.2.8
 
 ## v1.2.7

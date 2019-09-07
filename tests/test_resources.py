@@ -22,6 +22,7 @@ from utila import SUCCESS
 from utila import run
 from utila import skip_longrun
 
+import tests
 from tests.resources import RESOURCES
 
 COMMAND = 'power'
@@ -86,4 +87,5 @@ HUGE_RUN_PARAMETER = [
 def test_run_huge(testdir, pdffile, layout):  # pylint:disable=W0621
     command = 'rawmaker -i %s %s -j=4 --pages=0:10 -VVV' % (pdffile, layout)
     completed = run(command)
-    assert completed.returncode == SUCCESS, str(completed)
+
+    assert completed.returncode == SUCCESS, tests.print_error(completed)

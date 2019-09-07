@@ -308,11 +308,13 @@ def font_fromraw(font: str, scale: float) -> Font:
         # remove base tag and plus sign
         font = font[7:]
         fontname, raw_style = font, ''
-        with suppress(ValueError):
-            fontname, raw_style = font.split(',')
-        with suppress(ValueError):
-            fontname, raw_style = font.split('-')
-        weight, style, stretch = parse_style(raw_style)
+        # 'AIDZQU+Times-Roman' no style parsing is required
+        if not font in POSTSCRIPT_14_DEFAULT:
+            with suppress(ValueError):
+                fontname, raw_style = font.split(',')
+            with suppress(ValueError):
+                fontname, raw_style = font.split('-')
+            weight, style, stretch = parse_style(raw_style)
 
     msg = 'detected fontname %s; input material %s' % (fontname, save)
     assert '+' not in fontname, msg

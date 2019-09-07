@@ -146,6 +146,7 @@ def test_mining_fonts_restruct_page_5(restructed_fonts):  # pylint:disable=W0621
         ('CIDFont+F1', 6.60, 'F1'),
         ('Arial,Bold', 15.00, 'Arial'),
         ('ABCDEE + Verdana,Bold', 15.00, 'Verdana'),
+        ('AIDZQU+Times-Roman', 13.00, 'Times-Roman'),
     ])
 def test_convert_font_from_raw(font, scale, expected_name):
     parsed = font_fromraw(font, scale)

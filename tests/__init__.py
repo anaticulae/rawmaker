@@ -11,7 +11,7 @@ from functools import partial
 
 from pytest import mark
 from utila import run_command
-from utila.test import NON_VIRTUAL
+from utila.test import NONVIRTUAL
 
 from rawmaker import PROCESS_NAME
 from rawmaker import ROOT
@@ -34,7 +34,7 @@ run_failure = partial(
 )
 
 skip_virtual = mark.skipif(
-    not NON_VIRTUAL,
+    not NONVIRTUAL,
     reason="require non virtual environment",
 )
 
@@ -46,3 +46,10 @@ install {ROOT}
 
 run power --all {RESOURCES}
 """
+
+
+def print_error(completed):
+    print(completed.returncode)
+    print(completed.stdout)
+    print()
+    print(completed.stderr)

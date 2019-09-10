@@ -8,23 +8,13 @@
 #==============================================================================
 
 import pytest
-import utila
 
-from rawmaker import ROOT
 from tests import run_failure
 from tests import run_success
 from tests.resources import DOCUMENTATION_TWINE
 from tests.resources import DOCUMENTATION_TWINE_PDF
 from tests.resources import PORTING_PYTHON3
 from tests.resources import RESTRUCTURED_PDF
-
-
-@utila.skip_longrun
-@utila.skip_nonvirtual
-def test_install_and_run_rawmaker():
-    install_and_run = 'python setup.py install && rawmaker --help'
-    completed = utila.run(install_and_run, cwd=ROOT)
-    assert completed.returncode == 0, completed.stdout + completed.stderr
 
 
 @pytest.mark.parametrize('command', [

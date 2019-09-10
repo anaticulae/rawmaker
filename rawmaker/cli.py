@@ -18,7 +18,7 @@ analyze-processes.
 
 from utila import Pattern
 from utila import Value
-from utila import create_step
+from utila import create_step as step
 from utila import featurepack
 
 from rawmaker import PROCESS_NAME
@@ -33,21 +33,26 @@ LINE_MARGIN = Value('line_margin', float, defaultvar=0.5, minimum=0.1)
 WORD_MARGIN = Value('word_margin', float, defaultvar=0.1, minimum=0.1)
 BOXES_FLOW = Value('boxes_flow', float, defaultvar=0.5, minimum=0.1)
 
-step = create_step  #pylint:disable=C0103
+PDF_INPUT = [PDF]
+
+CONFIG_INPUTS = [
+    PDF,
+    BOXES_FLOW,
+    CHAR_MARGIN,
+    LINE_MARGIN,
+    LINE_OVERLAP,
+    WORD_MARGIN,
+]
 
 WORKPLAN = [
     step(
         'annotation',
-        inputs=[
-            PDF,
-        ],
+        inputs=PDF_INPUT,
         output=('annotation',),
     ),
     step(
         'border',
-        inputs=[
-            PDF,
-        ],
+        inputs=PDF_INPUT,
         output=(
             'pages',
             'boundingboxes',
@@ -55,9 +60,7 @@ WORKPLAN = [
     ),
     step(
         'boxes',
-        inputs=[
-            PDF,
-        ],
+        inputs=PDF_INPUT,
         output=(
             'boxes',
             'horizontal',
@@ -65,14 +68,7 @@ WORKPLAN = [
     ),
     step(
         'fonts',
-        inputs=[
-            PDF,
-            BOXES_FLOW,
-            CHAR_MARGIN,
-            LINE_MARGIN,
-            LINE_OVERLAP,
-            WORD_MARGIN,
-        ],
+        inputs=CONFIG_INPUTS,
         output=(
             'header',
             'content',
@@ -80,14 +76,7 @@ WORKPLAN = [
     ),
     step(
         'text',
-        inputs=[
-            PDF,
-            BOXES_FLOW,
-            CHAR_MARGIN,
-            LINE_MARGIN,
-            LINE_OVERLAP,
-            WORD_MARGIN,
-        ],
+        inputs=CONFIG_INPUTS,
         output=(
             'text',
             'positions',
@@ -95,9 +84,7 @@ WORKPLAN = [
     ),
     step(
         'toc',
-        inputs=[
-            PDF,
-        ],
+        inputs=PDF_INPUT,
         output=('toc',),
     ),
 ]

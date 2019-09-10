@@ -7,9 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-from pytest import mark
-from utila import run
-from utila.test import skip_nonvirtual
+import pytest
+import utila
 
 from rawmaker import ROOT
 from tests import run_failure
@@ -20,14 +19,15 @@ from tests.resources import PORTING_PYTHON3
 from tests.resources import RESTRUCTURED_PDF
 
 
-@skip_nonvirtual
+@utila.skip_longrun
+@utila.skip_nonvirtual
 def test_install_and_run_rawmaker():
     install_and_run = 'python setup.py install && rawmaker --help'
-    completed = run(install_and_run, cwd=ROOT)
+    completed = utila.run(install_and_run, cwd=ROOT)
     assert completed.returncode == 0, completed.stdout + completed.stderr
 
 
-@mark.parametrize('command', [
+@pytest.mark.parametrize('command', [
     ['--help'],
     ['-i', DOCUMENTATION_TWINE, '-o', 'output', '-j', '5'],
     ['-i', DOCUMENTATION_TWINE_PDF, '-o', 'output'],
@@ -38,7 +38,7 @@ def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
     run_success(command, monkeypatch=monkeypatch)
 
 
-@mark.parametrize('command', [
+@pytest.mark.parametrize('command', [
     [],
     ['-i', '.', '-o', 'output'],
 ])
@@ -57,7 +57,7 @@ def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):  #pylint: disab
     assert '[ERROR]' in stderr
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
     'command',
     [
         # DO NOT REMOVE A SINGLE SOURCE OF THIS TEST
@@ -69,7 +69,7 @@ def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: d
     run_success(command, monkeypatch=monkeypatch)
 
 
-@mark.parametrize('pages', [
+@pytest.mark.parametrize('pages', [
     '5:10',
     '0',
 ])

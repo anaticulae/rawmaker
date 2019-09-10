@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.3.0
+
+### Feature
+
+* improve reading performance enormous (2da5eb6e15b9)
+
 ## v1.2.10
 
 ## v1.2.9

@@ -39,15 +39,39 @@ def read(path: str, password: str = '') -> PDFDocument:
         parser = PDFParser(fp)
         # Create a PDF document object that stores the document structure.
         # Supply the password for initialization.
-        try:
-            document = PDFDocument(parser, password)
-        except PDFSyntaxError:
-            raise InvalidPDF(path)
-        except Exception:
-            raise PDFParserImplementationError(path)
+        document = open_document(parser, path, password)
 
         # Check if the document allows text extraction. If not, abort.
         if not document.is_extractable:
             raise TextExtractionNotAllowed(path)
 
         yield document
+
+
+def open_document(parser: PDFParser, path: str, password: str) -> PDFDocument:
+    """
+    Hint:
+        Using fallback as default mode is very slow. Therefore we try
+        without fallback and if this does not work, we try it with
+        fallback again.
+        Try first without using fallback because this is much faster on
+        valid documents. If the run without fallback fails, start it
+        with fallback again.
+    """
+    try:
+        document = PDFDocument(parser, password, fallback=False)
+    except PDFSyntaxError:
+        pass  # try with fallback again
+    except Exception:
+        raise PDFParserImplementationError(path)
+    else:
+        return document
+
+    try:
+        document = PDFDocument(parser, password, fallback=True)
+    except PDFSyntaxError:
+        raise InvalidPDF(path)
+    except Exception:
+        raise PDFParserImplementationError(path)
+    else:
+        return document

@@ -7,7 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import os
+
 import pytest
+import utila
 
 from tests import run_failure
 from tests import run_success
@@ -70,3 +73,20 @@ def test_run_rawmaker_with_pages(testdir, monkeypatch, pages, capsys):  #pylint:
     out, err = capsys.readouterr()
     print(out)
     print(err)
+
+
+def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
+    """Create broken pdf resource, run reader and check that error is
+    handled correctly."""
+    root = str(testdir)
+    brokenpath = os.path.join(root, 'broken.pdf')
+    utila.file_create(brokenpath, 'content = non valid pdf document')
+
+    command = f'-i {root}'
+    run_failure(command, monkeypatch=monkeypatch)
+
+    # check that result is written
+    files_written = list(os.scandir(root))
+
+    # broken file + developer.lin and user.lin
+    assert len(files_written) == 3, str(files_written)

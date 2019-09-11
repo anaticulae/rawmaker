@@ -15,7 +15,10 @@ analyze-processes.
 - border: determine page size and bounding boxes from page content
 
 """
+import contextlib
+import os
 
+import protocol
 from utila import Pattern
 from utila import Value
 from utila import create_step as step
@@ -24,6 +27,7 @@ from utila import featurepack
 from rawmaker import PROCESS_NAME
 from rawmaker import ROOT
 from rawmaker import __version__
+from rawmaker.error import InvalidPDF
 
 PDF = Pattern('*', 'pdf')
 
@@ -95,14 +99,44 @@ Extract features from pdf document.
 
 
 def main():
-    featurepack(
-        workplan=WORKPLAN,
-        root=ROOT,
-        featurepackage='rawmaker.features',
-        name=PROCESS_NAME,
-        description=RAWMAKER_DESCRIPTION,
-        version=__version__,
-        multiprocessed=True,
-        singleinput=True,
-        pages=True,
-    )
+    with linter():
+        featurepack(
+            description=RAWMAKER_DESCRIPTION,
+            errorhook=errorhook,
+            featurepackage='rawmaker.features',
+            name=PROCESS_NAME,
+            root=ROOT,
+            version=__version__,
+            workplan=WORKPLAN,
+            multiprocessed=True,
+            pages=True,
+            singleinput=True,
+        )
+
+
+def errorhook(exception, source):  # pylint:disable=W0613
+    logger = errorhook.linter
+
+    if isinstance(exception, InvalidPDF):
+        logger.add_finding(msgid='F0000', confidence=1.0)
+
+
+@contextlib.contextmanager
+def linter():
+    # path to write error report
+    root = str(os.getcwd())
+    # setup linter
+    solver = protocol.Solver()
+    for msg, solution in protocol.solution.SOLUTION.items():
+        solver.add_solution(msg, solution)
+
+    active = [protocol.MessageStatus(msgid='F0000', active=True)]
+
+    # init linter
+    errorhook.linter = protocol.Linter(solver=solver, active=active)
+
+    try:
+        yield
+    except SystemExit as exc:
+        errorhook.linter.write(root)
+        raise exc

@@ -63,9 +63,8 @@ def convert_path(path):
 
 
 # documents which does not pass the current implementation
-UNSUPPORTED_DOCUMENTS = {
-    'paper/page_6_double_column_with_math.pdf',  # feymr10
-}
+# add location to mark document as unsupported
+UNSUPPORTED_DOCUMENTS = {}
 
 HUGE_RUN_PARAMETER = [
     param(

@@ -62,16 +62,16 @@ def open_document(parser: PDFParser, path: str, password: str) -> PDFDocument:
         document = PDFDocument(parser, password, fallback=False)
     except PDFSyntaxError:
         pass  # try with fallback again
-    except Exception:
-        raise PDFParserImplementationError(path)
+    except Exception as exc:
+        raise PDFParserImplementationError(path) from exc
     else:
         return document
 
     try:
         document = PDFDocument(parser, password, fallback=True)
-    except PDFSyntaxError:
-        raise InvalidPDF(path)
-    except Exception:
-        raise PDFParserImplementationError(path)
+    except PDFSyntaxError as exc:
+        raise InvalidPDF(path) from exc
+    except Exception as exc:
+        raise PDFParserImplementationError(path) from exc
     else:
         return document

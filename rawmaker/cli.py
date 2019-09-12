@@ -17,6 +17,7 @@ analyze-processes.
 """
 import contextlib
 import os
+import sys
 
 import protocol
 from utila import Pattern
@@ -97,20 +98,26 @@ RAWMAKER_DESCRIPTION = """
 Extract features from pdf document.
 """
 
+LINTER_FLAG = 'linter'
+
 
 def main():
+    flags = [
+        (LINTER_FLAG, 'write linter result'),
+    ]
     with linter():
         featurepack(
             description=RAWMAKER_DESCRIPTION,
             errorhook=errorhook,
             featurepackage='rawmaker.features',
+            flags=flags,
+            multiprocessed=True,
             name=PROCESS_NAME,
+            pages=True,
             root=ROOT,
+            singleinput=True,
             version=__version__,
             workplan=WORKPLAN,
-            multiprocessed=True,
-            pages=True,
-            singleinput=True,
         )
 
 
@@ -123,6 +130,11 @@ def errorhook(exception, source):  # pylint:disable=W0613
 
 @contextlib.contextmanager
 def linter():
+    """Write result of linting when using `--linter` parameter.
+
+    Args:
+        write_result(bool): if active create developer.lin and user.lin
+    """
     # path to write error report
     root = str(os.getcwd())
     # setup linter
@@ -138,5 +150,6 @@ def linter():
     try:
         yield
     except SystemExit as exc:
-        errorhook.linter.write(root)
+        if f'--{LINTER_FLAG}' in sys.argv:
+            errorhook.linter.write(root)
         raise exc

@@ -82,7 +82,7 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
     brokenpath = os.path.join(root, 'broken.pdf')
     utila.file_create(brokenpath, 'content = non valid pdf document')
 
-    command = f'-i {root}'
+    command = f'-i {root} --linter'
     run_failure(command, monkeypatch=monkeypatch)
 
     # check that result is written

@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.4.0
+
+### Feature
+
+* add error handler to prepare user warning (c51f3e2dee81)
+
 ## v1.3.0
 
 ### Feature

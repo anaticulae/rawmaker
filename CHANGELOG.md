@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.4.1
+
+### Feature
+
+* add --linter flag to control result writing (ebdcb81d67cb)
+
 ## v1.4.0
 
 ### Feature

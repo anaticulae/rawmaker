@@ -4,7 +4,7 @@ pdfminer.six==20181108
 # Internal packages
 iamraw==1.8.6
 utila==1.5.3
-protocol==0.2.5
+protocol==0.3.0
 
 # test data provider
 power==0.5.9

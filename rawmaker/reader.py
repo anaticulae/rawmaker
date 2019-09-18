@@ -42,8 +42,9 @@ def read(path: str, password: str = '') -> PDFDocument:
         document = open_document(parser, path, password)
 
         # Check if the document allows text extraction. If not, abort.
-        if not document.is_extractable:
-            raise TextExtractionNotAllowed(path)
+        # TODO: SHOULD WE RESPECT THIS FLAG?
+        # if not document.is_extractable:
+        #     raise TextExtractionNotAllowed(path)
 
         yield document
 

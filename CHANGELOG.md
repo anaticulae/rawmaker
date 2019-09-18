@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.4.3
+
+### Fix
+
+* skip TextNotAllowed-Flag to avoid crash in analysis (25b10c166d36)
+* catch annotation and log error - rework later (882cbfadbf5f)
+
 ## v1.4.2
 
 ## v1.4.1

@@ -85,7 +85,12 @@ def parse_page(page: PDFPage, pagenumber: int):
             error('skip annotation %s' % pageobject)
             continue
         assert typ == ANNOTATION_LABEL, typ
-        annotated = pageobject['A']
+        try:
+            annotated = pageobject['A']
+        except KeyError:
+            # TODO: WORKAORUND: INVESTIGATE LASTER
+            error(f'Unhandeld annotation A {pageobject}')
+            continue
 
         with suppress(KeyError):
             hyperlink = annotated['URI'].decode(UTF8)

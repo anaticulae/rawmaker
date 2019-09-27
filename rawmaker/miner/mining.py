@@ -13,6 +13,7 @@ components.
 import sys
 from re import compile as re_compile
 
+import utila
 from iamraw import BoundingBox
 from iamraw import Char
 from iamraw import Document
@@ -163,9 +164,9 @@ def convert_bounding(*bounding, pageheight: float) -> BoundingBox:
     xbottom, ybottom, xtop, ytop = bounding
     height = ytop - ybottom
     assert height >= 0
-    x0 = round(xbottom, 2)
-    y0 = round(pageheight - ytop, 2)
-    x1 = round(xtop, 2)
-    y1 = round(y0 + height, 2)
+    x0 = utila.roundme(xbottom)
+    y0 = utila.roundme(pageheight - ytop)
+    x1 = utila.roundme(xtop)
+    y1 = utila.roundme(y0 + height)
     bounding = BoundingBox(x0=x0, y0=y0, x1=x1, y1=y1)
     return bounding

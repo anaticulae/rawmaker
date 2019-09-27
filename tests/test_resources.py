@@ -89,6 +89,6 @@ def test_run_huge(testdir, pdffile, layout):  # pylint:disable=W0621
     # only in nighly tests.
     pages = '' if utila.NIGHTLY else '--page=0:10'
     cmd = f'rawmaker -i {pdffile} {layout} -j=4 {pages} -VVV'
-    completed = run(cmd)
+    result = utila.run(cmd)
 
-    assert completed.returncode == SUCCESS, tests.print_error(completed)
+    assert result.returncode == utila.SUCCESS, utila.format_completed(result)

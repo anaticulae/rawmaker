@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.5.0
+
+### Feature
+
+* support horizontal lines defined as string '__________' (b0758d9d4a5b)
+* extend horizontal line detection (b4e3334e3988)
+
+### Documentation
+
+* add bug description when running with multiple cores on win (01fbeb82d4e4)
+
 ## v1.4.3
 
 ### Fix

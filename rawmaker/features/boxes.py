@@ -6,37 +6,28 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-from functools import partial
-from math import sqrt
-from typing import List
-from typing import Tuple
+import functools
+import math
+import typing
 
+import iamraw
 import pdfminer.layout
+import serializeraw
 import utila
-from iamraw import BoundingBox
-from iamraw import Box
-from iamraw import HorizontalLine
-from iamraw import PageContentBoxes
-from iamraw import PageContentHorizontals
-from pdfminer.layout import LTLine
-from pdfminer.layout import LTPage
-from pdfminer.pdfdocument import PDFDocument
-from serializeraw import dump_boxes
-from serializeraw import dump_horizontals
 
-from rawmaker.features import process_pagecontent
-from rawmaker.features.border import pagesizes
-from rawmaker.reader import read
+import rawmaker.features
+import rawmaker.features.border
+import rawmaker.reader
 
 # TODO: LTLine - replace with own data structure to reduce dependencies to
 # rawmaker
-LineClusters = List[List[pdfminer.layout.LTLine]]
+LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]
 
 VERTICAL_MAX_ERROR = 2.0  # TODO: HOLY VALUE
 HORIZONTAL_MIN_WIDTH = 0.20  # TODO: HOLY VALUE
 
 
-def work(document: str, pages) -> Tuple[str, str]:
+def work(document: str, pages) -> typing.Tuple[str, str]:
     """Extract content boxes and horizontal lines from given `document`
 
     Args:
@@ -46,17 +37,20 @@ def work(document: str, pages) -> Tuple[str, str]:
         dumped parsed boxes, dumped parsed horizontals
     """
     assert isinstance(document, str), str(document)
-    with read(document) as pdf:
+    with rawmaker.reader.read(document) as pdf:
         boxes = determine_boxes(pdf, pages=pages)
         horizontal = determine_horizontal(pdf, pages=pages)
 
-    dumped_boxes = dump_boxes(boxes)
-    dumped_horizontal = dump_horizontals(horizontal)
+    dumped_boxes = serializeraw.dump_boxes(boxes)
+    dumped_horizontal = serializeraw.dump_horizontals(horizontal)
 
     return dumped_boxes, dumped_horizontal
 
 
-def determine_boxes(document: PDFDocument, pages=None):
+def determine_boxes(
+        document: pdfminer.pdfdocument.PDFDocument,
+        pages=None,
+):
     result = determine_clusteritem(
         document,
         determine_pageboxes,
@@ -65,10 +59,14 @@ def determine_boxes(document: PDFDocument, pages=None):
     return result
 
 
-def determine_horizontal(document: PDFDocument, pages=None):
+def determine_horizontal(
+        document: pdfminer.pdfdocument.PDFDocument,
+        pages=None,
+):
     # prepare worker
-    pagewidth = pagesizes(document, pages=pages)[0].size.width
-    worker = partial(determine_pagehorizontals, page_width=pagewidth)
+    pagewidth = rawmaker.features.border.pagesizes(document, pages=pages)
+    pagewidth = pagewidth[0].size.width
+    worker = functools.partial(determine_pagehorizontals, page_width=pagewidth)
     # run worker
     result = determine_clusteritem(
         document,
@@ -79,7 +77,7 @@ def determine_horizontal(document: PDFDocument, pages=None):
 
 
 def determine_clusteritem(
-        document: PDFDocument,
+        document: pdfminer.pdfdocument.PDFDocument,
         collector: callable,
         pages=None,
 ):
@@ -94,9 +92,9 @@ def determine_clusteritem(
 
 
 def determine_pageboxes(
-        cluster: List[pdfminer.layout.LTLine],
+        cluster: typing.List[pdfminer.layout.LTLine],
         page: int,
-) -> PageContentBoxes:
+) -> iamraw.PageContentBoxes:
     result = []
     for item in cluster:
         count = len(item)
@@ -108,9 +106,9 @@ def determine_pageboxes(
         x1 = max([max(line[0], line[2]) for line in item])
         y1 = max([max(line[1], line[3]) for line in item])
 
-        box = Box(box=BoundingBox.from_list([x0, y0, x1, y1]))
+        box = iamraw.Box(box=iamraw.BoundingBox.from_list([x0, y0, x1, y1]))
         result.append(box)
-    return PageContentBoxes(content=result, page=page)
+    return iamraw.PageContentBoxes(content=result, page=page)
 
 
 def determine_pagehorizontals(
@@ -120,7 +118,7 @@ def determine_pagehorizontals(
         page_width: float = 1000,
         vertical_maxerror: float = VERTICAL_MAX_ERROR,
         horizontal_minwidth: float = HORIZONTAL_MIN_WIDTH,
-) -> PageContentHorizontals:
+) -> iamraw.PageContentHorizontals:
     """Collect single line which are expanded horizontal
 
     Args:
@@ -146,16 +144,18 @@ def determine_pagehorizontals(
         assert height >= 0, str(height)
         assert width >= 0, str(width)
         if height < vertical_maxerror and width > horizontal_minwidth:
-            horizontal = HorizontalLine(box=BoundingBox.from_list(merged[0]))
+            horizontal = iamraw.BoundingBox.from_list(merged[0])
+            horizontal = iamraw.HorizontalLine(box=horizontal)
             result.append(horizontal)
         else:
-            msg = 'no horizontal line %.2f %.2f %.2f %.2f on page: %d'
-            utila.debug(msg % (x0, y0, x1, y1, page))
-    return PageContentHorizontals(content=result, page=page)
+            msg = f'no horizontal line {x0} {y0} {x1} {y1} on page: {page}'
+            utila.debug(msg)
+    return iamraw.PageContentHorizontals(content=result, page=page)
 
 
 # TODO: Use `utila` cluster code
-def determine_cluster(lines: List[BoundingBox]) -> List[BoundingBox]:
+def determine_cluster(lines: typing.List[iamraw.BoundingBox],
+                     ) -> typing.List[iamraw.BoundingBox]:
     if not lines:
         return []
 
@@ -201,7 +201,7 @@ def determine_cluster(lines: List[BoundingBox]) -> List[BoundingBox]:
 MIN_DISTANCE = 3
 
 
-def intersecting_lines(first: BoundingBox, second: BoundingBox):
+def intersecting_lines(first: iamraw.BoundingBox, second: iamraw.BoundingBox):
     """Check if start or end point of two line match
 
     Args:
@@ -235,7 +235,7 @@ def bounding(items):
     return result
 
 
-def pagesize(page: LTPage) -> Tuple[float, float]:
+def pagesize(page: pdfminer.layout.LTPage) -> typing.Tuple[float, float]:
     """Determine `pagesize` from `LTPage`
 
     Args:
@@ -250,10 +250,10 @@ def pagesize(page: LTPage) -> Tuple[float, float]:
 
 
 def type_in_document(
-        document: PDFDocument,
+        document: pdfminer.pdfdocument.PDFDocument,
         datatype,
         pages=None,
-) -> List[Tuple[LTPage, int]]:
+) -> typing.List[typing.Tuple[pdfminer.layout.LTPage, int]]:
     """Extract defined `datatype` out of `PDFDocument`
 
     Hint: the location of pdfminer will be flipped
@@ -264,9 +264,9 @@ def type_in_document(
     Returns:
         list with selected item `datatype`
     """
-    assert isinstance(document, PDFDocument), type(document)
+    assert isinstance(document, pdfminer.pdfdocument.PDFDocument), type(document) # yapf:disable
     result = []
-    for page in process_pagecontent(document, pages=pages):
+    for page in rawmaker.features.process_pagecontent(document, pages=pages):
         _, height = pagesize(page.content)
         data = [item for item in page.content if isinstance(item, datatype)]
         # pdfminer: left_down is origin
@@ -370,7 +370,7 @@ def lines(document: pdfminer.pdfdocument.PDFDocument, pages=None):
 
 
 def distance(x0, y0, x1, y1):
-    return sqrt(pow((x0 - x1), 2) + pow((y1 - y0), 2))
+    return math.sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2))
 
 
 def commandline():

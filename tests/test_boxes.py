@@ -117,7 +117,6 @@ def test_intersecting_lines():
     assert intersected
 
 
-@pytest.mark.xfail(reason='could not detect _________ as horizontal line')
 def test_boxex_determine_horizontals_master72pages():
     horizontals = None
     with read(tests.resources.MASTER_72_NOIMAGES_TOC) as doc:

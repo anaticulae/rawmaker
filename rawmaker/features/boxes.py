@@ -285,27 +285,83 @@ def type_in_document(
     return result
 
 
-def lines(document: PDFDocument, pages=None):
-    """Extract all `LTLine` out of `PDFDocument` page wise"""
-    assert isinstance(document, PDFDocument), type(document)
+REQUIRED_MINUS_SIGNS = 50
+
+
+def lines(document: pdfminer.pdfdocument.PDFDocument, pages=None):
+    """Extract all `LTLine` out of `PDFDocument` page wise
+
+    Support 3 different types of pdf layout elements:
+        LTLine:
+        LTRect: small difference between oposite lines
+        LTTextBoxHorizontal:
+
+    Args:
+        document: pdf document to collect lines
+        pages: select pages to run anlaysis on
+    Returns:
+        list of line objects[LTLine, LTRect, LTTextBoxHorizontal]
+    """
+    assert isinstance(document, pdfminer.pdfdocument.PDFDocument), type(document) # yapf:disable
     possible_lines = type_in_document(
         document,
         datatype=(
             pdfminer.layout.LTLine,
             pdfminer.layout.LTRect,
+            pdfminer.layout.LTTextBoxHorizontal,
         ),
         pages=pages,
     )
+
+    def accept_text_as_line(item: pdfminer.layout.LTTextBoxHorizontal):
+        symbols = ['_', '-', '=']
+        for symbol in symbols:
+            if item.get_text().count(symbol) >= REQUIRED_MINUS_SIGNS:
+                # update bounding to pass vertical error test
+                item.bbox = (
+                    item.bbox[0],
+                    item.bbox[3],
+                    item.bbox[2],
+                    item.bbox[3],
+                )
+                return True
+        return False
+
+    def accept_ltrect(item: pdfminer.layout.LTRect):
+        return accept_ltline(item)
+
+    def accept_ltline(item: pdfminer.layout.LTLine):
+        """Accept horizontal or vertical lines
+
+        The lines must vary only little. A crossing line has vertical
+        and horizontal error. We want | or - not / or \\.
+        """
+        assert item.bbox[3] >= item.bbox[1], str(item.bbox)
+        assert item.bbox[0] <= item.bbox[2], str(item.bbox)
+
+        horizontal_error = (item.bbox[3] - item.bbox[1]) >= VERTICAL_MAX_ERROR
+        vertical_error = (item.bbox[2] - item.bbox[0]) >= VERTICAL_MAX_ERROR
+
+        return not (horizontal_error and vertical_error)
+
+    strategy = {
+        pdfminer.layout.LTLine: accept_ltline,
+        pdfminer.layout.LTRect: accept_ltrect,
+        pdfminer.layout.LTTextBoxHorizontal: accept_text_as_line,
+    }
+
     result = []
     for content, pagenumber in possible_lines:
         page = []
-        # TODO: Separate into strategy
         for item in content:
-            isrect = isinstance(item, pdfminer.layout.LTRect)
-            maxerror = abs(item.bbox[3] - item.bbox[1]) >= VERTICAL_MAX_ERROR
-            if isrect and maxerror:
-                continue
-            page.append(item)
+            # check item against strategy. If no stategy is supported, the
+            # element is skipped.
+            try:
+                if not strategy[type(item)](item):
+                    continue
+                page.append(item)
+            except KeyError:
+                utila.error(f'unsupported strategy {item}')
         result.append((
             page,
             pagenumber,

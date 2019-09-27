@@ -8,23 +8,19 @@
 # =============================================================================
 
 import pdfminer
-from pdfminer.layout import LAParams
+import pdfminer.layout
 
+import rawmaker.error
+import rawmaker.features.text
 import rawmaker.features.toc
 import tests.resources
-from rawmaker.error import MissingOutlines
-from rawmaker.features.text import extract_content
-from rawmaker.features.toc import work
-from rawmaker.reader import read
-from tests.resources import TOC_PDF
-from tests.resources import VIM_GUIDE_PDF
 
 
 def test_toc_from_document_no_outlines(monkeypatch, capsys):
     """Test that no outlines produces an error log"""
 
     def get_outlines(self):
-        raise MissingOutlines()
+        raise rawmaker.error.MissingOutlines()
 
     with monkeypatch.context():
         monkeypatch.setattr(
@@ -33,7 +29,7 @@ def test_toc_from_document_no_outlines(monkeypatch, capsys):
             get_outlines,
         )
         # from pdfminer.pdfdocument import PDFDocument
-        work(VIM_GUIDE_PDF)
+        rawmaker.features.toc.work(tests.resources.VIM_GUIDE_PDF)
     _, error = capsys.readouterr()
 
     assert 'error' in error.lower(), error
@@ -46,10 +42,13 @@ def test_toc_parameterization():
     This test is more for finding a good parameter, than for realy testing.
     TODO: Improve this later. Don't know how to, yet.
     """
-    with read(TOC_PDF) as pdf:
+    with rawmaker.reader.read(tests.resources.TOC_PDF) as pdf:
         # Diff between chars which build a word
-        layout = LAParams(char_margin=10.0)
-        document = extract_content(pdf, layout_parameter=layout)
+        layout = pdfminer.layout.LAParams(char_margin=10.0)
+        document = rawmaker.features.text.extract_content(
+            pdf,
+            layout_parameter=layout,
+        )
     page_with_toc = document[2]
     assert page_with_toc
 

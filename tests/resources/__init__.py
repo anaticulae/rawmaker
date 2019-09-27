@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import os
 from os.path import exists
 from os.path import join
 
@@ -35,8 +36,7 @@ DOCUMENTATION_TWINE_PAGES = 35
 TOC_PDF = join(RESOURCES, 'toc/restructuredtext.pdf')
 RESTRUCTURED_PDF = TOC_PDF
 
-PORTING_PYTHON3 = join(RESOURCES,
-                       'broken/broken_annotation/porting_python3.pdf')
+PORTING_PYTHON3 = os.path.join(RESOURCES, 'broken/broken_annotation/porting_python3.pdf') # yapf:disable
 
 for item in [
         DOCUMENTATION_TWINE_PDF,

@@ -7,9 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pytest
+import utila
 from iamraw import BoundingBox
 from pytest import fixture
 
+import rawmaker.features.boxes
+import tests.resources
 from rawmaker.features.border import pagesizes
 from rawmaker.features.boxes import bounding
 from rawmaker.features.boxes import determine_boxes
@@ -111,3 +115,17 @@ def test_intersecting_lines():
     vertical = (10, 0, 10, 30)
     intersected = intersecting_lines(horizontal, vertical)
     assert intersected
+
+
+@pytest.mark.xfail(reason='could not detect _________ as horizontal line')
+def test_boxex_determine_horizontals_master72pages():
+    horizontals = None
+    with read(tests.resources.MASTER_72_NOIMAGES_TOC) as doc:
+        horizontals = rawmaker.features.boxes.determine_horizontal(
+            doc,
+            list(range(0, 10)),
+        )
+
+    # flatten boxes to compute horizontal count of document
+    horizontals = [item.content for item in horizontals if item.content]
+    assert len(horizontals) == 6, horizontals

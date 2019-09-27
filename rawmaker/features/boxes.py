@@ -11,6 +11,7 @@ from math import sqrt
 from typing import List
 from typing import Tuple
 
+import pdfminer.layout
 import utila
 from iamraw import BoundingBox
 from iamraw import Box
@@ -29,12 +30,10 @@ from rawmaker.reader import read
 
 # TODO: LTLine - replace with own data structure to reduce dependencies to
 # rawmaker
-LineClusters = List[List[LTLine]]
+LineClusters = List[List[pdfminer.layout.LTLine]]
 
-# TODO: HOLY VALUE
-VERTICAL_MAX_ERROR = 1.0
-# TODO: HOLY VALUE
-HORIZONTAL_MIN_WIDTH = 0.6
+VERTICAL_MAX_ERROR = 2.0  # TODO: HOLY VALUE
+HORIZONTAL_MIN_WIDTH = 0.20  # TODO: HOLY VALUE
 
 
 def work(document: str, pages) -> Tuple[str, str]:
@@ -95,7 +94,7 @@ def determine_clusteritem(
 
 
 def determine_pageboxes(
-        cluster: List[LTLine],
+        cluster: List[pdfminer.layout.LTLine],
         page: int,
 ) -> PageContentBoxes:
     result = []
@@ -270,16 +269,17 @@ def type_in_document(
     for page in process_pagecontent(document, pages=pages):
         _, height = pagesize(page.content)
         data = [item for item in page.content if isinstance(item, datatype)]
-        # the root of a `PDFDocument` from pdfminer is the left/down-position,
-        # a better approach is to define the left/top-position. Therefore the
-        # position must flipped.
+        # pdfminer: left_down is origin
+        # our approach: top_down is origin
+        # Therefore the position must flipped.
+        # TODO: Run flip on base level/render/pdfinterpreter
         for item in data:
             box = item.bbox
             item.bbox = (
                 box[0],
-                height - box[1],
+                height - box[3],  # flip
                 box[2],
-                height - box[3],
+                height - box[1],  # flip
             )
         result.append((data, page.page))
     return result
@@ -288,7 +288,29 @@ def type_in_document(
 def lines(document: PDFDocument, pages=None):
     """Extract all `LTLine` out of `PDFDocument` page wise"""
     assert isinstance(document, PDFDocument), type(document)
-    return type_in_document(document, LTLine, pages=pages)
+    possible_lines = type_in_document(
+        document,
+        datatype=(
+            pdfminer.layout.LTLine,
+            pdfminer.layout.LTRect,
+        ),
+        pages=pages,
+    )
+    result = []
+    for content, pagenumber in possible_lines:
+        page = []
+        # TODO: Separate into strategy
+        for item in content:
+            isrect = isinstance(item, pdfminer.layout.LTRect)
+            maxerror = abs(item.bbox[3] - item.bbox[1]) >= VERTICAL_MAX_ERROR
+            if isrect and maxerror:
+                continue
+            page.append(item)
+        result.append((
+            page,
+            pagenumber,
+        ))
+    return result
 
 
 def distance(x0, y0, x1, y1):

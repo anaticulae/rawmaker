@@ -10,6 +10,8 @@
 import pdfminer
 from pdfminer.layout import LAParams
 
+import rawmaker.features.toc
+import tests.resources
 from rawmaker.error import MissingOutlines
 from rawmaker.features.text import extract_content
 from rawmaker.features.toc import work
@@ -50,3 +52,11 @@ def test_toc_parameterization():
         document = extract_content(pdf, layout_parameter=layout)
     page_with_toc = document[2]
     assert page_with_toc
+
+
+def test_toc_without_outlines():
+    source = tests.resources.MASTER_72_NOIMAGES_TOC
+    extracted = rawmaker.features.toc.work(source)
+
+    # no toc extraction
+    assert len(extracted) < 10, str(extracted)

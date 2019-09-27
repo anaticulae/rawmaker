@@ -68,3 +68,6 @@ assert exists(HOW_TO_CPORTING_PDF), HOW_TO_CPORTING_PDF
 
 HOW_TO_CPORTING_BOX_COUNT = 10
 HOW_TO_CPORTING_HORIZONTAL_COUNT = 2
+
+MASTER_72_NOIMAGES_TOC = os.path.join(RESOURCES, 'master/page_72_noimages_toc.pdf') # yapf:disable
+assert os.path.exists(MASTER_72_NOIMAGES_TOC), str(MASTER_72_NOIMAGES_TOC)

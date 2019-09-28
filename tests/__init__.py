@@ -46,10 +46,3 @@ install {ROOT}
 
 run power --all {RESOURCES}
 """
-
-
-def print_error(completed):
-    print(completed.returncode)
-    print(completed.stdout)
-    print()
-    print(completed.stderr)

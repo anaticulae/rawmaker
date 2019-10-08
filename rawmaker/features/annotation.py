@@ -10,6 +10,7 @@
 broken/malformated links."""
 from contextlib import suppress
 
+import pdfminer.pdfdocument
 from iamraw import BoundingBox
 from iamraw import HyperLink
 from iamraw import PageAnnotation
@@ -91,6 +92,10 @@ def parse_page(page: PDFPage, pagenumber: int):
             # TODO: WORKAORUND: INVESTIGATE LASTER
             error(f'Unhandeld annotation A {pageobject}')
             continue
+
+        if isinstance(annotated, pdfminer.pdftypes.PDFObjRef):
+            # TODO: add layer to automatically convert reference to object.
+            annotated = page.doc.getobj(annotated.objid)
 
         with suppress(KeyError):
             hyperlink = annotated['URI'].decode(UTF8)

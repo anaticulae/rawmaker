@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.5.1
+
+### Feature
+
+* add feature to extract images (cc246a539bce)
+
+### Fix
+
+* resolve missing annotation reference (b266aa8aaeea)
+
 ## v1.5.0
 
 ### Feature

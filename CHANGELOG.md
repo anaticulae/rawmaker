@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.5.5
+
+### Documentation
+
+* setup doc strategy (835b290a82c8)
+
 ## v1.5.4
 
 ## v1.5.3

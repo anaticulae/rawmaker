@@ -10,10 +10,10 @@
 import io
 
 import pytest
-import tests.resources
 import utila
 
 import rawmaker.features.images
+import tests.resources
 
 
 @pytest.mark.parametrize(

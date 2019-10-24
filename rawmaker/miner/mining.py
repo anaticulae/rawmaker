@@ -10,30 +10,18 @@
 Parses the pdf-document and determine the layout of the different
 components.
 """
+import re
 import sys
-from re import compile as re_compile
 
+import iamraw
+import pdfminer.converter
+import pdfminer.layout
 import utila
-from iamraw import BoundingBox
-from iamraw import Char
-from iamraw import Document
-from iamraw import Line
-from iamraw import Page
-from iamraw import PageObject
-from iamraw import PageSize
-from iamraw import TextContainer
-from iamraw import UnicodeChar
-from iamraw import VirtualChar
-from pdfminer.converter import PDFConverter
-from pdfminer.layout import LTChar
-from pdfminer.layout import LTPage
-from pdfminer.layout import LTTextBox
-from utila import INF
 
 
-class IAmRawConverter(PDFConverter):
+class IAmRawConverter(pdfminer.converter.PDFConverter):
 
-    CONTROL = re_compile(u'[\x00-\x08\x0b-\x0c\x0e-\x1f]')
+    CONTROL = re.compile(u'[\x00-\x08\x0b-\x0c\x0e-\x1f]')
 
     def __init__(
             self,
@@ -41,7 +29,7 @@ class IAmRawConverter(PDFConverter):
             laparams=None,
             imagewriter=None,
     ):
-        PDFConverter.__init__(
+        pdfminer.converter.PDFConverter.__init__(
             self,
             rsrcmgr,
             outfp=sys.stdout.buffer,
@@ -55,9 +43,9 @@ class IAmRawConverter(PDFConverter):
 
     def new_document(self):
         """Clear the current `Document` and initialze a new one"""
-        self.document = Document()
+        self.document = iamraw.Document()
 
-    def finish_document(self) -> Document:
+    def finish_document(self) -> iamraw.Document:
         """Return the current `Document` and clear the current one"""
         document = self.document
         document.dimension = page_size(document)
@@ -66,19 +54,19 @@ class IAmRawConverter(PDFConverter):
 
     def receive_layout(self, ltpage):
         page = render(ltpage)
-        self.document.pages.append(page)
+        self.document.pages.append(page)  # pylint:disable=E1101
 
 
-def page_size(document: Document) -> PageSize:
+def page_size(document: iamraw.Document) -> iamraw.PageSize:
     """Determine maximum bounding of document. Iterate throw the page and
     determine the largest page"""
 
     # TODO ?support multiple page sizes in document?
-    width, height = -INF, -INF
+    width, height = -utila.INF, -utila.INF
     for page in document.pages:
         width = max(width, page.dimension[2])
         height = max(height, page.dimension[3])
-    return PageSize(width, height)
+    return iamraw.PageSize(width, height)
 
 
 SPECIAL_CHAR_TABLE = {
@@ -88,7 +76,7 @@ SPECIAL_CHAR_TABLE = {
 FAST_KEY = set(SPECIAL_CHAR_TABLE.keys())
 
 
-def render_char(item: LTChar, pageheight: float) -> Char:
+def render_char(item: pdfminer.layout.LTChar, pageheight: float) -> iamraw.Char:
     char = None
     try:
         value = item.get_text()
@@ -96,36 +84,36 @@ def render_char(item: LTChar, pageheight: float) -> Char:
         if value in FAST_KEY:
             # Unicode character
             replaced = SPECIAL_CHAR_TABLE[value]
-            char = UnicodeChar(
+            char = iamraw.UnicodeChar(
                 box=bounding,
                 font=item.fontname,
                 special=value,
                 value=replaced,
             )
         else:
-            char = Char(
+            char = iamraw.Char(
                 box=bounding,
                 font=item.fontname,
                 value=value,
             )
     except AttributeError:
-        # VirtualChar has no `BoundingBox`
-        char = VirtualChar(value=item.get_text())
+        # VirtualChar has no `iamraw.BoundingBox`
+        char = iamraw.VirtualChar(value=item.get_text())
     return char
 
 
-def render_textline(item: LTTextBox, pageheight: float):
+def render_textline(item: pdfminer.layout.LTTextBox, pageheight: float):
     bounding = convert_bounding(*item.bbox, pageheight=pageheight)
-    line = Line(box=bounding)
+    line = iamraw.Line(box=bounding)
     for char in item._objs:  # pylint: disable=protected-access
         # pylint:disable=E1101
         line.chars.append(render_char(char, pageheight=pageheight))
     return line
 
 
-def render_textcontainer(item: LTTextBox, pageheight: float):
+def render_textcontainer(item: pdfminer.layout.LTTextBox, pageheight: float):
     bounding = convert_bounding(*item.bbox, pageheight=pageheight)
-    container = TextContainer(box=bounding)
+    container = iamraw.TextContainer(box=bounding)
     for line in item:
         # pylint:disable=E1101
         container.lines.append(render_textline(line, pageheight=pageheight))
@@ -133,34 +121,34 @@ def render_textcontainer(item: LTTextBox, pageheight: float):
 
 
 def render(item, pageheight: float = None):
-    if isinstance(item, LTPage):
+    if isinstance(item, pdfminer.layout.LTPage):
         pagenumber = item.pageid
-        page = Page(pagenumber, BoundingBox(*item.bbox))
+        page = iamraw.Page(pagenumber, iamraw.BoundingBox(*item.bbox))
         pageheight = item.bbox[3]
         for child in item:
             # pylint:disable=E1101
             rendered = render(child, pageheight=pageheight)
             page.children.append(rendered)
         return page
-    if isinstance(item, LTTextBox):
+    if isinstance(item, pdfminer.layout.LTTextBox):
         textcontainer = render_textcontainer(item, pageheight=pageheight)
         return textcontainer
 
-    pageobject = PageObject(
+    pageobject = iamraw.PageObject(
         box=convert_bounding(*item.bbox, pageheight=pageheight),
         content=str(item),
     )
     return pageobject
 
 
-def convert_bounding(*bounding, pageheight: float) -> BoundingBox:
+def convert_bounding(*bounding, pageheight: float) -> iamraw.BoundingBox:
     """Flip vertical y-component.
 
     Args:
         bounding(tuple(4)): tuple with computed location of `pdfminer`
         pageheight(float): pageheight from bottom to top
     Returns:
-        flipped `BoundingBox`
+        flipped `iamraw.BoundingBox`
     """
     xbottom, ybottom, xtop, ytop = bounding
     height = ytop - ybottom
@@ -169,5 +157,5 @@ def convert_bounding(*bounding, pageheight: float) -> BoundingBox:
     y0 = utila.roundme(pageheight - ytop)
     x1 = utila.roundme(xtop)
     y1 = utila.roundme(y0 + height)
-    bounding = BoundingBox(x0=x0, y0=y0, x1=x1, y1=y1)
+    bounding = iamraw.BoundingBox(x0=x0, y0=y0, x1=x1, y1=y1)
     return bounding

@@ -46,8 +46,9 @@ class IAmRawConverter(PDFConverter):
             rsrcmgr,
             outfp=sys.stdout.buffer,
             codec='utf-8',
-            pageno=1,
-            laparams=laparams)
+            pageno=0,
+            laparams=laparams,
+        )
         self.imagewriter = imagewriter
         self.page = 0
         self.document = None
@@ -133,7 +134,7 @@ def render_textcontainer(item: LTTextBox, pageheight: float):
 
 def render(item, pageheight: float = None):
     if isinstance(item, LTPage):
-        pagenumber = item.pageid - 1  # zero based index
+        pagenumber = item.pageid
         page = Page(pagenumber, BoundingBox(*item.bbox))
         pageheight = item.bbox[3]
         for child in item:

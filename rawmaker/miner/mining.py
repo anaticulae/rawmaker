@@ -10,7 +10,6 @@
 Parses the pdf-document and determine the layout of the different
 components.
 """
-import re
 import sys
 
 import iamraw
@@ -19,9 +18,7 @@ import pdfminer.layout
 import utila
 
 
-class IAmRawConverter(pdfminer.converter.PDFConverter):
-
-    CONTROL = re.compile(u'[\x00-\x08\x0b-\x0c\x0e-\x1f]')
+class PrecisePDFConverter(pdfminer.converter.PDFConverter):
 
     def __init__(
             self,
@@ -29,11 +26,10 @@ class IAmRawConverter(pdfminer.converter.PDFConverter):
             laparams=None,
             imagewriter=None,
     ):
-        pdfminer.converter.PDFConverter.__init__(
-            self,
-            rsrcmgr,
+        super().__init__(
+            rsrcmgr=rsrcmgr,
             outfp=sys.stdout.buffer,
-            codec='utf-8',
+            codec=utila.UTF8,
             pageno=0,
             laparams=laparams,
         )

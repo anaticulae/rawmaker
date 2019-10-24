@@ -21,7 +21,7 @@ from utila import SkipCollector
 from utila import call
 from utila import debug
 
-from rawmaker.miner.mining import IAmRawConverter
+from rawmaker.miner.mining import PrecisePDFConverter
 
 PageContent = namedtuple('PageContent', 'content, page')
 
@@ -113,7 +113,7 @@ def setup_parser(layout_parameter):
     # Create a PDF resource manager object that stores shared resources.
     rsrcmgr = PDFResourceManager()
 
-    device = IAmRawConverter(rsrcmgr, laparams=layout_parameter)
+    device = PrecisePDFConverter(rsrcmgr, laparams=layout_parameter)
     device.new_document()
     interpreter = PDFPageInterpreter(rsrcmgr, device)
     return interpreter, device

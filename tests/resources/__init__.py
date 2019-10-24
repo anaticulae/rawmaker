@@ -16,6 +16,9 @@ from rawmaker import ROOT
 RESOURCES = os.path.join(ROOT, 'tests/resources')
 assert exists(RESOURCES), RESOURCES
 
+EXAMPLES = os.path.join(ROOT, 'tests/examples')
+assert exists(EXAMPLES), EXAMPLES
+
 BACHELOR = os.path.join(RESOURCES, 'bachelor')
 MASTER = os.path.join(RESOURCES, 'master')
 NEGATIVE = os.path.join(RESOURCES, 'negative')
@@ -46,6 +49,7 @@ INCREASING_FONT = join(RESOURCES, 'increasing_fonts')
 INCREASING_FONT_A3 = join(INCREASING_FONT, 'increasing_fonts_a3.pdf')
 INCREASING_FONT_A4 = join(INCREASING_FONT, 'increasing_fonts_a4.pdf')
 INCREASING_FONT_A5 = join(INCREASING_FONT, 'increasing_fonts_a5.pdf')
+INCREASING_ZZZ = join(INCREASING_FONT, 'increasing_fonts_a4_10_20_30_40.pdf')
 
 HOW_TO_CPORTING = join(RESOURCES, 'boxes')
 HOW_TO_CPORTING_PDF = join(HOW_TO_CPORTING, 'howto_cporting.pdf')

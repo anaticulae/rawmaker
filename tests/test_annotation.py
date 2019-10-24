@@ -50,9 +50,6 @@ def test_annotation_dump_and_load(vim_guide_annotation):  #pylint:disable=W0621
     ]
 
     dumped = dump_annotations(annotation)
-
     loaded = load_annotations(dumped)
 
-    # TODO: investigate here, why str matches and without str it does not
-    # match?
-    assert str(loaded) == str(without_none)
+    assert loaded == without_none

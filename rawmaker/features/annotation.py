@@ -11,6 +11,7 @@ broken/malformated links."""
 from contextlib import suppress
 
 import pdfminer.pdfdocument
+import utila
 from iamraw import BoundingBox
 from iamraw import HyperLink
 from iamraw import PageAnnotation
@@ -78,7 +79,10 @@ def parse_page(page: PDFPage, pagenumber: int):
     pagelinks, hyperlinks = [], []
     for reference in pageannotation:
         pageobject = page.doc.getobj(reference.objid)
-        bounds = BoundingBox.from_list(pageobject['Rect'])
+        # TODO: FLIP Y-COORDINATE?
+        # TODO: REMOVE ROUNDING AFTER PATCHING IAMRAW
+        coords = [utila.roundme(item) for item in pageobject['Rect']]
+        bounds = BoundingBox.from_list(coords)
         try:
             typ = pageobject['Type'].name
         except KeyError:

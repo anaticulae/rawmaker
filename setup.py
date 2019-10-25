@@ -63,5 +63,6 @@ if __name__ == "__main__":
             'rawmaker',
             'rawmaker.features',
             'rawmaker.miner',
+            'rawmaker.patch',
         ],
     )

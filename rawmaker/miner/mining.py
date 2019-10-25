@@ -17,6 +17,8 @@ import pdfminer.converter
 import pdfminer.layout
 import utila
 
+import rawmaker.patch.ltchar
+
 
 class PrecisePDFConverter(pdfminer.converter.PDFConverter):
 
@@ -36,6 +38,9 @@ class PrecisePDFConverter(pdfminer.converter.PDFConverter):
         self.imagewriter = imagewriter
         self.page = 0
         self.document = None
+
+        # TODO: Remove after upgrading pdfminer
+        PrecisePDFConverter.render_char = rawmaker.patch.ltchar.render_char
 
     def new_document(self):
         """Clear the current `Document` and initialze a new one"""

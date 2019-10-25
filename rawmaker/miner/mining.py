@@ -77,29 +77,44 @@ SPECIAL_CHAR_TABLE = {
 FAST_KEY = set(SPECIAL_CHAR_TABLE.keys())
 
 
-def render_char(item: pdfminer.layout.LTChar, pageheight: float) -> iamraw.Char:
+def render_char(
+        item: pdfminer.layout.LTChar,
+        pageheight: float,
+) -> iamraw.Char:
     char = None
+
     try:
-        value = item.get_text()
         bounding = convert_bounding(*item.bbox, pageheight=pageheight)
-        if value in FAST_KEY:
-            # Unicode character
-            replaced = SPECIAL_CHAR_TABLE[value]
-            char = iamraw.UnicodeChar(
-                box=bounding,
-                font=item.fontname,
-                special=value,
-                value=replaced,
-            )
-        else:
-            char = iamraw.Char(
-                box=bounding,
-                font=item.fontname,
-                value=value,
-            )
     except AttributeError:
         # VirtualChar has no `iamraw.BoundingBox`
-        char = iamraw.VirtualChar(value=item.get_text())
+        bounding = None
+
+    value = item.get_text()
+    # controlling chars
+    if not bounding:
+        # Example VirtualChar: <LTAnno ' '>
+        char = iamraw.VirtualChar(value=value)
+        return char
+
+    # chars with content
+    fontsize = item.fontsize
+    if value in FAST_KEY:
+        # Unicode character
+        replaced = SPECIAL_CHAR_TABLE[value]
+        char = iamraw.UnicodeChar(
+            box=bounding,
+            font=item.fontname,
+            size=fontsize,
+            special=value,
+            value=replaced,
+        )
+    else:
+        char = iamraw.Char(
+            box=bounding,
+            font=item.fontname,
+            size=fontsize,
+            value=value,
+        )
     return char
 
 

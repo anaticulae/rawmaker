@@ -176,8 +176,8 @@ def process_page(page: Page, fontstore: FontStore) -> PageFontContent:
     font, scale = None, None
     font_cur, scale_cur = None, None
     result = []
-    # TODO: use TextPageIter from groupme/hey! to iterate only over text boxes
 
+    # TODO: use TextPageIter from groupme/hey! to iterate only over text boxes
     textcontainer = [
         # remove non TextContainer items
         item for item in page.children if isinstance(item, TextContainer)
@@ -191,8 +191,10 @@ def process_page(page: Page, fontstore: FontStore) -> PageFontContent:
                     # Virtual chars have no fonts
                     continue
 
-                # fontscale = y1 - y0
-                scale = round((char.box[3] - char.box[1]), 1)
+                # TODO: INVESTIGATE 1.34??
+                # NOTE: This works for POSTSCRIPT_14_DEFAULT's but not for
+                # Calibri.
+                scale = round(char.size / 1.34005)
                 assert scale > 0, 'negative font size'
                 # No font type or size is selected
                 if font_cur is None:

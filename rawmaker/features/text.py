@@ -39,6 +39,33 @@ def work(
         parsed document as yaml output
         parsed positions of text container
     """
+    document = extract_document(
+        document,
+        boxes_flow,
+        char_margin,
+        line_margin,
+        line_overlap,
+        word_margin,
+        pages,
+    )
+
+    positions = hash_positions(document, pages=pages)
+
+    dumped_text = dump_document(document)
+    dumped_positions = dump_textpositions(positions)
+
+    return dumped_text, dumped_positions
+
+
+def extract_document(
+        document,
+        boxes_flow: float = 0.5,
+        char_margin: float = 2.0,
+        line_margin: float = 0.5,
+        line_overlap: float = 0.5,
+        word_margin: float = 0.1,
+        pages: list = None,
+):
     layout = create_layout(
         boxes_flow=boxes_flow,
         char_margin=char_margin,
@@ -52,13 +79,7 @@ def work(
     assert isinstance(document, str), str(document)
     with read(document) as pdf:
         document = extract_content(pdf, layout_parameter=layout, pages=pages)
-
-    positions = hash_positions(document, pages=pages)
-
-    dumped_text = dump_document(document)
-    dumped_positions = dump_textpositions(positions)
-
-    return dumped_text, dumped_positions
+    return document
 
 
 def commandline():

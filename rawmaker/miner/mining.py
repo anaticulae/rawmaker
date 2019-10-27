@@ -101,12 +101,14 @@ def render_char(
 
     # chars with content
     fontsize = item.fontsize
+    fontrise = item.rise
     if value in FAST_KEY:
         # Unicode character
         replaced = SPECIAL_CHAR_TABLE[value]
         char = iamraw.UnicodeChar(
             box=bounding,
             font=item.fontname,
+            rise=fontrise,
             size=fontsize,
             special=value,
             value=replaced,
@@ -115,6 +117,7 @@ def render_char(
         char = iamraw.Char(
             box=bounding,
             font=item.fontname,
+            rise=fontrise,
             size=fontsize,
             value=value,
         )

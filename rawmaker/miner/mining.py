@@ -10,6 +10,7 @@
 Parses the pdf-document and determine the layout of the different
 components.
 """
+import copy
 import sys
 
 import iamraw
@@ -81,8 +82,10 @@ def render_char(
         item: pdfminer.layout.LTChar,
         pageheight: float,
 ) -> iamraw.Char:
-    char = None
-
+    """
+    NOTE: Unicode character creates 2 single chars.
+    This can affect Bounding-Computation
+    """
     try:
         bounding = convert_bounding(*item.bbox, pageheight=pageheight)
     except AttributeError:
@@ -123,8 +126,27 @@ def render_textline(item: pdfminer.layout.LTTextBox, pageheight: float):
     line = iamraw.Line(box=bounding)
     for char in item._objs:  # pylint: disable=protected-access
         # pylint:disable=E1101
-        line.chars.append(render_char(char, pageheight=pageheight))
+        character = render_char(char, pageheight=pageheight)
+        if len(character.value) == 1:
+            line.chars.append(character)
+        else:
+            # in some case the layout parser matches to chars together.
+            # Therefore we have to split the character by content and fix
+            # the bounding.
+            for splitted in split_characters(character):
+                assert len(splitted.value) == 1, splitted
+                line.chars.append(splitted)
     return line
+
+
+def split_characters(char):
+    result = []
+    for index, text in enumerate(char.value):
+        # TODO: FIX BOUNDING OF EVERY SINGLE CHARACTER
+        copied = copy.deepcopy(char)
+        copied.value = text
+        result.append(copied)
+    return result
 
 
 def render_textcontainer(item: pdfminer.layout.LTTextBox, pageheight: float):

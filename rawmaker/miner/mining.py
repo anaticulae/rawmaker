@@ -80,11 +80,19 @@ FAST_KEY = set(SPECIAL_CHAR_TABLE.keys())
 
 def render_char(
         item: pdfminer.layout.LTChar,
+        baseline: float,
         pageheight: float,
 ) -> iamraw.Char:
     """
     NOTE: Unicode character creates 2 single chars.
     This can affect Bounding-Computation
+
+    Args:
+        item(LTChar):
+        baseline(float): bottom y-coordinate of parent text line
+        pageheight(float): height of current pdf page to flip coordinate
+    Returns:
+        Converted `iamraw.Char` with `fontsize` and `fontrise`
     """
     try:
         bounding = convert_bounding(*item.bbox, pageheight=pageheight)
@@ -98,10 +106,9 @@ def render_char(
         # Example VirtualChar: <LTAnno ' '>
         char = iamraw.VirtualChar(value=value)
         return char
-
     # chars with content
     fontsize = item.fontsize
-    fontrise = item.rise
+    fontrise = baseline - bounding.y1
     if value in FAST_KEY:
         # Unicode character
         replaced = SPECIAL_CHAR_TABLE[value]
@@ -127,9 +134,14 @@ def render_char(
 def render_textline(item: pdfminer.layout.LTTextBox, pageheight: float):
     bounding = convert_bounding(*item.bbox, pageheight=pageheight)
     line = iamraw.Line(box=bounding)
+    baseline = bounding.y1
     for char in item._objs:  # pylint: disable=protected-access
         # pylint:disable=E1101
-        character = render_char(char, pageheight=pageheight)
+        character = render_char(
+            char,
+            baseline=baseline,
+            pageheight=pageheight,
+        )
         if len(character.value) == 1:
             line.chars.append(character)
         else:

@@ -2,6 +2,26 @@
 
 Every noteable change is logged here.
 
+## v1.6.0
+
+### Feature
+
+* determine rise for every character (72e8300e0c45)
+* use new font size calculation feature (76cb26c88882)
+* add font rise to mining result (ea0fd6838a11)
+* patch pdfminer to gather font size and rise (6f72a972ab13)
+
+### Fix
+
+* split character which are grouped by layout parser (cbc54927f201)
+* compare extracted test before saving (6ca5a8ad9aa4)
+* use pageno of pdfminer correctly (3fd5afa3ca77)
+* round Bounding coordinate to clarify coordinate (9fbdf877fbdb)
+
+### Documentation
+
+* extend documentation of mining class (49c562dadeae)
+
 ## v1.5.5
 
 ### Documentation

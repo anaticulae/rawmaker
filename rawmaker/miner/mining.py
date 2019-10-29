@@ -22,6 +22,13 @@ import rawmaker.patch.ltchar
 
 
 class PrecisePDFConverter(pdfminer.converter.PDFConverter):
+    """Parsing PDF-files based on given layout definition `laparams`.
+
+    The `PrecisePDFConverter` parses every single page and run the
+    `recive_layout` method for extracted page. Based on this method
+    every Character, Textbox and TextContainer is converted from
+    `pdfminer` to own format. The y-coordiante is flipped cause pdf uses
+    bottom -> up and we want to use top -> bottom"""
 
     def __init__(
             self,
@@ -29,6 +36,15 @@ class PrecisePDFConverter(pdfminer.converter.PDFConverter):
             laparams=None,
             imagewriter=None,
     ):
+        """Create converter instance.
+
+        Args:
+            rsrcmg: resource manager to cache multiple file access
+            laparams(pdfminer.layout.LAParams): layout to define maximum
+                                                spacing between chars,
+                                                words and lines.
+            imagewrite: listener to recive extract images
+        """
         super().__init__(
             rsrcmgr=rsrcmgr,
             outfp=sys.stdout.buffer,
@@ -83,16 +99,17 @@ def render_char(
         baseline: float,
         pageheight: float,
 ) -> iamraw.Char:
-    """
-    NOTE: Unicode character creates 2 single chars.
-    This can affect Bounding-Computation
+    """Convert character and determine `fontrise` based on parent `baseline`
+
+    NOTE: Unicode character creates 2 single chars. This can affect
+    Bounding-Computation
 
     Args:
         item(LTChar):
         baseline(float): bottom y-coordinate of parent text line
         pageheight(float): height of current pdf page to flip coordinate
     Returns:
-        Converted `iamraw.Char` with `fontsize` and `fontrise`
+        Converted `iamraw.Char` with `fontsize` and `fontrise`.
     """
     try:
         bounding = convert_bounding(*item.bbox, pageheight=pageheight)
@@ -101,6 +118,7 @@ def render_char(
         bounding = None
 
     value = item.get_text()
+
     # controlling chars
     if not bounding:
         # Example VirtualChar: <LTAnno ' '>
@@ -108,6 +126,7 @@ def render_char(
         return char
     # chars with content
     fontsize = item.fontsize
+    # distance to bottom y-coodinate
     fontrise = baseline - bounding.y1
     if value in FAST_KEY:
         # Unicode character
@@ -132,6 +151,15 @@ def render_char(
 
 
 def render_textline(item: pdfminer.layout.LTTextBox, pageheight: float):
+    """Determine character Bounding and split character if required
+    cause layout parser puts two character together.
+
+    Args:
+        item: LTTextBox with list of containg LTChar's
+        pageheight: height of page to flip y-coordiante of BoundingBox
+    Returns:
+        iamraw.Line with converted iamraw.Character
+    """
     bounding = convert_bounding(*item.bbox, pageheight=pageheight)
     line = iamraw.Line(box=bounding)
     baseline = bounding.y1
@@ -155,11 +183,33 @@ def render_textline(item: pdfminer.layout.LTTextBox, pageheight: float):
 
 
 def split_characters(char):
+    """Split character which contains multiple chars. Split given
+    BoundingBox and give every splitted character the same space.
+
+    Args:
+        char with multiple character in `char.value`
+    Returns:
+        list with splitted character
+    """
     result = []
+    charbounding = char.box
+    charstep = charbounding.x1 - charbounding.x0
+    assert charstep > 0, charstep
     for index, text in enumerate(char.value):
-        # TODO: FIX BOUNDING OF EVERY SINGLE CHARACTER
         copied = copy.deepcopy(char)
         copied.value = text
+        # split common BoundingBox of multiple chars to single
+        # BoundingBoxes.
+        # NOTE: This does not work hundert percent correctly. Imagine if
+        # you have the character Z and I togester. Z is bigger than I. But
+        # that accurarcy is fine.
+        bounding = iamraw.BoundingBox.from_list([
+            charbounding.x0 + index * charstep,
+            charbounding.y1,
+            charbounding.x0 + (index + 1) * charstep,
+            charbounding.y1,
+        ])
+        copied.box = bounding
         result.append(copied)
     return result
 

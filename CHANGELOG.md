@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.6.7
+
+### Fix
+
+* add more special character (437e096a043d)
+
 ## v1.6.6
 
 ## v1.6.5

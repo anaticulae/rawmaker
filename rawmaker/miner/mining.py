@@ -88,7 +88,15 @@ def page_size(document: iamraw.Document) -> iamraw.PageSize:
 
 
 SPECIAL_CHAR_TABLE = {
+    '\uFB00': 'ff',
     '\uFB01': 'fi',
+    '\uFB02': 'fl',
+    '\uFB03': 'ffi',
+    '\xC4': 'Ä',
+    '\xDC': 'Ü',
+    '\xE4': 'ä',
+    '\xF6': 'ö',
+    '\xFC': 'ü',
 }
 
 FAST_KEY = set(SPECIAL_CHAR_TABLE.keys())

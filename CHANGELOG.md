@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.6.8
+
+### Documentation
+
+* add backlog to store list of further todos/ideas (d1c47432248f)
+
 ## v1.6.7
 
 ### Fix

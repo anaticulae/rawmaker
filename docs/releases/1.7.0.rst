@@ -6,12 +6,12 @@ RP 1.7.0
 general
 -------
 
-* [ ] add general rest doc strucutre
+* [x] add general rest doc strucutre
 
 pdfinfo
 -------
 
-* [ ] add console application to determine pdf version, pages and generator
+* [x] add console application to determine pdf version, pages and generator
 
 Code quality
 ------------

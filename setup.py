@@ -57,9 +57,13 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3.8',
         ],
         entry_points={
-            'console_scripts': ['rawmaker = rawmaker.cli:main'],
+            'console_scripts': [
+                'pdfinfo = pdfinfo.cli:main',
+                'rawmaker = rawmaker.cli:main',
+            ],
         },
         packages=[
+            'pdfinfo',
             'rawmaker',
             'rawmaker.features',
             'rawmaker.miner',

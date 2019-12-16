@@ -1,0 +1,34 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2019 by Helmut Konrad Fahrendholz. All rights reserved.
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+import pytest
+
+import pdfinfo
+import tests.pdfinfo_
+import tests.resources
+
+
+@pytest.mark.parametrize('command', [
+    '--help',
+    pytest.param(f'-i {tests.resources.TOC_PDF}', id='valid_restructured'),
+])
+def test_pdfinfo_run(command, testdir, monkeypatch):  #pylint: disable=W0613
+    """Run help and version and format command to reach basic test coverage"""
+    tests.pdfinfo_.run_success(command, monkeypatch=monkeypatch)
+
+
+@pytest.mark.parametrize(
+    'command',
+    [
+        pytest.param(f'-i {pdfinfo.ROOT}', id='input_directory'),
+        pytest.param(f'-i {tests.resources.NO_PDF}', id='invalid_pdffile'),
+    ],
+)
+def test_pdfinfo_run_invalid(command, testdir, monkeypatch):  #pylint: disable=W0613
+    """Run help and version and format command to reach basic test coverage"""
+    tests.pdfinfo_.run_failure(command, monkeypatch=monkeypatch)

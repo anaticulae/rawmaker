@@ -20,6 +20,10 @@ Before
 ~~~~~~
 
 * Your code has been rated at 9.21/10
+* Total coverage: 92.94%
 
 After
 ~~~~~
+
+* Your code has been rated at 9.21/10
+* Total coverage: 92.94%

@@ -1,10 +1,15 @@
-# release plan 1.6.0
+.. _1_6_0:
 
-## Layout
+RP 1.6.0
+=========
+
+Layout
+------
 
 * [x] improve layout parser to handle little numbers in footnotes correctly
 
-## Quality metrics
+Code quality
+------------
 
 * [x] 100% new doc coverage
 

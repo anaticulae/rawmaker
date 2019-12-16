@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.7.0
+
+### Feature
+
+* add console application to extract information out of pdf (5c943b658920)
+
+### Documentation
+
+* add code quality to current release plan (70699ef4d49f)
+
 ## v1.6.12
 
 ## v1.6.11

@@ -3,14 +3,23 @@
 RP 1.7.0
 =========
 
+general
+-------
+
+* [ ] add general rest doc strucutre
+
+pdfinfo
+-------
+
+* [ ] add console application to determine pdf version, pages and generator
+
 Code quality
 ------------
 
 Before
 ~~~~~~
 
-* Your code has been rated at 9.43/10
-* Total coverage: %
+* Your code has been rated at 9.21/10
 
 After
 ~~~~~

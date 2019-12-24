@@ -13,6 +13,7 @@ import utila.cli
 
 import pdfinfo
 import pdfinfo.data
+import rawmaker.error
 
 
 @utila.saveme
@@ -32,11 +33,15 @@ def main():
         return utila.INVALID_COMMAND
     assert os.path.exists(inpath), f'invalid inpath: {inpath}'
 
-    parsed = pdfinfo.data.parse(inpath)
-    if parsed is None:
-        return utila.FAILURE
+    try:
+        parsed = pdfinfo.data.parse(inpath)
+    except rawmaker.error.InvalidPDF:
+        # not a valid pdf file
+        parsed = None
 
-    jsonify = pdfinfo.data.jsonify(parsed)
+    jsonify = '{}'
+    if parsed is not None:
+        jsonify = pdfinfo.data.jsonify(parsed)
 
     if os.path.isdir(outpath):
         outpath = os.path.join(outpath, 'pdfinfo.json')

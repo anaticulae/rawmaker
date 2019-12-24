@@ -37,7 +37,7 @@ def jsonify(info: PdfInfo) -> str:
 
 def parse(path: str) -> PdfInfo:
     version = pdfinfo.version.parse(path)
-    if not parse:
+    if not version:
         # invalid file
         return None
     pages = pdfinfo.pages.determine(path)

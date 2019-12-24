@@ -11,7 +11,7 @@ import tests.resources
 
 
 def test_pdfinfo_info_generator():
-    ressource = tests.resources.TOC_PDF
-    generator = pdfinfo.info.generator(ressource)
+    resource = tests.resources.TOC_PDF
+    generator = pdfinfo.info.generator(resource)
 
     assert generator == pdfinfo.info.Generator.Latex, str(generator)

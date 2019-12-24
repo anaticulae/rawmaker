@@ -12,8 +12,8 @@ import tests.resources
 
 
 def test_pdfinfo_data_jsonify():
-    ressource = tests.resources.TOC_PDF
-    info = pdfinfo.data.parse(ressource)
+    resource = tests.resources.TOC_PDF
+    info = pdfinfo.data.parse(resource)
 
     jsoned = pdfinfo.data.jsonify(info)
     assert isinstance(jsoned, str), str(jsoned)

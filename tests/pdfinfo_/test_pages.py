@@ -11,7 +11,7 @@ import tests.resources
 
 
 def test_pdfinfo_parse_pages():
-    ressource = tests.resources.TOC_PDF
-    pages = pdfinfo.pages.determine(ressource)
+    resource = tests.resources.TOC_PDF
+    pages = pdfinfo.pages.determine(resource)
 
     assert pages == 27, str(pages)

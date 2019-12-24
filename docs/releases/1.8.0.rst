@@ -1,0 +1,36 @@
+.. _1_8_0:
+
+RP 1.8.0
+=========
+
+fix
+---
+
+* [ ] support files without file extention as file input
+
+.. code-block:: none
+
+    $ rawmaker -j=4 -i
+    C:/kiwi/common/.tmp/queuemo/tmp24580877882973977018/97573839630555258185
+    -o C:/kiwi/common/.tmp/queuemo/tmp24580877882973977018/fastview_titlepage
+    --prefix oneline --pages 0 --char_margin 2.0 --boxes_flow 0.5
+
+    [ERROR] missing input resources: interface error ['document', 'pages'] != []
+    [ERROR] missing input resources: interface error ['document', 'pages'] != []
+    [ERROR] missing input resources: interface error ['document', 'pages'] != []
+    [ERROR] missing input resources: interface error ['document', 'boxes_flow', 'char_margin', 'line_margin', 'line_overlap', 'word_margin', 'pages'] != [0.5, 2.0, 0.5, 0.5, 0.1]
+    [ERROR] missing input resources: interface error ['document', 'boxes_flow', 'char_margin', 'line_margin', 'line_overlap', 'word_margin', 'pages'] != [0.5, 2.0, 0.5, 0.5, 0.1]
+    [ERROR] missing input resources: interface error ['document'] != []
+
+Code quality
+------------
+
+Before
+~~~~~~
+
+* TODO: CHECK DATA
+* Your code has been rated at 9.21/10
+* Total coverage: 92.94%
+
+After
+~~~~~

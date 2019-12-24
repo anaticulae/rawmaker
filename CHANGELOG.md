@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.7.2
+
+### Fix
+
+* handle broken input correctly (8a127968c083)
+
 ## v1.7.1
 
 ## v1.7.0

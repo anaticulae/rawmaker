@@ -35,6 +35,10 @@ def main():
     if args['status']:
         return status(inpath)
 
+    return validate(inpath, outpath)
+
+
+def validate(inpath, outpath) -> int:
     if not os.path.isfile(inpath):
         utila.error(f'require valid file resource: {inpath}')
         return utila.INVALID_COMMAND

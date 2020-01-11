@@ -2,3 +2,5 @@
 
 backlog
 =======
+
+* improve speed: half multicore runtime

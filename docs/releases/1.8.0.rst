@@ -22,15 +22,25 @@ fix
     [ERROR] missing input resources: interface error ['document', 'boxes_flow', 'char_margin', 'line_margin', 'line_overlap', 'word_margin', 'pages'] != [0.5, 2.0, 0.5, 0.5, 0.1]
     [ERROR] missing input resources: interface error ['document'] != []
 
+pages
+-----
+
+* [ ] support horizontal and vertical page sizes, use
+  page_116_images_toc_formular
+
+pdfinfo
+-------
+
+* [ ] add `pdfinfo --status` to check validate result
+
 Code quality
 ------------
 
 Before
 ~~~~~~
 
-* TODO: CHECK DATA
+* Total coverage: 93.10%
 * Your code has been rated at 9.21/10
-* Total coverage: 92.94%
 
 After
 ~~~~~

@@ -18,8 +18,11 @@ import rawmaker.error
 
 @utila.saveme
 def main():
+    commands = [
+        utila.cli.Flag('--status'),
+    ]
     parser = utila.cli.create_parser(
-        [],
+        commands,
         version=pdfinfo.__version__,
         outputparameter=True,
         inputparameter=True,
@@ -28,6 +31,10 @@ def main():
     args = utila.parse(parser)  # pylint:disable=W0612
     inpath, outpath = utila.sources(args, singleinput=True)
     inpath = inpath[0]  # TODO: SUPPORT MULTIPLE PATH
+
+    if args['status']:
+        return status(inpath)
+
     if not os.path.isfile(inpath):
         utila.error(f'require valid file resource: {inpath}')
         return utila.INVALID_COMMAND
@@ -46,4 +53,16 @@ def main():
     if os.path.isdir(outpath):
         outpath = os.path.join(outpath, 'pdfinfo.json')
     utila.file_create(outpath, jsonify)
+    return utila.SUCCESS
+
+
+def status(path: str) -> int:
+    source = os.path.join(path, 'pdfinfo.json')
+    if not os.path.exists(source):
+        utila.error(f'path: {source} does not exists')
+        return utila.INVALID_COMMAND
+
+    parsed = utila.file_read(source)
+    if parsed == '{}':
+        return pdfinfo.INVALID_PDF
     return utila.SUCCESS

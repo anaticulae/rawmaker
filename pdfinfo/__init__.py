@@ -15,3 +15,5 @@ __version__ = rawmaker.__version__
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PROCESS = 'pdfinfo'
+
+INVALID_PDF = 4

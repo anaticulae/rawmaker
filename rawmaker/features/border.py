@@ -6,7 +6,14 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+"""The `border`-feature enables to detect the pdf page size in ?pixel?
+and locate the cropped box around the content.
 
+Features:
+ * page size
+ * content size
+
+"""
 from collections import namedtuple
 from typing import List
 from typing import Tuple
@@ -28,14 +35,15 @@ from rawmaker.reader import read
 PagePageSize = namedtuple('PagePageSize', 'size page')
 
 
-def work(document: str, pages=None) -> Tuple[str, str]:
-    """Extract page-size of `document` bounding boxes of page-content
+def work(document: str, pages: tuple = None) -> typing.Tuple[str, str]:
+    """Extract page size of `document` bounding boxes of page content.
 
     Args:
-        document: pdf-document to run parsing
+        document: path to document to run parsing
+        pages: tuple of processed pages
     Returns:
         tuple(pages, boxes): page size and list of bounding boxes for page
-        content
+                             content.
     """
     assert isinstance(document, str), str(document)
     with read(document) as pdf:
@@ -49,12 +57,13 @@ def work(document: str, pages=None) -> Tuple[str, str]:
 
 def determine_boundingboxes(
         document: PDFDocument,
-        pages=None,
+        pages: tuple = None,
 ) -> PageBoundingsList:
     """Extract page size, border and boundingboxes from `PDFDocument`
 
     Args:
-        document(PDFDocument):
+        document(PDFDocument): loaded document
+        pages: tuple of processed pages
     Returns:
         sizeandborder(List[PageSizeBorder]) a list for every page with page
                 border and a list of the BoundingBoxes of the objects on the
@@ -84,13 +93,14 @@ def determine_boundingboxes(
     return sizeborders, boxes
 
 
-def pagesizes(document: PDFDocument, pages=None) -> List[PageSize]:
-    """Extract page sizes of `PDFDocument`
+def pagesizes(document: PDFDocument, pages: tuple = None) -> List[PageSize]:
+    """Extract page sizes of `PDFDocument`.
 
     Args:
-        document(PDFDocument):
-        pages:
+        document(PDFDocument): load pdf document
+        pages: tuple of processed pages
     Returns:
+        List of page sizes.
     """
     result = []
     for page, content in process_document(document, pages=pages):
@@ -101,7 +111,7 @@ def pagesizes(document: PDFDocument, pages=None) -> List[PageSize]:
 
 
 def boundingboxes_from_page(content, contentid: int):
-    """Extract bounding boxes from page `content`
+    """Extract bounding boxes from page `content`.
 
     Args:
         content: content of a single page

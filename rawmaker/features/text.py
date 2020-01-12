@@ -6,7 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-"""Extract text out of pdf document to gather information"""
+"""Extract text out of pdf document to gather information."""
 
 import os
 import typing
@@ -38,6 +38,7 @@ def work(
     Args:
         document: pdf-document to run parsing
         char_margin(float): XXX Why 5.0?
+        pages(list): List of processed pages.
     Returns:
         parsed document as yaml output
         parsed positions of text container

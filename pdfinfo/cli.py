@@ -19,7 +19,11 @@ import rawmaker.error
 @utila.saveme
 def main():
     commands = [
-        utila.cli.Flag('--status'),
+        utila.cli.Flag(
+            '--status',
+            message=('evaluate pdfinfo.json. '
+                     'return 0 if info is valid, 4 if pdfinfo is invalid, '
+                     '2 if pdfinfo does not exists')),
     ]
     parser = utila.cli.create_parser(
         commands,

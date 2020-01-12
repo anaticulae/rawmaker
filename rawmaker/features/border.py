@@ -14,25 +14,18 @@ Features:
  * content size
 
 """
-from collections import namedtuple
-from typing import List
-from typing import Tuple
+import collections
+import typing
 
-from iamraw import Border
-from iamraw import PageBoundings
-from iamraw import PageBoundingsList
-from iamraw import PageSize
-from iamraw import PageSizeBorder
-from pdfminer.pdfdocument import PDFDocument
-from serializeraw import dump_boundingboxes
-from serializeraw import dump_pageborders
-from utila import Flag
-from utila import roundme
+import iamraw
+import pdfminer.pdfdocument
+import serializeraw
+import utila
 
-from rawmaker.features import process_document
-from rawmaker.reader import read
+import rawmaker.features
+import rawmaker.reader
 
-PagePageSize = namedtuple('PagePageSize', 'size page')
+PagePageSize = collections.namedtuple('PagePageSize', 'size page')
 
 
 def work(document: str, pages: tuple = None) -> typing.Tuple[str, str]:
@@ -46,20 +39,20 @@ def work(document: str, pages: tuple = None) -> typing.Tuple[str, str]:
                              content.
     """
     assert isinstance(document, str), str(document)
-    with read(document) as pdf:
+    with rawmaker.reader.read(document) as pdf:
         sizeandborders, boxes = determine_boundingboxes(pdf, pages=pages)
 
-    pages = dump_pageborders(sizeandborders)
-    boundingboxes = dump_boundingboxes(boxes)
+    pages = serializeraw.dump_pageborders(sizeandborders)
+    boundingboxes = serializeraw.dump_boundingboxes(boxes)
 
     return pages, boundingboxes
 
 
 def determine_boundingboxes(
-        document: PDFDocument,
+        document: pdfminer.pdfdocument.PDFDocument,
         pages: tuple = None,
-) -> PageBoundingsList:
-    """Extract page size, border and boundingboxes from `PDFDocument`
+) -> iamraw.PageBoundingsList:
+    """Extract page size, border and boundingboxes from `PDFDocument`.
 
     Args:
         document(PDFDocument): loaded document
@@ -72,11 +65,11 @@ def determine_boundingboxes(
     """
     sizeborders, boxes = [], []
     contentid = 0
-    for page, content in process_document(document, pages=pages):
+    for page, content in rawmaker.features.process_document(document, pages=pages): # yapf:disable
         content, pagenumber = content.content, content.page
         size = pagesize_from_page(page)
 
-        pagebounding = PageBoundings(
+        pagebounding = iamraw.PageBoundings(
             boundings=boundingboxes_from_page(content, contentid),
             page=pagenumber,
         )
@@ -85,7 +78,7 @@ def determine_boundingboxes(
         contentid += len(content)
         border = cropborder_from_page(content)
         sizeborders.append(
-            PageSizeBorder(
+            iamraw.PageSizeBorder(
                 size=size,
                 border=border,
                 page=pagenumber,
@@ -93,7 +86,10 @@ def determine_boundingboxes(
     return sizeborders, boxes
 
 
-def pagesizes(document: PDFDocument, pages: tuple = None) -> List[PageSize]:
+def pagesizes(
+        document: pdfminer.pdfdocument.PDFDocument,
+        pages: tuple = None,
+) -> typing.List[iamraw.PageSize]:
     """Extract page sizes of `PDFDocument`.
 
     Args:
@@ -103,7 +99,7 @@ def pagesizes(document: PDFDocument, pages: tuple = None) -> List[PageSize]:
         List of page sizes.
     """
     result = []
-    for page, content in process_document(document, pages=pages):
+    for page, content in rawmaker.features.process_document(document, pages=pages): # yapf:disable
         content, pagenumber = content.content, content.page
         size = pagesize_from_page(page)
         result.append(PagePageSize(size=size, page=pagenumber))
@@ -119,22 +115,22 @@ def boundingboxes_from_page(content, contentid: int):
     """
     result = []
     for index, item in enumerate(content, start=contentid):
-        rounded = [roundme(value) for value in item.bbox]
+        rounded = [utila.roundme(value) for value in item.bbox]
         result.append([index, rounded])
     return result
 
 
-def pagesize_from_page(page) -> PageSize:
+def pagesize_from_page(page) -> iamraw.PageSize:
     # x, y, width, height
-    pagewidth = roundme(page.mediabox[2])
-    pageheight = roundme(page.mediabox[3])
+    pagewidth = utila.roundme(page.mediabox[2])
+    pageheight = utila.roundme(page.mediabox[3])
 
-    return PageSize(width=pagewidth, height=pageheight)
+    return iamraw.PageSize(width=pagewidth, height=pageheight)
 
 
-def cropborder_from_page(content) -> Border:
+def cropborder_from_page(content) -> iamraw.Border:
     if not content:
-        return Border(None, None, None, None)
+        return iamraw.Border(None, None, None, None)
 
     # Convert pdfminer coordinate to own system, see `BoundingBox`
     # TODO: Create convertion method in `BoundingBox`
@@ -146,19 +142,19 @@ def cropborder_from_page(content) -> Border:
     y1 = max([height - item.bbox[1] for item in content])
     # left, right, top, bottom
     x0, y0, x1, y1 = (
-        roundme(x0),
-        roundme(y0),
-        roundme(x1),
-        roundme(y1),
+        utila.roundme(x0),
+        utila.roundme(y0),
+        utila.roundme(x1),
+        utila.roundme(y1),
     )
     assert x0 < x1
     assert y0 < y1
 
-    return Border(left=x0, right=x1, top=y0, bottom=y1)
+    return iamraw.Border(left=x0, right=x1, top=y0, bottom=y1)
 
 
 def commandline():
-    return Flag(longcut=name(), message='Extract border for every page.')
+    return utila.Flag(longcut=name(), message='Extract border for every page.')
 
 
 def name():

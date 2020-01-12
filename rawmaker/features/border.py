@@ -120,11 +120,16 @@ def boundingboxes_from_page(content, contentid: int):
     return result
 
 
-def pagesize_from_page(page) -> iamraw.PageSize:
+def pagesize_from_page(page: pdfminer.pdfdocument.PDFDocument,
+                      ) -> iamraw.PageSize:
     # x, y, width, height
     pagewidth = utila.roundme(page.mediabox[2])
     pageheight = utila.roundme(page.mediabox[3])
 
+    rotate = page.rotate
+    if rotate in (90, 270):
+        # rotated page, flip page size
+        pagewidth, pageheight = pageheight, pagewidth
     return iamraw.PageSize(width=pagewidth, height=pageheight)
 
 

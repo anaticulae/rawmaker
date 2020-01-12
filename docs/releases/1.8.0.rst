@@ -25,7 +25,7 @@ fix
 pages
 -----
 
-* [ ] support horizontal and vertical page sizes, use
+* [x] support horizontal and vertical page sizes, use
   page_116_images_toc_formular
 
 pdfinfo

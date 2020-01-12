@@ -10,6 +10,8 @@
 from pytest import fixture
 from pytest import mark
 
+import rawmaker.reader
+import tests.resources
 from rawmaker.features.border import determine_boundingboxes
 from rawmaker.reader import read
 from rawmaker.utils import tomilimeter
@@ -61,3 +63,12 @@ def test_page_size(increasing_fonts, expected_size_in_mm):
     assert tomilimeter(*size) == expected_size_in_mm
 
     assert topixel(*tomilimeter(*size)) == tuple([round(item) for item in size])
+
+
+def test_border_pagesize_both():
+    pages = (0, 105)
+    with rawmaker.reader.read(tests.resources.MASTER_116) as pdf:
+        sizeandborders, _ = determine_boundingboxes(pdf, pages=pages)
+    pagesize_0 = sizeandborders[0].size
+    pagesize_105 = sizeandborders[1].size
+    assert pagesize_0 != pagesize_105, 'should not be equal'

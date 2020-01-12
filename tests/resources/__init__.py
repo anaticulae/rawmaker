@@ -70,6 +70,8 @@ SINGLE_HEADLINE_MOVINGFOOTER = os.path.join(
     'headline_movingfooter_footnotes.pdf',
 )
 
+MASTER_116 = os.path.join(MASTER, 'page_116_images_toc_formular.pdf')
+
 REQUIRED_RESOURCES = [
     BACHELOR,
     BACHELOR_63_IMAGES,
@@ -79,15 +81,16 @@ REQUIRED_RESOURCES = [
     INCREASING_FONT_A3,
     INCREASING_FONT_A4,
     INCREASING_FONT_A5,
+    MASTER_116,
     MASTER_72_NOIMAGES_TOC,
     NEGATIVE,
     NO_PDF,
     PORTING_PYTHON3,
     RESOURCES,
+    SINGLE_HEADLINE_MOVINGFOOTER,
     TECHNICAL,
     TOC_PDF,
     VIM_GUIDE_PDF,
-    SINGLE_HEADLINE_MOVINGFOOTER,
 ]
 
 MISSING = [item for item in REQUIRED_RESOURCES if not os.path.exists(item)]

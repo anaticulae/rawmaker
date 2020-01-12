@@ -12,6 +12,8 @@
 # A5 = (148, 210)
 # A6 = (104, 148)
 
+import math
+
 MILI_TO_PIX = 0.35278413424866517, 0.3527514613989115
 
 
@@ -22,3 +24,19 @@ def tomilimeter(width: float, height: float):
 def topixel(width: float, height: float) -> float:
     return (round(1.0 / MILI_TO_PIX[0] * width),
             round(1.0 / MILI_TO_PIX[1] * height))
+
+
+def chunks(items, chunk_size: int = 10) -> tuple:
+    """Split `items` by `chunk_size`.
+
+    Args:
+        items(iterable): content to split
+        chunk_size(int): maximal length of splitted chunk
+    Returns:
+        Tuple of splitted chunks.
+    """
+    result = tuple([
+        items[index * chunk_size:(index + 1) * chunk_size]
+        for index in range(math.ceil(len(items) / chunk_size))
+    ])
+    return result

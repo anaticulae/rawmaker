@@ -9,26 +9,19 @@
 """Extract text out of pdf document to gather information"""
 
 import os
-from typing import Tuple
+import typing
 
 import iamraw
 import serializeraw
 import utila
-from serializeraw import dump_document
-from serializeraw import dump_textpositions
-from serializeraw import load_document
-from serializeraw import load_textpositions
-from utila import Flag
 
 import pdfinfo.pages
 import rawmaker.cli
 import rawmaker.features
+import rawmaker.miner.position
+import rawmaker.parameter
+import rawmaker.reader
 import rawmaker.utils
-from rawmaker.features import extract_content
-from rawmaker.miner.position import hash_positions
-from rawmaker.parameter import create_layout
-from rawmaker.parameter import print_layout
-from rawmaker.reader import read
 
 
 def work(
@@ -39,7 +32,7 @@ def work(
         line_overlap: float = 0.5,
         word_margin: float = 0.1,
         pages: list = None,
-) -> Tuple[str, str]:
+) -> typing.Tuple[str, str]:
     """Extract structured text out of document
 
     Args:
@@ -61,20 +54,12 @@ def work(
         result = os.getcwd()
         document = superfast(document, config, result, pages)
     else:
-        document = extract_document(
-            document,
-            boxes_flow,
-            char_margin,
-            line_margin,
-            line_overlap,
-            word_margin,
-            pages,
-        )
+        document = extract_document(document, config, pages)
 
-    positions = hash_positions(document, pages=pages)
+    positions = rawmaker.miner.position.hash_positions(document, pages=pages)
 
-    dumped_text = dump_document(document)
-    dumped_positions = dump_textpositions(positions)
+    dumped_text = serializeraw.dump_document(document)
+    dumped_positions = serializeraw.dump_textpositions(positions)
 
     return dumped_text, dumped_positions
 
@@ -146,32 +131,28 @@ def merge_document(path: str, size: int) -> iamraw.Document:
 
 
 def extract_document(
-        document,
-        boxes_flow: float = 0.5,
-        char_margin: float = 2.0,
-        line_margin: float = 0.5,
-        line_overlap: float = 0.5,
-        word_margin: float = 0.1,
-        pages: list = None,
+        document: str,
+        config: rawmaker.features.ParsingConfiguration = None,
+        pages: tuple = None,
 ) -> iamraw.Document:
-    layout = create_layout(
-        boxes_flow=boxes_flow,
-        char_margin=char_margin,
-        line_margin=line_margin,
-        line_overlap=line_overlap,
-        word_margin=word_margin,
-    )
-    print_layout(layout)
+    if config is None:
+        config = rawmaker.features.ParsingConfiguration()
+    layout = rawmaker.parameter.from_config(config)
+    rawmaker.parameter.print_layout(layout)
     # Diff between chars which build a word
 
     assert isinstance(document, str), str(document)
-    with read(document) as pdf:
-        document = extract_content(pdf, layout_parameter=layout, pages=pages)
+    with rawmaker.reader.read(document) as pdf:
+        document = rawmaker.features.extract_content(
+            pdf,
+            layout_parameter=layout,
+            pages=pages,
+        )
     return document
 
 
 def commandline():
-    return Flag(longcut=name(), message='Extract text of document.')
+    return utila.Flag(longcut=name(), message='Extract text of document.')
 
 
 def name():

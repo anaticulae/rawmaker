@@ -11,6 +11,7 @@ from pytest import mark
 from serializeraw import dump_document
 from serializeraw import load_document
 
+import rawmaker.features
 import rawmaker.features.text
 from rawmaker.features.text import work
 from tests.resources import HELLO_WORLD_PAGES

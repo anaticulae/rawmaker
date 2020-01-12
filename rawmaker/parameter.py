@@ -11,6 +11,8 @@ from pdfminer.layout import LAParams
 from utila import Level
 from utila import log
 
+import rawmaker.features
+
 
 def create_layout(
         boxes_flow: float = 0.5,

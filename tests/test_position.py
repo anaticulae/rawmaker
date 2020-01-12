@@ -12,7 +12,7 @@ from iamraw import Document
 from pytest import fixture
 from pytest import raises
 
-from rawmaker.features.text import extract_content
+from rawmaker.features import extract_content
 from rawmaker.miner.position import DocumentItemHasher
 from rawmaker.miner.position import ItemNotFound
 from rawmaker.miner.position import hash_positions

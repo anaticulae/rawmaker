@@ -1,0 +1,27 @@
+.. _1_9_0:
+
+RP 1.9.0
+=========
+
+profiling
+---------
+
+* [ ] add option to profile rawmaker runtime
+
+super fast
+----------
+
+* [ ] add option --superfast to run rawmaker in multiple instances with
+  small page chunks(10 pages) and sum up result at the end.
+
+code quality
+------------
+
+before
+~~~~~~
+
+* Total coverage: 92.97%
+* Your code has been rated at 9.33/10
+
+after
+~~~~~

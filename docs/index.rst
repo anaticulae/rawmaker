@@ -8,6 +8,7 @@ General
   :maxdepth: 1
 
   bugs
+  profiling
 
 Progress
 --------

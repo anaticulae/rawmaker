@@ -6,7 +6,7 @@ RP 1.9.0
 profiling
 ---------
 
-* [ ] add option to profile rawmaker runtime
+* [x] add option to profile rawmaker runtime
 
 super fast
 ----------

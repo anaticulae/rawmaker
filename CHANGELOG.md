@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.8.0
+
+### Feature
+
+* support rotated pages (9bb86f764e97)
+* add --status option to check validation result (c89b8c3631ea)
+
+### Documentation
+
+* extend interface documentation (81ad0759a253)
+
 ## v1.7.4
 
 ## v1.7.3

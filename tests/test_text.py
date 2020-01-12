@@ -7,7 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 import iamraw
-import utila
 from pytest import mark
 from serializeraw import dump_document
 from serializeraw import load_document

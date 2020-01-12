@@ -16,12 +16,10 @@ from iamraw import BoundingBox
 from iamraw import Document
 from iamraw import PageContentTextPosition
 from iamraw import PageContentTextPositions
-from serializeraw import dump_textpositions
 from utila import NEWLINE
 from utila import SkipCollector
 from utila import from_raw_or_path
 from yaml import FullLoader
-from yaml import dump
 from yaml import load
 
 

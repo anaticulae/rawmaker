@@ -84,7 +84,7 @@ def test_features_images_extract_pages(
 
             with open(f'{fileoutpath}.{ext}', mode='wb') as output:
                 output.write(rawdata)
-            hashed = hash(rawdata)
+            # hashed = hash(rawdata)
             # if filehash:
             #     msg = (f'check {fileoutpath} the result seems to be wrong '
             #            '- if everything works fine, update expected file hash'

@@ -6,14 +6,11 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+import pytest
 import utila
 from iamraw import Weight
-from pytest import fixture
-from pytest import mark
-from pytest import param
 from serializeraw import load_font_content
 from serializeraw import load_font_header
-from utila import file_create
 from yaml import FullLoader
 from yaml import load
 
@@ -35,8 +32,8 @@ def test_mining_fonts(testdir):
     assert len(header) > 100
     assert len(content) > 300
 
-    file_create('header.yaml', header)
-    file_create('content.yaml', content)
+    utila.file_create('header.yaml', header)
+    utila.file_create('content.yaml', content)
 
 
 def test_mining_fonts_cporting(testdir):
@@ -88,7 +85,7 @@ def test_mining_increasing_fonts():
     assert font_sizes == expected_fontsizes
 
 
-@fixture
+@pytest.fixture
 def restructed_fonts():
     result = work(RESTRUCT_FONT_MINING)
     header, content = load_font_header(result[0]), load_font_content(result[1])
@@ -117,7 +114,7 @@ def test_mining_fonts_restruct_page_5(restructed_fonts):  # pylint:disable=W0621
     assert result == expected
 
 
-@mark.parametrize('font, scale, expected_name', [
+@pytest.mark.parametrize('font, scale, expected_name', [
     ('WTUVLZ + NimbusRomNo9L - Regu', 9.60, 'NimbusRomNo9L'),
     ('CGWFDF + NimbusRomNo9L - ReguItal', 11.90, 'NimbusRomNo9L'),
     ('GAGKNR + NimbusRomNo9L - Medi', 13.00, 'NimbusRomNo9L'),

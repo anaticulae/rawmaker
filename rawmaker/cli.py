@@ -20,7 +20,6 @@ import os
 import sys
 
 import protocol
-from utila import Input
 from utila import Pattern
 from utila import Value
 from utila import create_step as step

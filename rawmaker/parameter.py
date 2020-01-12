@@ -9,7 +9,6 @@
 
 from pdfminer.layout import LAParams
 from utila import Level
-from utila import error
 from utila import log
 
 

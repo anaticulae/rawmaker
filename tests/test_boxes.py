@@ -8,9 +8,7 @@
 # =============================================================================
 
 import pytest
-import utila
 from iamraw import BoundingBox
-from pytest import fixture
 
 import rawmaker.features.boxes
 import tests.resources
@@ -22,14 +20,13 @@ from rawmaker.features.boxes import determine_pageboxes
 from rawmaker.features.boxes import determine_pagehorizontals
 from rawmaker.features.boxes import intersecting_lines
 from rawmaker.features.boxes import lines
-from rawmaker.features.boxes import pagesize
 from rawmaker.reader import read
 from tests.resources import HOW_TO_CPORTING_BOX_COUNT as BOX_COUNT
 from tests.resources import HOW_TO_CPORTING_HORIZONTAL_COUNT as LINES_COUNT
 from tests.resources import HOW_TO_CPORTING_PDF as TEST_DOCUMENT
 
 
-@fixture
+@pytest.fixture
 def linecluster():
     result = []
     with read(TEST_DOCUMENT) as doc:

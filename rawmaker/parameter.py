@@ -31,6 +31,17 @@ def create_layout(
     return result
 
 
+def from_config(config: rawmaker.features.ParsingConfiguration):
+    result = create_layout(
+        boxes_flow=config.boxes_flow,
+        char_margin=config.char_margin,
+        line_margin=config.line_margin,
+        line_overlap=config.line_overlap,
+        word_margin=config.word_margin,
+    )
+    return result
+
+
 def print_layout(layout: LAParams = None):
     assert layout, 'missing layout'
     log('   layout:', end=' ', level=Level.INFORMATION)

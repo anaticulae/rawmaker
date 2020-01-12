@@ -94,11 +94,13 @@ Extract features from pdf document.
 """
 
 LINTER_FLAG = 'linter'
+SUPERFAST_FLAG = 'sf'
 
 
 def main():
     flags = [
         (LINTER_FLAG, 'write linter result'),
+        (SUPERFAST_FLAG, 'use superfast to fork processes and merge results'),
     ]
     with linter():
         utila.featurepack(
@@ -121,6 +123,10 @@ def errorhook(exception, source):  # pylint:disable=W0613
 
     if isinstance(exception, rawmaker.error.InvalidPDF):
         logger.add_finding(msgid='F0000', confidence=1.0)
+
+
+def superfast() -> bool:
+    return '--sf' in sys.argv
 
 
 @contextlib.contextmanager

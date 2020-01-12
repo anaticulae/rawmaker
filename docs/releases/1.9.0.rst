@@ -11,7 +11,7 @@ profiling
 super fast
 ----------
 
-* [ ] add option --superfast to run rawmaker in multiple instances with
+* [x] add option --superfast to run rawmaker in multiple instances with
   small page chunks(10 pages) and sum up result at the end.
 
 code quality

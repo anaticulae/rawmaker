@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+import dataclasses
 from collections import namedtuple
 from typing import Tuple
 
@@ -24,6 +25,15 @@ from utila import debug
 from rawmaker.miner.mining import PrecisePDFConverter
 
 PageContent = namedtuple('PageContent', 'content, page')
+
+
+@dataclasses.dataclass
+class ParsingConfiguration:
+    boxes_flow: float = 0.5
+    char_margin: float = 2.0
+    line_margin: float = 0.5
+    line_overlap: float = 0.5
+    word_margin: float = 0.1
 
 
 def default_parser_config():

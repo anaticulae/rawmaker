@@ -24,6 +24,7 @@ MASTER = os.path.join(RESOURCES, 'master')
 NEGATIVE = os.path.join(RESOURCES, 'negative')
 HELLO_WORLD = join(RESOURCES, 'helloworld')
 TECHNICAL = os.path.join(RESOURCES, 'technical')
+SINGLE = os.path.join(RESOURCES, 'single')
 
 NO_PDF = join(NEGATIVE, 'no_pdf')
 
@@ -64,6 +65,11 @@ assert os.path.exists(MASTER_72_NOIMAGES_TOC), str(MASTER_72_NOIMAGES_TOC)
 
 BACHELOR_63_IMAGES = os.path.join(BACHELOR, 'page_63_images_toc.pdf')
 
+SINGLE_HEADLINE_MOVINGFOOTER = os.path.join(
+    SINGLE,
+    'headline_movingfooter_footnotes.pdf',
+)
+
 REQUIRED_RESOURCES = [
     BACHELOR,
     BACHELOR_63_IMAGES,
@@ -81,6 +87,7 @@ REQUIRED_RESOURCES = [
     TECHNICAL,
     TOC_PDF,
     VIM_GUIDE_PDF,
+    SINGLE_HEADLINE_MOVINGFOOTER,
 ]
 
 MISSING = [item for item in REQUIRED_RESOURCES if not os.path.exists(item)]

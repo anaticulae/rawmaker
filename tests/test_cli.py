@@ -12,6 +12,8 @@ import os
 import pytest
 import utila
 
+import tests
+import tests.resources
 from tests import run_failure
 from tests import run_success
 from tests.resources import DOCUMENTATION_TWINE
@@ -90,3 +92,9 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
 
     # broken file + developer.lin and user.lin
     assert len(files_written) == 3, str(files_written)
+
+
+def test_rawmaker_cli_run_file_without_extention(testdir, monkeypatch):
+    source = os.path.join(str(testdir), 'hello')
+    utila.file_copy(tests.resources.SINGLE_HEADLINE_MOVINGFOOTER, source)
+    tests.run_success(f'-i {source}', monkeypatch=monkeypatch)

@@ -6,7 +6,7 @@ RP 1.8.0
 fix
 ---
 
-* [ ] support files without file extention as file input
+* [x] support files without file extention as file input
 
 .. code-block:: none
 

@@ -14,6 +14,10 @@ super fast
 * [x] add option --superfast to run rawmaker in multiple instances with
   small page chunks(10 pages) and sum up result at the end.
 
+* [ ] measure every step time
+
+* [ ] support --sf function for slowest four steps
+
 code quality
 ------------
 

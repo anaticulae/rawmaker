@@ -20,23 +20,18 @@ import os
 import sys
 
 import protocol
-from utila import Pattern
-from utila import Value
-from utila import create_step as step
-from utila import featurepack
+import utila
 
-from rawmaker import PROCESS_NAME
-from rawmaker import ROOT
-from rawmaker import __version__
-from rawmaker.error import InvalidPDF
+import rawmaker
+import rawmaker.error
 
-PDF = Pattern('*', 'pdf')
+PDF = utila.Pattern('*', 'pdf')
 
-CHAR_MARGIN = Value('char_margin', float, defaultvar=2.0, minimum=0.1)
-LINE_OVERLAP = Value('line_overlap', float, defaultvar=0.5, minimum=0.1)
-LINE_MARGIN = Value('line_margin', float, defaultvar=0.5, minimum=0.1)
-WORD_MARGIN = Value('word_margin', float, defaultvar=0.1, minimum=0.1)
-BOXES_FLOW = Value('boxes_flow', float, defaultvar=0.5, minimum=0.1)
+CHAR_MARGIN = utila.Value('char_margin', float, defaultvar=2.0, minimum=0.1)
+LINE_OVERLAP = utila.Value('line_overlap', float, defaultvar=0.5, minimum=0.1)
+LINE_MARGIN = utila.Value('line_margin', float, defaultvar=0.5, minimum=0.1)
+WORD_MARGIN = utila.Value('word_margin', float, defaultvar=0.1, minimum=0.1)
+BOXES_FLOW = utila.Value('boxes_flow', float, defaultvar=0.5, minimum=0.1)
 
 PDF_INPUT = [PDF]
 
@@ -50,12 +45,12 @@ CONFIG_INPUTS = [
 ]
 
 WORKPLAN = [
-    step(
+    utila.create_step(
         'annotation',
         inputs=PDF_INPUT,
         output=('annotation',),
     ),
-    step(
+    utila.create_step(
         'border',
         inputs=PDF_INPUT,
         output=(
@@ -63,7 +58,7 @@ WORKPLAN = [
             'boundingboxes',
         ),
     ),
-    step(
+    utila.create_step(
         'boxes',
         inputs=PDF_INPUT,
         output=(
@@ -71,7 +66,7 @@ WORKPLAN = [
             'horizontal',
         ),
     ),
-    step(
+    utila.create_step(
         'fonts',
         inputs=CONFIG_INPUTS,
         output=(
@@ -79,7 +74,7 @@ WORKPLAN = [
             'content',
         ),
     ),
-    step(
+    utila.create_step(
         'text',
         inputs=CONFIG_INPUTS,
         output=(
@@ -87,7 +82,7 @@ WORKPLAN = [
             'positions',
         ),
     ),
-    step(
+    utila.create_step(
         'toc',
         inputs=PDF_INPUT,
         output=('toc',),
@@ -106,17 +101,17 @@ def main():
         (LINTER_FLAG, 'write linter result'),
     ]
     with linter():
-        featurepack(
+        utila.featurepack(
             description=RAWMAKER_DESCRIPTION,
             errorhook=errorhook,
             featurepackage='rawmaker.features',
             flags=flags,
             multiprocessed=True,
-            name=PROCESS_NAME,
+            name=rawmaker.PROCESS_NAME,
             pages=True,
-            root=ROOT,
+            root=rawmaker.ROOT,
             singleinput=True,
-            version=__version__,
+            version=rawmaker.__version__,
             workplan=WORKPLAN,
         )
 
@@ -124,7 +119,7 @@ def main():
 def errorhook(exception, source):  # pylint:disable=W0613
     logger = errorhook.linter
 
-    if isinstance(exception, InvalidPDF):
+    if isinstance(exception, rawmaker.error.InvalidPDF):
         logger.add_finding(msgid='F0000', confidence=1.0)
 
 

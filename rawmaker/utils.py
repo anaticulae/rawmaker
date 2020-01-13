@@ -14,10 +14,7 @@
 
 import concurrent.futures
 import math
-import os
 
-import iamraw
-import serializeraw
 import utila
 
 MILI_TO_PIX = 0.35278413424866517, 0.3527514613989115

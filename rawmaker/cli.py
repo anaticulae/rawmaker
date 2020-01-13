@@ -132,11 +132,7 @@ def superfast() -> bool:
 
 @contextlib.contextmanager
 def linter():
-    """Write result of linting when using `--linter` parameter.
-
-    Args:
-        write_result(bool): if active create developer.lin and user.lin
-    """
+    """Write result of linting when using `--linter` parameter."""
     # path to write error report
     root = str(os.getcwd())
     # setup linter

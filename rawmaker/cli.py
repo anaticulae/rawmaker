@@ -111,6 +111,7 @@ def main():
             multiprocessed=True,
             name=rawmaker.PROCESS_NAME,
             pages=True,
+            profileflag=True,
             root=rawmaker.ROOT,
             singleinput=True,
             version=rawmaker.__version__,

@@ -144,8 +144,8 @@ def determine_pagehorizontals(
         assert height >= 0, str(height)
         assert width >= 0, str(width)
         if height < vertical_maxerror and width > horizontal_minwidth:
-            horizontal = iamraw.BoundingBox.from_list(merged[0])
-            horizontal = iamraw.HorizontalLine(box=horizontal)
+            boxed = iamraw.BoundingBox.from_list(merged[0])
+            horizontal = iamraw.HorizontalLine(box=boxed)
             result.append(horizontal)
         else:
             msg = f'no horizontal line {x0} {y0} {x1} {y1} on page: {page}'
@@ -285,7 +285,7 @@ def type_in_document(
     return result
 
 
-REQUIRED_MINUS_SIGNS = 50
+REQUIRED_MINUS_SIGNS = 50  # TODO: HOLY VALUE
 
 
 def lines(document: pdfminer.pdfdocument.PDFDocument, pages=None):

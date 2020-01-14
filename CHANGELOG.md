@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v1.8.1
+
+### Feature
+
+* add profile flag to measure working steps (8711d09fa819)
+* add method to create LAParams out of Config (2c117fdd8235)
+* add --sf to run super fast mode (63c994157c3d)
+* add method to split iterable by chunk_size (de124477d936)
+* extend help information (e9f5e3031925)
+
+### Documentation
+
+* extend interface documentation (4a99db050ef4)
+* add readme how to profile rawmaker execution (64e7a78a2f3f)
+
 ## v1.8.0
 
 ### Feature

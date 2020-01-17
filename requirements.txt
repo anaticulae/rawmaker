@@ -7,7 +7,7 @@ Pillow==6.1.0
 # Internal packages
 iamraw==1.12.12
 utila==1.12.1
-protocol==0.6.1
+protocol==0.7.0
 
 
 # test data provider

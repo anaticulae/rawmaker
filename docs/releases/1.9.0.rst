@@ -1,7 +1,7 @@
 .. _1_9_0:
 
 RP 1.9.0
-=========
+========
 
 profiling
 ---------
@@ -16,8 +16,6 @@ super fast
 
 * [x] measure every step time
 
-* [ ] support --sf function for slowest four steps
-
 code quality
 ------------
 
@@ -29,3 +27,5 @@ before
 
 after
 ~~~~~
+
+* Your code has been rated at 9.39/10

@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.9.4
+
+### Fix
+
+* flip y-coordinate of extracted BoundingBox (21c6cd90cc26)
+
 ## v1.9.3
 
 ## v1.9.2

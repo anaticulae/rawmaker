@@ -14,15 +14,15 @@ from serializeraw import load_annotations
 from rawmaker.features.annotation import extract_annotations
 from rawmaker.features.annotation import work
 from rawmaker.reader import read
-from tests.resources import VIM_GUIDE_PAGE_COUNT
-from tests.resources import VIM_GUIDE_PDF
+from tests.resources import VIM_PAGE_COUNT
+from tests.resources import VIM_PDF
 
 
 def test_annotation_mining_annotations(capsys):
     extracted = None
-    with read(VIM_GUIDE_PDF) as pdf:
+    with read(VIM_PDF) as pdf:
         extracted = extract_annotations(pdf)
-    assert len(extracted) == VIM_GUIDE_PAGE_COUNT
+    assert len(extracted) == VIM_PAGE_COUNT
 
     # no logging errors from unsupported annotation
     out, err = capsys.readouterr()
@@ -31,14 +31,14 @@ def test_annotation_mining_annotations(capsys):
 
 
 def test_annotation_work():
-    result = work(VIM_GUIDE_PDF)
+    result = work(VIM_PDF)
     assert len(result) > 200
 
 
 @fixture
 def vim_guide_annotation():
     extracted = None
-    with read(VIM_GUIDE_PDF) as pdf:
+    with read(VIM_PDF) as pdf:
         extracted = extract_annotations(pdf)
     return extracted
 

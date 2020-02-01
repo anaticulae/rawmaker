@@ -16,19 +16,19 @@ from rawmaker.features.border import determine_boundingboxes
 from rawmaker.reader import read
 from rawmaker.utils import tomilimeter
 from rawmaker.utils import topixel
-from tests.resources import DOCUMENTATION_TWINE_PAGES
-from tests.resources import DOCUMENTATION_TWINE_PDF
 from tests.resources import INCREASING_FONT_A3
 from tests.resources import INCREASING_FONT_A4
 from tests.resources import INCREASING_FONT_A5
+from tests.resources import TWINE_PAGES
+from tests.resources import TWINE_PDF
 
 
 @fixture
 def boxdata_from_pdf():
-    with read(DOCUMENTATION_TWINE_PDF) as pdf:
+    with read(TWINE_PDF) as pdf:
         sizeandborders, boxes = determine_boundingboxes(pdf)
     assert sizeandborders
-    assert len(sizeandborders) == DOCUMENTATION_TWINE_PAGES
+    assert len(sizeandborders) == TWINE_PAGES
 
     return sizeandborders, boxes
 
@@ -41,7 +41,7 @@ def test_maximize_bounding_box(boxdata_from_pdf):  #pylint:disable=W0621
     # TODO: Remove this test?
     pageandborders, _ = boxdata_from_pdf
     assert pageandborders
-    assert len(pageandborders) == DOCUMENTATION_TWINE_PAGES
+    assert len(pageandborders) == TWINE_PAGES
 
 
 @mark.parametrize(
@@ -67,7 +67,7 @@ def test_page_size(increasing_fonts, expected_size_in_mm):
 
 def test_border_pagesize_both():
     pages = (0, 105)
-    with rawmaker.reader.read(tests.resources.MASTER_116) as pdf:
+    with rawmaker.reader.read(tests.resources.MASTER116) as pdf:
         sizeandborders, _ = determine_boundingboxes(pdf, pages=pages)
     pagesize_0 = sizeandborders[0].size
     pagesize_105 = sizeandborders[1].size

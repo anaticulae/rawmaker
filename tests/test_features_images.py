@@ -65,7 +65,7 @@ def test_features_images_extract_pages(
         filehash,
         testdir,
 ):
-    source = tests.resources.BACHELOR_63_IMAGES
+    source = tests.resources.BACHELOR63
     extracted = rawmaker.features.images.extract_pages(source, pages=pages)
     if expected is not None:
         for page, expected_images in zip(pages, expected):

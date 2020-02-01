@@ -29,7 +29,7 @@ def test_toc_from_document_no_outlines(monkeypatch, capsys):
             get_outlines,
         )
         # from pdfminer.pdfdocument import PDFDocument
-        rawmaker.features.toc.work(tests.resources.VIM_GUIDE_PDF)
+        rawmaker.features.toc.work(tests.resources.VIM_PDF)
     _, error = capsys.readouterr()
 
     assert 'error' in error.lower(), error
@@ -54,7 +54,7 @@ def test_toc_parameterization():
 
 
 def test_toc_without_outlines():
-    source = tests.resources.MASTER_72_NOIMAGES_TOC
+    source = tests.resources.MASTER72
     extracted = rawmaker.features.toc.work(source)
 
     # no toc extraction

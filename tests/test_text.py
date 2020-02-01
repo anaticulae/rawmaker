@@ -17,11 +17,11 @@ import rawmaker.features.text
 from rawmaker.features.text import work
 from tests.resources import HELLO_WORLD_PAGES
 from tests.resources import HELLO_WORLD_PDF
-from tests.resources import VIM_GUIDE_PDF
+from tests.resources import VIM_PDF
 
 
 def test_miner_pdf():
-    parsed_file = work(VIM_GUIDE_PDF)
+    parsed_file = work(VIM_PDF)
     assert parsed_file
 
 
@@ -37,7 +37,7 @@ def test_mine_hello_world_pdf():
     'pdf_path',
     [
         HELLO_WORLD_PDF,
-        VIM_GUIDE_PDF,
+        VIM_PDF,
     ],
     ids=[
         'hello_world.pdf',
@@ -73,7 +73,7 @@ def test_dump_and_load_pdf(pdf_path):
 
 def test_text_mine_pdf_page_0():
     selected_pages = [3, 4, 5]
-    parsed = work(VIM_GUIDE_PDF, pages=selected_pages)
+    parsed = work(VIM_PDF, pages=selected_pages)
     dumped_text, _ = parsed
     text = load_document(dumped_text)
     assert len(text) == len(selected_pages)

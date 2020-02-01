@@ -16,13 +16,13 @@ from pytest import raises
 from rawmaker.error import InvalidPDF
 from rawmaker.reader import read
 from tests.resources import NO_PDF
-from tests.resources import VIM_GUIDE_OUTLINES
-from tests.resources import VIM_GUIDE_PDF
+from tests.resources import VIM_OUTLINES
+from tests.resources import VIM_PDF
 
 
 def test_outline_count():
     """Test reading outlines from document"""
-    with read(VIM_GUIDE_PDF) as document:
+    with read(VIM_PDF) as document:
         outlines = document.get_outlines()
         # pylint: disable=unused-variable
         # pylint: disable=invalid-name
@@ -38,7 +38,7 @@ def test_outline_count():
             pass
 
         section_count = len(list(document.get_outlines()))
-        assert section_count == VIM_GUIDE_OUTLINES
+        assert section_count == VIM_OUTLINES
 
 
 def test_read_no_pdf():

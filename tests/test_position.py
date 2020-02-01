@@ -17,7 +17,7 @@ from rawmaker.miner.position import DocumentItemHasher
 from rawmaker.miner.position import ItemNotFound
 from rawmaker.miner.position import hash_positions
 from rawmaker.reader import read
-from tests.resources import VIM_GUIDE_PDF
+from tests.resources import VIM_PDF
 
 BBox = BoundingBox.from_str  # pylint:disable=invalid-name
 
@@ -50,7 +50,7 @@ def test_key_does_not_exists():
 @fixture
 def document() -> Document:
     extracted = None
-    with read(VIM_GUIDE_PDF) as pdf:
+    with read(VIM_PDF) as pdf:
         extracted = extract_content(pdf)
     assert extracted
     return extracted

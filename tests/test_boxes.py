@@ -116,7 +116,7 @@ def test_intersecting_lines():
 
 def test_boxex_determine_horizontals_master72pages():
     horizontals = None
-    with read(tests.resources.MASTER_72_NOIMAGES_TOC) as doc:
+    with read(tests.resources.MASTER72) as doc:
         horizontals = rawmaker.features.boxes.determine_horizontal(
             doc,
             list(range(0, 10)),

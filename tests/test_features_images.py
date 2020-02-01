@@ -58,6 +58,7 @@ import tests.resources
             id='fourpages',
         ),
     ])
+@utila.skip_longrun
 def test_features_images_extract_pages(
         pages,
         expected,

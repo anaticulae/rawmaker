@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 import iamraw
+import utila
 from pytest import mark
 from serializeraw import dump_document
 from serializeraw import load_document
@@ -43,6 +44,7 @@ def test_mine_hello_world_pdf():
         'vimguide.pdf',
     ],
 )
+@utila.skip_longrun
 def test_dump_and_load_pdf(pdf_path):
     """Parse text from pdf file and write the result. Load the result after
     and compare with item to save"""

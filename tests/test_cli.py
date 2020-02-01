@@ -28,6 +28,7 @@ from tests.resources import RESTRUCTURED_PDF
     ['-i', DOCUMENTATION_TWINE_PDF, '-o', 'output'],
     ['-i', RESTRUCTURED_PDF, '-o', 'output'],
 ])
+@utila.skip_longrun
 def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
     run_success(command, monkeypatch=monkeypatch)
@@ -58,6 +59,7 @@ def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):  #pylint: disab
         # DO NOT REMOVE A SINGLE SOURCE OF THIS TEST
         ['-i', PORTING_PYTHON3, '-o', 'output'],
     ])
+@utila.skip_longrun
 def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: disable=W0613
     """This test run the rawmaker with problematic resources which led to an
     error on parsing/converting the document in the past."""

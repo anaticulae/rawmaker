@@ -11,7 +11,7 @@ import tests.resources
 
 
 def test_pdfinfo_parse_version():
-    resource = tests.resources.TOC_PDF
+    resource = tests.resources.RESTRUCTURED_PDF
     parsed = pdfinfo.version.parse(resource)
 
     assert parsed == pdfinfo.version.Version(1, 5), str(parsed)

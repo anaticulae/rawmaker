@@ -21,8 +21,8 @@ import tests.resources
 
 @pytest.mark.parametrize('command', [
     '--help',
-    pytest.param(f'-i {tests.resources.NO_PDF}', id='invalid_pdffile'),
-    pytest.param(f'-i {tests.resources.TOC_PDF}', id='valid_restructured'),
+    pytest.param(f'-i {tests.resources.NO_PDF}', id='invalid_pdf'),
+    pytest.param(f'-i {tests.resources.RESTRUCTURED_PDF}', id='valid_pdf'),
 ])
 def test_pdfinfo_run(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""

@@ -11,7 +11,7 @@ import tests.resources
 
 
 def test_pdfinfo_info_generator():
-    resource = tests.resources.TOC_PDF
+    resource = tests.resources.RESTRUCTURED_PDF
     generator = pdfinfo.info.generator(resource)
 
     assert generator == pdfinfo.info.Generator.Latex, str(generator)

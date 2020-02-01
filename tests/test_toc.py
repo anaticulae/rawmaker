@@ -42,7 +42,7 @@ def test_toc_parameterization():
     This test is more for finding a good parameter, than for realy testing.
     TODO: Improve this later. Don't know how to, yet.
     """
-    with rawmaker.reader.read(tests.resources.TOC_PDF) as pdf:
+    with rawmaker.reader.read(tests.resources.RESTRUCTURED_PDF) as pdf:
         # Diff between chars which build a word
         layout = pdfminer.layout.LAParams(char_margin=10.0)
         document = rawmaker.features.extract_content(

@@ -12,7 +12,7 @@ import tests.resources
 
 
 def test_pdfinfo_data_jsonify():
-    resource = tests.resources.TOC_PDF
+    resource = tests.resources.RESTRUCTURED_PDF
     info = pdfinfo.data.parse(resource)
 
     jsoned = pdfinfo.data.jsonify(info)

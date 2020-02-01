@@ -16,17 +16,17 @@ import tests
 import tests.resources
 from tests import run_failure
 from tests import run_success
-from tests.resources import PORTING_PYTHON3
+from tests.resources import HELLO_WORLD
+from tests.resources import HOW_TO_CPORTING_PDF
 from tests.resources import RESTRUCTURED_PDF
-from tests.resources import TWINE
 from tests.resources import TWINE_PDF
 
 
 @pytest.mark.parametrize('command', [
     ['--help'],
-    ['-i', TWINE, '-o', 'output', '-j', '5'],
-    ['-i', TWINE_PDF, '-o', 'output'],
+    ['-i', HELLO_WORLD, '-o', 'output', '-j', '5'],
     ['-i', RESTRUCTURED_PDF, '-o', 'output'],
+    ['-i', TWINE_PDF, '-o', 'output'],
 ])
 @utila.skip_longrun
 def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
@@ -57,7 +57,7 @@ def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):  #pylint: disab
     'command',
     [
         # DO NOT REMOVE A SINGLE SOURCE OF THIS TEST
-        ['-i', PORTING_PYTHON3, '-o', 'output'],
+        ['-i', HOW_TO_CPORTING_PDF, '-o', 'output'],
     ])
 @utila.skip_longrun
 def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: disable=W0613

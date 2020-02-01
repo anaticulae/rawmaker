@@ -70,7 +70,7 @@ def determine_boundingboxes(
         size = pagesize_from_page(page)
 
         pagebounding = iamraw.PageBoundings(
-            boundings=boundingboxes_from_page(content, contentid),
+            boundings=boundingboxes_from_page(content, contentid, size),
             page=pagenumber,
         )
         boxes.append(pagebounding)
@@ -106,16 +106,27 @@ def pagesizes(
     return result
 
 
-def boundingboxes_from_page(content, contentid: int):
+def boundingboxes_from_page(content, contentid: int, pagesize):
     """Extract bounding boxes from page `content`.
 
     Args:
         content: content of a single page
         contentid: last id of the previous page
+        pagesize: tuple of width and height
     """
     result = []
     for index, item in enumerate(content, start=contentid):
         rounded = tuple([utila.roundme(value) for value in item.bbox])
+        # flip y coordinate from top down
+        # TODO: REMOVE AFTER UPGRADING PARSER
+        # See rawmaker/features/boxes.py
+        flipped = [
+            rounded[0],
+            pagesize.height - rounded[1],
+            rounded[2],
+            pagesize.height - rounded[3],
+        ]
+        rounded = tuple([utila.roundme(value) for value in flipped])
         result.append((index, rounded))
     return result
 

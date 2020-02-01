@@ -72,3 +72,15 @@ def test_border_pagesize_both():
     pagesize_0 = sizeandborders[0].size
     pagesize_105 = sizeandborders[1].size
     assert pagesize_0 != pagesize_105, 'should not be equal'
+
+
+def test_border_bounding_boxes():
+    """Test that coordinates are flipped like expected in our format."""
+    with read(tests.resources.HELLO_WORLD_PDF) as pdf:
+        boxes = determine_boundingboxes(pdf, pages=(0,))[1]
+    assert len(boxes) == 1, boxes
+    boundings = boxes[0].boundings
+    for item in boundings:
+        print(item)
+    ymax = max([item[1][2] for item in boundings])
+    assert ymax < 450.0, f'{ymax} was not flipped'

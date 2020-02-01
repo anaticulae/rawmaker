@@ -115,8 +115,8 @@ def boundingboxes_from_page(content, contentid: int):
     """
     result = []
     for index, item in enumerate(content, start=contentid):
-        rounded = [utila.roundme(value) for value in item.bbox]
-        result.append([index, rounded])
+        rounded = tuple([utila.roundme(value) for value in item.bbox])
+        result.append((index, rounded))
     return result
 
 

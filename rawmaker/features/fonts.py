@@ -321,9 +321,8 @@ def font_fromraw(font: str, scale: float) -> Font:
             except ValueError:
                 fontname = font
 
-    msg = 'detected fontname %s; input material %s' % (fontname, save)
-    assert '+' not in fontname, msg
-    assert ',' not in fontname, msg
+    if '+' in fontname or ',' in fontname:
+        error(f'detected fontname {fontname}; input material {save}')
 
     font = Font(
         name=fontname,

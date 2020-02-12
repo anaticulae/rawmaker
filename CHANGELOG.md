@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.9.5
+
+### Fix
+
+* do not let font extraction fail, log error instead (3336c0529c23)
+
+### Documentation
+
+* merge double backlog (0c2524369919)
+* remove unused documentation source (c85a6fc83a88)
+
 ## v1.9.4
 
 ### Fix

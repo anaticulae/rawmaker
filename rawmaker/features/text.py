@@ -86,7 +86,7 @@ def superfast(
         utila.log(cmd)
         todo.append(cmd)
 
-    completed = rawmaker.utils.run_parallel(todo, result, worker=12)
+    completed = utila.run_parallel(todo, result, worker=12)
     assert completed == utila.SUCCESS, completed
 
     document = merge_document(result, len(chunks))

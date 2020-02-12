@@ -43,19 +43,3 @@ def chunks(items, chunk_size: int = 10) -> tuple:
         for index in range(math.ceil(len(items) / chunk_size))
     ])
     return result
-
-
-def run_parallel(items, cwd=None, worker: int = 8) -> int:
-    # TODO: MOVE TO UTILA
-    ret = 0
-    with concurrent.futures.ThreadPoolExecutor(max_workers=worker) as executor:
-        todo = {executor.submit(utila.run, cmd, cwd): cmd for cmd in items}
-        for future in concurrent.futures.as_completed(todo):
-            current = todo[future]
-            try:
-                data = future.result()
-                assert data.returncode == utila.SUCCESS, data
-            except Exception as exc:  # pylint:disable=broad-except
-                print('%r generated an exception: %s' % (current, exc))
-                ret += 1
-    return ret

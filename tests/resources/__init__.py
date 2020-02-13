@@ -18,6 +18,7 @@ EXAMPLES = os.path.join(rawmaker.ROOT, 'tests/examples')
 assert os.path.exists(EXAMPLES), EXAMPLES
 
 BACHELOR = os.path.join(RESOURCES, 'bachelor')
+BOOK = os.path.join(RESOURCES, 'book')
 DOCU = os.path.join(RESOURCES, 'docu')
 HELLO_WORLD = os.path.join(RESOURCES, 'helloworld')
 MASTER = os.path.join(RESOURCES, 'master')
@@ -26,6 +27,8 @@ SINGLE = os.path.join(RESOURCES, 'single')
 TECHNICAL = os.path.join(RESOURCES, 'technical')
 
 NO_PDF = os.path.join(NEGATIVE, 'no_pdf')
+
+LEFTRIGHT = os.path.join(BOOK, 'leftright.pdf')
 
 VIM_PDF = os.path.join(DOCU, 'vimguide.pdf')
 VIM_PAGE_COUNT = 13
@@ -73,6 +76,7 @@ REQUIRED_RESOURCES = [
     INCREASING_FONT_A3,
     INCREASING_FONT_A4,
     INCREASING_FONT_A5,
+    LEFTRIGHT,
     MASTER116,
     MASTER72,
     NEGATIVE,

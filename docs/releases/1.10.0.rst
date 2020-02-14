@@ -5,7 +5,7 @@ RP 1.10.0
 
 * [x] investigate font size of book/leftright example
 
-* [ ] fix annotation bug
+* [x] fix annotation bug
 
 code quality
 ------------

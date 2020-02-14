@@ -260,7 +260,7 @@ POSTSCRIPT_14_DEFAULT = {
 
 
 def parse_basefont(font: str):
-    basefont = False
+    basefont = True
     with contextlib.suppress(IndexError):
         # see above
         # ('WTUVLZ+NimbusRomNo9L-Regu', 9.60),
@@ -291,16 +291,15 @@ def parse_default(font: str):
     font = font[7:]
     fontname, raw_style = font, ''
     # 'AIDZQU+Times-Roman' no style parsing is required
+    if fontname in POSTSCRIPT_14_DEFAULT:
+        return fontname, None
+
     style = None
-    if font not in POSTSCRIPT_14_DEFAULT:
-        with contextlib.suppress(ValueError):
-            fontname, raw_style = font.split(',')
-        with contextlib.suppress(ValueError):
-            fontname, raw_style = font.split('-')
-        try:
-            style = parse_style(raw_style)
-        except ValueError:
-            fontname = font
+    with contextlib.suppress(ValueError):
+        fontname, raw_style = font.split(',')
+    with contextlib.suppress(ValueError):
+        fontname, raw_style = font.split('-')
+    style = parse_style(raw_style)
     return fontname, style
 
 
@@ -333,11 +332,10 @@ def font_fromraw(font: str, scale: float) -> iamraw.Font:
         fontname, style = basefont
     elif default is not None:
         fontname, style = default
-
     weight, style, stretch = style if style else (None, None, None)
 
     if '+' in fontname or ',' in fontname:
-        utila.error(f'detected fontname {fontname};' 'input material {font}')
+        utila.error(f'detected fontname {fontname}; input: {font}')
 
     font = iamraw.Font(
         name=fontname,
@@ -351,15 +349,14 @@ def font_fromraw(font: str, scale: float) -> iamraw.Font:
 
 def parse_style(raw_style):
     save = raw_style
-    weight = iamraw.Weight.LIGHT
-    style = iamraw.Style.NORMAL
-    stretch = iamraw.Stretch.REGULAR
     if 'Regular' in raw_style:
         stretch = iamraw.Stretch.REGULAR
         raw_style = raw_style.replace('Regular', '')
     elif 'Regu' in raw_style:
         stretch = iamraw.Stretch.REGULAR
         raw_style = raw_style.replace('Regu', '')
+    else:
+        stretch = iamraw.Stretch.REGULAR
 
     if 'Italic' in raw_style:
         style = iamraw.Style.ITALIC
@@ -373,6 +370,8 @@ def parse_style(raw_style):
     elif 'Obli' in raw_style:
         style = iamraw.Style.OBLIQUE
         raw_style = raw_style.replace('Obli', '')
+    else:
+        style = iamraw.Style.NORMAL
 
     if 'Bold' in raw_style:
         weight = iamraw.Weight.BOLD
@@ -383,9 +382,10 @@ def parse_style(raw_style):
     elif 'Medi' in raw_style:
         weight = iamraw.Weight.MEDIUM
         raw_style = raw_style.replace('Medi', '')
+    else:
+        weight = iamraw.Weight.LIGHT
 
     if raw_style:  # TODO: Remove before going live
         # at the end, everything must be replaced
-        utila.error(save)
-        raise ValueError('Unsupported format %s' % raw_style)
+        utila.error(f'unsupported style {save}, maybe a name: {raw_style}')
     return weight, style, stretch

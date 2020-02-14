@@ -129,14 +129,24 @@ def test_mining_fonts_restruct_page_5(restructed_fonts):  # pylint:disable=W0621
     ('Arial,Bold', 15.00, 'Arial'),
     ('ABCDEE + Verdana,Bold', 15.00, 'Verdana'),
     ('AIDZQU+Times-Roman', 13.00, 'Times-Roman'),
-    ('KCXMNX+TeX-feymr10', 10.00, 'TeX-feymr10'),
+    ('KCXMNX+TeX-feymr10', 10.00, 'TeX'),
+    ('JBLIUJ+Arial-BoldMT', 10.00, 'Arial'),
 ])
 def test_convert_font_from_raw(font, scale, expected_name):
     parsed = font_fromraw(font, scale)
-
     assert parsed
 
     assert '+' not in parsed.name, str(parsed)
     assert ',' not in parsed.name, str(parsed)
+
+    assert expected_name == parsed.name, str(expected_name)
+
+
+@pytest.mark.parametrize('font, expected_name', [
+    ('ADDAOP+AdvTT5ada87cc+fb4', 'AdvTT5ada87cc+fb4'),
+])
+def test_convert_font_from_raw_pdf_naming_problem(font, expected_name):
+    parsed = font_fromraw(font, scale=10.0)
+    assert parsed
 
     assert expected_name == parsed.name, str(expected_name)

@@ -259,6 +259,51 @@ POSTSCRIPT_14_DEFAULT = {
 }
 
 
+def parse_basefont(font: str):
+    basefont = False
+    with contextlib.suppress(IndexError):
+        # see above
+        # ('WTUVLZ+NimbusRomNo9L-Regu', 9.60),
+        basefont = font[6] != '+'
+    if basefont:
+        # Example: Arial,Bold
+        fontname, raw_style = font, ''
+        with contextlib.suppress(ValueError):
+            fontname, raw_style = font.split(',')
+        style = parse_style(raw_style)
+        return fontname, style
+    return None
+
+
+def parse_cidfont(font: str):
+    cidfont = font.startswith('CIDFont+')
+    if cidfont:
+        # Example: CIDFont+F1
+        # remove cid tag and plus sign
+        fontname = font[8:]
+        return fontname, None
+    return None
+
+
+def parse_default(font: str):
+    # Example: LGAZPG + SegoeUI, Bold
+    # remove base tag and plus sign
+    font = font[7:]
+    fontname, raw_style = font, ''
+    # 'AIDZQU+Times-Roman' no style parsing is required
+    style = None
+    if font not in POSTSCRIPT_14_DEFAULT:
+        with contextlib.suppress(ValueError):
+            fontname, raw_style = font.split(',')
+        with contextlib.suppress(ValueError):
+            fontname, raw_style = font.split('-')
+        try:
+            style = parse_style(raw_style)
+        except ValueError:
+            fontname = font
+    return fontname, style
+
+
 def font_fromraw(font: str, scale: float) -> iamraw.Font:
     """Parse `Font` from pdf representation, read the description above.
 
@@ -270,56 +315,29 @@ def font_fromraw(font: str, scale: float) -> iamraw.Font:
     """
     utila.call('font_fromraw')
     utila.debug('%s %.2f' % (str(font), scale))
+    # remove whitespaces to avoid missing PostScript 14 language cause of
+    # containg whitespaces, for example `Times - Roman` instead of
+    # `Times-Roman`.
+    font = font.replace(' ', '')
 
-    def remove_whitespaces(content):
-        # remove whitespaces to avoid missing PostScript 14 language cause of
-        # containg whitespaces, for example `Times - Roman` instead of
-        # `Times-Roman`.
-        return content.replace(' ', '')
+    basefont = parse_basefont(font)
+    cidfont = parse_cidfont(font)
+    default = parse_default(font)
 
-    font = remove_whitespaces(font)
+    fontname, style = None, None
+    if cidfont is not None:
+        # cidfont at first, cause cidfont selector is the clearest and not
+        # ambigous.
+        fontname, style = cidfont
+    elif basefont is not None:
+        fontname, style = basefont
+    elif default is not None:
+        fontname, style = default
 
-    basefont = True
-    with contextlib.suppress(IndexError):
-        # see above
-        # ('WTUVLZ+NimbusRomNo9L-Regu', 9.60),
-        basefont = font[6] != '+'
-
-    cidfont = font.startswith('CIDFont+')
-
-    # save origin type to display on error
-    save = font
-
-    weight, style, stretch = None, None, None
-    if cidfont:
-        # Example: CIDFont+F1
-        # remove cid tag and plus sign
-        font = font[8:]
-        fontname = font
-    elif basefont:
-        # Example: Arial,Bold
-        fontname, raw_style = font, ''
-        with contextlib.suppress(ValueError):
-            fontname, raw_style = font.split(',')
-        weight, style, stretch = parse_style(raw_style)
-    else:
-        # Example: LGAZPG + SegoeUI, Bold
-        # remove base tag and plus sign
-        font = font[7:]
-        fontname, raw_style = font, ''
-        # 'AIDZQU+Times-Roman' no style parsing is required
-        if not font in POSTSCRIPT_14_DEFAULT:
-            with contextlib.suppress(ValueError):
-                fontname, raw_style = font.split(',')
-            with contextlib.suppress(ValueError):
-                fontname, raw_style = font.split('-')
-            try:
-                weight, style, stretch = parse_style(raw_style)
-            except ValueError:
-                fontname = font
+    weight, style, stretch = style if style else (None, None, None)
 
     if '+' in fontname or ',' in fontname:
-        utila.error(f'detected fontname {fontname}; input material {save}')
+        utila.error(f'detected fontname {fontname};' 'input material {font}')
 
     font = iamraw.Font(
         name=fontname,

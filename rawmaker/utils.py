@@ -12,10 +12,7 @@
 # A5 = (148, 210)
 # A6 = (104, 148)
 
-import concurrent.futures
 import math
-
-import utila
 
 MILI_TO_PIX = 0.35278413424866517, 0.3527514613989115
 

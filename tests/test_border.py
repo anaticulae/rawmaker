@@ -7,15 +7,12 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-from pytest import fixture
-from pytest import mark
+import pytest
 
+import rawmaker.features.border
 import rawmaker.reader
+import rawmaker.utils
 import tests.resources
-from rawmaker.features.border import determine_boundingboxes
-from rawmaker.reader import read
-from rawmaker.utils import tomilimeter
-from rawmaker.utils import topixel
 from tests.resources import INCREASING_FONT_A3
 from tests.resources import INCREASING_FONT_A4
 from tests.resources import INCREASING_FONT_A5
@@ -23,10 +20,11 @@ from tests.resources import TWINE_PAGES
 from tests.resources import TWINE_PDF
 
 
-@fixture
+@pytest.fixture
 def boxdata_from_pdf():
-    with read(TWINE_PDF) as pdf:
-        sizeandborders, boxes = determine_boundingboxes(pdf)
+    with rawmaker.reader.read(TWINE_PDF) as pdf:
+        sizeandborders, boxes = rawmaker.features.border.determine_boundingboxes(
+            pdf)
     assert sizeandborders
     assert len(sizeandborders) == TWINE_PAGES
 
@@ -44,7 +42,7 @@ def test_maximize_bounding_box(boxdata_from_pdf):  #pylint:disable=W0621
     assert len(pageandborders) == TWINE_PAGES
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
     'increasing_fonts, expected_size_in_mm', [
         (INCREASING_FONT_A3, (297, 420)),
         (INCREASING_FONT_A4, (210, 297)),
@@ -56,19 +54,24 @@ def test_maximize_bounding_box(boxdata_from_pdf):  #pylint:disable=W0621
         'A5',
     ])
 def test_page_size(increasing_fonts, expected_size_in_mm):
-    with read(increasing_fonts) as pdf:
-        sizeandborders, _ = determine_boundingboxes(pdf)
+    with rawmaker.reader.read(increasing_fonts) as pdf:
+        sizeandborders, _ = rawmaker.features.border.determine_boundingboxes(
+            pdf)
     size = sizeandborders[0].size  # First page
+    assert rawmaker.utils.tomilimeter(*size) == expected_size_in_mm
 
-    assert tomilimeter(*size) == expected_size_in_mm
-
-    assert topixel(*tomilimeter(*size)) == tuple([round(item) for item in size])
+    expected = tuple([round(item) for item in size])
+    current = rawmaker.utils.topixel(*rawmaker.utils.tomilimeter(*size))
+    assert current == expected
 
 
 def test_border_pagesize_both():
     pages = (0, 105)
     with rawmaker.reader.read(tests.resources.MASTER116) as pdf:
-        sizeandborders, _ = determine_boundingboxes(pdf, pages=pages)
+        sizeandborders, _ = rawmaker.features.border.determine_boundingboxes(
+            pdf,
+            pages=pages,
+        )
     pagesize_0 = sizeandborders[0].size
     pagesize_105 = sizeandborders[1].size
     assert pagesize_0 != pagesize_105, 'should not be equal'
@@ -76,8 +79,9 @@ def test_border_pagesize_both():
 
 def test_border_bounding_boxes():
     """Test that coordinates are flipped like expected in our format."""
-    with read(tests.resources.HELLO_WORLD_PDF) as pdf:
-        boxes = determine_boundingboxes(pdf, pages=(0,))[1]
+    with rawmaker.reader.read(tests.resources.HELLO_WORLD_PDF) as pdf:
+        boxes = rawmaker.features.border.determine_boundingboxes(
+            pdf, pages=(0,))[1]
     assert len(boxes) == 1, boxes
     boundings = boxes[0].boundings
     for item in boundings:

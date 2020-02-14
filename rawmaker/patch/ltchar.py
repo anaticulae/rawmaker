@@ -24,13 +24,20 @@ class PatchedLTChar(pdfminer.layout.LTChar):
 
 def render_char(self, matrix, font, fontsize, scaling, rise, cid, ncs,
                 graphicstate):
+    """
+    Args:
+        cid(int): character number id - ascii
+        ncs(PDFColorSpace): colorspace of document
+    """
     try:
         text = font.to_unichr(cid)
         assert isinstance(text, str)
     except pdfminer.pdffont.PDFUnicodeNotDefined:
         text = self.handle_undefined_char(font, cid)
+
     textwidth = font.char_width(cid)
     textdisp = font.char_disp(cid)
+
     # patch to document font size and rise
     item = PatchedLTChar(matrix, font, fontsize, scaling, rise, text, textwidth,
                          textdisp, ncs, graphicstate)

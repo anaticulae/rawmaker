@@ -138,5 +138,11 @@ Run with multiple cores
 
     Operation cancelled by user
 
+Font size determination
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The font size is determined as 1, I solves this by a hack what must be
+replaced later.
+
 closed
 ------

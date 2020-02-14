@@ -18,7 +18,12 @@ class PatchedLTChar(pdfminer.layout.LTChar):
                  textdisp, ncs, graphicstate):
         super().__init__(matrix, font, fontsize, scaling, rise, text, textwidth,
                          textdisp, ncs, graphicstate)
-        self.fontsize = fontsize
+        if fontsize == 1:
+            # HACK: CLARIFY WHAT IS CORRECT, we need more generated pdf
+            # examples
+            self.fontsize = self.size
+        else:
+            self.fontsize = fontsize
         self.rise = rise
 
 

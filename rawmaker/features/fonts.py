@@ -80,28 +80,16 @@ Summary:
         ('KCXMNX + TeX - feymr10', 10.70),
 """
 
-from contextlib import suppress
-from functools import lru_cache
-from typing import Tuple
+import contextlib
+import functools
+import typing
 
-from iamraw import Document
-from iamraw import Font
-from iamraw import Page
-from iamraw import PageFontContent
-from iamraw import Stretch
-from iamraw import Style
-from iamraw import TextContainer
-from iamraw import Weight
-from serializeraw import dump_font_content
-from serializeraw import dump_font_header
-from utila import Flag
-from utila import call
-from utila import debug
-from utila import error
+import iamraw
+import serializeraw
+import utila
 
-from rawmaker.features import extract_content
-from rawmaker.parameter import create_layout
-from rawmaker.reader import read
+import rawmaker.features
+import rawmaker.reader
 
 
 def work(
@@ -112,7 +100,7 @@ def work(
         line_overlap: float = 0.5,
         word_margin: float = 0.1,
         pages: list = None,
-) -> Tuple[str, str]:
+) -> typing.Tuple[str, str]:
     """Extract structured text out of document
 
     Args:
@@ -123,31 +111,36 @@ def work(
         parsed document as yaml output
     """
     assert isinstance(document, str), str(document)
-    layout = create_layout(
+    layout = rawmaker.parameter.create_layout(
         boxes_flow=boxes_flow,
         char_margin=char_margin,
         line_margin=line_margin,
         line_overlap=line_overlap,
         word_margin=word_margin,
     )
-    with read(document) as pdf:
-        document = extract_content(pdf, layout_parameter=layout, pages=pages)
+    with rawmaker.reader.read(document) as pdf:
+        document = rawmaker.features.extract_content(
+            pdf,
+            layout_parameter=layout,
+            pages=pages,
+        )
 
     header, content = parse_fonts(document)
-    header, content = dump_font_header(header), dump_font_content(content)
+    header, content = (
+        serializeraw.dump_font_header(header),
+        serializeraw.dump_font_content(content),
+    )
     return header, content
 
 
 class FontStore:
 
     def __init__(self, parser=None):
-        parser = parser if parser else font_fromraw
+        self.parser = parser if parser else font_fromraw
         self.data = {}
-        self.parser = parser
 
-    @lru_cache(maxsize=128)
+    @functools.lru_cache(maxsize=128)
     def font_key(self, raw_font: str, scale: float) -> int:
-        # parsed = font_fromraw(raw_font, scale)
         parsed = self.parser(raw_font, scale)
         hashed = hash(parsed)
         try:
@@ -163,7 +156,10 @@ class FontStore:
         return list(self.data.values())
 
 
-def process_page(page: Page, fontstore: FontStore) -> PageFontContent:
+def process_page(
+        page: iamraw.Page,
+        fontstore: FontStore,
+) -> iamraw.PageFontContent:
     """Iterate throw text container and save the different fonts and positions
 
     Args:
@@ -172,7 +168,7 @@ def process_page(page: Page, fontstore: FontStore) -> PageFontContent:
     Returns:
         Page with content information.
     """
-    assert isinstance(page, Page), type(page)
+    assert isinstance(page, iamraw.Page), type(page)
     container_index, line_index, char_index = 0, 0, 0
     font, scale = None, None
     font_cur, scale_cur = None, None
@@ -181,7 +177,7 @@ def process_page(page: Page, fontstore: FontStore) -> PageFontContent:
     # TODO: use TextPageIter from groupme/hey! to iterate only over text boxes
     textcontainer = [
         # remove non TextContainer items
-        item for item in page.children if isinstance(item, TextContainer)
+        item for item in page.children if isinstance(item, iamraw.TextContainer)
     ]
     for item in textcontainer:
         for line_index, line in enumerate(item.lines):
@@ -228,10 +224,10 @@ def process_page(page: Page, fontstore: FontStore) -> PageFontContent:
                 fontstore,
             ))
 
-    return PageFontContent(content=result, page=page.page)
+    return iamraw.PageFontContent(content=result, page=page.page)
 
 
-def parse_fonts(document: Document):
+def parse_fonts(document: iamraw.Document):
     fontstore = FontStore(font_fromraw)
 
     content = [process_page(page, fontstore) for page in document.pages]
@@ -263,7 +259,7 @@ POSTSCRIPT_14_DEFAULT = {
 }
 
 
-def font_fromraw(font: str, scale: float) -> Font:
+def font_fromraw(font: str, scale: float) -> iamraw.Font:
     """Parse `Font` from pdf representation, read the description above.
 
     Args:
@@ -272,8 +268,8 @@ def font_fromraw(font: str, scale: float) -> Font:
     Returns:
         returns internal `Font` object with detected style and scale
     """
-    call('font_fromraw')
-    debug('%s %.2f' % (str(font), scale))
+    utila.call('font_fromraw')
+    utila.debug('%s %.2f' % (str(font), scale))
 
     def remove_whitespaces(content):
         # remove whitespaces to avoid missing PostScript 14 language cause of
@@ -284,7 +280,7 @@ def font_fromraw(font: str, scale: float) -> Font:
     font = remove_whitespaces(font)
 
     basefont = True
-    with suppress(IndexError):
+    with contextlib.suppress(IndexError):
         # see above
         # ('WTUVLZ+NimbusRomNo9L-Regu', 9.60),
         basefont = font[6] != '+'
@@ -303,7 +299,7 @@ def font_fromraw(font: str, scale: float) -> Font:
     elif basefont:
         # Example: Arial,Bold
         fontname, raw_style = font, ''
-        with suppress(ValueError):
+        with contextlib.suppress(ValueError):
             fontname, raw_style = font.split(',')
         weight, style, stretch = parse_style(raw_style)
     else:
@@ -313,9 +309,9 @@ def font_fromraw(font: str, scale: float) -> Font:
         fontname, raw_style = font, ''
         # 'AIDZQU+Times-Roman' no style parsing is required
         if not font in POSTSCRIPT_14_DEFAULT:
-            with suppress(ValueError):
+            with contextlib.suppress(ValueError):
                 fontname, raw_style = font.split(',')
-            with suppress(ValueError):
+            with contextlib.suppress(ValueError):
                 fontname, raw_style = font.split('-')
             try:
                 weight, style, stretch = parse_style(raw_style)
@@ -323,9 +319,9 @@ def font_fromraw(font: str, scale: float) -> Font:
                 fontname = font
 
     if '+' in fontname or ',' in fontname:
-        error(f'detected fontname {fontname}; input material {save}')
+        utila.error(f'detected fontname {fontname}; input material {save}')
 
-    font = Font(
+    font = iamraw.Font(
         name=fontname,
         scale=scale,
         stretch=stretch,
@@ -337,47 +333,41 @@ def font_fromraw(font: str, scale: float) -> Font:
 
 def parse_style(raw_style):
     save = raw_style
-    weight, style, stretch = Weight.LIGHT, Style.NORMAL, Stretch.REGULAR
+    weight = iamraw.Weight.LIGHT
+    style = iamraw.Style.NORMAL
+    stretch = iamraw.Stretch.REGULAR
     if 'Regular' in raw_style:
-        stretch = Stretch.REGULAR
+        stretch = iamraw.Stretch.REGULAR
         raw_style = raw_style.replace('Regular', '')
-    if 'Regu' in raw_style:
-        stretch = Stretch.REGULAR
+    elif 'Regu' in raw_style:
+        stretch = iamraw.Stretch.REGULAR
         raw_style = raw_style.replace('Regu', '')
 
     if 'Italic' in raw_style:
-        style = Style.ITALIC
+        style = iamraw.Style.ITALIC
         raw_style = raw_style.replace('Italic', '')
-    if 'Ital' in raw_style:
-        style = Style.ITALIC
+    elif 'Ital' in raw_style:
+        style = iamraw.Style.ITALIC
         raw_style = raw_style.replace('Ital', '')
-    if 'Oblique' in raw_style:
-        style = Style.OBLIQUE
+    elif 'Oblique' in raw_style:
+        style = iamraw.Style.OBLIQUE
         raw_style = raw_style.replace('Oblique', '')
-    if 'Obli' in raw_style:
-        style = Style.OBLIQUE
+    elif 'Obli' in raw_style:
+        style = iamraw.Style.OBLIQUE
         raw_style = raw_style.replace('Obli', '')
 
     if 'Bold' in raw_style:
-        weight = Weight.BOLD
+        weight = iamraw.Weight.BOLD
         raw_style = raw_style.replace('Bold', '')
-    if 'Medium' in raw_style:
-        weight = Weight.MEDIUM
+    elif 'Medium' in raw_style:
+        weight = iamraw.Weight.MEDIUM
         raw_style = raw_style.replace('Medium', '')
-    if 'Medi' in raw_style:
-        weight = Weight.MEDIUM
+    elif 'Medi' in raw_style:
+        weight = iamraw.Weight.MEDIUM
         raw_style = raw_style.replace('Medi', '')
 
     if raw_style:  # TODO: Remove before going live
         # at the end, everything must be replaced
-        error(save)
+        utila.error(save)
         raise ValueError('Unsupported format %s' % raw_style)
     return weight, style, stretch
-
-
-def commandline():
-    return Flag(longcut=name(), message='Extract fonts of document.')
-
-
-def name():
-    return 'fonts'

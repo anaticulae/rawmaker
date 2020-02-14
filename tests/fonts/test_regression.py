@@ -7,11 +7,22 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pytest
 import serializeraw
 import utila
 
 import tests
 import tests.resources
+
+
+@pytest.mark.xfail(reason='incomplete font detection implementation')
+def test_leftright_book_font_name(testdir, monkeypatch, capsys):
+    tests.run_success(
+        f'-i {tests.resources.LEFTRIGHT} --fonts',
+        monkeypatch=monkeypatch,
+    )
+    _, err = capsys.readouterr()
+    assert 'ERROR' not in err
 
 
 def test_leftright_book_font_size(testdir, monkeypatch):

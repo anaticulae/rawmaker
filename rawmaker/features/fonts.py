@@ -168,8 +168,9 @@ def process_page(page: Page, fontstore: FontStore) -> PageFontContent:
 
     Args:
         page(Page): current pdf page
-        fontstore(): fontstore to save new fonts
-
+        fontstore(FontStore): fontstore to store full information of used font
+    Returns:
+        Page with content information.
     """
     assert isinstance(page, Page), type(page)
     container_index, line_index, char_index = 0, 0, 0

@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v1.10.0
+
+### Fix
+
+* ignore font snippet as suffix of font name (e4bdb2709e06)
+* fix font determination bug in left right example (482cd9b1ec05)
+
+### Documentation
+
+* extend interface documentation (0f3e7ecd1106)
+* extend interface documentation (22e2c1dd1ef0)
+
 ## v1.9.5
 
 ### Fix

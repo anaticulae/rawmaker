@@ -1,0 +1,22 @@
+.. _1_11_0:
+
+RP 1.11.0
+=========
+
+* [ ] add extractor to extract cluster of lines as figures
+
+* [ ] table extractor
+
+* [ ] math extractor
+
+code quality
+------------
+
+before
+~~~~~~
+
+* Total coverage: 93.27%
+* Your code has been rated at 9.40/10
+
+after
+~~~~~~

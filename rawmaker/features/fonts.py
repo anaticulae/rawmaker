@@ -89,6 +89,7 @@ import serializeraw
 import utila
 
 import rawmaker.features
+import rawmaker.parameter
 import rawmaker.reader
 
 

@@ -22,7 +22,7 @@ from utila import SkipCollector
 from utila import call
 from utila import debug
 
-from rawmaker.miner.mining import PrecisePDFConverter
+from rawmaker.miner.text import PrecisePDFConverter
 
 PageContent = namedtuple('PageContent', 'content, page')
 

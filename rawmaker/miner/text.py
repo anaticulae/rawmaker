@@ -235,21 +235,19 @@ def render(item, pageheight: float = None):
     if isinstance(item, pdfminer.layout.LTPage):
         pagenumber = item.pageid
         page = iamraw.Page(pagenumber, iamraw.BoundingBox(*item.bbox))
+        # TODO: ENSURE ROTATED PAGES?
         pageheight = item.bbox[3]
         for child in item:
             # pylint:disable=E1101
             rendered = render(child, pageheight=pageheight)
+            if rendered is None:
+                continue
             page.children.append(rendered)
         return page
     if isinstance(item, pdfminer.layout.LTTextBox):
         textcontainer = render_textcontainer(item, pageheight=pageheight)
         return textcontainer
-
-    pageobject = iamraw.PageObject(
-        box=convert_bounding(*item.bbox, pageheight=pageheight),
-        content=str(item),
-    )
-    return pageobject
+    return None
 
 
 def convert_bounding(*bounding, pageheight: float) -> iamraw.BoundingBox:

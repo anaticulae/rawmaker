@@ -54,11 +54,14 @@ if __name__ == "__main__":
         ],
         entry_points={
             'console_scripts': [
+                'linero = linero.cli:main',
                 'pdfinfo = pdfinfo.cli:main',
                 'rawmaker = rawmaker.cli:main',
             ],
         },
         packages=[
+            'linero',
+            'linero.features',
             'pdfinfo',
             'rawmaker',
             'rawmaker.features',

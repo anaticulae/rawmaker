@@ -8,22 +8,34 @@
 # =============================================================================
 
 import os
+import sys
 
 import utila
 
-from rawmaker import ROOT
-from tests.resources import RESOURCES
+import tests.resources
+import tests.resources.update
 
 pytest_plugins = ['pytester', 'xdist']  # pylint: disable=invalid-name
-
-# TODO: Ensure that tests waits before this process is ready
 
 if not 'PYTEST_XDIST_WORKER' in os.environ:
     # master process only
     # ensure to avoid race condition if more than one thread tries to
-    # install or use rawmaker
-    if utila.test.LONGRUN:
-        utila.clean_install(ROOT, 'rawmaker')
+    # install or use `decider`.
 
-        completed = utila.run('power --all', RESOURCES)  # pylint:disable=C0103
-        assert completed.returncode == utila.SUCCESS, str(completed)
+    SINGLE_TEST = '-k' in sys.argv
+    if not SINGLE_TEST and ('GENERATE' in os.environ or utila.test.LONGRUN):
+
+        utila.log('install requirements')
+        tests.resources.update.install_requirements()
+
+        # ensure that all test resources exists
+        utila.log('synchronize test resources')
+        tests.resources.update.sync_resources()
+
+        utila.log('extract resources')
+        tests.resources.update.extract_examples()
+
+for item in tests.resources.REQUIRED_RESOURCES:
+    advice = 'run `baw --test=generate` to generate test data'
+    msg = f'required test path does not exists: {item}, {advice}'
+    assert os.path.exists(item), msg

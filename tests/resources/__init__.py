@@ -14,6 +14,8 @@ import rawmaker
 RESOURCES = os.path.join(rawmaker.ROOT, 'tests/resources')
 assert os.path.exists(RESOURCES), RESOURCES
 
+GENERATED = os.path.join(RESOURCES, 'generated')
+
 EXAMPLES = os.path.join(rawmaker.ROOT, 'tests/examples')
 assert os.path.exists(EXAMPLES), EXAMPLES
 
@@ -29,8 +31,11 @@ TECHNICAL = os.path.join(RESOURCES, 'technical')
 NO_PDF = os.path.join(NEGATIVE, 'no_pdf')
 
 LEFTRIGHT = os.path.join(BOOK, 'leftright.pdf')
+LEFTRIGHT_GENERATED = os.path.join(GENERATED, 'leftright')
 
 VIM_PDF = os.path.join(DOCU, 'vimguide.pdf')
+VIM_GENERATED = os.path.join(GENERATED, 'vim')
+
 VIM_PAGE_COUNT = 13
 VIM_OUTLINES = 42
 

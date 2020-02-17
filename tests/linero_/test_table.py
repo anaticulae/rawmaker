@@ -13,6 +13,7 @@ import pytest
 import linero.cluster
 import linero.features.table
 import rawmaker.features.line
+import rawmaker.path
 import tests
 import tests.resources
 
@@ -50,3 +51,12 @@ def test_table_dump_and_load():
     dumped = linero.features.table.dump_tables(tables)
     loaded = linero.features.table.load_tables(dumped)
     assert loaded == tables
+
+
+def test_table_extract_negative():
+    source = rawmaker.path.line(tests.resources.LEFTRIGHT_GENERATED)
+
+    tables = linero.features.table.work(source)
+
+    loaded = linero.features.table.load_tables(tables)
+    assert not loaded, str(loaded)

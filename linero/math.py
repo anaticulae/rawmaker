@@ -94,7 +94,9 @@ def intersecting_lines(first, second, max_diff=0.0):
 
 def length(item):
     x0, y0, x1, y1 = item
-    return math.sqrt((x0 - x1)**2 + (y0 - y1)**2)
+    result = math.sqrt((x0 - x1)**2 + (y0 - y1)**2)
+    result = utila.roundme(result)
+    return result
 
 
 def zero(item):

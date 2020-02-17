@@ -87,6 +87,11 @@ WORKPLAN = [
         inputs=PDF_INPUT,
         output=('toc',),
     ),
+    utila.create_step(
+        'line',
+        inputs=PDF_INPUT,
+        output=('line',),
+    ),
 ]
 
 RAWMAKER_DESCRIPTION = """

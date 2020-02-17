@@ -6,7 +6,6 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-import os
 
 import pytest
 
@@ -31,8 +30,7 @@ def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
     ),
 ])
 def test_table_extract(source, expected):
-    source = os.path.join(source, 'rawmaker__line_line.yaml')
-
+    source = rawmaker.path.line(source)
     loaded = rawmaker.features.line.load_lines(source)
     grouped = linero.features.table.locate_tables(loaded)
     tables = linero.features.table.judge_tables(grouped)
@@ -40,10 +38,7 @@ def test_table_extract(source, expected):
 
 
 def test_table_dump_and_load():
-    source = os.path.join(
-        tests.resources.VIM_GENERATED,
-        'rawmaker__line_line.yaml',
-    )
+    source = rawmaker.path.line(tests.resources.VIM_GENERATED)
     loaded = rawmaker.features.line.load_lines(source, pages=(0, 1, 2))
     grouped = linero.features.table.locate_tables(loaded)
     tables = linero.features.table.judge_tables(grouped)

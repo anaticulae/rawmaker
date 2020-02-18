@@ -17,7 +17,7 @@ import linero.math
 iamraw.BoundingBoxes = typing.List[iamraw.BoundingBox]
 
 
-def run(lines: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:
+def run(lines: iamraw.BoundingBoxes, maxdiff=5.0) -> iamraw.BoundingBoxes:
     # TODO: REDUCE COPY AND PASTE
     # TODO: VERY SLOW
     if not lines:
@@ -34,7 +34,7 @@ def run(lines: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:
                         if not linero.math.intersecting_lines(
                                 clusteritem,
                                 test,
-                                max_diff=5.0,
+                                max_diff=maxdiff,
                         ):
                             continue
                     except linero.math.IndenticalLineError:

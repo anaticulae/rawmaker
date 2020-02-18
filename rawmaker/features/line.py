@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 """Line Extractor
-===============
+==============
 
 This module aims to extract lines out of pdf document.
 """

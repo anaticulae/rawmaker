@@ -18,6 +18,13 @@ WORKPLAN = [
             utila.ResultFile('rawmaker', 'line_line'),
         ],
         ('table',),
+    ),
+    utila.create_step(
+        'figure',
+        [
+            utila.ResultFile('rawmaker', 'line_line'),
+        ],
+        ('figure',),
     )
 ]
 

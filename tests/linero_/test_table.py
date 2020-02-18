@@ -8,6 +8,7 @@
 # =============================================================================
 
 import pytest
+import utila
 
 import linero.cluster
 import linero.features.table
@@ -29,6 +30,7 @@ def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
         id='vim',
     ),
 ])
+@utila.skip_longrun
 def test_table_extract(source, expected):
     source = rawmaker.path.line(source)
     loaded = rawmaker.features.line.load_lines(source)

@@ -2,6 +2,28 @@
 
 Every noteable change is logged here.
 
+## v1.11.0
+
+### Feature
+
+* add interface for detect figure feature (772a9135b14f)
+* add possible difference to cluster interface (81aeb4c51389)
+* move rawmaker path from `hey` (f60aca1aaa36)
+* add feature to extract potential tables (5c9a0fa59cbb)
+* add method to determine the intersecting point of two lines (00b527f9f0ba)
+* add linero to work with extracted lines (78a938f977b5)
+* add method to extract and dump/load lines in document (fb245858ad9a)
+* exclude non textual items out of text analysis (53bd92fe12c1)
+
+### Fix
+
+* add missing import (d27fb6a5f525)
+
+### Documentation
+
+* extend interface documentation (aeff59607fb3)
+* remove duplicated todo, use backlog instead (8836f57e93b8)
+
 ## v1.10.0
 
 ### Fix

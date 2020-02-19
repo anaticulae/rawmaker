@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 import pytest
+import serializeraw
 import utila
 
 import rawmaker.features.line
@@ -45,10 +46,10 @@ def test_line_dump_load():
     with rawmaker.reader.read(tests.resources.HOW_TO_CPORTING_PDF) as pdf:
         lines = rawmaker.features.line.determine_lines(pdf)
 
-    dumped = rawmaker.features.line.dump_lines(lines)
+    dumped = serializeraw.dump_lines(lines)
     assert dumped, str(dumped)
 
-    loaded = rawmaker.features.line.load_lines(dumped)
+    loaded = serializeraw.load_lines(dumped)
     assert loaded
 
     assert loaded == lines

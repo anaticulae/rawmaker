@@ -6,13 +6,14 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+import serializeraw
+
 import linero.cluster
 import linero.lines
-import rawmaker.features.line
 
 
 def work(lines: str, pages: tuple = None) -> str:
-    loaded = rawmaker.features.line.load_lines(lines, pages=pages)
+    loaded = serializeraw.load_lines(lines, pages=pages)
 
 
 def analyse_page(lines, textpositions):

@@ -22,7 +22,7 @@ def test_linero_figure_extract():
     lines = rawmaker.path.line(source)
     textpositions = rawmaker.path.textposition(source)
 
-    lines = rawmaker.features.line.load_lines(lines, pages=pages)
+    lines = serializeraw.load_lines(lines, pages=pages)
     textpositions = serializeraw.load_textpositions(textpositions, pages=pages)
 
     lines = lines[0].content

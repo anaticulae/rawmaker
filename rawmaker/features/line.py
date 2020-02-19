@@ -12,34 +12,29 @@
 This module aims to extract lines out of pdf document.
 """
 
-import collections
 import operator
-import typing
 
+import iamraw
 import pdfminer.pdfdocument
+import serializeraw
 import utila
-import yaml
 
 import rawmaker.features.boxes
 import rawmaker.reader
-
-# TODO MOVE to iamraw
-PageContentLine = collections.namedtuple('PageContentLine', 'page, content')
-PageContentLines = typing.List[PageContentLine]
 
 
 def work(document: str, pages: tuple = None) -> str:
     with rawmaker.reader.read(document) as pdf:
         lines = determine_lines(pdf, pages=pages)
 
-    dumped = dump_lines(lines)
+    dumped = serializeraw.dump_lines(lines)
     return dumped
 
 
 def determine_lines(
         document: pdfminer.pdfdocument.PDFDocument,
         pages: tuple = None,
-) -> PageContentLines:
+) -> iamraw.PageContentLines:
     lines = rawmaker.features.boxes.lines(document, pages=pages)
     result = []
     for content, number in lines:
@@ -49,7 +44,7 @@ def determine_lines(
         content = [ensure_position(item) for item in content]
         # top down, left right
         content = sorted(content, key=operator.itemgetter(0, 1))
-        result.append(PageContentLine(content=content, page=number))
+        result.append(iamraw.PageContentLine(content=content, page=number))
     return result
 
 
@@ -62,30 +57,3 @@ def ensure_position(item: tuple) -> tuple:
 
 def bbox_tobounding(bbox) -> tuple:
     return tuple([utila.roundme(var) for var in bbox])
-
-
-def dump_lines(lines: PageContentLines) -> str:
-    lines = sorted(lines, key=lambda x: x.page)
-    result = []
-    for page in lines:
-        content = ['%.2f %.2f %.2f %.2f' % item for item in page.content]
-        raw = {'page': page.page, 'content': content}
-        result.append(raw)
-    dumped = yaml.dump(result)
-    return dumped
-
-
-def load_lines(content: str, pages: tuple = None) -> PageContentLines:
-    content = utila.from_raw_or_path(content, ftype='yaml')
-    loaded = yaml.load(content, Loader=yaml.FullLoader)
-    result = []
-    for page in loaded:
-        pagenumber = int(page['page'])
-        if utila.should_skip(pagenumber, pages):
-            continue
-        content = []
-        for raw in page['content']:
-            item = tuple(utila.roundme(float(var)) for var in raw.split())
-            content.append(item)
-        result.append(PageContentLine(page=pagenumber, content=content))
-    return result

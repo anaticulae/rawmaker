@@ -7,14 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import typing
-
 import iamraw
 
 import linero.math
-
-# TODO: REPLACE WITH IAMRAW CODE
-iamraw.BoundingBoxes = typing.List[iamraw.BoundingBox]
 
 
 def run(lines: iamraw.BoundingBoxes, maxdiff=5.0) -> iamraw.BoundingBoxes:

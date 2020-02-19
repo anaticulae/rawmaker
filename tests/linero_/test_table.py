@@ -8,6 +8,7 @@
 # =============================================================================
 
 import pytest
+import serializeraw
 import utila
 
 import linero.cluster
@@ -33,7 +34,7 @@ def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
 @utila.skip_longrun
 def test_table_extract(source, expected):
     source = rawmaker.path.line(source)
-    loaded = rawmaker.features.line.load_lines(source)
+    loaded = serializeraw.load_lines(source)
     grouped = linero.features.table.locate_tables(loaded)
     tables = linero.features.table.judge_tables(grouped)
     assert len(tables) == len(expected), f'{len(tables)} != {len(expected)}'
@@ -41,12 +42,12 @@ def test_table_extract(source, expected):
 
 def test_table_dump_and_load():
     source = rawmaker.path.line(tests.resources.VIM_GENERATED)
-    loaded = rawmaker.features.line.load_lines(source, pages=(0, 1, 2))
+    loaded = serializeraw.load_lines(source, pages=(0, 1, 2))
     grouped = linero.features.table.locate_tables(loaded)
     tables = linero.features.table.judge_tables(grouped)
 
-    dumped = linero.features.table.dump_tables(tables)
-    loaded = linero.features.table.load_tables(dumped)
+    dumped = serializeraw.dump_tables(tables)
+    loaded = serializeraw.load_tables(dumped)
     assert loaded == tables
 
 
@@ -55,5 +56,5 @@ def test_table_extract_negative():
 
     tables = linero.features.table.work(source)
 
-    loaded = linero.features.table.load_tables(tables)
+    loaded = serializeraw.load_tables(tables)
     assert not loaded, str(loaded)

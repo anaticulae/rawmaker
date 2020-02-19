@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.11.1
+
+### Fix
+
+* add default empty result (1ca17c747cc7)
+
 ## v1.11.0
 
 ### Feature

@@ -21,13 +21,18 @@ from rawmaker.error import PDFParserImplementationError
 
 @contextmanager
 def read(path: str, password: str = '') -> PDFDocument:
-    """Read pdf from files
+    """Open pdf from `path`.
 
     Args:
         path(str): path to pdf-file
         password(str): optional password to extract encrypted data
     Raises:
-        TextExtractNotAllowed if not extraction is allowed"""
+        TextExtractNotAllowed: if not extraction is allowed - currently disabled
+        FileNotFoundError: `path` does not exists
+        ValueError: `path` is not a file
+    Yields:
+        PDFDocument: open pdf file
+    """
     if not exists(path):
         raise FileNotFoundError('Path does not exists %s' % path)
     if not isfile(path):
@@ -49,7 +54,8 @@ def read(path: str, password: str = '') -> PDFDocument:
 
 
 def open_document(parser: PDFParser, path: str, password: str) -> PDFDocument:
-    """
+    """Open pdf document base on selected `parser`.
+
     Hint:
         Using fallback as default mode is very slow. Therefore we try
         without fallback and if this does not work, we try it with

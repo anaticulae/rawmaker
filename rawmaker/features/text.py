@@ -24,14 +24,14 @@ import rawmaker.reader
 import rawmaker.utils
 
 
-def work(
+def work(  # pylint:disable=W9015
         document: str,
         boxes_flow: float = 0.5,
         char_margin: float = 2.0,
         line_margin: float = 0.5,
         line_overlap: float = 0.5,
         word_margin: float = 0.1,
-        pages: list = None,
+        pages: tuple = None,
 ) -> typing.Tuple[str, str]:
     """Extract structured text out of document
 

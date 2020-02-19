@@ -13,10 +13,10 @@ import linero.lines
 
 
 def work(lines: str, pages: tuple = None) -> str:
-    loaded = serializeraw.load_lines(lines, pages=pages)
+    loaded = serializeraw.load_lines(lines, pages=pages)  # pylint:disable=W0612
 
 
-def analyse_page(lines, textpositions):
+def analyse_page(lines, textpositions):  # pylint:disable=W0613
     clustered = linero.cluster.run(lines, maxdiff=30.0)
     for item in clustered:
         print(item)

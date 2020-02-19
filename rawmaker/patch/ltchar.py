@@ -27,12 +27,16 @@ class PatchedLTChar(pdfminer.layout.LTChar):
         self.rise = rise
 
 
-def render_char(self, matrix, font, fontsize, scaling, rise, cid, ncs,
-                graphicstate):
-    """
+def render_char(  # pylint:disable=W9015,W9016
+        self, matrix, font, fontsize, scaling, rise, cid, ncs,
+        graphicstate) -> PatchedLTChar:
+    """Patch LTChar to introduce fontsize hack.
+
     Args:
         cid(int): character number id - ascii
         ncs(PDFColorSpace): colorspace of document
+    Returns:
+        Patched char object.
     """
     try:
         text = font.to_unichr(cid)

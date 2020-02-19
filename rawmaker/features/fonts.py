@@ -93,7 +93,7 @@ import rawmaker.parameter
 import rawmaker.reader
 
 
-def work(
+def work(  # pylint:disable=W9015
         document: str,
         boxes_flow: float = 0.5,
         char_margin: float = 2.0,
@@ -348,7 +348,7 @@ def font_fromraw(font: str, scale: float) -> iamraw.Font:
     return font
 
 
-def parse_style(raw_style):
+def parse_style(raw_style):  # pylint:disable=R1260,R0912
     save = raw_style
     if 'Regular' in raw_style:
         stretch = iamraw.Stretch.REGULAR

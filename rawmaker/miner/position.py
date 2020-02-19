@@ -6,9 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-"""
-Save position of element by object hash
-"""
+"""Save position of element by object hash"""
 
 from contextlib import suppress
 

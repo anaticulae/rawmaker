@@ -40,13 +40,13 @@ import utila
 
 def extract_images(
         document: pdfminer.pdfdocument.PDFDocument,
-        pages: typing.List[int] = None,
-):
+        pages: tuple = None,
+) -> dict:
     """Extract all images of `document` of selected `pages`
 
     Args:
         document: source to extract images from
-        pages(list): selective list to process pages
+        pages(tuple): selective list to process pages
     Returns:
         dict with one list per page with containing images of this page
     """
@@ -168,11 +168,11 @@ def group_rectangles(rectangles):
 BITMAP = '1'
 
 
-def raw_images_merge(
+def raw_images_merge(  # pylint:disable=R1260,R0914
         images: typing.List[pdfminer.layout.LTImage],
         document,
 ) -> bytearray:
-    """
+    """Merge list of images to one image.
     TODO: Support colors in images
     """
     image_height = sum(item.srcsize[1] for item in images)

@@ -12,7 +12,7 @@ import iamraw
 import linero.math
 
 
-def run(lines: iamraw.BoundingBoxes, maxdiff=5.0) -> iamraw.BoundingBoxes:
+def run(lines: iamraw.BoundingBoxes, maxdiff=5.0) -> iamraw.BoundingBoxes:  # pylint:disable=R1260
     # TODO: REDUCE COPY AND PASTE
     # TODO: VERY SLOW
     if not lines:

@@ -27,12 +27,12 @@ VERTICAL_MAX_ERROR = 2.0  # TODO: HOLY VALUE
 HORIZONTAL_MIN_WIDTH = 0.20  # TODO: HOLY VALUE
 
 
-def work(document: str, pages) -> typing.Tuple[str, str]:
+def work(document: str, pages: tuple) -> typing.Tuple[str, str]:
     """Extract content boxes and horizontal lines from given `document`
 
     Args:
         document(str): path to document
-        pages: pages to analyze
+        pages(tuple): pages to analyze
     Returns:
         dumped parsed boxes, dumped parsed horizontals
     """
@@ -125,7 +125,7 @@ def determine_pagehorizontals(
         cluster: list of line cluster
         page(int): current analyzed page
 
-        page_width(float):
+        page_width(float): width of page page
         vertical_maxerror(float): maximal vertical difference of the left and
                                   right y-component [0.0,1.0].
         horizontal_minwidth(float): minimum distance between left and right
@@ -148,19 +148,16 @@ def determine_pagehorizontals(
             horizontal = iamraw.HorizontalLine(box=boxed)
             result.append(horizontal)
         else:
-            msg = f'no horizontal line {x0} {y0} {x1} {y1} on page: {page}'
-            utila.debug(msg)
+            utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}')
     return iamraw.PageContentHorizontals(content=result, page=page)
 
 
-# TODO: Use `utila` cluster code
-def determine_cluster(lines: typing.List[iamraw.BoundingBox],
-                     ) -> typing.List[iamraw.BoundingBox]:
-    if not lines:
+def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # pylint:disable=R1260
+    if not items:
         return []
 
     # a single element is a cluster
-    result = [[item] for item in lines]
+    result = [[item] for item in items]
 
     def match(result, current):
         for clusterindex, cluster in enumerate(result):
@@ -201,12 +198,15 @@ def determine_cluster(lines: typing.List[iamraw.BoundingBox],
 MIN_DISTANCE = 3
 
 
-def intersecting_lines(first: iamraw.BoundingBox, second: iamraw.BoundingBox):
-    """Check if start or end point of two line match
+def intersecting_lines(
+        first: iamraw.BoundingBox,
+        second: iamraw.BoundingBox,
+) -> bool:
+    """Check if start or end point of two line match.
 
     Args:
-        first(BoundingBox):
-        second(BoundingBox):
+        first(BoundingBox): line to cross
+        second(BoundingBox): line to cross
     Returns:
         True if least one elements matches, else False
     """
@@ -236,22 +236,19 @@ def bounding(items):
 
 
 def pagesize(page: pdfminer.layout.LTPage) -> typing.Tuple[float, float]:
-    """Determine `pagesize` from `LTPage`
+    """Determine `pagesize` from `LTPage`.
 
     Args:
-        page(LTPage):
+        page(LTPage): page to determine page size
     Returns:
-        width and height in 'pixel'
+        tuple of width and height in 'pixel'
     """
-    return (
-        page.bbox[2],
-        page.bbox[3],
-    )
+    return (page.bbox[2], page.bbox[3])
 
 
 def type_in_document(
         document: pdfminer.pdfdocument.PDFDocument,
-        datatype,
+        datatype: object,
         pages=None,
 ) -> typing.List[typing.Tuple[pdfminer.layout.LTPage, int]]:
     """Extract defined `datatype` out of `PDFDocument`
@@ -259,10 +256,11 @@ def type_in_document(
     Hint: the location of pdfminer will be flipped
 
     Args:
-        document(PDFDocument):
+        document(PDFDocument): pdf document to extract all types
         datatype: selected item type
+        pages(tuple): select pages
     Returns:
-        list with selected item `datatype`
+        List with selected `datatype`.
     """
     assert isinstance(document, pdfminer.pdfdocument.PDFDocument), type(document) # yapf:disable
     result = []
@@ -288,7 +286,10 @@ def type_in_document(
 REQUIRED_MINUS_SIGNS = 50  # TODO: HOLY VALUE
 
 
-def lines(document: pdfminer.pdfdocument.PDFDocument, pages=None):
+def lines(  # pylint:disable=R1260
+        document: pdfminer.pdfdocument.PDFDocument,
+        pages: tuple = None,
+) -> list:
     """Extract all `LTLine` out of `PDFDocument` page wise
 
     Support 3 different types of pdf layout elements:

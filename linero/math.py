@@ -18,7 +18,7 @@ class IndenticalLineError(ValueError):
     pass
 
 
-def intersecting_lines(first, second, max_diff=0.0):
+def intersecting_lines(first, second, max_diff=0.0):  # pylint:disable=R1260,R0914,R0912
     # TODO: ADD DOC HERE
     if length(first) < NEAR_ZERO or length(second) < NEAR_ZERO:
         raise ValueError(f"it's not a line it's a dot {first}; {second}")

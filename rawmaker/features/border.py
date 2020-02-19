@@ -106,13 +106,19 @@ def pagesizes(
     return result
 
 
-def boundingboxes_from_page(content, contentid: int, pagesize):
+def boundingboxes_from_page(
+        content: list,
+        contentid: int,
+        pagesize: tuple,
+) -> tuple:
     """Extract bounding boxes from page `content`.
 
     Args:
         content: content of a single page
         contentid: last id of the previous page
         pagesize: tuple of width and height
+    Returns:
+        Cropbox which contains all items of this page
     """
     result = []
     for index, item in enumerate(content, start=contentid):

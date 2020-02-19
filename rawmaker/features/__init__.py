@@ -50,15 +50,15 @@ def create_interpreter(layout=None) -> PDFPageInterpreter:
     return interpreter, device
 
 
-def process_pdfpages(document: PDFDocument, pages=None) -> PDFPage:
+def process_pdfpages(document: PDFDocument, pages: tuple = None) -> PDFPage:
     """Contextmanager to yield `PDFPage` of every selected page of
     `PDFDocument`.
 
     Args:
-        document:
+        document: open pdf file
         pages: number of pages to procress, if None every page is processed
-    Returns:
-        selected pages
+    Yields:
+        PDFPage: tuple of page content and pdf page number
     """
     call('process_pdfpages')
     assert isinstance(document, PDFDocument), type(document)
@@ -97,7 +97,7 @@ def page_selection(document: Document, pages):
 def extract_content(
         document: PDFDocument,
         layout_parameter: LAParams = None,
-        pages: list = None,
+        pages: tuple = None,
 ) -> Document:
     """Extract content from PDF file
 
@@ -107,6 +107,7 @@ def extract_content(
                                     parameter defines how chars are matched
                                     together in words and sentences.
                                     See pdf reference documentation.
+        pages: tuple of selected pages
     Returns:
         Document: parsed and layouted document
     """

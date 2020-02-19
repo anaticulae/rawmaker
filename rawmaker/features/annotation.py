@@ -41,8 +41,17 @@ def extract_annotations(
 ANNOTATION_LABEL = 'Annot'
 
 
-def parse_page(page: pdfminer.pdfpage.PDFPage, pagenumber: int):
-    """Parse annoation from `PDFPage`
+def parse_page(  # pylint:disable=R1260
+        page: pdfminer.pdfpage.PDFPage,
+        pagenumber: int,
+) -> iamraw.PageAnnotation:
+    """Parse annoation from `PDFPage`.
+
+    Args:
+        page: pdf page to parse annotation
+        pagenumber: number of selected page
+    Returns:
+        parsed Annotations.
 
     There are 2 different types of annotation, the internal and external
     links.

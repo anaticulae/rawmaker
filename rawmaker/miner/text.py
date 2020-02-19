@@ -6,9 +6,10 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-"""
-Parses the pdf-document and determine the layout of the different
-components.
+"""Textminer
+=========
+
+Parses pdf document and extracts layouted text components.
 """
 import copy
 import sys
@@ -16,6 +17,7 @@ import sys
 import iamraw
 import pdfminer.converter
 import pdfminer.layout
+import pdfminer.pdfinterp
 import utila
 
 import rawmaker.patch.ltchar
@@ -32,21 +34,22 @@ class PrecisePDFConverter(pdfminer.converter.PDFConverter):
 
     def __init__(
             self,
-            rsrcmgr,
-            laparams=None,
-            imagewriter=None,
+            resource_manager: pdfminer.pdfinterp.PDFResourceManager,
+            laparams: pdfminer.layout.LAParams = None,
+            imagewriter: callable = None,
     ):
         """Create converter instance.
 
         Args:
-            rsrcmg: resource manager to cache multiple file access
-            laparams(pdfminer.layout.LAParams): layout to define maximum
-                                                spacing between chars,
-                                                words and lines.
-            imagewrite: listener to recive extract images
+            resource_manager(PDFResourceManager): resource manager to
+                                                  cache multiple file
+                                                  accesses.
+            laparams(LAParams): layout to define maximum spacing between
+                                chars, words and lines.
+            imagewriter(callable): listener to recive extract images
         """
         super().__init__(
-            rsrcmgr=rsrcmgr,
+            rsrcmgr=resource_manager,
             outfp=sys.stdout.buffer,
             codec=utila.UTF8,
             pageno=0,
@@ -113,7 +116,7 @@ def render_char(
     Bounding-Computation
 
     Args:
-        item(LTChar):
+        item(LTChar): single character
         baseline(float): bottom y-coordinate of parent text line
         pageheight(float): height of current pdf page to flip coordinate
     Returns:
@@ -127,11 +130,12 @@ def render_char(
 
     value = item.get_text()
 
+    char = None
     # controlling chars
     if not bounding:
         # Example VirtualChar: <LTAnno ' '>
-        char = iamraw.VirtualChar(value=value)
-        return char
+        virtual = iamraw.VirtualChar(value=value)
+        return virtual
     # chars with content
     fontsize = item.fontsize
     # distance to bottom y-coodinate
@@ -158,7 +162,10 @@ def render_char(
     return char
 
 
-def render_textline(item: pdfminer.layout.LTTextBox, pageheight: float):
+def render_textline(
+        item: pdfminer.layout.LTTextBox,
+        pageheight: float,
+) -> iamraw.Line:
     """Determine character Bounding and split character if required
     cause layout parser puts two character together.
 
@@ -169,7 +176,7 @@ def render_textline(item: pdfminer.layout.LTTextBox, pageheight: float):
         iamraw.Line with converted iamraw.Character
     """
     bounding = convert_bounding(*item.bbox, pageheight=pageheight)
-    line = iamraw.Line(box=bounding)
+    result = iamraw.Line(box=bounding)
     baseline = bounding.y1
     for char in item._objs:  # pylint: disable=protected-access
         # pylint:disable=E1101
@@ -179,25 +186,25 @@ def render_textline(item: pdfminer.layout.LTTextBox, pageheight: float):
             pageheight=pageheight,
         )
         if len(character.value) == 1:
-            line.chars.append(character)
+            result.chars.append(character)
         else:
             # in some case the layout parser matches to chars together.
             # Therefore we have to split the character by content and fix
             # the bounding.
             for splitted in split_characters(character):
                 assert len(splitted.value) == 1, splitted
-                line.chars.append(splitted)
-    return line
+                result.chars.append(splitted)
+    return result
 
 
-def split_characters(char):
+def split_characters(char) -> list:
     """Split character which contains multiple chars. Split given
     BoundingBox and give every splitted character the same space.
 
     Args:
         char with multiple character in `char.value`
     Returns:
-        list with splitted character
+        List of splitted character.
     """
     result = []
     charbounding = char.box

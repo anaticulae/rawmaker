@@ -14,6 +14,7 @@ import linero.lines
 
 def work(lines: str, pages: tuple = None) -> str:
     loaded = serializeraw.load_lines(lines, pages=pages)  # pylint:disable=W0612
+    return ''
 
 
 def analyse_page(lines, textpositions):  # pylint:disable=W0613

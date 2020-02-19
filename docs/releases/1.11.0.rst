@@ -17,6 +17,7 @@ before
 after
 ~~~~~~
 
+* Total coverage: 93.70%
 * Your code has been rated at 10.00/10
 
 .. note:: TODOs are removed from quality metric

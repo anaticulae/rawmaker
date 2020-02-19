@@ -3,11 +3,7 @@
 RP 1.11.0
 =========
 
-* [ ] add extractor to extract cluster of lines as figures
-
 * [x] table extractor
-
-* [ ] math extractor
 
 code quality
 ------------

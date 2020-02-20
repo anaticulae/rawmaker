@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.11.2
+
+### Feature
+
+* add path module to determine resource path (7209d3e83114)
+
 ## v1.11.1
 
 ### Fix

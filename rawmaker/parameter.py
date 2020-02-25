@@ -34,6 +34,9 @@ def create_layout(
 
 
 def from_config(config: rawmaker.features.ParsingConfiguration):
+    if not config:
+        return create_layout()
+
     result = create_layout(
         boxes_flow=config.boxes_flow,
         char_margin=config.char_margin,

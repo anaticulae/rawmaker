@@ -136,11 +136,8 @@ def extract_document(
         config: rawmaker.features.ParsingConfiguration = None,
         pages: tuple = None,
 ) -> iamraw.Document:
-    if config is None:
-        config = rawmaker.features.ParsingConfiguration()
     layout = rawmaker.parameter.from_config(config)
     rawmaker.parameter.print_layout(layout)
-    # Diff between chars which build a word
 
     assert isinstance(document, str), str(document)
     with rawmaker.reader.read(document) as pdf:

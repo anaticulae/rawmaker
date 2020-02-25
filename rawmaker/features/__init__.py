@@ -10,7 +10,7 @@ import dataclasses
 from collections import namedtuple
 from typing import Tuple
 
-from iamraw import Document
+import iamraw
 from pdfminer.converter import PDFPageAggregator
 from pdfminer.layout import LAParams
 from pdfminer.layout import LTPage
@@ -86,8 +86,8 @@ def process_pagecontent(document: PDFDocument, pages=None) -> LTPage:
         yield content
 
 
-def page_selection(document: Document, pages):
-    assert isinstance(document, Document), type(document)
+def page_selection(document: iamraw.Document, pages):
+    assert isinstance(document, iamraw.Document), type(document)
     if pages:
         return pages
     # if pages is None, every page must processed
@@ -98,7 +98,7 @@ def extract_content(
         document: PDFDocument,
         layout_parameter: LAParams = None,
         pages: tuple = None,
-) -> Document:
+) -> iamraw.Document:
     """Extract content from PDF file
 
     Args:
@@ -111,38 +111,27 @@ def extract_content(
     Returns:
         Document: parsed and layouted document
     """
-    # prepare parser
-    interpreter, device = setup_parser(layout_parameter)
-    # Processing layout
-    extracted = process_pages(document, pages, interpreter, device)
-    return extracted
-
-
-def setup_parser(layout_parameter):
     if layout_parameter is None:
         layout_parameter = LAParams()
     # Create a PDF resource manager object that stores shared resources.
     rsrcmgr = PDFResourceManager()
 
+    # prepare parser
     device = PrecisePDFConverter(rsrcmgr, laparams=layout_parameter)
     device.new_document()
     interpreter = PDFPageInterpreter(rsrcmgr, device)
-    return interpreter, device
 
-
-def process_pages(document, pages, interpreter, device):
-    call('process_pages')
     # Processing layout
     with SkipCollector(pages) as collector:
         for index, page in enumerate(PDFPage.create_pages(document)):
             if collector.skip(index):
                 continue
             interpreter.process_page(page)
-    document = device.finish_document()
+    result = device.finish_document()
     # upgrade page number
 
-    pages = page_selection(document, pages)
+    pages = page_selection(result, pages)
     # TODO: REPLACE PAGE WITH ENDLESS ITER AND CHANGE ZIP TO ZIP_LONGEST
-    for (page, pagenumber) in zip(document.pages, pages):
+    for (page, pagenumber) in zip(result.pages, pages):
         page.page = pagenumber
-    return document
+    return result

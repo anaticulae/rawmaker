@@ -8,37 +8,32 @@
 #==============================================================================
 import iamraw
 import pytest
+import serializeraw
 import utila
-from serializeraw import dump_document
-from serializeraw import load_document
 
 import rawmaker.features
 import rawmaker.features.text
 import tests.resources
-from rawmaker.features.text import work
-from tests.resources import HELLO_WORLD_PAGES
-from tests.resources import HELLO_WORLD_PDF
-from tests.resources import VIM_PDF
 
 
 def test_miner_pdf():
-    parsed_file = work(VIM_PDF)
+    parsed_file = rawmaker.features.text.work(tests.resources.VIM_PDF)
     assert parsed_file
 
 
 def test_mine_hello_world_pdf():
-    text, _ = work(HELLO_WORLD_PDF)
-    loaded = load_document(text)
+    text, _ = rawmaker.features.text.work(tests.resources.HELLO_WORLD_PDF)
+    loaded = serializeraw.load_document(text)
 
     assert loaded
-    assert len(loaded) == HELLO_WORLD_PAGES
+    assert len(loaded) == tests.resources.HELLO_WORLD_PAGES
 
 
 @pytest.mark.parametrize(
     'pdf_path',
     [
-        HELLO_WORLD_PDF,
-        VIM_PDF,
+        tests.resources.HELLO_WORLD_PDF,
+        tests.resources.VIM_PDF,
     ],
     ids=[
         'hello_world.pdf',
@@ -53,9 +48,9 @@ def test_dump_and_load_pdf(pdf_path):
     text = rawmaker.features.text.extract_document(pdf_path)
     assert text
 
-    dumped = dump_document(text)
+    dumped = serializeraw.dump_document(text)
 
-    loaded = load_document(dumped)
+    loaded = serializeraw.load_document(dumped)
 
     # Saving document saves only data not the bounding. The bounding is
     # stored in an other class. Therefore we have to ensure that
@@ -74,9 +69,12 @@ def test_dump_and_load_pdf(pdf_path):
 
 def test_text_mine_pdf_page_0():
     selected_pages = [3, 4, 5]
-    parsed = work(VIM_PDF, pages=selected_pages)
+    parsed = rawmaker.features.text.work(
+        tests.resources.VIM_PDF,
+        pages=selected_pages,
+    )
     dumped_text, _ = parsed
-    text = load_document(dumped_text)
+    text = serializeraw.load_document(dumped_text)
     assert len(text) == len(selected_pages)
     text_page_numbers = [item.page for item in text]
     assert text_page_numbers == selected_pages, str(text_page_numbers)

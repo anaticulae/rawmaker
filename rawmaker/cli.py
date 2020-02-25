@@ -21,9 +21,11 @@ import sys
 
 import protocol
 import utila
+import utila.feature
 
 import rawmaker
 import rawmaker.error
+import rawmaker.utils
 
 PDF = utila.Pattern('*', 'pdf')
 
@@ -32,6 +34,7 @@ LINE_OVERLAP = utila.Value('line_overlap', float, defaultvar=0.5, minimum=0.1)
 LINE_MARGIN = utila.Value('line_margin', float, defaultvar=0.5, minimum=0.1)
 WORD_MARGIN = utila.Value('word_margin', float, defaultvar=0.1, minimum=0.1)
 BOXES_FLOW = utila.Value('boxes_flow', float, defaultvar=0.5, minimum=0.1)
+STRIP = utila.Value('strip', bool, defaultvar=False)
 
 PDF_INPUT = [PDF]
 
@@ -42,6 +45,7 @@ CONFIG_INPUTS = [
     LINE_MARGIN,
     LINE_OVERLAP,
     WORD_MARGIN,
+    STRIP,
 ]
 
 WORKPLAN = [
@@ -107,6 +111,7 @@ def main():
         (LINTER_FLAG, 'write linter result'),
         (SUPERFAST_FLAG, 'use superfast to fork processes and merge results'),
     ]
+    utila.feature.prepare_variables = rawmaker.utils.prepare_variables
     with linter():
         utila.featurepack(
             description=RAWMAKER_DESCRIPTION,

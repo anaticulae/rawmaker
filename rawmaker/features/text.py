@@ -31,6 +31,7 @@ def work(  # pylint:disable=W9015
         line_margin: float = 0.5,
         line_overlap: float = 0.5,
         word_margin: float = 0.1,
+        strip: bool = False,
         pages: tuple = None,
 ) -> typing.Tuple[str, str]:
     """Extract structured text out of document
@@ -49,6 +50,7 @@ def work(  # pylint:disable=W9015
         line_margin=line_margin,
         line_overlap=line_overlap,
         word_margin=word_margin,
+        strip=strip,
     )
 
     if rawmaker.cli.superfast():

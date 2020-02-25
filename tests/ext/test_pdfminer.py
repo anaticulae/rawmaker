@@ -11,18 +11,16 @@
 The functionality is encapsulated by `rawmaker` api.
 """
 
-from pytest import raises
+import pytest
 
-from rawmaker.error import InvalidPDF
-from rawmaker.reader import read
-from tests.resources import NO_PDF
-from tests.resources import VIM_OUTLINES
-from tests.resources import VIM_PDF
+import rawmaker.error
+import rawmaker.reader
+import tests.resources
 
 
 def test_outline_count():
-    """Test reading outlines from document"""
-    with read(VIM_PDF) as document:
+    """Test reading outlines from document."""
+    with rawmaker.reader.read(tests.resources.VIM_PDF) as document:
         outlines = document.get_outlines()
         # pylint: disable=unused-variable
         # pylint: disable=invalid-name
@@ -38,13 +36,11 @@ def test_outline_count():
             pass
 
         section_count = len(list(document.get_outlines()))
-        assert section_count == VIM_OUTLINES
+        assert section_count == tests.resources.VIM_OUTLINES
 
 
 def test_read_no_pdf():
-    """Reading non valid pdf.
-
-    The example contains some raw text."""
-    with raises(InvalidPDF):
-        with read(NO_PDF):
+    """Reading non valid pdf. The example contains some raw text."""
+    with pytest.raises(rawmaker.error.InvalidPDF):
+        with rawmaker.reader.read(tests.resources.NO_PDF):
             pass

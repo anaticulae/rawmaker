@@ -1,0 +1,33 @@
+.. _1_12_0:
+
+RP 1.12.0
+=========
+
+As a result of bad pdf printer or misusing msword etc. there are a lot
+of useless whitespaces which are a big problem for further processing.
+With this increment, I want to reduces these bad behavior and underline
+this with 5 working test examples.
+
+holy whitespaces
+----------------
+
+* [ ] remove trailing whitespaces
+
+* [ ] fix bounding processing
+
+* [ ] add five working example
+
+maintenance
+-----------
+
+* [ ] solve five todos
+
+code quality
+------------
+
+before
+~~~~~~
+
+# Todos: 52
+* Total coverage: 93.70%
+* Your code has been rated at 10.00/10

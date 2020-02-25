@@ -63,6 +63,7 @@ HOW_TO_CPORTING_HORIZONTAL_COUNT = 2
 MASTER72 = os.path.join(MASTER, 'page_72_noimages_toc.pdf')
 assert os.path.exists(MASTER72), str(MASTER72)
 
+BACHELOR37 = os.path.join(BACHELOR, 'page_37_tables.pdf')
 BACHELOR63 = os.path.join(BACHELOR, 'page_63_images_toc.pdf')
 
 SINGLE_HEADLINE_MOVINGFOOTER = os.path.join(
@@ -74,6 +75,7 @@ MASTER116 = os.path.join(MASTER, 'page_116_images_toc_formular.pdf')
 
 REQUIRED_RESOURCES = [
     BACHELOR,
+    BACHELOR37,
     BACHELOR63,
     HELLO_WORLD_PDF,
     HOW_TO_CPORTING_PDF,

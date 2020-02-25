@@ -14,6 +14,7 @@ from serializeraw import load_document
 
 import rawmaker.features
 import rawmaker.features.text
+import tests.resources
 from rawmaker.features.text import work
 from tests.resources import HELLO_WORLD_PAGES
 from tests.resources import HELLO_WORLD_PDF

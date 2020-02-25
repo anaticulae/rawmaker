@@ -26,6 +26,8 @@ from rawmaker.miner.text import PrecisePDFConverter
 
 PageContent = namedtuple('PageContent', 'content, page')
 
+STRIP = True
+
 
 @dataclasses.dataclass
 class ParsingConfiguration:
@@ -34,7 +36,7 @@ class ParsingConfiguration:
     line_margin: float = 0.5
     line_overlap: float = 0.5
     word_margin: float = 0.1
-    strip: bool = False
+    strip: bool = STRIP
 
 
 def default_parser_config():

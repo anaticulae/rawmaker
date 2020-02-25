@@ -31,7 +31,7 @@ def work(  # pylint:disable=W9015
         line_margin: float = 0.5,
         line_overlap: float = 0.5,
         word_margin: float = 0.1,
-        strip: bool = False,
+        strip: bool = rawmaker.features.STRIP,
         pages: tuple = None,
 ) -> typing.Tuple[str, str]:
     """Extract structured text out of document
@@ -138,7 +138,7 @@ def extract_document(
         config: rawmaker.features.ParsingConfiguration = None,
         pages: tuple = None,
 ) -> iamraw.Document:
-    strip = config.strip if config else False
+    strip = config.strip if config else rawmaker.features.STRIP
     layout = rawmaker.parameter.from_config(config)
     rawmaker.parameter.print_layout(layout)
 

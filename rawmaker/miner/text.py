@@ -37,7 +37,7 @@ class PrecisePDFConverter(pdfminer.converter.PDFConverter):
             resource_manager: pdfminer.pdfinterp.PDFResourceManager,
             laparams: pdfminer.layout.LAParams = None,
             imagewriter: callable = None,
-            strip: bool = False,
+            strip: bool = None,
     ):
         """Create converter instance.
 
@@ -58,8 +58,9 @@ class PrecisePDFConverter(pdfminer.converter.PDFConverter):
             pageno=0,
             laparams=laparams,
         )
+        import rawmaker.features  # pylint:disable=W0621
         self.imagewriter = imagewriter
-        self.strip = strip
+        self.strip = rawmaker.features.STRIP if strip is None else strip
         self.page = 0
         self.document = None
 

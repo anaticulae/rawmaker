@@ -23,6 +23,8 @@ def test_layout_extraction_mine_mini_numbers():
         boxes_flow=1.0,
         char_margin=10.0,
         line_margin=1.0,
+        # TODO: TRY TO USE STRIP = TRUE
+        strip=False,
     )
 
     text = serializeraw.load_document(text)

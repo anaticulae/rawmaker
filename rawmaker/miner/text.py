@@ -37,6 +37,7 @@ class PrecisePDFConverter(pdfminer.converter.PDFConverter):
             resource_manager: pdfminer.pdfinterp.PDFResourceManager,
             laparams: pdfminer.layout.LAParams = None,
             imagewriter: callable = None,
+            strip: bool = False,
     ):
         """Create converter instance.
 
@@ -47,6 +48,8 @@ class PrecisePDFConverter(pdfminer.converter.PDFConverter):
             laparams(LAParams): layout to define maximum spacing between
                                 chars, words and lines.
             imagewriter(callable): listener to recive extract images
+            strip(bool): remove holy white spaces which are a result of
+                         bad pdf printer or bad pdf parsing.
         """
         super().__init__(
             rsrcmgr=resource_manager,
@@ -56,6 +59,7 @@ class PrecisePDFConverter(pdfminer.converter.PDFConverter):
             laparams=laparams,
         )
         self.imagewriter = imagewriter
+        self.strip = strip
         self.page = 0
         self.document = None
 
@@ -74,7 +78,7 @@ class PrecisePDFConverter(pdfminer.converter.PDFConverter):
         return document
 
     def receive_layout(self, ltpage):
-        page = render(ltpage)
+        page = render(ltpage, strip=self.strip)
         self.document.pages.append(page)  # pylint:disable=E1101
 
 
@@ -165,6 +169,7 @@ def render_char(
 def render_textline(
         item: pdfminer.layout.LTTextBox,
         pageheight: float,
+        strip: bool = False,
 ) -> iamraw.Line:
     """Determine character Bounding and split character if required
     cause layout parser puts two character together.
@@ -172,6 +177,7 @@ def render_textline(
     Args:
         item: LTTextBox with list of containg LTChar's
         pageheight: height of page to flip y-coordiante of BoundingBox
+        strip: remove white spaces at begin and end of text line
     Returns:
         iamraw.Line with converted iamraw.Character
     """
@@ -194,6 +200,24 @@ def render_textline(
             for splitted in split_characters(character):
                 assert len(splitted.value) == 1, splitted
                 result.chars.append(splitted)
+    if strip:
+        # remove left
+        lstrip = len(result.text) - len(result.text.lstrip())
+        result.chars = result.chars[lstrip:]
+
+        # remove right
+        rstrip = len(result.text.rstrip())
+        result.chars = result.chars[:rstrip]
+
+        if result.chars:
+            # TODO: ENSURE THAT ONLY A SINGLE LINE IS RENDERED?
+            # IF MORE THAN ONE LINE IS RENDERED, LAST CHAR MUST NOT BE THE
+            # MOST RIGH CHAR.
+            # fix bounding box of line rectangle
+            x0 = result.chars[0].box.x0
+            x1 = result.chars[-1].box.x1
+            bounding.x0 = x0
+            bounding.x1 = x1
     return result
 
 
@@ -229,16 +253,23 @@ def split_characters(char) -> list:
     return result
 
 
-def render_textcontainer(item: pdfminer.layout.LTTextBox, pageheight: float):
+def render_textcontainer(
+        item: pdfminer.layout.LTTextBox,
+        pageheight: float,
+        strip: bool = False,
+) -> iamraw.TextContainer:
     bounding = convert_bounding(*item.bbox, pageheight=pageheight)
     container = iamraw.TextContainer(box=bounding)
     for line in item:
         # pylint:disable=E1101
-        container.lines.append(render_textline(line, pageheight=pageheight))
+        rendered = render_textline(line, pageheight=pageheight, strip=strip)
+        if not rendered:
+            continue
+        container.lines.append(rendered)
     return container
 
 
-def render(item, pageheight: float = None):
+def render(item, pageheight: float = None, strip: bool = False):
     if isinstance(item, pdfminer.layout.LTPage):
         pagenumber = item.pageid
         page = iamraw.Page(pagenumber, iamraw.BoundingBox(*item.bbox))
@@ -246,13 +277,24 @@ def render(item, pageheight: float = None):
         pageheight = item.bbox[3]
         for child in item:
             # pylint:disable=E1101
-            rendered = render(child, pageheight=pageheight)
+            rendered = render(child, pageheight=pageheight, strip=strip)
             if rendered is None:
                 continue
             page.children.append(rendered)
         return page
     if isinstance(item, pdfminer.layout.LTTextBox):
-        textcontainer = render_textcontainer(item, pageheight=pageheight)
+        textcontainer = render_textcontainer(
+            item,
+            pageheight=pageheight,
+            strip=strip,
+        )
+        if strip:
+            textcontainer.lines = [
+                line for line in textcontainer.lines if line.text.strip()
+            ]
+            if not textcontainer.lines:
+                # ignore stripped line
+                return None
         return textcontainer
     return None
 

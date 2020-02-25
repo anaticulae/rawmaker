@@ -34,6 +34,7 @@ class ParsingConfiguration:
     line_margin: float = 0.5
     line_overlap: float = 0.5
     word_margin: float = 0.1
+    strip: bool = False
 
 
 def default_parser_config():
@@ -97,6 +98,7 @@ def page_selection(document: iamraw.Document, pages):
 def extract_content(
         document: PDFDocument,
         layout_parameter: LAParams = None,
+        strip: bool = False,
         pages: tuple = None,
 ) -> iamraw.Document:
     """Extract content from PDF file
@@ -107,6 +109,7 @@ def extract_content(
                                     parameter defines how chars are matched
                                     together in words and sentences.
                                     See pdf reference documentation.
+        strip: removes white spaces at beginning and ending of text line
         pages: tuple of selected pages
     Returns:
         Document: parsed and layouted document
@@ -117,7 +120,11 @@ def extract_content(
     rsrcmgr = PDFResourceManager()
 
     # prepare parser
-    device = PrecisePDFConverter(rsrcmgr, laparams=layout_parameter)
+    device = PrecisePDFConverter(
+        rsrcmgr,
+        laparams=layout_parameter,
+        strip=strip,
+    )
     device.new_document()
     interpreter = PDFPageInterpreter(rsrcmgr, device)
 

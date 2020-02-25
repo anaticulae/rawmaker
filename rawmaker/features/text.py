@@ -136,6 +136,7 @@ def extract_document(
         config: rawmaker.features.ParsingConfiguration = None,
         pages: tuple = None,
 ) -> iamraw.Document:
+    strip = config.strip if config else False
     layout = rawmaker.parameter.from_config(config)
     rawmaker.parameter.print_layout(layout)
 
@@ -144,6 +145,7 @@ def extract_document(
         document = rawmaker.features.extract_content(
             pdf,
             layout_parameter=layout,
+            strip=strip,
             pages=pages,
         )
     return document

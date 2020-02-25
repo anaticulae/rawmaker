@@ -11,9 +11,9 @@ this with 5 working test examples.
 holy whitespaces
 ----------------
 
-* [ ] remove trailing whitespaces
+* [x] remove trailing whitespaces
 
-* [ ] fix bounding processing
+* [x] fix bounding processing
 
 * [ ] add five working example
 

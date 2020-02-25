@@ -7,8 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 import iamraw
+import pytest
 import utila
-from pytest import mark
 from serializeraw import dump_document
 from serializeraw import load_document
 
@@ -34,7 +34,7 @@ def test_mine_hello_world_pdf():
     assert len(loaded) == HELLO_WORLD_PAGES
 
 
-@mark.parametrize(
+@pytest.mark.parametrize(
     'pdf_path',
     [
         HELLO_WORLD_PDF,
@@ -80,3 +80,29 @@ def test_text_mine_pdf_page_0():
     assert len(text) == len(selected_pages)
     text_page_numbers = [item.page for item in text]
     assert text_page_numbers == selected_pages, str(text_page_numbers)
+
+
+@pytest.mark.parametrize('remove_whitespace', [True, False])
+def test_text_mine_bachelor37_holy_whitespaces_remove(remove_whitespace):
+    source = tests.resources.BACHELOR37
+    pages = (1,)
+    config = rawmaker.features.ParsingConfiguration(
+        boxes_flow=0.5,
+        char_margin=1.0,
+        line_margin=0.15,
+        line_overlap=0.1,
+        word_margin=0.01,
+        strip=remove_whitespace,
+    )
+    extracted = rawmaker.features.text.extract_document(
+        source,
+        config=config,
+        pages=pages,
+    )
+    page_1 = extracted[0]
+    text = [line.text.strip() for line in page_1]
+    if remove_whitespace:
+        assert all(len(line) for line in text), text
+    else:
+        # contains some holy whitespaces
+        assert not all(len(line) for line in text), text

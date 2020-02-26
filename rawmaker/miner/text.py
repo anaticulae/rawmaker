@@ -141,9 +141,9 @@ def render_char(
         virtual = iamraw.VirtualChar(value=value)
         return virtual
     # chars with content
-    fontsize = item.fontsize
+    fontsize = utila.roundme(item.fontsize)
     # distance to bottom y-coodinate
-    fontrise = baseline - bounding.y1
+    fontrise = utila.roundme(baseline - bounding.y1)
     if value in FAST_KEY:
         # Unicode character
         replaced = SPECIAL_CHAR_TABLE[value]

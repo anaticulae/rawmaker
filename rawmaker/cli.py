@@ -25,6 +25,7 @@ import utila.feature
 
 import rawmaker
 import rawmaker.error
+import rawmaker.features
 import rawmaker.utils
 
 PDF = utila.Pattern('*', 'pdf')
@@ -34,7 +35,7 @@ LINE_OVERLAP = utila.Value('line_overlap', float, defaultvar=0.5, minimum=0.1)
 LINE_MARGIN = utila.Value('line_margin', float, defaultvar=0.5, minimum=0.1)
 WORD_MARGIN = utila.Value('word_margin', float, defaultvar=0.1, minimum=0.1)
 BOXES_FLOW = utila.Value('boxes_flow', float, defaultvar=0.5, minimum=0.1)
-STRIP = utila.Value('strip', bool, defaultvar=False)
+STRIP = utila.Value('strip', bool, defaultvar=rawmaker.features.STRIP)
 
 PDF_INPUT = [PDF]
 

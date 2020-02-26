@@ -103,4 +103,64 @@ def test_text_mine_bachelor37_holy_whitespaces_remove(remove_whitespace):
         assert all(len(line) for line in text), text
     else:
         # contains some holy whitespaces
+        holywhitespaces = [len(line) for line in text]
+        print(holywhitespaces)
         assert not all(len(line) for line in text), text
+
+
+def validate_master116(firstpage):
+    lastline = firstpage[-1].text
+    assert lastline == 'Berlin, 19. April 2016', lastline
+
+
+@pytest.mark.parametrize('source, remove_whitespace, validate', [
+    pytest.param(
+        tests.resources.BACHELOR63,
+        False,
+        None,
+        id='bachelor63_false',
+    ),
+    pytest.param(tests.resources.BACHELOR63, True, None, id='bachelor_true'),
+    pytest.param(
+        tests.resources.MASTER116,
+        True,
+        validate_master116,
+        id='master116_true',
+    ),
+    pytest.param(tests.resources.MASTER72, False, None, id='master72_false'),
+    pytest.param(tests.resources.MASTER72, True, None, id='master72_true'),
+])
+def test_text_mine_holy_whitespaces_remove(source, remove_whitespace, validate):
+    # TODO: ADD MORE SINGLE PAGE VALIDATION
+    pages = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+    extracted = mine_holywhitespace(source, remove_whitespace, pages, 10)
+    if validate:
+        validate(extracted[0])
+
+
+def mine_holywhitespace(source, remove_whitespace, pages, expected_length):
+    config = rawmaker.features.ParsingConfiguration(
+        boxes_flow=0.5,
+        char_margin=1.0,
+        line_margin=0.15,
+        line_overlap=0.1,
+        word_margin=0.01,
+        strip=remove_whitespace,
+    )
+    extracted = rawmaker.features.text.extract_document(
+        source,
+        config=config,
+        pages=pages,
+    )
+    assert len(extracted) == expected_length, extracted
+    for page in extracted:
+        for item in page:
+            print(item)
+        text = [line.text.strip() for line in page]
+        if remove_whitespace:
+            assert all(len(line) for line in text), text
+        else:
+            # contains some holy whitespaces
+            holywhitespaces = [len(line) for line in text]
+            assert not all(holywhitespaces), text
+    return extracted

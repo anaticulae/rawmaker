@@ -15,7 +15,7 @@ holy whitespaces
 
 * [x] fix bounding processing
 
-* [ ] add five working example
+* [x] add five working example
 
 maintenance
 -----------

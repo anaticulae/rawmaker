@@ -84,9 +84,11 @@ def process_pagecontent(document: PDFDocument, pages=None) -> LTPage:
         yield content
 
 
-def page_selection(document: iamraw.Document, pages):
+def page_selection(document: iamraw.Document, pages: tuple):
     assert isinstance(document, iamraw.Document), type(document)
     if pages:
+        assert isinstance(pages,
+                          (int, list, tuple)), '%s %s' % (pages, type(pages))
         return pages
     # if pages is None, every page must processed
     return list(range(len(document.pages)))

@@ -89,7 +89,7 @@ def test_text_mine_bachelor37_holy_whitespaces_remove(remove_whitespace):
 
 def validate_master116(firstpage):
     lastline = firstpage[-1].text
-    assert lastline == 'Berlin, 19. April 2016', lastline
+    assert lastline == 'Berlin, 19. April 2016\n', lastline
 
 
 @pytest.mark.parametrize('source, remove_whitespace, validate', [
@@ -134,8 +134,6 @@ def mine_holywhitespace(source, remove_whitespace, pages, expected_length):
     )
     assert len(extracted) == expected_length, extracted
     for page in extracted:
-        for item in page:
-            print(item)
         text = [line.text.strip() for line in page]
         if remove_whitespace:
             assert all(len(line) for line in text), text

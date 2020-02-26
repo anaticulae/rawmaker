@@ -40,19 +40,24 @@ def test_leftright_book_font_size(testdir, monkeypatch):
     assert first_char.size >= 8.0, first_char
 
 
-# @pytest.mark.xfail(reason='font parsing error')
-def test_porting_module_font_index(testdir, monkeypatch):
-    tests.run_success(
-        f'-i {tests.resources.HOW_TO_CPORTING_PDF} --fonts --pages=0',
-        monkeypatch=monkeypatch,
-    )
+@pytest.mark.parametrize('strip', [True, False])
+def test_porting_module_font_index(strip, testdir, monkeypatch):
+    """Hint: One white space is always at the end of a line. Without
+    striping there can be more than one white space at the end of a
+    line."""
+    cmd = (f'-i {tests.resources.HOW_TO_CPORTING_PDF}'
+           f' --fonts --text --strip={strip}')
+    tests.run_success(cmd, monkeypatch=monkeypatch)
     source = rawmaker.path.fontcontent(testdir.tmpdir)
     position = serializeraw.load_font_content(source)
-    first_page = utila.select_page(position, page=0)[0]
 
-    before_last = first_page[-2][0:3]
-    last = first_page[-1][0:3]
-
-    assert before_last != last, ('font extraction error, 2 different '
-                                 'location can not be equal'
-                                 f'{before_last} {last}')
+    for page in position:
+        content = page.content
+        if len(content) < 2:
+            # not enough data on page
+            continue
+        before_last = content[-2][0:3]
+        last = content[-1][0:3]
+        assert before_last != last, ('font extraction error, 2 different '
+                                     'location can not be equal'
+                                     f'{before_last} {last}')

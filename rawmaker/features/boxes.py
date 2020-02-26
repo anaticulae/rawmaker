@@ -26,11 +26,11 @@ import rawmaker.reader
 LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]
 
 # minimal length of a horizontal line
-HORIZONTAL_MIN_WIDTH = configo.HV_FLOAT(0.2)
+HORIZONTAL_MIN_WIDTH = configo.HV_FLOAT(0.2).value
 # maximal difference in y-component
 HORIZONTAL_MAX_DIFF = configo.HV_FLOAT_PLUS(2.0)
 # maximal difference in x-component
-VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(2.0)
+VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(2.0).value
 # minimal number of minus signs which build a horizontal line
 REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(50)
 

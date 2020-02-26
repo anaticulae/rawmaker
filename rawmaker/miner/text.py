@@ -206,7 +206,8 @@ def render_textline(
         result.chars = result.chars[lstrip:]
 
         # remove right
-        rstrip = len(result.text.rstrip())
+        # +1 to preserve virtual newline char
+        rstrip = len(result.text.rstrip()) + 1
         result.chars = result.chars[:rstrip]
 
         if result.chars:
@@ -214,8 +215,14 @@ def render_textline(
             # IF MORE THAN ONE LINE IS RENDERED, LAST CHAR MUST NOT BE THE
             # MOST RIGH CHAR.
             # fix bounding box of line rectangle
+            # ensure to end with newline
+            result.chars[-1].value = '\n'
             x0 = result.chars[0].box.x0
-            x1 = result.chars[-1].box.x1
+            try:
+                x1 = result.chars[-1].box.x1
+            except AttributeError:
+                # VirtualChar has no BoundingBox, use one Char before
+                x1 = result.chars[-2].box.x1
             bounding.x0 = x0
             bounding.x1 = x1
     return result

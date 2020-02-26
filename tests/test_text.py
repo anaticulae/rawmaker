@@ -84,28 +84,7 @@ def test_text_mine_pdf_page_0():
 def test_text_mine_bachelor37_holy_whitespaces_remove(remove_whitespace):
     source = tests.resources.BACHELOR37
     pages = (1,)
-    config = rawmaker.features.ParsingConfiguration(
-        boxes_flow=0.5,
-        char_margin=1.0,
-        line_margin=0.15,
-        line_overlap=0.1,
-        word_margin=0.01,
-        strip=remove_whitespace,
-    )
-    extracted = rawmaker.features.text.extract_document(
-        source,
-        config=config,
-        pages=pages,
-    )
-    page_1 = extracted[0]
-    text = [line.text.strip() for line in page_1]
-    if remove_whitespace:
-        assert all(len(line) for line in text), text
-    else:
-        # contains some holy whitespaces
-        holywhitespaces = [len(line) for line in text]
-        print(holywhitespaces)
-        assert not all(len(line) for line in text), text
+    mine_holywhitespace(source, remove_whitespace, pages, 1)
 
 
 def validate_master116(firstpage):

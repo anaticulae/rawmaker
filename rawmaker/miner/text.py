@@ -20,8 +20,6 @@ import pdfminer.layout
 import pdfminer.pdfinterp
 import utila
 
-import rawmaker.patch.ltchar
-
 
 class PrecisePDFConverter(pdfminer.converter.PDFConverter):
     """Parsing PDF-files based on given layout definition `laparams`.
@@ -65,6 +63,7 @@ class PrecisePDFConverter(pdfminer.converter.PDFConverter):
         self.document = None
 
         # TODO: Remove after upgrading pdfminer
+        import rawmaker.patch.ltchar
         PrecisePDFConverter.render_char = rawmaker.patch.ltchar.render_char
 
     def new_document(self):

@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v1.12.0
+
+### Feature
+
+* set default strip to True and expose to global constant (c066921e6292)
+* expose strip flag to cli (fa00f164b1c0)
+* add `strip` flag to remove trailing white spaces/lines (8fcb245f99c8)
+
+### Fix
+
+* fix interface check (9a5a2c0ce1a5)
+
 ## v1.11.2
 
 ### Feature

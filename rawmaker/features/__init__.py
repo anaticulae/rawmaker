@@ -39,14 +39,9 @@ class ParsingConfiguration:
     strip: bool = STRIP
 
 
-def default_parser_config():
-    # TODO: define a good default one
-    return LAParams()
-
-
 def create_interpreter(layout=None) -> PDFPageInterpreter:
     if not layout:
-        layout = default_parser_config()
+        layout = LAParams()
     rsrcmgr = PDFResourceManager()
     device = PDFPageAggregator(rsrcmgr, laparams=layout)
     interpreter = PDFPageInterpreter(rsrcmgr, device)
@@ -137,8 +132,8 @@ def extract_content(
                 continue
             interpreter.process_page(page)
     result = device.finish_document()
-    # upgrade page number
 
+    # upgrade page number
     pages = page_selection(result, pages)
     # TODO: REPLACE PAGE WITH ENDLESS ITER AND CHANGE ZIP TO ZIP_LONGEST
     for (page, pagenumber) in zip(result.pages, pages):

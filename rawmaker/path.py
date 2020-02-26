@@ -9,6 +9,8 @@
 
 import os
 
+import utila
+
 
 def pathconnector(
         path: str,
@@ -16,12 +18,15 @@ def pathconnector(
         filename: str,
         prefix: str = '',
 ) -> str:
-    # TODO: MOVE TO UTILA
+    # TODO: REMOVE AFTER UPGRADING
     assert os.path.isdir(path), str(path)
     prefix = f'{prefix}_' if prefix else ''
     filename = f'{runner}__{prefix}{filename}.yaml'
     result = os.path.join(path, filename)
     return result
+
+
+utila.pathconnector = pathconnector
 
 
 def text(path: str, prefix: str = '') -> str:
@@ -36,36 +41,36 @@ def text(path: str, prefix: str = '') -> str:
     Returns:
         comined path
     """
-    return pathconnector(path, 'rawmaker', 'text_text', prefix)
+    return utila.pathconnector(path, 'rawmaker', 'text_text', prefix)
 
 
 def textposition(path: str, prefix: str = '') -> str:
-    return pathconnector(path, 'rawmaker', 'text_positions', prefix)
+    return utila.pathconnector(path, 'rawmaker', 'text_positions', prefix)
 
 
 def toc(path: str, prefix: str = '') -> str:
-    return pathconnector(path, 'rawmaker', 'toc_toc', prefix)
+    return utila.pathconnector(path, 'rawmaker', 'toc_toc', prefix)
 
 
 def fontheader(path: str, prefix: str = '') -> str:
-    return pathconnector(path, 'rawmaker', 'fonts_header', prefix)
+    return utila.pathconnector(path, 'rawmaker', 'fonts_header', prefix)
 
 
 def fontcontent(path: str, prefix: str = '') -> str:
-    return pathconnector(path, 'rawmaker', 'fonts_content', prefix)
+    return utila.pathconnector(path, 'rawmaker', 'fonts_content', prefix)
 
 
 def sizeandborder(path: str, prefix: str = '') -> str:
-    return pathconnector(path, 'rawmaker', 'border_pages', prefix)
+    return utila.pathconnector(path, 'rawmaker', 'border_pages', prefix)
 
 
 def horizontals(path: str, prefix: str = '') -> str:
-    return pathconnector(path, 'rawmaker', 'boxes_horizontal', prefix)
+    return utila.pathconnector(path, 'rawmaker', 'boxes_horizontal', prefix)
 
 
 def boxed(path: str, prefix: str = '') -> str:
-    return pathconnector(path, 'rawmaker', 'boxes_boxes', prefix)
+    return utila.pathconnector(path, 'rawmaker', 'boxes_boxes', prefix)
 
 
 def line(path: str, prefix: str = '') -> str:
-    return pathconnector(path, 'rawmaker', 'line_line', prefix)
+    return utila.pathconnector(path, 'rawmaker', 'line_line', prefix)

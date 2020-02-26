@@ -22,6 +22,7 @@ Example:
 """
 import math
 
+import configo
 import iamraw
 import serializeraw
 import utila
@@ -51,6 +52,18 @@ def table_bounding(items):
     return x0, y0, x1, y1
 
 
+# a table must have at least this amout of lines
+TABLE_MIN_LINE_COUNT = configo.HV_INT_PLUS(10)
+
+# tables are build out of vertical and horizontal lines, but only a few
+# cross lines.
+TABLE_MIN_HORIZONTAL_VERTICAL_LINE = configo.HV_PERCENT_PLUS(0.9)
+
+# tables are buld ouf long lines. The average line length is used to
+# exclude figures etc.
+TABLE_MIN_AVG_LINE_LENGTH = configo.HV_FLOAT_PLUS(40.0)
+
+
 def judge_tables(grouped):
     """This approach handles only very simple word tables, beautiful
     "latex" tables are not supported becase there are build out of
@@ -59,13 +72,13 @@ def judge_tables(grouped):
     for page, clusters in grouped:
         pageresult = iamraw.PageContentTableBounding(page=page)
         for item in clusters:
-            if len(item) < 10:  # TODO: HOLY VALUE
+            if len(item) < TABLE_MIN_LINE_COUNT:
                 continue
             percentage = linero.lines.horiverti_percentage(item)
-            if percentage < 0.9:  # TODO: HOLY VALUE
+            if percentage < TABLE_MIN_HORIZONTAL_VERTICAL_LINE:
                 continue
             avg = linero.lines.length_avg(item)
-            if avg < 40.0:  # TODO: HOLY VALUE
+            if avg < TABLE_MIN_AVG_LINE_LENGTH:
                 continue
             bounding = table_bounding(item)
             pageresult.append(

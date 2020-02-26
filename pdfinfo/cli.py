@@ -32,10 +32,9 @@ def main():
         inputparameter=True,
         prefix=False,
     )
-    args = utila.parse(parser)  # pylint:disable=W0612
+    args = utila.parse(parser)
     inpath, outpath = utila.sources(args, singleinput=True)
     inpath = inpath[0]  # TODO: SUPPORT MULTIPLE PATH
-
     if args['status']:
         return status(inpath)
 

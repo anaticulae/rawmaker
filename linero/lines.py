@@ -9,19 +9,27 @@
 import math
 import statistics
 
+import configo
 import utila
 
 import linero.math
 
+HORIZONTAL_MAX_DIFF = configo.HV_FLOAT_PLUS(0.01)
+VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(0.01)
 
-def horizontal(item):
+
+def horizontal(item: tuple) -> bool:
+    """Check that difference between two line ending points is in range
+    to accept as horizontal line."""
     diff = math.fabs(item[1] - item[3])
-    return diff <= 0.01  # TODO: HOLY VALUE
+    return diff <= HORIZONTAL_MAX_DIFF
 
 
-def vertical(item):
+def vertical(item: tuple) -> bool:
+    """Check that difference between two line ending points is in range
+    to accept as vertical line."""
     diff = math.fabs(item[0] - item[2])
-    return diff <= 0.01  # TODO: HOLY VALUE
+    return diff <= VERTICAL_MAX_DIFF
 
 
 def horiverti_lines(items):

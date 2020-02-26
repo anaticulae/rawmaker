@@ -20,7 +20,7 @@ holy whitespaces
 maintenance
 -----------
 
-* [ ] solve five todos
+* [x] solve five todos
 
 code quality
 ------------

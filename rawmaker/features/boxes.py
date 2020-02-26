@@ -10,6 +10,7 @@ import functools
 import math
 import typing
 
+import configo
 import iamraw
 import pdfminer.layout
 import serializeraw
@@ -17,14 +18,21 @@ import utila
 
 import rawmaker.features
 import rawmaker.features.border
+import rawmaker.features.line
 import rawmaker.reader
 
 # TODO: LTLine - replace with own data structure to reduce dependencies to
 # rawmaker
 LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]
 
-VERTICAL_MAX_ERROR = 2.0  # TODO: HOLY VALUE
-HORIZONTAL_MIN_WIDTH = 0.20  # TODO: HOLY VALUE
+# minimal length of a horizontal line
+HORIZONTAL_MIN_WIDTH = configo.HV_FLOAT(0.2)
+# maximal difference in y-component
+HORIZONTAL_MAX_DIFF = configo.HV_FLOAT_PLUS(2.0)
+# maximal difference in x-component
+VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(2.0)
+# minimal number of minus signs which build a horizontal line
+REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(50)
 
 
 def work(document: str, pages: tuple) -> typing.Tuple[str, str]:
@@ -116,7 +124,7 @@ def determine_pagehorizontals(
         page: int,
         *,
         page_width: float = 1000,
-        vertical_maxerror: float = VERTICAL_MAX_ERROR,
+        vertical_maxerror: float = VERTICAL_MAX_DIFF,
         horizontal_minwidth: float = HORIZONTAL_MIN_WIDTH,
 ) -> iamraw.PageContentHorizontals:
     """Collect single line which are expanded horizontal
@@ -283,9 +291,6 @@ def type_in_document(
     return result
 
 
-REQUIRED_MINUS_SIGNS = 50  # TODO: HOLY VALUE
-
-
 def lines(  # pylint:disable=R1260
         document: pdfminer.pdfdocument.PDFDocument,
         pages: tuple = None,
@@ -340,10 +345,12 @@ def lines(  # pylint:disable=R1260
         assert item.bbox[3] >= item.bbox[1], str(item.bbox)
         assert item.bbox[0] <= item.bbox[2], str(item.bbox)
 
-        horizontal_error = (item.bbox[3] - item.bbox[1]) >= VERTICAL_MAX_ERROR
-        vertical_error = (item.bbox[2] - item.bbox[0]) >= VERTICAL_MAX_ERROR
+        horizontal_error = item.bbox[3] - item.bbox[1] >= HORIZONTAL_MAX_DIFF
+        vertical_error = item.bbox[2] - item.bbox[0] >= VERTICAL_MAX_DIFF
 
-        return not (horizontal_error and vertical_error)
+        if horizontal_error and vertical_error:
+            return False
+        return True
 
     strategy = {
         pdfminer.layout.LTLine: accept_ltline,

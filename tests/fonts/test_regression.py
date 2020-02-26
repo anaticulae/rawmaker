@@ -11,6 +11,7 @@ import pytest
 import serializeraw
 import utila
 
+import rawmaker.path
 import tests
 import tests.resources
 
@@ -30,7 +31,8 @@ def test_leftright_book_font_size(testdir, monkeypatch):
         f'-i {tests.resources.LEFTRIGHT} --text',
         monkeypatch=monkeypatch,
     )
-    position = serializeraw.load_document('rawmaker__text_text.yaml')
+    source = rawmaker.path.text(testdir.tmpdir)
+    position = serializeraw.load_document(source)
     first_page = utila.select_page(position, page=0)
     first_char = first_page[0][0][0]
     # ensure that a higher font size than 1 is detected. There was/is a

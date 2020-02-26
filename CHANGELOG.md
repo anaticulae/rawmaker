@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.12.2
+
+### Fix
+
+* set correct rawmaker default strip value (7dc6599d70de)
+
 ## v1.12.1
 
 ## v1.12.0

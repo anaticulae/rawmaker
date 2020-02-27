@@ -96,8 +96,10 @@ def locate_tables(lines):
     result = []
     for page in lines:
         content = page.content
-        with utila.profile():
-            clustered = devide(content)
+        # TODO: profile only on --profile
+        # with utila.profile():
+        # #  clustered = devide(content)
+        clustered = devide(content)
         result.append((page.page, clustered))
     return result
 

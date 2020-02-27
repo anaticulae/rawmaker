@@ -1,0 +1,33 @@
+.. _1_13_0:
+
+RP 1.13.0
+=========
+
+As a result of this increment we want to have a massive nighly testing
+strategy. The purpose is to monitor how the current rawmaker
+implementation with all features selected handles our current pdf files.
+The nighly musst handle all pdf(working/broken) correctly.
+
+nighly
+----------------
+
+* [ ] do not run these test in release/longrun mode
+
+* [ ] collect all pdf files and add broken list for expected failure
+
+* [ ] run extraction with one command
+
+maintenance
+-----------
+
+* [ ] solve five todos
+
+code quality
+------------
+
+before
+~~~~~~
+
+# Todos: 46
+* Total coverage: %
+* Your code has been rated at 10.00/10

@@ -14,12 +14,14 @@ import tests
 import tests.resources
 
 
+@utila.skip_longrun  # requires installed package
 def test_rawmaker_cli_superfast(testdir, monkeypatch):
     source = tests.resources.RESTRUCTURED_PDF
     cmd = ['--sf', '-i', source, '--text']
     tests.run_success(cmd, monkeypatch=monkeypatch)
 
 
+@utila.skip_longrun  # requires installed package
 def test_rawmaker_cli_superfast_compare(testdir, monkeypatch):
     """Ensure that --superfast produces the same results as without superfast"""
     source = tests.resources.RESTRUCTURED_PDF

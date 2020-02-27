@@ -28,6 +28,6 @@ code quality
 before
 ~~~~~~
 
-# Todos: 46
-* Total coverage: %
+* Todos: 47
+* Total coverage: 92.96%
 * Your code has been rated at 10.00/10

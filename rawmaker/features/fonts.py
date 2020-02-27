@@ -159,74 +159,78 @@ class FontStore:
         return list(self.data.values())
 
 
-def process_page(
+def process_page(  # pylint:disable=R0914
         page: iamraw.Page,
         fontstore: FontStore,
 ) -> iamraw.PageFontContent:
-    """Iterate throw text container and save the different fonts and positions
+    """Iterate throw text container and extract the different fonts and
+    positions.
+
+    There are three indexs describing the position where the font-size
+    or font-rises changes. The text container, the line in the
+    container, and the char in line. The position of change is oriented
+    on python range/indexing. We note the change one char after the
+    change. Container and line are equal. Therefore on line endings, the
+    change is noted on a char position which doe not exists.
 
     Args:
         page(Page): current pdf page
         fontstore(FontStore): fontstore to store full information of used font
     Returns:
-        Page with content information.
+        Page with font information of the page text content.
     """
     assert isinstance(page, iamraw.Page), type(page)
-    container_index, line_index, char_index = 0, 0, 0
-    font, scale = None, None
-    font_cur, scale_cur = None, None
+    current = (0, 0, 0)  # container, line, char
+    current_font, current_scale = None, None
     result = []
-
-    # TODO: use TextPageIter from groupme/hey! to iterate only over text boxes
     textcontainer = [
-        # remove non TextContainer items
         item for item in page.children if isinstance(item, iamraw.TextContainer)
     ]
-    for item in textcontainer:
-        for line_index, line in enumerate(item.lines):
+    for container_index, container in enumerate(textcontainer):
+        for line_index, line in enumerate(container.lines):
             for char_index, char in enumerate(line):
                 try:
                     font = char.font
                 except AttributeError:
-                    # Virtual chars have no fonts
+                    # Virtual chars have no fonts, but newlines are part
+                    # of font definition.
+                    current = (container_index, line_index, char_index)
                     continue
-
                 # TODO: INVESTIGATE 1.34??
                 # NOTE: This works for POSTSCRIPT_14_DEFAULT's but not for
                 # Calibri.
                 scale = utila.roundme(char.size / 1.34005)
                 assert scale > 0, 'negative font size'
                 # No font type or size is selected
-                if font_cur is None:
-                    font_cur, scale_cur = font, scale
+                if current_font is None:
+                    current_font, current_scale = font, scale
                     continue
-
                 # Font type or size changed
-                if font_cur != font or scale_cur != scale:
-                    result.append(
-                        determine_font(
-                            font_cur,
-                            scale_cur,
-                            container_index,
-                            line_index,
-                            char_index,
-                            fontstore,
-                        ))
+                if current_font != font or current_scale != scale:
+                    fontid = determine_font(
+                        current_font,
+                        current_scale,
+                        container=current[0],
+                        line=current[1],
+                        char=current[2] + 1,
+                        fontstore=fontstore,
+                    )
+                    result.append(fontid)
                     # Reset current front
-                    font_cur, scale_cur = font, scale
-        container_index += 1
+                    current_font, current_scale = font, scale
+                # update last index of current font
+                current = (container_index, line_index, char_index)
     # add last text line of a page, because there is nothing changing
-    if font_cur:
-        result.append(
-            determine_font(
-                font,
-                scale,
-                container_index - 1,  # revert last index incrementation
-                line_index,
-                char_index,
-                fontstore,
-            ))
-
+    if current_font:
+        fontid = determine_font(
+            current_font,
+            current_scale,
+            container=current[0],
+            line=current[1],
+            char=current[2] + 1,
+            fontstore=fontstore,
+        )
+        result.append(fontid)
     return iamraw.PageFontContent(content=result, page=page.page)
 
 

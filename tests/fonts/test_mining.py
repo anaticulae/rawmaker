@@ -60,7 +60,7 @@ def test_minining_fonts_cporting_first_page():
     first_font_scale = fontstore.font(first_font_key).scale
 
     # TODO: REMOVE AFTER CLARIFING FONT PARSER
-    first_font_expected = round(24.7871 / 1.34005)
+    first_font_expected = utila.roundme(24.7871 / 1.34005)
 
     assert first_font_scale == first_font_expected
 
@@ -82,6 +82,7 @@ def test_mining_increasing_fonts():
     assert all(increases), str(font_sizes)
 
     expected_fontsizes = list(range(8, 21))
+    font_sizes = utila.roundme(font_sizes, digits=0)
     assert font_sizes == expected_fontsizes
 
 

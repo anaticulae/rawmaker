@@ -194,7 +194,7 @@ def process_page(
                 # TODO: INVESTIGATE 1.34??
                 # NOTE: This works for POSTSCRIPT_14_DEFAULT's but not for
                 # Calibri.
-                scale = round(char.size / 1.34005)
+                scale = utila.roundme(char.size / 1.34005)
                 assert scale > 0, 'negative font size'
                 # No font type or size is selected
                 if font_cur is None:

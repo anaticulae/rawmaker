@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v1.13.0
+
+### Feature
+
+* introduce new font index concept (1522c465e5bd)
+* round to two digits to get a better accuracy (71c61779545b)
+* ensure to handle strip and holy white spaces correctly (0ae35c739c03)
+* round size and rise to reduce noise in logging (303fb4e4160c)
+
+### Fix
+
+* disable profiling in normal mode (305fdec852fa)
+
 ## v1.12.2
 
 ### Fix

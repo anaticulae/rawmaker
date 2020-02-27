@@ -12,3 +12,5 @@ backlog
 * add extractor to extract cluster of lines as figures
 
 * math extractor
+
+* fix dirty annotation parser!

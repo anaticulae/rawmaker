@@ -61,3 +61,33 @@ def test_porting_module_font_index(strip, testdir, monkeypatch):
         assert before_last != last, ('font extraction error, 2 different '
                                      'location can not be equal'
                                      f'{before_last} {last}')
+
+
+@pytest.mark.parametrize('pdf, strip', [
+    pytest.param(tests.resources.MASTER72, True, id='master72_true'),
+    pytest.param(tests.resources.MASTER72, False, id='master72_false'),
+])
+@utila.skip_longrun
+def test_regression_extract_text_and_fonts(pdf, strip, testdir, monkeypatch):
+    """Hint: One white space is always at the end of a line. Without
+    striping there can be more than one white space at the end of a
+    line."""
+    cmd = (f'-i {pdf} --fonts --strip={strip}')
+    tests.run_success(cmd, monkeypatch=monkeypatch)
+    source = rawmaker.path.fontcontent(testdir.tmpdir)
+    position = serializeraw.load_font_content(source)
+    for page in position:
+        content = page.content
+        if len(content) < 2:
+            # not enough data on page
+            continue
+        before_last = content[-2][0:3]
+        last = content[-1][0:3]
+        assert before_last != last, ('font extraction error, 2 different '
+                                     'location can not be equal '
+                                     f'page: {page.page} '
+                                     f'position: {before_last} {last}')
+
+    for index, page in enumerate([page.content for page in position]):
+        items = [item[0:3] for item in page]
+        assert all(item != (0, 0, 0) for item in items), f'{index} | {items}'

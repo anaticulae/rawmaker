@@ -6,7 +6,11 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+import math
+import operator
+
 import pytest
+import serializeraw
 import utila
 from iamraw import Weight
 from serializeraw import load_font_content
@@ -14,6 +18,9 @@ from serializeraw import load_font_header
 from yaml import FullLoader
 from yaml import load
 
+import rawmaker
+import rawmaker.path
+import tests.resources
 from rawmaker.features import extract_content
 from rawmaker.features.fonts import FontStore
 from rawmaker.features.fonts import font_fromraw
@@ -24,6 +31,14 @@ from tests.resources import HOW_TO_CPORTING_PDF
 from tests.resources import INCREASING_FONT_A4
 from tests.resources import RESTRUCTURED_PDF as RESTRUCT_FONT_MINING
 from tests.resources import TWINE_PDF
+
+
+def near(first, second, max_diff: float = 5.0):
+    # TODO: REPLACE WITH UTILA CODE
+    return math.fabs(first - second) < max_diff
+
+
+utila.near = near
 
 
 def test_mining_fonts(testdir):
@@ -151,3 +166,31 @@ def test_convert_font_from_raw_pdf_naming_problem(font, expected_name):
     assert parsed
 
     assert expected_name == parsed.name, str(expected_name)
+
+
+def test_strip_correct_bounding_box(testdir, monkeypatch):
+    """This is an table like example. We have two columns. On the left side
+    there is a shortcut column and on the right side there is the
+    description of the shortcut. Two item must have a near y-coordinate
+    because there are on the same line."""
+    source = tests.resources.BACHELOR37
+    config = rawmaker.features.ParsingConfiguration(line_margin=0.25,)
+    cmd = f'-i {source} --text --strip=True --pages=1 {config.cmdline()}'
+    tests.run_success(cmd, monkeypatch=monkeypatch)
+
+    navigators = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)
+    navigator = navigators[0]
+    parsed = sorted(
+        [item for item in navigator],
+        key=operator.attrgetter('bounding.y0', 'bounding.x0'),
+    )
+    bounding = {item.text.strip(): item.bounding for item in parsed}
+
+    max_diff = 1.0
+    mapping = [('versus', 'vs.')]
+    for first, second in mapping:
+        assert utila.near(
+            bounding[first].y1,
+            bounding[second].y1,
+            max_diff=max_diff,
+        ), f'{first}: {bounding[first].y1} {second}: {bounding[second].y1}'

@@ -204,7 +204,6 @@ def render_textline(
         # remove left
         lstrip = len(result.text) - len(result.text.lstrip())
         result.chars = result.chars[lstrip:]
-
         # remove right
         # +1 to preserve virtual newline char
         rstrip = len(result.text.rstrip()) + 1

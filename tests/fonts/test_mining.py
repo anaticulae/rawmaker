@@ -181,7 +181,43 @@ def test_strip_correct_bounding_box(testdir, monkeypatch):
     bounding = {item.text.strip(): item.bounding for item in parsed}
 
     max_diff = 1.0
-    mapping = [('versus', 'vs.')]
+    mapping = [
+        ('vs.', 'versus'),
+        ('Abb.', 'Abbildung'),
+    ]
+    for first, second in mapping:
+        assert utila.near(
+            bounding[first].y1,
+            bounding[second].y1,
+            max_diff=max_diff,
+        ), f'{first}: {bounding[first].y1} {second}: {bounding[second].y1}'
+
+
+def test_strip_correct_bounding_box_master116(testdir, monkeypatch):
+    source = tests.resources.MASTER116
+    config = rawmaker.features.ParsingConfiguration(line_margin=0.25)
+    cmd = f'-i {source} --text --strip=True --pages=96 {config.cmdline()}'
+    tests.run_success(cmd, monkeypatch=monkeypatch)
+
+    navigators = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)
+    navigator = navigators[0]
+    parsed = sorted(
+        [item for item in navigator],
+        key=operator.attrgetter('bounding.y0', 'bounding.x0'),
+    )
+    bounding = {item.text.strip(): item.bounding for item in parsed}
+
+    max_diff = 5.0
+    mapping = [
+        ('BCU', 'Battery Control Unit'),
+        ('eCVT', 'Electrical Continuously Variable Transmission'),
+        ('EPA', 'United States Environmental Protection Agency'),
+        ('GEN', 'Generator'),
+        ('ICE', 'Internal Combustion Engine'),
+        ('ISO', 'International Organization for Standardization'),
+        ('SOC', 'State of Charge - relativer Ladezustand der Batterie'),
+        ('Velodyn', 'Vehicle Longitudinal Dynamics'),
+    ]
     for first, second in mapping:
         assert utila.near(
             bounding[first].y1,

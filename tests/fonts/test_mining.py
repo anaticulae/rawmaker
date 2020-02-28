@@ -9,28 +9,18 @@
 import math
 import operator
 
+import iamraw
 import pytest
 import serializeraw
 import utila
-from iamraw import Weight
-from serializeraw import load_font_content
-from serializeraw import load_font_header
-from yaml import FullLoader
-from yaml import load
+import yaml
 
 import rawmaker
+import rawmaker.features
+import rawmaker.features.fonts
 import rawmaker.path
+import rawmaker.reader
 import tests.resources
-from rawmaker.features import extract_content
-from rawmaker.features.fonts import FontStore
-from rawmaker.features.fonts import font_fromraw
-from rawmaker.features.fonts import process_page
-from rawmaker.features.fonts import work
-from rawmaker.reader import read
-from tests.resources import HOW_TO_CPORTING_PDF
-from tests.resources import INCREASING_FONT_A4
-from tests.resources import RESTRUCTURED_PDF as RESTRUCT_FONT_MINING
-from tests.resources import TWINE_PDF
 
 
 def near(first, second, max_diff: float = 5.0):
@@ -42,7 +32,7 @@ utila.near = near
 
 
 def test_mining_fonts(testdir):
-    header, content = work(TWINE_PDF)
+    header, content = rawmaker.features.fonts.work(tests.resources.TWINE_PDF)
 
     assert len(header) > 100
     assert len(content) > 300
@@ -52,7 +42,8 @@ def test_mining_fonts(testdir):
 
 
 def test_mining_fonts_cporting(testdir):
-    header, content = work(HOW_TO_CPORTING_PDF)
+    header, content = rawmaker.features.fonts.work(
+        tests.resources.HOW_TO_CPORTING_PDF)
     # XXX: Define good numbers
     assert len(header) > 100
     assert len(content) > 200
@@ -61,12 +52,13 @@ def test_mining_fonts_cporting(testdir):
 def test_minining_fonts_cporting_first_page():
     """Mine the first font of the document at the first page"""
     # TODO: Test mining last font of document
-    with read(HOW_TO_CPORTING_PDF) as pdf:
-        document = extract_content(pdf)
+    with rawmaker.reader.read(tests.resources.HOW_TO_CPORTING_PDF) as pdf:
+        document = rawmaker.features.extract_content(pdf)
 
-    fontstore = FontStore(font_fromraw)
+    fontstore = rawmaker.features.fonts.FontStore(
+        rawmaker.features.fonts.font_fromraw)
     first_page = document[0]
-    fonts = process_page(first_page, fontstore)
+    fonts = rawmaker.features.fonts.process_page(first_page, fontstore)
     assert fonts
 
     first_font_page = fonts[0]
@@ -82,11 +74,12 @@ def test_minining_fonts_cporting_first_page():
 
 def test_mining_increasing_fonts():
     """The example contains the same sentences in fontsizes(8pt - 20pt)"""
-    result = work(INCREASING_FONT_A4)
+    result = rawmaker.features.fonts.work(tests.resources.INCREASING_FONT_A4)
     header, _ = result
 
     font_sizes = [
-        item['font']['scale'] for item in load(header, Loader=FullLoader)
+        item['font']['scale']
+        for item in yaml.load(header, Loader=yaml.FullLoader)
     ]
     font_sizes = font_sizes[0:-1]  # remove the last one(page number)
 
@@ -103,8 +96,9 @@ def test_mining_increasing_fonts():
 
 @pytest.fixture
 def restructed_fonts():
-    result = work(RESTRUCT_FONT_MINING)
-    header, content = load_font_header(result[0]), load_font_content(result[1])
+    result = rawmaker.features.fonts.work(tests.resources.RESTRUCTURED_PDF)
+    header = serializeraw.load_font_header(result[0])
+    content = serializeraw.load_font_content(result[1])
     return header, content
 
 
@@ -115,13 +109,13 @@ def test_mining_fonts_restruct_page_5(restructed_fonts):  # pylint:disable=W0621
     fifths_page = content[4]
 
     expected = [
-        Weight.BOLD,
-        Weight.LIGHT,
-        Weight.MEDIUM,
-        Weight.LIGHT,
-        Weight.MEDIUM,
-        Weight.LIGHT,
-        Weight.BOLD,
+        iamraw.Weight.BOLD,
+        iamraw.Weight.LIGHT,
+        iamraw.Weight.MEDIUM,
+        iamraw.Weight.LIGHT,
+        iamraw.Weight.MEDIUM,
+        iamraw.Weight.LIGHT,
+        iamraw.Weight.BOLD,
     ]
     header = {hash(font): font for font in header}
     fifths_page, _ = fifths_page
@@ -149,7 +143,7 @@ def test_mining_fonts_restruct_page_5(restructed_fonts):  # pylint:disable=W0621
     ('JBLIUJ+Arial-BoldMT', 10.00, 'Arial'),
 ])
 def test_convert_font_from_raw(font, scale, expected_name):
-    parsed = font_fromraw(font, scale)
+    parsed = rawmaker.features.fonts.font_fromraw(font, scale)
     assert parsed
 
     assert '+' not in parsed.name, str(parsed)
@@ -162,7 +156,7 @@ def test_convert_font_from_raw(font, scale, expected_name):
     ('ADDAOP+AdvTT5ada87cc+fb4', 'AdvTT5ada87cc+fb4'),
 ])
 def test_convert_font_from_raw_pdf_naming_problem(font, expected_name):
-    parsed = font_fromraw(font, scale=10.0)
+    parsed = rawmaker.features.fonts.font_fromraw(font, scale=10.0)
     assert parsed
 
     assert expected_name == parsed.name, str(expected_name)

@@ -38,6 +38,11 @@ class ParsingConfiguration:
     word_margin: float = 0.1
     strip: bool = STRIP
 
+    def cmdline(self) -> str:
+        """Convert configuration to `linix` command line parameter syntax."""
+        parameter = [f'--{item}={value}' for item, value in vars(self).items()]
+        return ' '.join(parameter)
+
 
 def create_interpreter(layout=None) -> PDFPageInterpreter:
     if not layout:

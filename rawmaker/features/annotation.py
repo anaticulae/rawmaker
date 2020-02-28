@@ -18,7 +18,6 @@ import utila
 from rawmaker.features import process_pdfpages
 from rawmaker.reader import read
 
-
 def work(document: str, pages=None) -> str:
     assert isinstance(document, str), str(document)
     with read(document) as pdf:

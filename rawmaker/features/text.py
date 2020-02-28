@@ -78,8 +78,7 @@ def superfast(
         pages = tuple(range(pagecount))
     chunks = rawmaker.utils.chunks(pages, chunk_size=10)
 
-    parameter = ' '.join(
-        [f'--{item}={value}' for item, value in vars(config).items()])
+    parameter = config.cmdline()
     todo = []
     for index, chunk in enumerate(chunks):
         joined_pages = ','.join([str(item) for item in chunk])

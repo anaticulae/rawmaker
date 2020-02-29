@@ -23,7 +23,11 @@ class Generator(enum.Enum):
 
 def generator(path: str) -> Generator:
     with rawmaker.reader.read(path) as document:
-        info = document.info[0]
+        try:
+            info = document.info[0]
+        except IndexError:
+            # no editor information provided
+            return Generator.Undefined
     result = parse_generator(info)
     return result
 

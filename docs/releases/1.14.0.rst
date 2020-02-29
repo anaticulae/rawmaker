@@ -11,11 +11,11 @@ The nighly musst handle all pdf(working/broken) correctly.
 nighly
 ----------------
 
-* [ ] do not run these test in release/longrun mode
+* [x] do not run these test in release/longrun mode
 
-* [ ] collect all pdf files and add broken list for expected failure
+* [x] collect all pdf files and add broken list for expected failure
 
-* [ ] run extraction with one command
+* [x] run extraction with one command
 
 maintenance
 -----------

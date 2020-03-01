@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.13.3
+
+### Fix
+
+* ensure parsing files without editor information (d2ef1d9b7e9f)
+
 ## v1.13.2
 
 ## v1.13.1

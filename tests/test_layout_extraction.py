@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 import iamraw
+import pytest
 import serializeraw
 import utila
 
@@ -14,7 +15,11 @@ import rawmaker.features.text
 import tests.examples.single
 
 
-def test_layout_extraction_mine_mini_numbers():
+@pytest.mark.parametrize('strip', [
+    pytest.param(True, marks=pytest.mark.xfail(reason='improve parser')),
+    False,
+])
+def test_layout_extraction_mine_mini_numbers(strip):
     example = tests.examples.single.HEADLINE_MOVINGFOOTER_FOOTNOTES_PDF
     worker = rawmaker.features.text.work
 
@@ -24,7 +29,7 @@ def test_layout_extraction_mine_mini_numbers():
         char_margin=10.0,
         line_margin=1.0,
         # TODO: TRY TO USE STRIP = TRUE
-        strip=False,
+        strip=strip,
     )
 
     text = serializeraw.load_document(text)

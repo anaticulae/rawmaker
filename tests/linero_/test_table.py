@@ -7,14 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import iamraw.path
 import pytest
 import serializeraw
 import utila
 
 import linero.cluster
 import linero.features.table
-import rawmaker.features.line
-import rawmaker.path
 import tests
 import tests.resources
 
@@ -33,7 +32,7 @@ def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
 ])
 @utila.skip_longrun
 def test_table_extract(source, expected):
-    source = rawmaker.path.line(source)
+    source = iamraw.path.line(source)
     loaded = serializeraw.load_lines(source)
     grouped = linero.features.table.locate_tables(loaded)
     tables = linero.features.table.judge_tables(grouped)
@@ -41,7 +40,7 @@ def test_table_extract(source, expected):
 
 
 def test_table_dump_and_load():
-    source = rawmaker.path.line(tests.resources.VIM_GENERATED)
+    source = iamraw.path.line(tests.resources.VIM_GENERATED)
     loaded = serializeraw.load_lines(source, pages=(0, 1, 2))
     grouped = linero.features.table.locate_tables(loaded)
     tables = linero.features.table.judge_tables(grouped)
@@ -52,7 +51,7 @@ def test_table_dump_and_load():
 
 
 def test_table_extract_negative():
-    source = rawmaker.path.line(tests.resources.LEFTRIGHT_GENERATED)
+    source = iamraw.path.line(tests.resources.LEFTRIGHT_GENERATED)
 
     tables = linero.features.table.work(source)
 

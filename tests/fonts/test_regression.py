@@ -7,11 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import iamraw.path
 import pytest
 import serializeraw
 import utila
 
-import rawmaker.path
 import tests
 import tests.resources
 
@@ -31,7 +31,7 @@ def test_leftright_book_font_size(testdir, monkeypatch):
         f'-i {tests.resources.LEFTRIGHT} --text',
         monkeypatch=monkeypatch,
     )
-    source = rawmaker.path.text(testdir.tmpdir)
+    source = iamraw.path.text(testdir.tmpdir)
     position = serializeraw.load_document(source)
     first_page = utila.select_page(position, page=0)
     first_char = first_page[0][0][0]
@@ -48,7 +48,7 @@ def test_porting_module_font_index(strip, testdir, monkeypatch):
     cmd = (f'-i {tests.resources.HOW_TO_CPORTING_PDF}'
            f' --fonts --text --strip={strip}')
     tests.run_success(cmd, monkeypatch=monkeypatch)
-    source = rawmaker.path.fontcontent(testdir.tmpdir)
+    source = iamraw.path.fontcontent(testdir.tmpdir)
     position = serializeraw.load_font_content(source)
 
     for page in position:
@@ -74,7 +74,7 @@ def test_regression_extract_text_and_fonts(pdf, strip, testdir, monkeypatch):
     line."""
     cmd = (f'-i {pdf} --fonts --strip={strip}')
     tests.run_success(cmd, monkeypatch=monkeypatch)
-    source = rawmaker.path.fontcontent(testdir.tmpdir)
+    source = iamraw.path.fontcontent(testdir.tmpdir)
     position = serializeraw.load_font_content(source)
     for page in position:
         content = page.content

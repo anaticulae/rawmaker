@@ -7,10 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import iamraw.path
 import pytest
 import serializeraw
 
-import rawmaker.path
 import tests.resources
 
 
@@ -18,8 +18,8 @@ def test_linero_figure_extract():
     pytest.skip('work in progress')
     source = tests.resources.LEFTRIGHT_GENERATED
     pages = (5)
-    lines = rawmaker.path.line(source)
-    textpositions = rawmaker.path.textposition(source)
+    lines = iamraw.path.line(source)
+    textpositions = iamraw.path.textposition(source)
 
     lines = serializeraw.load_lines(lines, pages=pages)
     textpositions = serializeraw.load_textpositions(textpositions, pages=pages)

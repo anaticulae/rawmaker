@@ -6,10 +6,11 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-import math
+
 import operator
 
 import iamraw
+import iamraw.path
 import pytest
 import serializeraw
 import utila
@@ -18,17 +19,8 @@ import yaml
 import rawmaker
 import rawmaker.features
 import rawmaker.features.fonts
-import rawmaker.path
 import rawmaker.reader
 import tests.resources
-
-
-def near(first, second, max_diff: float = 5.0):
-    # TODO: REPLACE WITH UTILA CODE
-    return math.fabs(first - second) < max_diff
-
-
-utila.near = near
 
 
 def test_mining_fonts(testdir):
@@ -189,7 +181,7 @@ def test_strip_correct_bounding_box(testdir, monkeypatch):
         assert utila.near(
             bounding[first].y1,
             bounding[second].y1,
-            max_diff=max_diff,
+            diff=max_diff,
         ), f'{first}: {bounding[first].y1} {second}: {bounding[second].y1}'
 
 
@@ -222,5 +214,5 @@ def test_strip_correct_bounding_box_master116(testdir, monkeypatch):
         assert utila.near(
             bounding[first].y1,
             bounding[second].y1,
-            max_diff=max_diff,
+            diff=max_diff,
         ), f'{first}: {bounding[first].y1} {second}: {bounding[second].y1}'

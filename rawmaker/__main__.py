@@ -6,6 +6,8 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+
 from rawmaker.cli import main
 
-main()
+if __name__ == "__main__":
+    main()

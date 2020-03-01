@@ -7,12 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import utila
+
 import linero
-import rawmaker.path
 
 
 def table(path: str, prefix: str = '') -> str:
-    return rawmaker.path.pathconnector(
+    return utila.pathconnector(
         path,
         linero.PROCESS,
         'table_table',
@@ -21,7 +22,7 @@ def table(path: str, prefix: str = '') -> str:
 
 
 def figure(path: str, prefix: str = '') -> str:
-    return rawmaker.path.pathconnector(
+    return utila.pathconnector(
         path,
         linero.PROCESS,
         'figure_figure',

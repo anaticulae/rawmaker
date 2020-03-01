@@ -26,11 +26,13 @@ def main():
                      '2 if pdfinfo does not exists')),
     ]
     parser = utila.cli.create_parser(
-        commands,
+        todo=commands,
+        config=utila.ParserConfiguration(
+            outputparameter=True,
+            inputparameter=True,
+            prefix=False,
+        ),
         version=pdfinfo.__version__,
-        outputparameter=True,
-        inputparameter=True,
-        prefix=False,
     )
     args = utila.parse(parser)
     inpath, outpath = utila.sources(args, singleinput=True)

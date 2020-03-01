@@ -14,8 +14,6 @@
 
 import math
 
-import utila
-
 MILI_TO_PIX = 0.35278413424866517, 0.3527514613989115
 
 
@@ -41,26 +39,4 @@ def chunks(items, chunk_size: int = 10) -> tuple:
         items[index * chunk_size:(index + 1) * chunk_size]
         for index in range(math.ceil(len(items) / chunk_size))
     ])
-    return result
-
-
-def prepare_variables(variables, args):
-    # TODO: MOVE TO UTILA
-    """Extract variables out of inputs, ignore files and pattern"""
-    result = []
-    for variable in variables:
-        if not isinstance(variable, utila.Value):
-            continue
-        typ = variable.typ
-        if typ is bool:
-            typ = lambda x: str(x).lower() == 'true'
-        try:
-            values = args[variable.name]
-            defaultvalues = typ(variable.defaultvar)
-            converted = typ(values) if values is not None else defaultvalues
-            result.append(converted)
-        except ValueError:
-            msg = 'while processing %s with value %s'
-            utila.error(msg % (variable.name, variable.typ))
-            utila.error('given args %r' % args)
     return result

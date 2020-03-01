@@ -15,6 +15,7 @@ analyze-processes.
 - border: determine page size and bounding boxes from page content
 
 """
+
 import contextlib
 import os
 import sys
@@ -112,21 +113,23 @@ def main():
         (LINTER_FLAG, 'write linter result'),
         (SUPERFAST_FLAG, 'use superfast to fork processes and merge results'),
     ]
-    utila.feature.prepare_variables = rawmaker.utils.prepare_variables
+    config = utila.FeaturePackConfig(
+        description=RAWMAKER_DESCRIPTION,
+        errorhook=errorhook,
+        flags=flags,
+        multiprocessed=True,
+        name=rawmaker.PROCESS_NAME,
+        pages=True,
+        profileflag=True,
+        singleinput=True,
+        version=rawmaker.__version__,
+    )
     with linter():
         utila.featurepack(
-            description=RAWMAKER_DESCRIPTION,
-            errorhook=errorhook,
-            featurepackage='rawmaker.features',
-            flags=flags,
-            multiprocessed=True,
-            name=rawmaker.PROCESS_NAME,
-            pages=True,
-            profileflag=True,
-            root=rawmaker.ROOT,
-            singleinput=True,
-            version=rawmaker.__version__,
             workplan=WORKPLAN,
+            config=config,
+            root=rawmaker.ROOT,
+            featurepackage='rawmaker.features',
         )
 
 

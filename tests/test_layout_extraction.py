@@ -29,7 +29,7 @@ def test_layout_extraction_mine_mini_numbers():
 
     text = serializeraw.load_document(text)
     firstpage = text[0]
-    containers = utila.select(firstpage, iamraw.TextContainer)
+    containers = utila.select_type(firstpage, iamraw.TextContainer)
     lines = utila.flatten([item.lines for item in containers])
     footnotes = lines[-9:-2]
 

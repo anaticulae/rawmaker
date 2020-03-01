@@ -31,14 +31,16 @@ WORKPLAN = [
 
 def main():
     utila.featurepack(
-        description=linero.DESCRIPTION,
-        featurepackage='linero.features',
-        multiprocessed=True,
-        name=linero.PROCESS,
-        pages=True,
-        profileflag=True,
-        root=linero.ROOT,
-        singleinput=True,
-        version=linero.__version__,
         workplan=WORKPLAN,
+        root=linero.ROOT,
+        featurepackage='linero.features',
+        config=utila.FeaturePackConfig(
+            description=linero.DESCRIPTION,
+            multiprocessed=True,
+            name=linero.PROCESS,
+            pages=True,
+            profileflag=True,
+            singleinput=True,
+            version=linero.__version__,
+        ),
     )

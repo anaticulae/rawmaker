@@ -14,3 +14,5 @@ backlog
 * math extractor
 
 * fix dirty annotation parser!
+
+* add hidden whitespace parser

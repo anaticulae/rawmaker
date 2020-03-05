@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.13.8
+
+### Feature
+
+* sort boxes and horizontal lines top-down and left-right (2bb544d5f1aa)
+
+### Fix
+
+* fix accessing holy values (d99e1985d6ae)
+
 ## v1.13.7
 
 ## v1.13.6

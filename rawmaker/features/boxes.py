@@ -8,6 +8,7 @@
 # =============================================================================
 import functools
 import math
+import operator
 import typing
 
 import configo
@@ -116,6 +117,8 @@ def determine_pageboxes(
 
         box = iamraw.Box(box=iamraw.BoundingBox.from_list([x0, y0, x1, y1]))
         result.append(box)
+        # ensure to sort items top to bottom and left to right
+        result = sorted(result, key=operator.attrgetter('box.y0', 'box.x0'))
     return iamraw.PageContentBoxes(content=result, page=page)
 
 
@@ -157,6 +160,8 @@ def determine_pagehorizontals(
             result.append(horizontal)
         else:
             utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}')
+    # ensure to sort items top to bottom and left to right
+    result = sorted(result, key=operator.attrgetter('box.y0', 'box.x0'))
     return iamraw.PageContentHorizontals(content=result, page=page)
 
 

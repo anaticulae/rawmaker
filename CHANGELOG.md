@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.14.1
+
+### Fix
+
+* fix left right order for layout detection (0c19c6282509)
+* update TextContainer bounding boxes for stripped content (82638571f7b1)
+
 ## v1.14.0
 
 ### Feature

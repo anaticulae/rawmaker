@@ -200,6 +200,9 @@ def render_textline(
             for splitted in split_characters(character):
                 assert len(splitted.value) == 1, splitted
                 result.chars.append(splitted)
+    # ensure that chars are sorted from left to right
+    # TODO: CHECK VERTICAL TEXT?
+    result.chars = ensure_leftright(result.chars)
     if strip:
         # remove left
         lstrip = len(result.text) - len(result.text.lstrip())
@@ -224,7 +227,32 @@ def render_textline(
                 x1 = result.chars[-2].box.x1
             bounding.x0 = x0
             bounding.x1 = x1
+            assert bounding.x0 < bounding.x1, str(bounding)
     return result
+
+
+def ensure_leftright(items):
+    """Fix layout parser misdetection. Ensure that more left x0
+    coordinates comes before higher x0 cooridinate."""
+    # map bounding cause virtual chars has no bounding
+    if not items:
+        return items
+    current = items[0].box[2]  # x1
+    boundings = []
+    for item in items:
+        try:
+            boundings.append((item.box[0], item))  # x0 left border
+            current = item.box[2]  # x1 right border
+        except AttributeError:
+            boundings.append((current, item))
+            # more than one virtual char in a row, don't know if possible
+            current += 0.1
+            current = utila.roundme(current)
+    # sort from left to right
+    boundings = sorted(boundings, key=lambda x: x[0])
+    # remove mapped coordiante
+    items = [item[1] for item in boundings]
+    return items
 
 
 def split_characters(char) -> list:

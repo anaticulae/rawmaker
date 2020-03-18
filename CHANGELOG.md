@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.14.0
+
+### Feature
+
+* close current release plan (eb222dae0655)
+
 ## v1.13.9
 
 ## v1.13.8

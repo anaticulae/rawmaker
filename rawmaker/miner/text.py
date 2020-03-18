@@ -321,5 +321,7 @@ def convert_bounding(*bounding, pageheight: float) -> iamraw.BoundingBox:
     y0 = utila.roundme(pageheight - ytop)
     x1 = utila.roundme(xtop)
     y1 = utila.roundme(y0 + height)
+    # developer friendly debugging
+    x0, y0, x1, y1 = utila.roundme([x0, y0, x1, y1])
     bounding = iamraw.BoundingBox(x0=x0, y0=y0, x1=x1, y1=y1)
     return bounding

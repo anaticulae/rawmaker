@@ -1,0 +1,27 @@
+.. _1_15_0:
+
+RP 1.15.0
+=========
+
+hidden whitespace
+-----------------
+
+* [ ] add flag to remove hidden white spaces
+
+* [ ] add step hidden_whitespace to extract list of hidden whitespaces
+
+cli
+---
+
+* [ ] convert --strip to --nostrip flag cause strip is default
+
+* [ ] add --remove_hidden_whitespace
+
+code quality
+------------
+
+before
+~~~~~~
+
+* Todos: 45
+* Your code has been rated at 10.00/10

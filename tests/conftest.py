@@ -17,13 +17,13 @@ import tests.resources.update
 
 pytest_plugins = ['pytester', 'xdist']  # pylint: disable=invalid-name
 
-if not 'PYTEST_XDIST_WORKER' in os.environ:
-    # master process only
-    # ensure to avoid race condition if more than one thread tries to
-    # install or use `decider`.
+def pytest_sessionstart(session):  # pylint:disable=W0613
+    if 'PYTEST_XDIST_WORKER' in os.environ:
+        # master process only
+        return
 
-    SINGLE_TEST = '-k' in sys.argv
-    if not SINGLE_TEST and ('GENERATE' in os.environ or utila.test.LONGRUN):
+    single_test = '-k' in sys.argv
+    if not single_test and ('GENERATE' in os.environ or utila.test.LONGRUN):
 
         utila.log('install requirements')
         tests.resources.update.install_requirements()
@@ -35,7 +35,7 @@ if not 'PYTEST_XDIST_WORKER' in os.environ:
         utila.log('extract resources')
         tests.resources.update.extract_examples()
 
-for item in tests.resources.REQUIRED_RESOURCES:
-    advice = 'run `baw --test=generate` to generate test data'
-    msg = f'required test path does not exists: {item}, {advice}'
-    assert os.path.exists(item), msg
+    for item in tests.resources.REQUIRED_RESOURCES:
+        advice = 'run `baw --test=generate` to generate test data'
+        msg = f'required test path does not exists: {item}, {advice}'
+        assert os.path.exists(item), msg

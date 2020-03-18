@@ -20,7 +20,7 @@ nighly
 maintenance
 -----------
 
-* [ ] solve five todos
+* [/] solve five todos
 
 code quality
 ------------
@@ -30,4 +30,11 @@ before
 
 * Todos: 47
 * Total coverage: 92.96%
+* Your code has been rated at 10.00/10
+
+after
+~~~~~
+
+* Todos: 45
+* Total coverage: 93.99%
 * Your code has been rated at 10.00/10

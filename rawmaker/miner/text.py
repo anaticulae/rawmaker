@@ -272,6 +272,11 @@ def render_textcontainer(
         if not rendered:
             continue
         container.lines.append(rendered)
+    if len(container.lines) == 1:
+        # update parent box
+        # TODO: ENSURE TO UPDATE MULTILINE BOXES CORRECTLY
+        # TODO: COMPUTE BOXES OUT OF MEMBER/CHILDREN/LINES
+        container.box = container[0].box
     return container
 
 

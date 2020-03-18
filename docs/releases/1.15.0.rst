@@ -6,7 +6,7 @@ RP 1.15.0
 hidden whitespace
 -----------------
 
-* [ ] add flag to remove hidden white spaces
+* [x] add flag to remove hidden white spaces / strip flag
 
 * [ ] add step hidden_whitespace to extract list of hidden whitespaces
 
@@ -14,8 +14,6 @@ cli
 ---
 
 * [ ] convert --strip to --nostrip flag cause strip is default
-
-* [ ] add --remove_hidden_whitespace
 
 code quality
 ------------

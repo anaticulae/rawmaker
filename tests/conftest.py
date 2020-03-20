@@ -17,6 +17,7 @@ import tests.resources.update
 
 pytest_plugins = ['pytester', 'xdist']  # pylint: disable=invalid-name
 
+
 def pytest_sessionstart(session):  # pylint:disable=W0613
     if 'PYTEST_XDIST_WORKER' in os.environ:
         # master process only

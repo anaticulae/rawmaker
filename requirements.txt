@@ -5,7 +5,7 @@ pdfminer.six==20181108
 Pillow==6.1.0
 
 # Internal packages
-iamraw==1.18.0
+iamraw==1.18.1
 utila==1.15.1
 protocol==0.8.2
 

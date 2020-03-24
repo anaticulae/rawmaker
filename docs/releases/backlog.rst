@@ -16,3 +16,9 @@ backlog
 * fix dirty annotation parser!
 
 * add hidden whitespace parser
+
+* Imagero (planned)
+
+* Figero (planned)
+
+* Tabelero (planned)

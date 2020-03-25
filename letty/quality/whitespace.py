@@ -19,11 +19,12 @@ PageWhitespaces = typing.List[PageWhitespace]
 
 
 def determine(path: str, pages: tuple = None) -> PageWhitespaces:
-    data = serializeraw.create_pagetextnavigators_frompath(path, pages=pages)
-    result = []
-    for item in data:
-        extracted = analyse_page(item)
-        result.append(extracted)
+    data = serializeraw.create_pagetextnavigators_frompath(
+        path,
+        pages=pages,
+        logging=False,
+    )
+    result = [analyse_page(item) for item in data]
     return result
 
 
@@ -39,5 +40,6 @@ def analyse_page(page) -> PageWhitespace:
         text = line.text
         for item in re.finditer(COMMON, text):
             counter[len(utila.extract_match(item))] += 1
+    counter[2] += len(page)
     result = PageWhitespace(page=page.page, content=counter.most_common())
     return result

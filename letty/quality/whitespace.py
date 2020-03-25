@@ -24,7 +24,8 @@ def determine(path: str, pages: tuple = None) -> PageWhitespaces:
         pages=pages,
         logging=False,
     )
-    result = [analyse_page(item) for item in data]
+    analyzed = [analyse_page(item) for item in data]
+    result = quality(analyzed)
     return result
 
 
@@ -42,4 +43,9 @@ def analyse_page(page) -> PageWhitespace:
             counter[len(utila.extract_match(item))] += 1
     counter[2] += len(page)
     result = PageWhitespace(page=page.page, content=counter.most_common())
+    return result
+
+
+def quality(pages) -> int:
+    result = sum([page.content[0][1] for page in pages if page.content], 0)
     return result

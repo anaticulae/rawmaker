@@ -19,3 +19,20 @@ import tests.resources
 def test_letty_cli_run(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
     tests.letty_.run_success(command, monkeypatch=monkeypatch)
+
+
+@pytest.mark.parametrize('command', [
+    '',
+])
+def test_letty_cli_run_failure(command, testdir, monkeypatch):  #pylint: disable=W0613
+    tests.letty_.run_failure(command, monkeypatch=monkeypatch)
+
+
+def test_letty_whitespaces(monkeypatch, capsys):  #pylint: disable=W0613
+    cmd = f'-i {tests.resources.VIM_GENERATED} --whitespace'
+    tests.letty_.run_success(cmd, monkeypatch=monkeypatch)
+
+    stdout = capsys.readouterr().out
+
+    number_of_whitespaces = int(stdout.strip())
+    assert number_of_whitespaces > 300, stdout

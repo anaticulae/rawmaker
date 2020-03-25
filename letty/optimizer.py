@@ -81,8 +81,7 @@ def run_single(path: str, pages: tuple, config: dict):
                 utila.error(completed.stdout)
                 utila.error(completed.stderr)
                 exit(utila.FAILURE)
-        quality = letty.quality.whitespace.determine(cwd, pages=pages)
-    quality = sum([page.content[0][1] for page in quality if page.content], 0)
+    quality = letty.quality.whitespace.determine(cwd, pages=pages)
     return OptimizerResult(quality, config)
 
 

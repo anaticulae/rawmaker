@@ -54,12 +54,14 @@ if __name__ == "__main__":
         ],
         entry_points={
             'console_scripts': [
+                'letty = letty.cli:main',
                 'linero = linero.cli:main',
                 'pdfinfo = pdfinfo.cli:main',
                 'rawmaker = rawmaker.cli:main',
             ],
         },
         packages=[
+            'letty',
             'linero',
             'linero.features',
             'pdfinfo',

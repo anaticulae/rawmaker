@@ -62,6 +62,7 @@ if __name__ == "__main__":
         },
         packages=[
             'letty',
+            'letty.quality',
             'linero',
             'linero.features',
             'pdfinfo',

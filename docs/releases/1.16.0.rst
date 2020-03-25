@@ -1,0 +1,18 @@
+.. _1_16_0:
+
+RP 1.16.0
+=========
+
+layout estimator
+================
+
+* [ ] add layout estimator to adjust text layout - let
+
+code quality
+------------
+
+before
+~~~~~~
+
+* Todos: 45
+* Your code has been rated at 10.00/10

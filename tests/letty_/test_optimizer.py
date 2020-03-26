@@ -16,3 +16,16 @@ def test_optimizer():
     pages = (3,)
     result = letty.optimizer.run(path, pages=pages, chars=10)
     assert result
+
+
+def test_optimizer_hardtoread():
+    path = tests.resources.BACHELOR37
+    pages = (6,)
+    result = letty.optimizer.run(
+        path,
+        pages=pages,
+        chars=4,
+        lines=10,
+        # words=10,
+    )
+    assert result

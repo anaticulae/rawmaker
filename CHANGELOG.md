@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v1.15.0
+
+### Feature
+
+* replace --strip with --nostrip (b5145126a4dd)
+* add option --whitespace to print analyzed white space to stdout (d5c8ef7f0ca8)
+* add first approach of white space optimizer (187a6ea85fc4)
+* add method to determine count of white space (8c723020944b)
+* add basic cli structure (9457e5f813e8)
+
 ## v1.14.3
 
 ## v1.14.2

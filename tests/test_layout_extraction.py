@@ -21,15 +21,13 @@ import tests.examples.single
 ])
 def test_layout_extraction_mine_mini_numbers(strip):
     example = tests.examples.single.HEADLINE_MOVINGFOOTER_FOOTNOTES_PDF
-    worker = rawmaker.features.text.work
 
-    text, _ = worker(
+    text, _ = rawmaker.features.text.work(
         document=example,
         boxes_flow=1.0,
         char_margin=10.0,
         line_margin=1.0,
-        # TODO: TRY TO USE STRIP = TRUE
-        strip=strip,
+        nostrip=strip is False,
     )
 
     text = serializeraw.load_document(text)

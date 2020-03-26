@@ -36,7 +36,7 @@ LINE_OVERLAP = utila.Value('line_overlap', float, defaultvar=0.5, minimum=0.1)
 LINE_MARGIN = utila.Value('line_margin', float, defaultvar=0.5, minimum=0.1)
 WORD_MARGIN = utila.Value('word_margin', float, defaultvar=0.1, minimum=0.1)
 BOXES_FLOW = utila.Value('boxes_flow', float, defaultvar=0.5, minimum=0.1)
-STRIP = utila.Value('strip', bool, defaultvar=rawmaker.features.STRIP)
+NOSTRIP = utila.Bool('nostrip')
 
 PDF_INPUT = [PDF]
 
@@ -47,7 +47,7 @@ CONFIG_INPUTS = [
     LINE_MARGIN,
     LINE_OVERLAP,
     WORD_MARGIN,
-    STRIP,
+    NOSTRIP,
 ]
 
 WORKPLAN = [

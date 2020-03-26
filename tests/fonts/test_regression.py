@@ -45,8 +45,9 @@ def test_porting_module_font_index(strip, testdir, monkeypatch):
     """Hint: One white space is always at the end of a line. Without
     striping there can be more than one white space at the end of a
     line."""
+    nostrip = '' if strip else '--nostrip'
     cmd = (f'-i {tests.resources.HOW_TO_CPORTING_PDF}'
-           f' --fonts --text --strip={strip}')
+           f' --fonts --text {nostrip}')
     tests.run_success(cmd, monkeypatch=monkeypatch)
     source = iamraw.path.fontcontent(testdir.tmpdir)
     position = serializeraw.load_font_content(source)
@@ -72,7 +73,8 @@ def test_regression_extract_text_and_fonts(pdf, strip, testdir, monkeypatch):
     """Hint: One white space is always at the end of a line. Without
     striping there can be more than one white space at the end of a
     line."""
-    cmd = (f'-i {pdf} --fonts --strip={strip}')
+    nostrip = '' if strip else '--nostrip'
+    cmd = f'-i {pdf} --fonts {nostrip}'
     tests.run_success(cmd, monkeypatch=monkeypatch)
     source = iamraw.path.fontcontent(testdir.tmpdir)
     position = serializeraw.load_font_content(source)

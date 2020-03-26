@@ -31,7 +31,7 @@ def work(  # pylint:disable=W9015
         line_margin: float = 0.5,
         line_overlap: float = 0.5,
         word_margin: float = 0.1,
-        strip: bool = rawmaker.features.STRIP,
+        nostrip: bool = rawmaker.features.STRIP is False,
         pages: tuple = None,
 ) -> typing.Tuple[str, str]:
     """Extract structured text out of document
@@ -50,7 +50,7 @@ def work(  # pylint:disable=W9015
         line_margin=line_margin,
         line_overlap=line_overlap,
         word_margin=word_margin,
-        strip=strip,
+        nostrip=nostrip,
     )
 
     if rawmaker.cli.superfast():
@@ -137,7 +137,9 @@ def extract_document(
         config: rawmaker.features.ParsingConfiguration = None,
         pages: tuple = None,
 ) -> iamraw.Document:
-    strip = config.strip if config else rawmaker.features.STRIP
+    strip = rawmaker.features.STRIP
+    if config:
+        strip = config.nostrip is False
     layout = rawmaker.parameter.from_config(config)
     rawmaker.parameter.print_layout(layout)
 

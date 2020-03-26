@@ -100,7 +100,7 @@ def work(  # pylint:disable=W9015
         line_margin: float = 0.5,
         line_overlap: float = 0.5,
         word_margin: float = 0.1,
-        strip: bool = rawmaker.features.STRIP,
+        nostrip: bool = rawmaker.features.STRIP is False,
         pages: list = None,
 ) -> typing.Tuple[str, str]:
     """Extract structured text out of document
@@ -124,7 +124,7 @@ def work(  # pylint:disable=W9015
         document = rawmaker.features.extract_content(
             pdf,
             layout_parameter=layout,
-            strip=strip,
+            strip=nostrip is False,
             pages=pages,
         )
 

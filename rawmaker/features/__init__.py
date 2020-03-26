@@ -36,11 +36,17 @@ class ParsingConfiguration:
     line_margin: float = 0.5
     line_overlap: float = 0.5
     word_margin: float = 0.1
-    strip: bool = STRIP
+    nostrip: bool = STRIP is False
 
     def cmdline(self) -> str:
         """Convert configuration to `linix` command line parameter syntax."""
-        parameter = [f'--{item}={value}' for item, value in vars(self).items()]
+        parameter = []
+        for item, value in vars(self).items():
+            if isinstance(value, bool):
+                if value:
+                    parameter.append(f'--{item}')
+            else:
+                parameter.append(f'--{item}={value}')
         return ' '.join(parameter)
 
 

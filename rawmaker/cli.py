@@ -114,6 +114,7 @@ def main():
         (SUPERFAST_FLAG, 'use superfast to fork processes and merge results'),
     ]
     config = utila.FeaturePackConfig(
+        configflag=True,
         description=RAWMAKER_DESCRIPTION,
         errorhook=errorhook,
         flags=flags,

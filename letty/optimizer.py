@@ -140,7 +140,7 @@ def ranges(mini: float, maxi: float, steps: int = 15):
 
 
 @contextlib.contextmanager
-def make_tmpfolder(root: str = None, remove: bool = False):
+def make_tmpfolder(root: str = None, remove: bool = False):  # pylint:disable=W0613
     path = utila.tmpfile(root)
     os.makedirs(path)
     yield path

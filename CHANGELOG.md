@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.15.1
+
+### Feature
+
+* enable passing config by file (459f81190298)
+
 ## v1.15.0
 
 ### Feature

@@ -8,8 +8,6 @@ hidden whitespace
 
 * [x] add flag to remove hidden white spaces / strip flag
 
-* [ ] add step hidden_whitespace to extract list of hidden whitespaces
-
 cli
 ---
 
@@ -20,6 +18,12 @@ code quality
 
 before
 ~~~~~~
+
+* Todos: 45
+* Your code has been rated at 10.00/10
+
+after
+~~~~~
 
 * Todos: 45
 * Your code has been rated at 10.00/10

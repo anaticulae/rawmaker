@@ -22,3 +22,5 @@ backlog
 * Figero (planned)
 
 * Tabelero (planned)
+
+* add step hidden_whitespace to extract list of hidden whitespaces

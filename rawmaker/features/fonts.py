@@ -114,18 +114,19 @@ def work(  # pylint:disable=W9015
         parsed document as yaml output
     """
     assert isinstance(document, str), str(document)
-    layout = rawmaker.parameter.ParsingConfiguration(
+    config = rawmaker.parameter.ParsingConfiguration(
         boxes_flow=boxes_flow,
         char_margin=char_margin,
         detect_vertical=detect_vertical,
         line_margin=line_margin,
         line_overlap=line_overlap,
+        nostrip=nostrip,
         word_margin=word_margin,
     )
     with rawmaker.reader.read(document) as pdf:
         document = rawmaker.features.extract_content(
             pdf,
-            config=layout,
+            config=config,
             strip=nostrip is False,
             pages=pages,
         )

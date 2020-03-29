@@ -16,6 +16,7 @@ import rawmaker.features.text
 import tests.resources
 
 
+@utila.skip_longrun
 def test_miner_pdf():
     parsed_file = rawmaker.features.text.work(tests.resources.VIM_PDF)
     assert parsed_file

@@ -7,10 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import utila
+
 import letty.optimizer
 import tests.resources
 
 
+@utila.skip_longrun
 def test_optimizer():
     path = tests.resources.MASTER72
     pages = (3,)
@@ -18,6 +21,7 @@ def test_optimizer():
     assert result
 
 
+@utila.skip_longrun
 def test_optimizer_hardtoread():
     path = tests.resources.BACHELOR37
     pages = (6,)

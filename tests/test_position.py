@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import utila
 from iamraw import BoundingBox
 from iamraw import Document
 from pytest import fixture
@@ -56,6 +57,7 @@ def document() -> Document:
     return extracted
 
 
+@utila.skip_longrun
 def test_hash_document(document: Document):  # pylint:disable=W0621
     hashed = hash_positions(document)
     assert len(hashed) == len(document)

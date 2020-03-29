@@ -26,6 +26,7 @@ def test_leftright_book_font_name(testdir, monkeypatch, capsys):
     assert 'ERROR' not in err
 
 
+@utila.skip_longrun
 def test_leftright_book_font_size(testdir, monkeypatch):
     tests.run_success(
         f'-i {tests.resources.LEFTRIGHT} --text',

@@ -5,10 +5,10 @@ pdfminer.six==20181108
 Pillow==6.1.0
 
 # Internal packages
-iamraw==1.18.6
-utila==1.16.3
-protocol==0.8.7
+iamraw==1.19.0
+utila==1.16.4
+protocol==0.8.8
 
 
 # test data provider
-power==0.6.19
+power==0.6.20

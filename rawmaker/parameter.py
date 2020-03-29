@@ -9,9 +9,8 @@
 
 import dataclasses
 
-from pdfminer.layout import LAParams
-from utila import Level
-from utila import log
+import pdfminer.layout
+import utila
 
 STRIP = True
 
@@ -37,8 +36,8 @@ class ParsingConfiguration:
                 parameter.append(f'--{item}={value}')
         return ' '.join(parameter)
 
-    def laparams(self) -> LAParams:
-        result = LAParams(
+    def laparams(self) -> pdfminer.layout.LAParams:
+        result = pdfminer.layout.LAParams(
             boxes_flow=self.boxes_flow,
             char_margin=self.char_margin,
             detect_vertical=self.detect_vertical,
@@ -49,7 +48,7 @@ class ParsingConfiguration:
         return result
 
 
-def from_config(config: ParsingConfiguration) -> LAParams:
+def from_config(config: ParsingConfiguration) -> pdfminer.layout.LAParams:
     boxes_flow: float = 0.5
     char_margin: float = 2.0
     line_margin: float = 0.5
@@ -63,7 +62,7 @@ def from_config(config: ParsingConfiguration) -> LAParams:
         line_overlap = config.line_overlap
         word_margin = config.word_margin
 
-    result = LAParams(
+    result = pdfminer.layout.LAParams(
         boxes_flow=boxes_flow,
         char_margin=char_margin,
         line_margin=line_margin,
@@ -76,7 +75,7 @@ def from_config(config: ParsingConfiguration) -> LAParams:
 def print_layout(layout: ParsingConfiguration = None):
     assert layout, 'missing layout'
     layout = from_config(layout)
-    log('   layout:', end=' ', level=Level.INFORMATION)
+    utila.log('   layout:', end=' ', level=utila.Level.INFORMATION)
     information = [
         ('boxes_flow', layout.boxes_flow),
         ('char_margin', layout.char_margin),
@@ -85,5 +84,9 @@ def print_layout(layout: ParsingConfiguration = None):
         ('word_margin', layout.word_margin),
     ]
     for (text, value) in information:
-        log('%s %.2f' % (text, value), end=' ', level=Level.INFORMATION)
-    log(level=Level.INFORMATION)  # newline
+        utila.log(
+            '%s %.2f' % (text, value),
+            end=' ',
+            level=utila.Level.INFORMATION,
+        )
+    utila.log(level=utila.Level.INFORMATION)  # newline

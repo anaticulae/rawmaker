@@ -25,6 +25,7 @@ DOCU = os.path.join(RESOURCES, 'docu')
 HELLO_WORLD = os.path.join(RESOURCES, 'helloworld')
 MASTER = os.path.join(RESOURCES, 'master')
 NEGATIVE = os.path.join(RESOURCES, 'negative')
+ORDER = os.path.join(RESOURCES, 'order')
 SINGLE = os.path.join(RESOURCES, 'single')
 TECHNICAL = os.path.join(RESOURCES, 'technical')
 
@@ -63,6 +64,8 @@ HOW_TO_CPORTING_HORIZONTAL_COUNT = 2
 MASTER72 = os.path.join(MASTER, 'page_72_noimages_toc.pdf')
 assert os.path.exists(MASTER72), str(MASTER72)
 
+HOWTOREAD_PDF = os.path.join(ORDER, 'howtowrite_pages9.pdf')
+
 BACHELOR37 = os.path.join(BACHELOR, 'page_37_tables.pdf')
 BACHELOR56 = os.path.join(BACHELOR, 'page_56_hard_to_read.pdf')
 BACHELOR63 = os.path.join(BACHELOR, 'page_63_images_toc.pdf')
@@ -80,6 +83,7 @@ REQUIRED_RESOURCES = [
     BACHELOR56,
     BACHELOR63,
     HELLO_WORLD_PDF,
+    HOWTOREAD_PDF,
     HOW_TO_CPORTING_PDF,
     INCREASING_FONT,
     INCREASING_FONT_A3,

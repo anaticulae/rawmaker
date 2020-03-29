@@ -23,6 +23,7 @@ class ParsingConfiguration:
     line_margin: float = 0.5
     line_overlap: float = 0.5
     word_margin: float = 0.1
+    detect_vertical: bool = False
     nostrip: bool = STRIP is False
 
     def cmdline(self) -> str:
@@ -40,6 +41,7 @@ class ParsingConfiguration:
         result = LAParams(
             boxes_flow=self.boxes_flow,
             char_margin=self.char_margin,
+            detect_vertical=self.detect_vertical,
             line_margin=self.line_margin,
             line_overlap=self.line_overlap,
             word_margin=self.word_margin,

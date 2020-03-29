@@ -4,9 +4,14 @@ RP 1.16.0
 =========
 
 layout estimator
-================
+----------------
 
 * [ ] add layout estimator to adjust text layout - let
+
+vertical
+--------
+
+* [ ] add step to support vertical text extraction
 
 code quality
 ------------

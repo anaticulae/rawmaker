@@ -22,40 +22,18 @@ from utila import SkipCollector
 from utila import call
 from utila import debug
 
-from rawmaker.miner.text import PrecisePDFConverter
+import rawmaker.miner.text
+import rawmaker.parameter
 
 PageContent = namedtuple('PageContent', 'content, page')
-
-STRIP = True
-
-
-@dataclasses.dataclass
-class ParsingConfiguration:
-    boxes_flow: float = 0.5
-    char_margin: float = 2.0
-    line_margin: float = 0.5
-    line_overlap: float = 0.5
-    word_margin: float = 0.1
-    nostrip: bool = STRIP is False
-
-    def cmdline(self) -> str:
-        """Convert configuration to `linix` command line parameter syntax."""
-        parameter = []
-        for item, value in vars(self).items():
-            if isinstance(value, bool):
-                if value:
-                    parameter.append(f'--{item}')
-            else:
-                parameter.append(f'--{item}={value}')
-        return ' '.join(parameter)
 
 
 def create_interpreter(layout=None) -> PDFPageInterpreter:
     if not layout:
         layout = LAParams()
-    rsrcmgr = PDFResourceManager()
-    device = PDFPageAggregator(rsrcmgr, laparams=layout)
-    interpreter = PDFPageInterpreter(rsrcmgr, device)
+    resources = PDFResourceManager()
+    device = PDFPageAggregator(resources, laparams=layout)
+    interpreter = PDFPageInterpreter(resources, device)
     return interpreter, device
 
 
@@ -106,7 +84,7 @@ def page_selection(document: iamraw.Document, pages: tuple):
 
 def extract_content(
         document: PDFDocument,
-        layout_parameter: LAParams = None,
+        config: rawmaker.parameter.ParsingConfiguration = None,
         strip: bool = False,
         pages: tuple = None,
 ) -> iamraw.Document:
@@ -114,28 +92,27 @@ def extract_content(
 
     Args:
         document(PDFDocument): PDF file to process
-        layout_parameter(LAParams): Parameterization for layout analysis. This
-                                    parameter defines how chars are matched
-                                    together in words and sentences.
-                                    See pdf reference documentation.
+        config(ParsingConfiguration): Parameterization for layout analysis. This
+                                      parameter defines how chars are
+                                      matched together in words and sentences.
+                                      See pdf reference documentation.
         strip: removes white spaces at beginning and ending of text line
         pages: tuple of selected pages
     Returns:
         Document: parsed and layouted document
     """
-    if layout_parameter is None:
-        layout_parameter = LAParams()
-    # Create a PDF resource manager object that stores shared resources.
-    rsrcmgr = PDFResourceManager()
+    if config is None:
+        config = rawmaker.parameter.ParsingConfiguration()
+    assert isinstance(config,
+                      rawmaker.parameter.ParsingConfiguration), type(config)
 
     # prepare parser
-    device = PrecisePDFConverter(
-        rsrcmgr,
-        laparams=layout_parameter,
+    device = rawmaker.miner.text.PrecisePDFConverter(
+        config=config,
         strip=strip,
     )
     device.new_document()
-    interpreter = PDFPageInterpreter(rsrcmgr, device)
+    interpreter = PDFPageInterpreter(device.rsrcmgr, device)
 
     # Processing layout
     with SkipCollector(pages) as collector:

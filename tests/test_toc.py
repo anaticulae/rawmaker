@@ -13,6 +13,7 @@ import pdfminer.layout
 import rawmaker.error
 import rawmaker.features
 import rawmaker.features.toc
+import rawmaker.parameter
 import tests.resources
 
 
@@ -44,11 +45,8 @@ def test_toc_parameterization():
     """
     with rawmaker.reader.read(tests.resources.RESTRUCTURED_PDF) as pdf:
         # Diff between chars which build a word
-        layout = pdfminer.layout.LAParams(char_margin=10.0)
-        document = rawmaker.features.extract_content(
-            pdf,
-            layout_parameter=layout,
-        )
+        config = rawmaker.parameter.ParsingConfiguration(char_margin=10.0)
+        document = rawmaker.features.extract_content(pdf, config=config)
     page_with_toc = document[2]
     assert page_with_toc
 

@@ -31,7 +31,7 @@ def work(  # pylint:disable=W9015
         line_margin: float = 0.5,
         line_overlap: float = 0.5,
         word_margin: float = 0.1,
-        nostrip: bool = rawmaker.features.STRIP is False,
+        nostrip: bool = rawmaker.parameter.STRIP is False,
         pages: tuple = None,
 ) -> typing.Tuple[str, str]:
     """Extract structured text out of document
@@ -44,7 +44,7 @@ def work(  # pylint:disable=W9015
         parsed document as yaml output
         parsed positions of text container
     """
-    config = rawmaker.features.ParsingConfiguration(
+    config = rawmaker.parameter.ParsingConfiguration(
         boxes_flow=boxes_flow,
         char_margin=char_margin,
         line_margin=line_margin,
@@ -69,7 +69,7 @@ def work(  # pylint:disable=W9015
 
 def superfast(
         document: str,
-        config: rawmaker.features.ParsingConfiguration,
+        config: rawmaker.parameter.ParsingConfiguration,
         result: str,
         pages: list = None,
 ) -> iamraw.Document:
@@ -134,20 +134,19 @@ def merge_document(path: str, size: int) -> iamraw.Document:
 
 def extract_document(
         document: str,
-        config: rawmaker.features.ParsingConfiguration = None,
+        config: rawmaker.parameter.ParsingConfiguration = None,
         pages: tuple = None,
 ) -> iamraw.Document:
-    strip = rawmaker.features.STRIP
+    strip = rawmaker.parameter.STRIP
     if config:
         strip = config.nostrip is False
-    layout = rawmaker.parameter.from_config(config)
-    rawmaker.parameter.print_layout(layout)
+        rawmaker.parameter.print_layout(config)
 
     assert isinstance(document, str), str(document)
     with rawmaker.reader.read(document) as pdf:
         document = rawmaker.features.extract_content(
             pdf,
-            layout_parameter=layout,
+            config=config,
             strip=strip,
             pages=pages,
         )

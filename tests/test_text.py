@@ -120,7 +120,7 @@ def test_text_mine_holy_whitespaces_remove(source, remove_whitespace, validate):
 
 
 def mine_holywhitespace(source, remove_whitespace, pages, expected_length):
-    config = rawmaker.features.ParsingConfiguration(
+    config = rawmaker.parameter.ParsingConfiguration(
         boxes_flow=0.5,
         char_margin=1.0,
         line_margin=0.15,

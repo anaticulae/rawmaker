@@ -23,6 +23,7 @@ import rawmaker.reader
 import tests.resources
 
 
+@utila.skip_longrun
 def test_mining_fonts(testdir):
     header, content = rawmaker.features.fonts.work(tests.resources.TWINE_PDF)
 
@@ -160,7 +161,7 @@ def test_strip_correct_bounding_box(testdir, monkeypatch):
     description of the shortcut. Two item must have a near y-coordinate
     because there are on the same line."""
     source = tests.resources.BACHELOR37
-    config = rawmaker.features.ParsingConfiguration(line_margin=0.25,)
+    config = rawmaker.parameter.ParsingConfiguration(line_margin=0.25)
     cmd = f'-i {source} --text --pages=1 {config.cmdline()}'
     tests.run_success(cmd, monkeypatch=monkeypatch)
 
@@ -187,7 +188,7 @@ def test_strip_correct_bounding_box(testdir, monkeypatch):
 
 def test_strip_correct_bounding_box_master116(testdir, monkeypatch):
     source = tests.resources.MASTER116
-    config = rawmaker.features.ParsingConfiguration(line_margin=0.25)
+    config = rawmaker.parameter.ParsingConfiguration(line_margin=0.25)
     cmd = f'-i {source} --text --pages=96 {config.cmdline()}'
     tests.run_success(cmd, monkeypatch=monkeypatch)
 

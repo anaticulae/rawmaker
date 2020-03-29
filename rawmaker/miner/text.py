@@ -20,6 +20,9 @@ import pdfminer.layout
 import pdfminer.pdfinterp
 import utila
 
+import rawmaker.parameter
+import rawmaker.patch.ltchar
+
 
 class PrecisePDFConverter(pdfminer.converter.PDFConverter):
     """Parsing PDF-files based on given layout definition `laparams`.
@@ -32,38 +35,34 @@ class PrecisePDFConverter(pdfminer.converter.PDFConverter):
 
     def __init__(
             self,
-            resource_manager: pdfminer.pdfinterp.PDFResourceManager,
-            laparams: pdfminer.layout.LAParams = None,
+            config: rawmaker.parameter.ParsingConfiguration = None,
             imagewriter: callable = None,
             strip: bool = None,
     ):
         """Create converter instance.
 
         Args:
-            resource_manager(PDFResourceManager): resource manager to
-                                                  cache multiple file
-                                                  accesses.
-            laparams(LAParams): layout to define maximum spacing between
-                                chars, words and lines.
+            config(ParsingConfiguration): layout to define maximum
+                                          spacing between chars, words
+                                          and lines.
             imagewriter(callable): listener to recive extract images
             strip(bool): remove holy white spaces which are a result of
                          bad pdf printer or bad pdf parsing.
         """
         super().__init__(
-            rsrcmgr=resource_manager,
+            # Create a PDF resource manager object that stores shared resources.
+            rsrcmgr=pdfminer.pdfinterp.PDFResourceManager(),
             outfp=sys.stdout.buffer,
             codec=utila.UTF8,
             pageno=0,
-            laparams=laparams,
+            laparams=rawmaker.parameter.from_config(config),
         )
-        import rawmaker.features  # pylint:disable=W0621
         self.imagewriter = imagewriter
-        self.strip = rawmaker.features.STRIP if strip is None else strip
+        self.strip = rawmaker.parameter.STRIP if strip is None else strip
         self.page = 0
         self.document = None
 
         # TODO: Remove after upgrading pdfminer
-        import rawmaker.patch.ltchar
         PrecisePDFConverter.render_char = rawmaker.patch.ltchar.render_char
 
     def new_document(self):

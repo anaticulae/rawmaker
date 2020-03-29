@@ -7,22 +7,60 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import dataclasses
+
 from pdfminer.layout import LAParams
 from utila import Level
 from utila import log
 
-import rawmaker.features
+STRIP = True
 
 
-def create_layout(
-        boxes_flow: float = 0.5,
-        char_margin: float = 2.0,
-        line_margin: float = 0.5,
-        line_overlap: float = 0.5,
-        word_margin: float = 0.1,
-) -> LAParams:
-    # char_margin = get(parameter, 'char_margin', default=5.0, min_value=0.1)
-    # boxes_flow: 1.0 only the vertical position matters
+@dataclasses.dataclass
+class ParsingConfiguration:
+    boxes_flow: float = 0.5
+    char_margin: float = 2.0
+    line_margin: float = 0.5
+    line_overlap: float = 0.5
+    word_margin: float = 0.1
+    nostrip: bool = STRIP is False
+
+    def cmdline(self) -> str:
+        """Convert configuration to `linix` command line parameter syntax."""
+        parameter = []
+        for item, value in vars(self).items():
+            if isinstance(value, bool):
+                if value:
+                    parameter.append(f'--{item}')
+            else:
+                parameter.append(f'--{item}={value}')
+        return ' '.join(parameter)
+
+    def laparams(self) -> LAParams:
+        result = LAParams(
+            boxes_flow=self.boxes_flow,
+            char_margin=self.char_margin,
+            line_margin=self.line_margin,
+            line_overlap=self.line_overlap,
+            word_margin=self.word_margin,
+        )
+        return result
+
+
+def from_config(config: ParsingConfiguration) -> LAParams:
+    boxes_flow: float = 0.5
+    char_margin: float = 2.0
+    line_margin: float = 0.5
+    line_overlap: float = 0.5
+    word_margin: float = 0.1
+
+    if config:
+        boxes_flow = config.boxes_flow
+        char_margin = config.char_margin
+        line_margin = config.line_margin
+        line_overlap = config.line_overlap
+        word_margin = config.word_margin
+
     result = LAParams(
         boxes_flow=boxes_flow,
         char_margin=char_margin,
@@ -33,22 +71,9 @@ def create_layout(
     return result
 
 
-def from_config(config: rawmaker.features.ParsingConfiguration):
-    if not config:
-        return create_layout()
-
-    result = create_layout(
-        boxes_flow=config.boxes_flow,
-        char_margin=config.char_margin,
-        line_margin=config.line_margin,
-        line_overlap=config.line_overlap,
-        word_margin=config.word_margin,
-    )
-    return result
-
-
-def print_layout(layout: LAParams = None):
+def print_layout(layout: ParsingConfiguration = None):
     assert layout, 'missing layout'
+    layout = from_config(layout)
     log('   layout:', end=' ', level=Level.INFORMATION)
     information = [
         ('boxes_flow', layout.boxes_flow),

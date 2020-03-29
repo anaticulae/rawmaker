@@ -100,7 +100,7 @@ def work(  # pylint:disable=W9015
         line_margin: float = 0.5,
         line_overlap: float = 0.5,
         word_margin: float = 0.1,
-        nostrip: bool = rawmaker.features.STRIP is False,
+        nostrip: bool = rawmaker.parameter.STRIP is False,
         pages: list = None,
 ) -> typing.Tuple[str, str]:
     """Extract structured text out of document
@@ -113,7 +113,7 @@ def work(  # pylint:disable=W9015
         parsed document as yaml output
     """
     assert isinstance(document, str), str(document)
-    layout = rawmaker.parameter.create_layout(
+    layout = rawmaker.parameter.ParsingConfiguration(
         boxes_flow=boxes_flow,
         char_margin=char_margin,
         line_margin=line_margin,
@@ -123,7 +123,7 @@ def work(  # pylint:disable=W9015
     with rawmaker.reader.read(document) as pdf:
         document = rawmaker.features.extract_content(
             pdf,
-            layout_parameter=layout,
+            config=layout,
             strip=nostrip is False,
             pages=pages,
         )

@@ -54,10 +54,12 @@ def from_config(config: ParsingConfiguration) -> pdfminer.layout.LAParams:
     line_margin: float = 0.5
     line_overlap: float = 0.5
     word_margin: float = 0.1
+    detect_vertical = False
 
     if config:
         boxes_flow = config.boxes_flow
         char_margin = config.char_margin
+        detect_vertical = config.detect_vertical
         line_margin = config.line_margin
         line_overlap = config.line_overlap
         word_margin = config.word_margin
@@ -65,6 +67,7 @@ def from_config(config: ParsingConfiguration) -> pdfminer.layout.LAParams:
     result = pdfminer.layout.LAParams(
         boxes_flow=boxes_flow,
         char_margin=char_margin,
+        detect_vertical=detect_vertical,
         line_margin=line_margin,
         line_overlap=line_overlap,
         word_margin=word_margin,

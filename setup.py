@@ -68,6 +68,7 @@ if __name__ == "__main__":
             'pdfinfo',
             'rawmaker',
             'rawmaker.features',
+            'rawmaker.fonts',
             'rawmaker.miner',
             'rawmaker.patch',
         ],

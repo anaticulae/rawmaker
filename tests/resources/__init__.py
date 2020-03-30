@@ -84,6 +84,7 @@ REQUIRED_RESOURCES = [
     BACHELOR37,
     BACHELOR56,
     BACHELOR63,
+    GENERATED,
     HELLO_WORLD_PDF,
     HOWTOREAD_PDF,
     HOW_TO_CPORTING_PDF,
@@ -104,6 +105,3 @@ REQUIRED_RESOURCES = [
     TWINE_PDF,
     VIM_PDF,
 ]
-
-MISSING = [item for item in REQUIRED_RESOURCES if not os.path.exists(item)]
-assert not MISSING, f'missing: {MISSING}'

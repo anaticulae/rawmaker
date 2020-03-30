@@ -103,8 +103,7 @@ def extract_content(
     """
     if config is None:
         config = rawmaker.parameter.ParsingConfiguration()
-    assert isinstance(config,
-                      rawmaker.parameter.ParsingConfiguration), type(config)
+    assert isinstance(config, rawmaker.parameter.ParsingConfiguration), type(config) # yapf:disable
 
     # prepare parser
     device = rawmaker.miner.text.PrecisePDFConverter(

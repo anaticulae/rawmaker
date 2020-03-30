@@ -28,6 +28,7 @@ NEGATIVE = os.path.join(RESOURCES, 'negative')
 ORDER = os.path.join(RESOURCES, 'order')
 SINGLE = os.path.join(RESOURCES, 'single')
 TECHNICAL = os.path.join(RESOURCES, 'technical')
+SPEC = os.path.join(RESOURCES, 'spec')
 
 NO_PDF = os.path.join(NEGATIVE, 'no_pdf')
 
@@ -69,6 +70,7 @@ HOWTOREAD_PDF = os.path.join(ORDER, 'howtowrite_pages9.pdf')
 BACHELOR37 = os.path.join(BACHELOR, 'page_37_tables.pdf')
 BACHELOR56 = os.path.join(BACHELOR, 'page_56_hard_to_read.pdf')
 BACHELOR63 = os.path.join(BACHELOR, 'page_63_images_toc.pdf')
+PDF2008 = os.path.join(SPEC, 'PDF32000_2008.pdf')
 
 SINGLE_HEADLINE_MOVINGFOOTER = os.path.join(
     SINGLE,
@@ -94,6 +96,7 @@ REQUIRED_RESOURCES = [
     MASTER72,
     NEGATIVE,
     NO_PDF,
+    PDF2008,
     RESOURCES,
     RESTRUCTURED_PDF,
     SINGLE_HEADLINE_MOVINGFOOTER,

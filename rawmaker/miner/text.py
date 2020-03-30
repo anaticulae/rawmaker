@@ -266,7 +266,9 @@ def split_characters(char) -> list:
     result = []
     charbounding = char.box
     charstep = charbounding.x1 - charbounding.x0
-    assert charstep > 0, charstep
+    if charstep <= 0.0:
+        utila.error(f'invalid charstep: {charstep}: {charbounding} - {char}')
+    assert charstep >= 0.0, f'{charstep}: {charbounding} - {char}'
     for index, text in enumerate(char.value):
         copied = copy.deepcopy(char)
         copied.value = text

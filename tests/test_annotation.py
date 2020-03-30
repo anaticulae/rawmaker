@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pytest
 from pytest import fixture
 from serializeraw import dump_annotations
 from serializeraw import load_annotations
@@ -30,6 +31,7 @@ def test_annotation_mining_annotations(capsys):
     assert not err
 
 
+@pytest.mark.xfail(reason='annotation is disabled right now')
 def test_annotation_work():
     result = work(VIM_PDF)
     assert len(result) > 200

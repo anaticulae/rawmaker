@@ -93,7 +93,10 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
     files_written = list(os.scandir(root))
 
     # broken file + developer.lin and user.lin
-    assert len(files_written) == 3, str(files_written)
+    expected = 3
+    # TODO: REMOVE AFTER ACTIVATING ANNOTATION
+    expected += 1
+    assert len(files_written) == expected, str(files_written)
 
 
 def test_rawmaker_cli_run_file_without_extention(testdir, monkeypatch):

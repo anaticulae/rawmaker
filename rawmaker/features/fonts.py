@@ -183,7 +183,7 @@ def process_page(  # pylint:disable=R0914
         Page with font information of the page text content.
     """
     assert isinstance(page, iamraw.Page), type(page)
-    current = (0, 0, 0)  # container, line, char
+    position = (0, 0, 0)  # container, line, char
     current_font, current_scale = None, None
     current_flags = None
     result = []
@@ -198,44 +198,42 @@ def process_page(  # pylint:disable=R0914
                 except AttributeError:
                     # Virtual chars have no fonts, but newlines are part
                     # of font definition.
-                    current = (container_index, line_index, char_index)
+                    position = (container_index, line_index, char_index)
                     continue
                 # TODO: INVESTIGATE 1.34??
                 # NOTE: This works for POSTSCRIPT_14_DEFAULT's but not for
                 # Calibri.
                 scale = utila.roundme(char.size / 1.34005)
                 assert scale > 0, 'negative font size'
+                flags = char.ltchar.flags
                 # No font type or size is selected
                 if current_font is None:
                     current_font, current_scale = (font, scale)
-                    current_flags = char.ltchar.flags
+                    current_flags = flags
                     continue
-                # Font type or size changed
-                if current_font != font or current_scale != scale:
+                # Font type, size or flags changed
+                if any((current_font != font, current_scale != scale,
+                        current_flags != flags)):
                     fontid = add_font(
                         current_font,
                         current_scale,
                         flags=current_flags,
-                        container=current[0],
-                        line=current[1],
-                        char=current[2] + 1,
+                        position=position,
                         fontstore=fontstore,
                     )
                     result.append(fontid)
                     # Reset current front
                     current_font, current_scale = font, scale
-                    current_flags = char.ltchar.flags
+                    current_flags = flags
                 # update last index of current font
-                current = (container_index, line_index, char_index)
+                position = (container_index, line_index, char_index)
     # add last text line of a page, because there is nothing changing
     if current_font:
         fontid = add_font(
             current_font,
             current_scale,
             flags=current_flags,
-            container=current[0],
-            line=current[1],
-            char=current[2] + 1,
+            position=position,
             fontstore=fontstore,
         )
         result.append(fontid)
@@ -251,7 +249,11 @@ def parse_fonts(document: iamraw.Document):
     return header, content
 
 
-def add_font(font, scale, container, line, char, flags, *, fontstore):
+def add_font(font, scale, flags, *, fontstore, position):
+    # position = (container, line, chars + 1)
+    container, line, char = position
+    # store position after the change happend
+    char = char + 1
     fontkey = fontstore.font_key(font, scale, flags)
     return (container, line, char, fontkey)
 

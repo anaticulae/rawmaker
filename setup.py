@@ -26,6 +26,11 @@ with open(join(ROOT, "requirements.txt"), mode='rt', encoding='utf8') as fp:
         line for line in fp.readlines() if line and '#' not in line
     ]
 
+with open(join(ROOT, "requirements.dev"), mode='rt', encoding='utf8') as fp:
+    TEST_REQUIRES = [
+        line for line in fp.readlines() if line and '#' not in line
+    ]
+
 
 def datafiles():
     return [('.', [
@@ -43,6 +48,7 @@ if __name__ == "__main__":
         description='Covert PDF to raw data',
         include_package_data=True,
         install_requires=INSTALL_REQUIRES,
+        tests_require=TEST_REQUIRES,
         long_description=README,
         name='rawmaker',
         platforms='any',

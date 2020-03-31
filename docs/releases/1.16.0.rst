@@ -11,7 +11,7 @@ layout estimator
 vertical
 --------
 
-* [ ] add step to support vertical text extraction
+* [x] add step to support vertical text extraction
 
 fonts
 -----

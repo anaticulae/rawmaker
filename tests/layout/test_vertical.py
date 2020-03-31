@@ -7,27 +7,38 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import iamraw
+import pytest
 import serializeraw
+import texmex
 
 import tests.resources
 
 
-def test_parse_howtoread_vertically(testdir, monkeypatch):
+@pytest.mark.parametrize('page, vertical, expected_empty', [
+    (8, True, False),
+    (8, False, False),
+    (7, True, True),
+])
+def test_parse_howtoread_vertically(
+        page,
+        vertical,
+        expected_empty,
+        testdir,
+        monkeypatch,
+):
     root = testdir.tmpdir
     source = tests.resources.HOWTOREAD_PDF
+    flag = '--detect_vertical' if vertical else ''
     config = '--char_margin=2.0 --word_margin=0.1 --line_margin=0.001'
-    cmd = f'-i {source} --text --pages=8 --detect_vertical {config}'
+    cmd = f'-i {source} --text --pages={page} {flag} {config}'
     tests.run_success(cmd, monkeypatch=monkeypatch)
-    text = iamraw.path.text(root)
-    text = serializeraw.load_document(text)[0]
-    positions = iamraw.path.textposition(root)
-    positions = serializeraw.load_textpositions(positions)[0].content.values()
-    positions = list(positions)
 
-    print()
-    print()
-    print()
-    for pos, item in zip(positions, text):
-        print(item.text)
-        print(pos)
+    if vertical:
+        mode = texmex.PageTextNavigatorMode.VERTICAL
+    else:
+        mode = texmex.PageTextNavigatorMode.HORIZONTAL
+
+    loaded = serializeraw.create_pagetextnavigators_frompath(root, mode=mode)[0]
+    content = loaded[:]
+    empty = [] == content
+    assert empty == expected_empty, str(content)

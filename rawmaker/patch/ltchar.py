@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
+
 import pdfminer.layout
 import pdfminer.pdffont
 
@@ -26,6 +28,15 @@ class PatchedLTChar(pdfminer.layout.LTChar):
             self.fontsize = fontsize
         self.rise = rise
         self.flags = font.flags
+
+
+def vertical(item: pdfminer.layout.LTChar) -> bool:
+    """Check LTChar.upright flag."""
+    with contextlib.suppress(AttributeError):
+        if not item.upright:
+            return True
+        return False
+    return None
 
 
 def render_char(  # pylint:disable=W9015,W9016

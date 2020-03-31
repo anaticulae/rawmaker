@@ -11,6 +11,7 @@
 
 Parses pdf document and extracts layouted text components.
 """
+import contextlib
 import copy
 import sys
 
@@ -236,6 +237,7 @@ def render_textline(
 def ensure_leftright(items):
     """Fix layout parser misdetection. Ensure that more left x0
     coordinates comes before higher x0 cooridinate."""
+    # TODO: ENSURE TOP TO DOWN, LOOK AT FONT RISE PROBLEM
     # map bounding cause virtual chars has no bounding
     if not items:
         return items
@@ -297,7 +299,10 @@ def render_textcontainer(
         strip: bool = False,
 ) -> iamraw.TextContainer:
     bounding = convert_bounding(*item.bbox, pageheight=pageheight)
-    container = iamraw.TextContainer(box=bounding)
+    if vertical(item):
+        container = iamraw.VerticalTextContainer(box=bounding)
+    else:
+        container = iamraw.TextContainer(box=bounding)
     for line in item:
         # pylint:disable=E1101
         rendered = render_textline(line, pageheight=pageheight, strip=strip)
@@ -310,6 +315,16 @@ def render_textcontainer(
         # TODO: COMPUTE BOXES OUT OF MEMBER/CHILDREN/LINES
         container.box = container[0].box
     return container
+
+
+def vertical(item: pdfminer.layout.LTTextBox):
+    """Check LTChar.upright flag."""
+    for line in item:
+        for char in line._objs:  # pylint: disable=protected-access
+            with contextlib.suppress(AttributeError):
+                if rawmaker.patch.ltchar.vertical(char):
+                    return True
+    return False
 
 
 def render(item, pageheight: float = None, strip: bool = False):

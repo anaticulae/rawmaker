@@ -19,6 +19,7 @@ import yaml
 import rawmaker
 import rawmaker.features
 import rawmaker.features.fonts
+import rawmaker.fonts.parser
 import rawmaker.reader
 import tests.resources
 
@@ -48,8 +49,7 @@ def test_minining_fonts_cporting_first_page():
     with rawmaker.reader.read(tests.resources.HOW_TO_CPORTING_PDF) as pdf:
         document = rawmaker.features.extract_content(pdf)
 
-    fontstore = rawmaker.features.fonts.FontStore(
-        rawmaker.features.fonts.font_fromraw)
+    fontstore = rawmaker.features.fonts.FontStore(rawmaker.fonts.parser.font_fromraw) # yapf:disable
     first_page = document[0]
     fonts = rawmaker.features.fonts.process_page(first_page, fontstore)
     assert fonts
@@ -136,7 +136,7 @@ def test_mining_fonts_restruct_page_5(restructed_fonts):  # pylint:disable=W0621
     ('JBLIUJ+Arial-BoldMT', 10.00, 'Arial'),
 ])
 def test_convert_font_from_raw(font, scale, expected_name):
-    parsed = rawmaker.features.fonts.font_fromraw(font, scale)
+    parsed = rawmaker.fonts.parser.font_fromraw(font, scale)
     assert parsed
 
     assert '+' not in parsed.name, str(parsed)
@@ -149,7 +149,7 @@ def test_convert_font_from_raw(font, scale, expected_name):
     ('ADDAOP+AdvTT5ada87cc+fb4', 'AdvTT5ada87cc+fb4'),
 ])
 def test_convert_font_from_raw_pdf_naming_problem(font, expected_name):
-    parsed = rawmaker.features.fonts.font_fromraw(font, scale=10.0)
+    parsed = rawmaker.fonts.parser.font_fromraw(font, scale=10.0)
     assert parsed
 
     assert expected_name == parsed.name, str(expected_name)

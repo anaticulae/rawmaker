@@ -25,6 +25,7 @@ class PatchedLTChar(pdfminer.layout.LTChar):
         else:
             self.fontsize = fontsize
         self.rise = rise
+        self.flags = font.flags
 
 
 def render_char(  # pylint:disable=W9015,W9016

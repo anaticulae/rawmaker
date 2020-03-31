@@ -146,8 +146,8 @@ class FontStore:
         self.data = {}
 
     @functools.lru_cache(maxsize=128)
-    def font_key(self, raw_font: str, scale: float) -> int:
-        parsed = self.parser(raw_font, scale)
+    def font_key(self, raw_font: str, scale: float, flags: int) -> int:
+        parsed = self.parser(raw_font, scale, flags)
         hashed = hash(parsed)
         try:
             self.data[hashed]
@@ -185,6 +185,7 @@ def process_page(  # pylint:disable=R0914
     assert isinstance(page, iamraw.Page), type(page)
     current = (0, 0, 0)  # container, line, char
     current_font, current_scale = None, None
+    current_flags = None
     result = []
     textcontainer = [
         item for item in page.children if isinstance(item, iamraw.TextContainer)
@@ -206,13 +207,15 @@ def process_page(  # pylint:disable=R0914
                 assert scale > 0, 'negative font size'
                 # No font type or size is selected
                 if current_font is None:
-                    current_font, current_scale = font, scale
+                    current_font, current_scale = (font, scale)
+                    current_flags = char.ltchar.flags
                     continue
                 # Font type or size changed
                 if current_font != font or current_scale != scale:
-                    fontid = determine_font(
+                    fontid = add_font(
                         current_font,
                         current_scale,
+                        flags=current_flags,
                         container=current[0],
                         line=current[1],
                         char=current[2] + 1,
@@ -221,13 +224,15 @@ def process_page(  # pylint:disable=R0914
                     result.append(fontid)
                     # Reset current front
                     current_font, current_scale = font, scale
+                    current_flags = char.ltchar.flags
                 # update last index of current font
                 current = (container_index, line_index, char_index)
     # add last text line of a page, because there is nothing changing
     if current_font:
-        fontid = determine_font(
+        fontid = add_font(
             current_font,
             current_scale,
+            flags=current_flags,
             container=current[0],
             line=current[1],
             char=current[2] + 1,
@@ -246,8 +251,8 @@ def parse_fonts(document: iamraw.Document):
     return header, content
 
 
-def determine_font(font, scale, container, line, char, fontstore):
-    fontkey = fontstore.font_key(font, scale)
+def add_font(font, scale, container, line, char, flags, *, fontstore):
+    fontkey = fontstore.font_key(font, scale, flags)
     return (container, line, char, fontkey)
 
 
@@ -313,17 +318,19 @@ def parse_default(font: str):
     return fontname, style
 
 
-def font_fromraw(font: str, scale: float) -> iamraw.Font:
+def font_fromraw(font: str, scale: float, flags: int = 0) -> iamraw.Font:
     """Parse `Font` from pdf representation, read the description above.
 
     Args:
         font(str): pdf standard font definition
         scale(float): size of font(unit?)
+        flags(int): style of rendered font
     Returns:
         returns internal `Font` object with detected style and scale
     """
     utila.call('font_fromraw')
     utila.debug('%s %.2f' % (str(font), scale))
+    flags = serializeraw.load_flags(flags)
     # remove whitespaces to avoid missing PostScript 14 language cause of
     # containg whitespaces, for example `Times - Roman` instead of
     # `Times-Roman`.
@@ -353,6 +360,7 @@ def font_fromraw(font: str, scale: float) -> iamraw.Font:
         stretch=stretch,
         style=style,
         weight=weight,
+        flags=flags,
     )
     return font
 

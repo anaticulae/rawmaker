@@ -13,6 +13,14 @@ vertical
 
 * [ ] add step to support vertical text extraction
 
+fonts
+-----
+
+* [x] add font flag to analyze font style
+
+* [ ] refactor old font behavior
+
+
 code quality
 ------------
 

@@ -29,3 +29,10 @@ before
 
 * Todos: 45
 * Your code has been rated at 10.00/10
+
+current
+~~~~~~~
+
+* Todos: 52
+* Total coverage: 93.29%
+* Your code has been rated at 10.00/10

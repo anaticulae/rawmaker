@@ -20,6 +20,7 @@ import pdfminer.layout
 import pdfminer.pdfinterp
 import utila
 
+import rawmaker.miner.rawchar
 import rawmaker.parameter
 import rawmaker.patch.ltchar
 
@@ -93,6 +94,7 @@ def page_size(document: iamraw.Document) -> iamraw.PageSize:
     return iamraw.PageSize(width, height)
 
 
+# TODO: REQUIRE BETTER APPROACH OF REPLACING `LEGATURES`
 SPECIAL_CHAR_TABLE = {
     '\uFB00': 'ff',
     '\uFB01': 'fi',
@@ -132,8 +134,6 @@ def render_char(
         bounding = None
 
     value = item.get_text()
-
-    char = None
     # controlling chars
     if not bounding:
         # Example VirtualChar: <LTAnno ' '>
@@ -143,10 +143,12 @@ def render_char(
     fontsize = utila.roundme(item.fontsize)
     # distance to bottom y-coodinate
     fontrise = utila.roundme(baseline - bounding.y1)
+    char = None
     if value in FAST_KEY:
         # Unicode character
         replaced = SPECIAL_CHAR_TABLE[value]
-        char = iamraw.UnicodeChar(
+        char = rawmaker.miner.rawchar.RawUnicodeChar(
+            ltchar=item,
             box=bounding,
             font=item.fontname,
             rise=fontrise,
@@ -155,7 +157,8 @@ def render_char(
             value=replaced,
         )
     else:
-        char = iamraw.Char(
+        char = rawmaker.miner.rawchar.RawChar(
+            ltchar=item,
             box=bounding,
             font=item.fontname,
             rise=fontrise,

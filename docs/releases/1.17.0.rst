@@ -8,7 +8,7 @@ images
 
 * [ ] fix image step extractor
 
-* [ ] png
+* [x] jpg
 
 * [ ] tiff
 

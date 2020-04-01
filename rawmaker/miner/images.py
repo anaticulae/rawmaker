@@ -22,12 +22,14 @@ NOTE Currently this feature is experimental.
 TODO: We do not support color in the images
 """
 import array
+import collections
 import io
 import itertools
 import sys
 import typing
 
 import pdfminer.converter
+import pdfminer.image
 import pdfminer.layout
 import pdfminer.pdfdocument
 import pdfminer.pdfinterp
@@ -40,12 +42,14 @@ import utila
 
 def extract_images(
         document: pdfminer.pdfdocument.PDFDocument,
+        outputfolder: str = None,
         pages: tuple = None,
 ) -> dict:
     """Extract all images of `document` of selected `pages`
 
     Args:
         document: source to extract images from
+        outputfolder(str): write extracted images to
         pages(tuple): selective list to process pages
     Returns:
         dict with one list per page with containing images of this page
@@ -54,15 +58,18 @@ def extract_images(
 
     if pages:
         pages = sorted(pages)
-    result, collected = dict(), set()
+    result = collections.defaultdict(list)
+    collected = set()
 
     def imagereciver(page, image):
         imagename = image.name
         if imagename in collected:
+            utila.error(f'duplicated export: {imagename}')
             return
-        pagenumber = pages[page] if pages else page
-        result[pagenumber].append(image)
         collected.add(imagename)
+        writer = pdfminer.image.ImageWriter(outputfolder)
+        name = writer.export_image(image)
+        result[page].append(name)
 
     # Processing layout
     content = pdfminer.pdfpage.PDFPage.create_pages(document)
@@ -75,6 +82,7 @@ def extract_images(
             result[number] = []  # ensure that empty page exists
             page.pageid = number
             interpreter.process_page(page)
+    result = {key: value for key, value in result.items() if value}
     return result
 
 

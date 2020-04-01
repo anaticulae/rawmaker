@@ -25,6 +25,7 @@ import array
 import collections
 import io
 import itertools
+import os
 import sys
 import typing
 
@@ -54,45 +55,76 @@ def extract_images(
     Returns:
         dict with one list per page with containing images of this page
     """
+    assert os.path.exists(outputfolder), str(outputfolder)
+
     # ensure that page computation works correct
     if pages:
         pages = sorted(pages)
-    result = collections.defaultdict(list)
-    collected = set()
-    to_merge = collections.defaultdict(list)
-
-    def imagereciver(page, image):
-        if image.srcsize[1] == 1:  # height
-            # merge items
-            to_merge[page].append(image)
-            return
-        imagename = image.name
-        if imagename in collected:
-            utila.error(f'duplicated export: {imagename}')
-            return
-        collected.add(imagename)
-        writer = pdfminer.image.ImageWriter(outputfolder)
-        name = writer.export_image(image)
-        result[page].append(name)
 
     # Processing layout
     content = pdfminer.pdfpage.PDFPage.create_pages(document)
+    collect = CollectAndMerge(outputfolder)
+    interpreter = create_interpreter(collect.imagereciver)
 
-    interpreter = create_interpreter(imagereciver)
     with utila.SkipCollector(pages) as collector:
         for number, page in enumerate(content):
             if collector.skip(number):
                 continue
-            result[number] = []  # ensure that empty page exists
             page.pageid = number
             interpreter.process_page(page)
-    result = {key: value for key, value in result.items() if value}
+
+    collect.merge_and_write(document)
+    result = collect.result()
     return result
 
 
+class CollectAndMerge:
+
+    def __init__(self, outputfolder):
+        self.outputfolder = outputfolder
+        self.to_merge = collections.defaultdict(list)
+        self._result = collections.defaultdict(list)
+        self.collected = set()
+
+        self.writer = pdfminer.image.ImageWriter(outputfolder)
+
+    def imagereciver(self, page, image):
+        if image.srcsize[1] == 1:  # height
+            # merge items
+            self.to_merge[page].append(image)
+            return
+        imagename = image.name
+        if imagename in self.collected:
+            utila.error(f'duplicated export: {imagename}')
+            return
+        self.collected.add(imagename)
+
+        name = self.writer.export_image(image)
+        self._result[page].append(name)
+
+    def merge_and_write(self, document):
+        # write merged images
+        merged = merge_collection(self.to_merge, document)
+        for page, values in merged.items():
+            for index, (image, ext) in enumerate(values):
+                filename = f'{index}.{ext}'
+                outpath = os.path.join(self.outputfolder, filename)
+                with open(outpath, mode='wb') as output:
+                    image.save(output, format=ext)
+                self._result[page].append(filename)
+
+    def result(self):
+        # convert defaultdict to normal dict, remove empty pages
+        return {key: value for key, value in self._result.items() if value}
+
+
 def merge_collection(items, document):
+    result = collections.defaultdict(list)
     # merge pages by yposition
-    return []
+    for page, content in items.items():
+        merged = merge_images(content, document)
+        result[page].extend(merged)
+    return result
 
 
 def create_interpreter(image_listener):
@@ -164,7 +196,7 @@ def merge_images(
 
 
 def group_rectangles(rectangles):
-    # TODO: keep x[2] in mind!
+    """Split potential images by distance in y-coordiante."""
     grouped = itertools.groupby(rectangles, key=lambda x: x[0])
     result = []
     for _, group in grouped:
@@ -172,9 +204,11 @@ def group_rectangles(rectangles):
         # split by distance
         splitted = [[ytopdown[0]]]
         for item in ytopdown[1:]:
+            # maximal distance between two `pixel lines`
             if abs(item[1] - splitted[-1][-1][3]) < 2.0:
                 splitted[-1].append(item)
             else:
+                # start of new image
                 splitted.append([item])
         result.extend(splitted)
 

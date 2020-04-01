@@ -3,11 +3,6 @@
 RP 1.16.0
 =========
 
-layout estimator
-----------------
-
-* [ ] add layout estimator to adjust text layout - let
-
 vertical
 --------
 
@@ -17,9 +12,6 @@ fonts
 -----
 
 * [x] add font flag to analyze font style
-
-* [ ] refactor old font behavior
-
 
 code quality
 ------------

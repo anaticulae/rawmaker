@@ -24,3 +24,13 @@ backlog
 * Tabelero (planned)
 
 * add step hidden_whitespace to extract list of hidden whitespaces
+
+layout estimator
+----------------
+
+* add layout estimator to adjust text layout - let
+
+font
+----
+
+* refactor old font behavior

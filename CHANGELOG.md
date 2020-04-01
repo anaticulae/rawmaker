@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v1.16.0
+
+### Feature
+
+* add parsing vertical text (2080e059cb84)
+* extract and serialize font flags (701978cda9ba)
+* introduce concept of Raw`Item` to avoid duplicating information (29bfa2deec74)
+* add module to parse font flag (354efa0855b0)
+* add flag to activate vertical text extraction (bb9740d8af35)
+* add parameter to parsing configuration (0923b8ce14c6)
+* remove pdfminer dependency (c0d95c085aec)
+
+### Fix
+
+* do not fail, just log the error (e7ab675fae53)
+* disable annotation parser (f597c01bfc90)
+* add missing nostrip flag (df81414e7ec4)
+
 ## v1.15.2
 
 ## v1.15.1

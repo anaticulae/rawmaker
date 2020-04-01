@@ -1,0 +1,28 @@
+.. _1_17_0:
+
+RP 1.17.0
+=========
+
+images
+------
+
+* [ ] fix image step extractor
+
+* [ ] png
+
+* [ ] tiff
+
+* [ ] bmp
+
+maintenance
+-----------
+
+* [ ] solve five todos
+
+code quality
+------------
+
+before
+~~~~~~
+
+* Your code has been rated at 10.00/10

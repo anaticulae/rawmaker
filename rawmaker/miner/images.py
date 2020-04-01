@@ -55,13 +55,17 @@ def extract_images(
         dict with one list per page with containing images of this page
     """
     # ensure that page computation works correct
-
     if pages:
         pages = sorted(pages)
     result = collections.defaultdict(list)
     collected = set()
+    to_merge = collections.defaultdict(list)
 
     def imagereciver(page, image):
+        if image.srcsize[1] == 1:  # height
+            # merge items
+            to_merge[page].append(image)
+            return
         imagename = image.name
         if imagename in collected:
             utila.error(f'duplicated export: {imagename}')
@@ -84,6 +88,11 @@ def extract_images(
             interpreter.process_page(page)
     result = {key: value for key, value in result.items() if value}
     return result
+
+
+def merge_collection(items, document):
+    # merge pages by yposition
+    return []
 
 
 def create_interpreter(image_listener):

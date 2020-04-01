@@ -27,3 +27,18 @@ def test_images_export_bachelor56(testdir):
                 pages=pages,
             )
     assert len(extracted) == 4, str(extracted)
+
+
+def test_images_export_bachelor63(testdir):
+    """Extract seven images out of four pages."""
+    source = tests.resources.BACHELOR63
+    root = testdir.tmpdir
+    pages = None
+    with utila.increased_filecount(root, diff=32):
+        with rawmaker.reader.read(source) as pdf:
+            extracted = rawmaker.miner.images.extract_images(
+                pdf,
+                root,
+                pages=pages,
+            )
+    assert extracted

@@ -26,8 +26,7 @@ def test_annotation_mining_annotations(capsys):
     assert len(extracted) == VIM_PAGE_COUNT
 
     # no logging errors from unsupported annotation
-    out, err = capsys.readouterr()
-    assert not out
+    _, err = capsys.readouterr()
     assert not err
 
 

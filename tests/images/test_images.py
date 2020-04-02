@@ -49,6 +49,24 @@ def test_images_export_bachelor63_complete(testdir):
     assert extracted
 
 
+@utila.skip_longrun
+def test_images_export_master116(testdir):
+    source = tests.resources.MASTER116
+    root = testdir.tmpdir
+    pages = None
+    # master116 contains **9** extractable images, but on page 50 the png
+    # extraction is broken. After fix this issue we have to increase
+    # number of extracted images.
+    with utila.increased_filecount(root, mindiff=8, maxdiff=8):
+        with rawmaker.reader.read(source) as pdf:
+            extracted = rawmaker.miner.images.extract_images(
+                pdf,
+                root,
+                pages=pages,
+            )
+    assert extracted
+
+
 @contextlib.contextmanager
 def increased_filecount(
         path: str,

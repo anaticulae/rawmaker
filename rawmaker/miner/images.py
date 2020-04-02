@@ -308,6 +308,7 @@ def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches
             except ValueError:
                 utila.error('could not decode')
                 utila.error(vars(image))
+                continue
 
         # convert to bitmap
         current = current.convert(mode=BITMAP, colors=1024, palette='1')

@@ -43,7 +43,7 @@ import utila
 
 def extract_images(
         document: pdfminer.pdfdocument.PDFDocument,
-        outputfolder: str = None,
+        outputfolder,
         pages: tuple = None,
 ) -> dict:
     """Extract all images of `document` of selected `pages`
@@ -61,10 +61,14 @@ def extract_images(
     if pages:
         pages = sorted(pages)
 
+    collect = CollectAndMerge(outputfolder)
+
     # Processing layout
     content = pdfminer.pdfpage.PDFPage.create_pages(document)
-    collect = CollectAndMerge(outputfolder)
-    interpreter = create_interpreter(collect.imagereciver)
+
+    rsrcmgr = pdfminer.pdfinterp.PDFResourceManager()
+    device = ImageConverter(rsrcmgr, imagewriter=collect.imagereciver)
+    interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
 
     with utila.SkipCollector(pages) as collector:
         for number, page in enumerate(content):
@@ -73,8 +77,7 @@ def extract_images(
             page.pageid = number
             interpreter.process_page(page)
 
-    collect.merge_and_write(document)
-    result = collect.result()
+    result = collect.merge_and_write(document)
     return result
 
 
@@ -84,54 +87,38 @@ class CollectAndMerge:
         self.outputfolder = outputfolder
         self.to_merge = collections.defaultdict(list)
         self._result = collections.defaultdict(list)
-        self.collected = set()
 
         self.writer = pdfminer.image.ImageWriter(outputfolder)
 
     def imagereciver(self, page, image):
-        if image.srcsize[1] == 1:  # height
-            # merge items
-            self.to_merge[page].append(image)
-            return
-        imagename = image.name
-        if imagename in self.collected:
-            utila.error(f'duplicated export: {imagename}')
-            return
-        self.collected.add(imagename)
-
-        name = self.writer.export_image(image)
-        self._result[page].append(name)
+        self.to_merge[page].append(image)
 
     def merge_and_write(self, document):
         # write merged images
-        merged = merge_collection(self.to_merge, document)
+        merged = merge_document_images(self.to_merge, document)
         for page, values in merged.items():
             for index, (image, ext) in enumerate(values):
-                filename = f'{index}.{ext}'
-                outpath = os.path.join(self.outputfolder, filename)
-                with open(outpath, mode='wb') as output:
-                    image.save(output, format=ext)
+                filename = f'{page}_{index}.{ext}'
+                if isinstance(image, PIL.Image.Image):
+                    outpath = os.path.join(self.outputfolder, filename)
+                    with open(outpath, mode='wb') as output:
+                        image.save(output, format=ext)
+                else:
+                    image.name = f'{page}_{index}'
+                    self.writer.export_image(image)
                 self._result[page].append(filename)
-
-    def result(self):
+        self.to_merge.clear()
         # convert defaultdict to normal dict, remove empty pages
         return {key: value for key, value in self._result.items() if value}
 
 
-def merge_collection(items, document):
+def merge_document_images(items, document):
     result = collections.defaultdict(list)
     # merge pages by yposition
     for page, content in items.items():
-        merged = merge_images(content, document)
+        merged = merge_page(content, document)
         result[page].extend(merged)
     return result
-
-
-def create_interpreter(image_listener):
-    rsrcmgr = pdfminer.pdfinterp.PDFResourceManager()
-    device = ImageConverter(rsrcmgr, imagewriter=image_listener)
-    interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
-    return interpreter
 
 
 class ImageConverter(pdfminer.converter.PDFConverter):
@@ -148,6 +135,8 @@ class ImageConverter(pdfminer.converter.PDFConverter):
         )
         assert imagewriter is not None
         self.imagewriter = imagewriter
+        # todo avoid duplicated parsed, TODO: check if we require this?
+        self.parsed = set()
 
     def receive_layout(self, ltpage):
         pageheight = ltpage.bbox[3]
@@ -162,20 +151,27 @@ class ImageConverter(pdfminer.converter.PDFConverter):
     def render_pagecontent(self, pageid, item, pageheight):
         """Collect all imageable items"""
         if isinstance(item, pdfminer.layout.LTImage):
+            if item.name in self.parsed:
+                return
+            self.parsed.add(item.name)
             item.y0, item.y1 = pageheight - item.y1, pageheight - item.y0
             self.imagewriter(pageid, item)
         elif isinstance(item, pdfminer.layout.LTFigure):
             assert len(item._objs) == 1  # pylint:disable=W0212
             # TODO: Investigate with list
             image = item._objs[0]  # pylint:disable=W0212
+            if image.name in self.parsed:
+                return
+            self.parsed.add(image.name)
             image.y0, image.y1 = pageheight - image.y1, pageheight - image.y0
             self.imagewriter(pageid, image)
 
 
-def merge_images(
+def merge_page(
         images: typing.List[pdfminer.layout.LTImage],
         document: callable,
 ):
+
     todo = [(
         utila.roundme(image.x0),
         utila.roundme(image.y0),
@@ -184,6 +180,7 @@ def merge_images(
     ) for image in images]
 
     lookup = {str(item): line for item, line in zip(todo, images)}
+    # assert len(lookup) == len(todo), f'{len(lookup)} != {len(todo)}'
 
     grouped = group_rectangles(todo)
 
@@ -205,13 +202,13 @@ def group_rectangles(rectangles):
         splitted = [[ytopdown[0]]]
         for item in ytopdown[1:]:
             # maximal distance between two `pixel lines`
-            if abs(item[1] - splitted[-1][-1][3]) < 2.0:
+            vertical_distance = abs(item[1] - splitted[-1][-1][3])
+            if vertical_distance < 5.0:
                 splitted[-1].append(item)
             else:
                 # start of new image
                 splitted.append([item])
         result.extend(splitted)
-
     result = [item for item in result if len(item)]
     return result
 
@@ -219,7 +216,7 @@ def group_rectangles(rectangles):
 BITMAP = '1'
 
 
-def raw_images_merge(  # pylint:disable=R1260,R0914
+def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches
         images: typing.List[pdfminer.layout.LTImage],
         document,
 ) -> bytearray:
@@ -236,6 +233,12 @@ def raw_images_merge(  # pylint:disable=R1260,R0914
     except KeyError:
         imagefilter = 'Default'
     ext = DECODER[imagefilter]
+
+    if ext != 'png':
+        # TODO: png is not supported by pdfimage exporter properly
+        if len(images) == 1:
+            # no merge required
+            return images[0], ext
 
     mode = 'RGB'
     result = PIL.Image.new(mode, size, color=0)
@@ -266,24 +269,25 @@ def raw_images_merge(  # pylint:disable=R1260,R0914
             # TODO Do not know why this is required
             size = (size[0] + 1, size[1])
             mode = 'RGB'
-
         if colorspace == 'DeviceRGB':
-            # open jpg etc.
-            buffer = io.BytesIO(data)
-            current = PIL.Image.open(buffer)
+            try:
+                # open jpg etc.
+                buffer = io.BytesIO(data)
+                current = PIL.Image.open(buffer)
+            except IOError:
+                current = PIL.Image.frombytes(mode, size, data)
         else:
             try:
                 current = PIL.Image.frombytes(mode, size, data)
             except ValueError:
                 utila.error('could not decode')
                 utila.error(vars(image))
-                break
 
         # convert to bitmap
         current = current.convert(mode=BITMAP, colors=1024, palette='1')
-
         loaded = io.BytesIO(current.tobitmap())
         current = PIL.Image.open(loaded)
+        # render to common image
         renderer.bitmap((0, ypos * line_height), bitmap=current)
     return result, ext
 

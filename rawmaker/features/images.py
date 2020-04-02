@@ -17,6 +17,10 @@ Support formats:
 
 """
 
+import os
+
+import configo
+
 import rawmaker.miner.images
 import rawmaker.reader
 
@@ -38,15 +42,16 @@ def work(document: str, writeimages: str, pages=None):  # pylint:disable=W0613
     # TODO: Return list with image information, size, resolution...
 
 
-def extract_pages(document: str, pages=None):
+def extract_pages(document: str, outputfolder: str = None, pages=None):
+    # TODO: REPLACE AFTER UPGRADING UTILA
+    if outputfolder is None:
+        outputfolder = os.path.join(configo.tmp())
+        os.makedirs(outputfolder)
+
     with rawmaker.reader.read(document) as loaded:
-        result = rawmaker.miner.images.extract_images(loaded, pages=pages)
-
-    result = dict(result)
-    for page, content in result.items():
-        result[page] = rawmaker.miner.images.merge_images(
-            content,
+        result = rawmaker.miner.images.extract_images(
             loaded,
+            outputfolder=outputfolder,
+            pages=pages,
         )
-
     return result

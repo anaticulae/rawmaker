@@ -162,7 +162,7 @@ class ImageConverter(pdfminer.converter.PDFConverter):
         if isinstance(item, pdfminer.layout.LTImage):
             self.render_result_image(item, pageid=pageid)
         elif isinstance(item, pdfminer.layout.LTFigure):
-            self.render_figure(item, pageid=pageid)
+            self.render_figure(item, pageid=pageid, pageheight=pageheight)
 
     def render_result_image(
             self,
@@ -178,6 +178,7 @@ class ImageConverter(pdfminer.converter.PDFConverter):
             self,
             item: pdfminer.layout.LTFigure,
             pageid: int,
+            pageheight: int,
     ):
         # TODO: RENDER CURVES ETC.
         images = item._objs  # pylint:disable=W0212
@@ -189,6 +190,7 @@ class ImageConverter(pdfminer.converter.PDFConverter):
         assert len(images) == 1, str(images)
         # TODO: Investigate with list
         image = images[0]  # pylint:disable=W0212
+        image.y0, image.y1 = pageheight - image.y1, pageheight - image.y0
         self.render_result_image(image, pageid)
 
 

@@ -107,6 +107,7 @@ class CollectAndMerge:
                 if isinstance(image, PIL.Image.Image):
                     outpath = os.path.join(self.outputfolder, filename)
                     with open(outpath, mode='wb') as output:
+                        ext = ext.replace('jpg', 'jpeg')
                         image.save(output, format=ext)
                 else:
                     image.name = f'{page}_{index}'
@@ -369,7 +370,7 @@ def rgb256_decoder(data, dataspace, bits=8):
 
 def extention(image) -> str:
     decoder = {
-        'DCTDecode': 'jpeg',
+        'DCTDecode': 'jpg',
         'JPXDecode': 'jp2',
         'CCITTFaxDecode': 'tiff',
         'Default': 'png',

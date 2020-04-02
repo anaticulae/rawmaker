@@ -116,7 +116,7 @@ def merge_document_images(items, document):
     result = collections.defaultdict(list)
     # merge pages by yposition
     for page, content in items.items():
-        merged = merge_page(content, document)
+        merged = merge_page(content, document, page)
         result[page].extend(merged)
     return result
 
@@ -188,8 +188,8 @@ class ImageConverter(pdfminer.converter.PDFConverter):
 def merge_page(
         images: typing.List[pdfminer.layout.LTImage],
         document: callable,
+        page: int,
 ):
-
     todo = [(
         utila.roundme(image.x0),
         utila.roundme(image.y0),
@@ -205,7 +205,11 @@ def merge_page(
     # convert back
     lines = [[lookup[str(item)] for item in group] for group in grouped]
 
-    result = [raw_images_merge(item, document) for item in lines]
+    result = []
+    try:
+        result = [raw_images_merge(item, document) for item in lines]
+    except ValueError:
+        utila.error(f'could not parse images on page: {page}')
 
     return result
 

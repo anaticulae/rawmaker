@@ -112,7 +112,11 @@ class CollectAndMerge:
                         image.save(output, format=ext)
                 else:
                     image.name = f'{page}_{index}'
-                    self.writer.export_image(image)
+                    if image:
+                        self.writer.export_image(image)
+                    else:
+                        # TODO: CHECK WHY THIS CAN HAPPEN
+                        utila.error(f'empty export {image.name}')
                 self.written[page].append(filename)
         self.to_merge.clear()
         # convert defaultdict to normal dict, remove empty pages

@@ -18,8 +18,10 @@ Support formats:
 """
 
 import collections
+import dataclasses
 import typing
 
+import PIL.Image
 import utila
 
 import rawmaker
@@ -54,4 +56,28 @@ def extract_pages(
         PageContentImages(page=page, content=content)
         for page, content in result.items()
     ]
+    return result
+
+
+@dataclasses.dataclass
+class ImageInformation:
+    width: int = None
+    height: int = None
+    page: int = None
+    dpi: tuple = None
+    bounding: tuple = None
+
+
+def imageinfo(path: str):
+    try:
+        image = PIL.Image.open(path)
+        image.load()
+        # result.append(image)
+    except OSError as err:
+        utila.error(err)
+        return None
+    width, height = image.size
+    dpi = image.info['dpi']
+
+    result = ImageInformation(width=width, height=height, dpi=dpi)
     return result

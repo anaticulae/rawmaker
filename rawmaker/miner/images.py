@@ -39,6 +39,9 @@ import PIL.Image
 import PIL.ImageDraw
 import PIL.ImageDraw2
 import utila
+from pdfminer.pdfcolor import LITERAL_DEVICE_GRAY
+from pdfminer.pdfcolor import LITERAL_DEVICE_RGB
+from pdfminer.pdftypes import LITERALS_DCT_DECODE
 
 
 def extract_images(
@@ -254,12 +257,7 @@ def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches
     size = (image_width, image_height)
     line_height = max(images[0].srcsize[1], 1)
 
-    try:
-        imagefilter = images[0].stream['Filter'].name
-    except KeyError:
-        imagefilter = 'Default'
-    ext = DECODER[imagefilter]
-
+    ext = extention(images[0])
     if ext != 'png':
         # TODO: png is not supported by pdfimage exporter properly
         if len(images) == 1:
@@ -271,11 +269,11 @@ def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches
     renderer = PIL.ImageDraw.Draw(result, mode=mode)
 
     for ypos, image in enumerate(images):
+        ext = extention(image)
         mode = 'RGB'
         size = image.srcsize
         bits = image.bits
         data = image.stream.get_data()
-
         colorspace = image.colorspace[0]
         if isinstance(colorspace, pdfminer.pdftypes.PDFObjRef):
             colorspace = document.getobj(colorspace.objid)
@@ -342,10 +340,31 @@ def rgb256_decoder(data, dataspace, bits=8):
     return data
 
 
-DECODER = {
-    'DCTDecode': 'jpeg',
-    'JPXDecode': 'jp2',
-    'CCITTFaxDecode': 'tiff',
-    'Default': 'png',
-    'FlateDecode': 'png',
-}
+def extention(image) -> str:
+    decoder = {
+        'DCTDecode': 'jpeg',
+        'JPXDecode': 'jp2',
+        'CCITTFaxDecode': 'tiff',
+        'Default': 'png',
+        'FlateDecode': 'png',
+    }
+    try:
+        imagefilter = image.stream['Filter'].name
+    except KeyError:
+        imagefilter = 'Default'
+    ext = decoder[imagefilter]
+    return ext
+
+
+# def extention(image) -> str:
+#     stream = image.stream
+#     filters = stream.get_filters()
+#     (width, height) = image.srcsize
+#     if len(filters) == 1 and filters[0][0] in LITERALS_DCT_DECODE:
+#         ext = 'jpg'
+#     elif (image.bits == 1 or image.bits == 8 and
+#           image.colorspace in (LITERAL_DEVICE_RGB, LITERAL_DEVICE_GRAY)):
+#         ext = 'bmp'
+#     else:
+#         ext = 'png'
+#     return ext

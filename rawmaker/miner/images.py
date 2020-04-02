@@ -46,7 +46,9 @@ def extract_images(
         outputfolder,
         pages: tuple = None,
 ) -> dict:
-    """Extract all images of `document` of selected `pages`
+    """Extract all images of `document` of selected `pages`.
+
+    Hint: `Outputfolder` is only created if `document` contains some images.
 
     Args:
         document: source to extract images from
@@ -55,8 +57,6 @@ def extract_images(
     Returns:
         dict with one list per page with containing images of this page
     """
-    assert os.path.exists(outputfolder), str(outputfolder)
-
     # ensure that page computation works correct
     if pages:
         pages = sorted(pages)
@@ -86,14 +86,18 @@ class CollectAndMerge:
     def __init__(self, outputfolder):
         self.outputfolder = outputfolder
         self.to_merge = collections.defaultdict(list)
-        self._result = collections.defaultdict(list)
+        self.written = collections.defaultdict(list)
 
         self.writer = pdfminer.image.ImageWriter(outputfolder)
 
     def imagereciver(self, page, image):
         self.to_merge[page].append(image)
 
-    def merge_and_write(self, document):
+    def merge_and_write(self, document) -> dict:
+        if not self.to_merge:
+            # no images given
+            return {}
+        os.makedirs(self.outputfolder, exist_ok=True)
         # write merged images
         merged = merge_document_images(self.to_merge, document)
         for page, values in merged.items():

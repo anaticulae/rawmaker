@@ -18,10 +18,8 @@ Support formats:
 """
 
 import collections
-import os
 import typing
 
-import configo
 import utila
 
 import rawmaker
@@ -45,7 +43,6 @@ def extract_pages(
     # TODO: REPLACE AFTER UPGRADING UTILA
     if outputfolder is None:
         outputfolder = utila.tmpfile(rawmaker.ROOT)
-        os.makedirs(outputfolder)
 
     with rawmaker.reader.read(document) as loaded:
         result = rawmaker.miner.images.extract_images(

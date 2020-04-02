@@ -14,7 +14,7 @@ import utila
 
 import linero.math
 
-HORIZONTAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=0.01)
+HORIZONTAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=0.01).value
 VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=0.01)
 
 

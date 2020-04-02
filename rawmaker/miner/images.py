@@ -325,23 +325,31 @@ def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches
 
 def rgb256_decoder(data, dataspace, bits=8):
     # RGB
-    table = [[
-        dataspace[index],
-        dataspace[index + 1],
-        dataspace[index + 2],
-    ] for index in range(0, len(dataspace), 3)]
+    # TODO: FIX TABLE ERRORS
+    table = []
+    for index in range(0, len(dataspace), 3):
+        try:
+            table.append([
+                dataspace[index],
+                dataspace[index + 1],
+                dataspace[index + 2],
+            ])
+        except IndexError:
+            utila.error('rgb256 decoder out of bounds')
     result = []
     for item in data:
-        if bits == 4:
-            lower = table[item & (15)]
-            higher = table[item & (15 >> 4 - 1)]
-            result.extend(lower)
-            result.extend(higher)
-        elif bits == 8:
-            result.extend(table[item])
-        else:
-            raise ValueError(f'{bits} bits not supported')
-
+        try:
+            if bits == 4:
+                lower = table[item & (15)]
+                higher = table[item & (15 >> 4 - 1)]
+                result.extend(lower)
+                result.extend(higher)
+            elif bits == 8:
+                result.extend(table[item])
+            else:
+                raise ValueError(f'{bits} bits not supported')
+        except IndexError:
+            utila.error('rgb256 decoder out of bounds')
     data = array.array("B", result).tobytes()
     return data
 

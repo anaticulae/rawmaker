@@ -49,7 +49,7 @@ def test_images_export_bachelor63_complete(testdir):
     assert extracted
 
 
-@utila.skip_longrun
+@utila.skip_nightly
 def test_images_export_master116(testdir):
     source = tests.resources.MASTER116
     root = testdir.tmpdir

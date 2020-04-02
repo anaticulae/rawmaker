@@ -69,7 +69,7 @@ def test_porting_module_font_index(strip, testdir, monkeypatch):
     pytest.param(tests.resources.MASTER72, True, id='master72_true'),
     pytest.param(tests.resources.MASTER72, False, id='master72_false'),
 ])
-@utila.skip_longrun
+@utila.skip_nightly
 def test_regression_extract_text_and_fonts(pdf, strip, testdir, monkeypatch):
     """Hint: One white space is always at the end of a line. Without
     striping there can be more than one white space at the end of a

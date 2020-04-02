@@ -30,7 +30,7 @@ def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
         id='vim',
     ),
 ])
-@utila.skip_longrun
+@utila.skip_nightly
 def test_table_extract(source, expected):
     source = iamraw.path.line(source)
     loaded = serializeraw.load_lines(source)

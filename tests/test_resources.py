@@ -81,7 +81,7 @@ HUGE_RUN_PARAMETER = [
 # access `repository` path.
 # @skip_virtual  # TODO: REMOVE AFTER FIXING PROBLEM WITH SETUP TOOLS
 @pytest.mark.parametrize('pdffile', HUGE_RUN_PARAMETER)
-@utila.skip_longrun
+@utila.skip_nightly
 def test_run_huge(testdir, pdffile, layout):  # pylint:disable=W0621
     # use first 10 pages for normal testing and extract complete document
     # only in nighly tests.

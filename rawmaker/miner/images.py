@@ -113,7 +113,10 @@ class CollectAndMerge:
                 else:
                     image.name = f'{page}_{index}'
                     if image:
-                        self.writer.export_image(image)
+                        try:
+                            self.writer.export_image(image)
+                        except TypeError:
+                            utila.error(f'empty export {image.name}')
                     else:
                         # TODO: CHECK WHY THIS CAN HAPPEN
                         utila.error(f'empty export {image.name}')
@@ -288,7 +291,17 @@ def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches
         # test list again!
         if isinstance(colorspace, list):
             # DEVICERGB
-            data = rgb256_decoder(data, colorspace[3], bits=bits)
+            if len(colorspace) == 2:
+                if isinstance(colorspace[1], pdfminer.pdftypes.PDFObjRef):
+                    colorspace = colorspace[1].resolve()
+                else:
+                    colorspace = colorspace[1]
+            else:
+                if isinstance(colorspace[3], pdfminer.pdftypes.PDFObjRef):
+                    colorspace = colorspace[3].resolve()
+                else:
+                    colorspace = colorspace[3]
+            data = rgb256_decoder(data, colorspace, bits=bits)
         elif colorspace:
             colorspace = colorspace.name
         else:
@@ -327,6 +340,8 @@ def rgb256_decoder(data, dataspace, bits=8):
     # RGB
     # TODO: FIX TABLE ERRORS
     table = []
+    if isinstance(dataspace, pdfminer.pdftypes.PDFStream):
+        dataspace = dataspace.get_data()
     for index in range(0, len(dataspace), 3):
         try:
             table.append([

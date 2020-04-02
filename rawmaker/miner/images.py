@@ -39,9 +39,9 @@ import PIL.Image
 import PIL.ImageDraw
 import PIL.ImageDraw2
 import utila
-from pdfminer.pdfcolor import LITERAL_DEVICE_GRAY
-from pdfminer.pdfcolor import LITERAL_DEVICE_RGB
-from pdfminer.pdftypes import LITERALS_DCT_DECODE
+from pdfminer.psparser import PSEOF
+from pdfminer.psparser import PSKeyword
+from pdfminer.psparser import keyword_name
 
 
 def extract_images(
@@ -69,9 +69,7 @@ def extract_images(
     # Processing layout
     content = pdfminer.pdfpage.PDFPage.create_pages(document)
 
-    rsrcmgr = pdfminer.pdfinterp.PDFResourceManager()
-    device = ImageConverter(rsrcmgr, imagewriter=collect.imagereciver)
-    interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
+    interpreter = create_fastimageextractor(collect.imagereciver)
 
     with utila.SkipCollector(pages) as collector:
         for number, page in enumerate(content):
@@ -397,3 +395,74 @@ def extention(image) -> str:
 #     else:
 #         ext = 'png'
 #     return ext
+
+
+class FastImageInterpreter(pdfminer.pdfinterp.PDFPageInterpreter):
+    """Experimental, think about the sence of this ?optimization?."""
+
+    # TODO: SEE DOCSTRING
+
+    def __init__(self, rsrcmgr, device):
+        super().__init__(rsrcmgr, device)
+        self.fast = {
+            'CS': self.do_CS,
+            'Do': self.do_Do,
+            'EI': self.do_EI,
+            'MP': self.do_MP,
+            'Q': self.do_Q,
+            'SC': self.do_SC,
+            'SCN': self.do_SCN,
+            'cm': self.do_cm,
+            'cs': self.do_cs,
+            'sc': self.do_sc,
+            'scn': self.do_scn,
+        }
+
+    def render_char(self, matrix, font, fontsize, scaling, rise, cid, ncs,
+                    graphicstate):
+        # assert 0
+        return
+
+    def render_string(self, textstate, seq, ncs, graphicstate):
+        return
+
+    def do_TJ(self, seq):
+        return
+
+    def execute(self, streams):
+        try:
+            parser = pdfminer.pdfinterp.PDFContentParser(streams)
+        except PSEOF:
+            # empty page
+            return
+        while 1:
+            try:
+                (_, obj) = parser.nextobject()
+            except PSEOF:
+                break
+            if isinstance(obj, PSKeyword):
+                name = keyword_name(obj)
+                # print(name)
+                try:
+                    func = self.fast[name]
+                except KeyError:
+                    continue
+                nargs = func.__code__.co_argcount - 1
+                # nargs = six.get_function_code(func).co_argcount - 1
+                if nargs:
+                    args = self.pop(nargs)
+                    if len(args) == nargs:
+                        func(*args)
+                else:
+                    func()
+
+            else:
+                self.push(obj)
+
+
+def create_fastimageextractor(imagelistener):
+    rsrcmgr = pdfminer.pdfinterp.PDFResourceManager()
+    device = ImageConverter(rsrcmgr, imagewriter=imagelistener)
+    # interpreter = FastImageInterpreter(rsrcmgr, device)
+    interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
+    return interpreter

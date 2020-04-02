@@ -83,6 +83,16 @@ WORKPLAN = [
         ),
     ),
     utila.create_step(
+        'images',
+        inputs=PDF_INPUT,
+        output=('info',),
+    ),
+    utila.create_step(
+        'line',
+        inputs=PDF_INPUT,
+        output=('line',),
+    ),
+    utila.create_step(
         'text',
         inputs=CONFIG_INPUTS,
         output=(
@@ -94,11 +104,6 @@ WORKPLAN = [
         'toc',
         inputs=PDF_INPUT,
         output=('toc',),
-    ),
-    utila.create_step(
-        'line',
-        inputs=PDF_INPUT,
-        output=('line',),
     ),
 ]
 

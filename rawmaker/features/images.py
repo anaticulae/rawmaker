@@ -17,35 +17,34 @@ Support formats:
 
 """
 
+import collections
 import os
+import typing
 
 import configo
+import utila
 
+import rawmaker
 import rawmaker.miner.images
 import rawmaker.reader
 
-
-def work(document: str, writeimages: str, pages=None):  # pylint:disable=W0613
-    pass
-    # experimental feature, not active yet
-
-    # with rawmaker.reader.read(document) as loaded:
-    #     result = rawmaker.miner.images.extract_images(loaded, pages=pages)
-
-    # for pagenumber, page in result.items():
-    #     for imagenumber, image in enumerate(page):
-    #         raw, ext = rawmaker.miner.images.raw_image(loaded, image)
-    #         filename = f'page{pagenumber}_{imagenumber}'
-    #         fileoutpath = os.path.join(writeimages, filename)
-    #         with open(f'{fileoutpath}.{ext}', mode='wb') as output:
-    #             output.write(raw)
-    # TODO: Return list with image information, size, resolution...
+PageContentImages = collections.namedtuple('PageContentImages', 'content, page')
+PageContentImagesList = typing.List[PageContentImages]
 
 
-def extract_pages(document: str, outputfolder: str = None, pages=None):
+def work(document: str, pages: tuple = None) -> str:  # pylint:disable=W0613
+    extracted = extract_pages(document, pages=None)
+    return ''
+
+
+def extract_pages(
+        document: str,
+        outputfolder: str = None,
+        pages=None,
+) -> PageContentImagesList:
     # TODO: REPLACE AFTER UPGRADING UTILA
     if outputfolder is None:
-        outputfolder = os.path.join(configo.tmp())
+        outputfolder = utila.tmpfile(rawmaker.ROOT)
         os.makedirs(outputfolder)
 
     with rawmaker.reader.read(document) as loaded:
@@ -54,4 +53,8 @@ def extract_pages(document: str, outputfolder: str = None, pages=None):
             outputfolder=outputfolder,
             pages=pages,
         )
+    result = [
+        PageContentImages(page=page, content=content)
+        for page, content in result.items()
+    ]
     return result

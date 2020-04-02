@@ -110,10 +110,10 @@ class CollectAndMerge:
                 else:
                     image.name = f'{page}_{index}'
                     self.writer.export_image(image)
-                self._result[page].append(filename)
+                self.written[page].append(filename)
         self.to_merge.clear()
         # convert defaultdict to normal dict, remove empty pages
-        return {key: value for key, value in self._result.items() if value}
+        return {key: value for key, value in self.written.items() if value}
 
 
 def merge_document_images(items, document):

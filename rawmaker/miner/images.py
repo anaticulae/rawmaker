@@ -150,21 +150,39 @@ class ImageConverter(pdfminer.converter.PDFConverter):
 
     def render_pagecontent(self, pageid, item, pageheight):
         """Collect all imageable items"""
+        # flip coordiante
+        item.y0, item.y1 = pageheight - item.y1, pageheight - item.y0
         if isinstance(item, pdfminer.layout.LTImage):
-            if item.name in self.parsed:
-                return
-            self.parsed.add(item.name)
-            item.y0, item.y1 = pageheight - item.y1, pageheight - item.y0
-            self.imagewriter(pageid, item)
+            self.render_result_image(item, pageid=pageid)
         elif isinstance(item, pdfminer.layout.LTFigure):
-            assert len(item._objs) == 1  # pylint:disable=W0212
-            # TODO: Investigate with list
-            image = item._objs[0]  # pylint:disable=W0212
-            if image.name in self.parsed:
-                return
-            self.parsed.add(image.name)
-            image.y0, image.y1 = pageheight - image.y1, pageheight - image.y0
-            self.imagewriter(pageid, image)
+            self.render_figure(item, pageid=pageid)
+
+    def render_result_image(
+            self,
+            image: pdfminer.layout.LTImage,
+            pageid: int,
+    ):
+        if image.name in self.parsed:
+            return
+        self.parsed.add(image.name)
+        self.imagewriter(pageid, image)
+
+    def render_figure(
+            self,
+            item: pdfminer.layout.LTFigure,
+            pageid: int,
+    ):
+        # TODO: RENDER CURVES ETC.
+        images = item._objs  # pylint:disable=W0212
+        images = [
+            item for item in images if isinstance(item, pdfminer.layout.LTImage)
+        ]
+        if not images:
+            return
+        assert len(images) == 1, str(images)
+        # TODO: Investigate with list
+        image = images[0]  # pylint:disable=W0212
+        self.render_result_image(image, pageid)
 
 
 def merge_page(

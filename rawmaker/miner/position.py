@@ -46,14 +46,7 @@ class DocumentItemHasher:
             raise ItemNotFound('Item is not stored: %s %d' % (item, hashid))
 
     def __eq__(self, value):
-        # TODO: Very slow, improve this
-        if value is None:
-            return False
-        if str(sorted(value.data.keys())) != str(sorted(self.data.keys())):
-            return False
-        if str(sorted(value.data.values())) != str(sorted(self.data.values())):
-            return False
-        return True
+        return value and (str(self) == str(value))
 
     def __str__(self):
         result = ['DocumentItemHasher, size: %d' % len(self.data)]

@@ -11,9 +11,9 @@
 
 Parses pdf document and extracts layouted text components.
 """
+
 import contextlib
 import copy
-import sys
 
 import iamraw
 import pdfminer.converter
@@ -21,12 +21,13 @@ import pdfminer.layout
 import pdfminer.pdfinterp
 import utila
 
+import rawmaker.miner.converter
 import rawmaker.miner.rawchar
 import rawmaker.parameter
 import rawmaker.patch.ltchar
 
 
-class PrecisePDFConverter(pdfminer.converter.PDFConverter):
+class PrecisePDFConverter(rawmaker.miner.converter.FlippedLayoutAnalyzer):
     """Parsing PDF-files based on given layout definition `laparams`.
 
     The `PrecisePDFConverter` parses every single page and run the
@@ -54,9 +55,6 @@ class PrecisePDFConverter(pdfminer.converter.PDFConverter):
         super().__init__(
             # Create a PDF resource manager object that stores shared resources.
             rsrcmgr=pdfminer.pdfinterp.PDFResourceManager(),
-            outfp=sys.stdout.buffer,
-            codec=utila.UTF8,
-            pageno=0,
             laparams=rawmaker.parameter.from_config(config),
         )
         self.imagewriter = imagewriter

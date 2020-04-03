@@ -21,12 +21,12 @@ NOTE Currently this feature is experimental.
 
 TODO: We do not support color in the images
 """
+
 import array
 import collections
 import io
 import itertools
 import os
-import sys
 import typing
 
 import pdfminer.converter
@@ -40,6 +40,8 @@ import PIL.Image
 import PIL.ImageDraw
 import PIL.ImageDraw2
 import utila
+
+import rawmaker.miner.converter
 
 
 def extract_images(
@@ -132,18 +134,14 @@ def merge_document_images(items, document):
     return result
 
 
-class ImageConverter(pdfminer.converter.PDFConverter):
+class ImageConverter(rawmaker.miner.converter.FlippedLayoutAnalyzer):
 
     def __init__(
             self,
             rsrcmgr,
             imagewriter,
     ):
-        super().__init__(
-            rsrcmgr=rsrcmgr,
-            outfp=sys.stdout.buffer,
-            pageno=0,
-        )
+        super().__init__(rsrcmgr=rsrcmgr)
         assert imagewriter is not None
         self.imagewriter = imagewriter
         # todo avoid duplicated parsed, TODO: check if we require this?

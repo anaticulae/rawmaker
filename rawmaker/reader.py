@@ -44,12 +44,6 @@ def read(path: str, password: str = '') -> PDFDocument:
         # Create a PDF document object that stores the document structure.
         # Supply the password for initialization.
         document = open_document(parser, path, password)
-
-        # Check if the document allows text extraction. If not, abort.
-        # TODO: SHOULD WE RESPECT THIS FLAG?
-        # if not document.is_extractable:
-        #     raise TextExtractionNotAllowed(path)
-
         yield document
 
 

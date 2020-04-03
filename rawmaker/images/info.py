@@ -23,7 +23,7 @@ class ImageInformation:
     bounding: tuple = None
 
 
-def imageinfo(path: str, page: int):
+def imageinfo(path: str, page: int) -> ImageInformation:
     try:
         image = PIL.Image.open(path)
         image.load()
@@ -51,3 +51,12 @@ def dump_info(info: ImageInformation) -> str:
         result[key] = value
     dumped = yaml.dump(result)
     return dumped
+
+
+def load_info(content: str) -> ImageInformation:
+    source = utila.from_raw_or_path(content, ftype='yaml')
+    loaded = yaml.load(source, Loader=yaml.FullLoader)
+    parsed = ImageInformation()
+    for key, value in loaded.items():
+        setattr(parsed, key, value)
+    return parsed

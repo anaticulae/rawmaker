@@ -2,6 +2,35 @@
 
 Every noteable change is logged here.
 
+## v1.17.0
+
+### Feature
+
+* we do not support pdf extraction flag (3ce6fba21574)
+* decide that we support only a single input (f4d52f533a83)
+* replace single flips due general flip (03fbf5f50e89)
+* prepare flipped container to flip coordinates in parser (38a5fa4dabad)
+* support dumping multiple images (63fd70702587)
+* add step to extract image information (d2c0e26414d4)
+* add ?optimizer? to improve image parsing speed (34efe8aa7567)
+* skip unsupported broken loader (4bd3eaab1cd3)
+* create temp folder only if required (bc01b890c29b)
+* add step to rawmaker cli (6dd6577c8e68)
+* catch errors on parsing images (40e7b086468e)
+* support png, jpg and tiff (9a6b9edd20f8)
+* support images to merge (b057ec9b241f)
+* use pdfminer image extractor to extract images (3b0f927df16a)
+
+### Fix
+
+* fix jpg file extension (76c4a28b559a)
+* fix accessing color space data (8a4d960d44fc)
+* catch problems in rgb decoder (d64bfffbf30d)
+* handle empty images (6c68cd2fe190)
+* sort images correctly (482155237039)
+* fix accessing holy values (debfc92f7508)
+* logging is always possible (030ecceb1371)
+
 ## v1.16.0
 
 ### Feature

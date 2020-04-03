@@ -35,13 +35,11 @@ import pdfminer.layout
 import pdfminer.pdfdocument
 import pdfminer.pdfinterp
 import pdfminer.pdftypes
+import pdfminer.psparser
 import PIL.Image
 import PIL.ImageDraw
 import PIL.ImageDraw2
 import utila
-from pdfminer.psparser import PSEOF
-from pdfminer.psparser import PSKeyword
-from pdfminer.psparser import keyword_name
 
 
 def extract_images(
@@ -253,7 +251,7 @@ def group_rectangles(rectangles):
 BITMAP = '1'
 
 
-def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches
+def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches,R0915
         images: typing.List[pdfminer.layout.LTImage],
         document,
 ) -> bytearray:
@@ -419,6 +417,7 @@ class FastImageInterpreter(pdfminer.pdfinterp.PDFPageInterpreter):
             'scn': self.do_scn,
         }
 
+    # pylint:disable=W0613,R0201
     def render_char(self, matrix, font, fontsize, scaling, rise, cid, ncs,
                     graphicstate):
         # assert 0
@@ -430,19 +429,19 @@ class FastImageInterpreter(pdfminer.pdfinterp.PDFPageInterpreter):
     def do_TJ(self, seq):
         return
 
-    def execute(self, streams):
+    def execute(self, streams):  # pylint:disable=R1260
         try:
             parser = pdfminer.pdfinterp.PDFContentParser(streams)
-        except PSEOF:
+        except pdfminer.psparser.PSEOF:
             # empty page
             return
         while 1:
             try:
                 (_, obj) = parser.nextobject()
-            except PSEOF:
+            except pdfminer.psparser.PSEOF:
                 break
-            if isinstance(obj, PSKeyword):
-                name = keyword_name(obj)
+            if isinstance(obj, pdfminer.psparser.PSKeyword):
+                name = pdfminer.psparser.keyword_name(obj)
                 # print(name)
                 try:
                     func = self.fast[name]

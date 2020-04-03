@@ -6,13 +6,9 @@ RP 1.17.0
 images
 ------
 
-* [ ] fix image step extractor
+* [x] fix image step extractor
 
-* [x] jpg
-
-* [ ] tiff
-
-* [ ] bmp
+* [x] jpg, tiff, bmp, png
 
 maintenance
 -----------

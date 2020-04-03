@@ -85,7 +85,10 @@ WORKPLAN = [
     utila.create_step(
         'images',
         inputs=PDF_INPUT,
-        output=('info',),
+        output=[
+            ('images/*', 'yaml'),
+            ('images/*', 'img'),  # TODO: REMOVE FILE EXTENSION
+        ],
     ),
     utila.create_step(
         'line',

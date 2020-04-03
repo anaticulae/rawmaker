@@ -19,10 +19,12 @@ Support formats:
 
 import collections
 import dataclasses
+import os
 import typing
 
 import PIL.Image
 import utila
+import yaml
 
 import rawmaker
 import rawmaker.miner.images
@@ -31,10 +33,21 @@ import rawmaker.reader
 PageContentImages = collections.namedtuple('PageContentImages', 'content, page')
 PageContentImagesList = typing.List[PageContentImages]
 
+ImageInformations = typing.List[typing.Tuple[str, bytes]]
 
-def work(document: str, pages: tuple = None) -> str:  # pylint:disable=W0613
-    extracted = extract_pages(document, pages=None)
-    return ''
+
+def work(
+        document: str,
+        pages: tuple = None,
+        # ) -> typing.List[typing.Tuple[str, bytes]]:
+) -> ImageInformations:
+    extracted = extract_pages(document, pages=pages)
+    result = []
+    for page in extracted:
+        for info, rawimage in page.content:
+            info = dump_info(info)
+            result.append((info, rawimage))
+    return result
 
 
 def extract_pages(
@@ -47,15 +60,21 @@ def extract_pages(
         outputfolder = utila.tmpfile(rawmaker.ROOT)
 
     with rawmaker.reader.read(document) as loaded:
-        result = rawmaker.miner.images.extract_images(
+        extracted = rawmaker.miner.images.extract_images(
             loaded,
             outputfolder=outputfolder,
             pages=pages,
         )
-    result = [
-        PageContentImages(page=page, content=content)
-        for page, content in result.items()
-    ]
+    result = []
+    for page, images in extracted.items():
+        pagecontent = []
+        for image in images:
+            path = os.path.join(outputfolder, image)
+            loaded = utila.file_read_binary(path)
+            info = imageinfo(path, page)
+            pagecontent.append((info, loaded))
+        if pagecontent:
+            result.append(PageContentImages(page=page, content=pagecontent))
     return result
 
 
@@ -68,7 +87,7 @@ class ImageInformation:
     bounding: tuple = None
 
 
-def imageinfo(path: str):
+def imageinfo(path: str, page: int):
     try:
         image = PIL.Image.open(path)
         image.load()
@@ -77,7 +96,22 @@ def imageinfo(path: str):
         utila.error(err)
         return None
     width, height = image.size
-    dpi = image.info['dpi']
+    dpi = image.info.get('dpi', None)
 
-    result = ImageInformation(width=width, height=height, dpi=dpi)
+    result = ImageInformation(
+        width=width,
+        height=height,
+        dpi=dpi,
+        page=page,
+    )
     return result
+
+
+def dump_info(info: ImageInformation) -> str:
+    result = {}
+    for key, value in vars(info).items():
+        if value is None:
+            continue
+        result[key] = value
+    dumped = yaml.dump(result)
+    return dumped

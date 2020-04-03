@@ -16,6 +16,8 @@ import tests.resources
 
 
 def test_image_information(testdir):
+    """Extract image information for one image on first page of
+    Bachelor56 example."""
     root = testdir.tmpdir
     source = tests.resources.BACHELOR56
     with rawmaker.reader.read(source) as pdf:
@@ -26,7 +28,7 @@ def test_image_information(testdir):
         )
     assert len(extracted) == 1
     path = os.path.join(root, extracted[0][0])
-    info = rawmaker.features.images.imageinfo(path)
+    info = rawmaker.features.images.imageinfo(path, page=0)
     assert info, info
     assert info.width >= 500, str(info)
     assert info.height >= 200, str(info)

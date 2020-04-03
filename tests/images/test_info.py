@@ -28,8 +28,9 @@ def test_image_information(testdir):
             pages=(0,),
         )
     assert len(extracted) == 1
-    path = os.path.join(root, extracted[0][0])
-    info = rawmaker.images.info.imageinfo(path, page=0)
+    path = os.path.join(root, extracted[0][0].name)
+    image = extracted[0][0].image
+    info = rawmaker.images.info.imageinfo(path, page=0, bounding=image.bbox)
     assert info, info
     assert info.width >= 500, str(info)
     assert info.height >= 200, str(info)
@@ -38,7 +39,5 @@ def test_image_information(testdir):
 def test_image_dump_and_load_info():
     image = rawmaker.images.info.ImageInformation(width=345, height=500)
     dumped = rawmaker.images.info.dump_info(image)
-    print(dumped)
     loaded = rawmaker.images.info.load_info(dumped)
-    print(loaded)
     assert loaded == image

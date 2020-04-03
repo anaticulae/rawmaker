@@ -9,6 +9,7 @@
 
 import dataclasses
 
+import iamraw
 import PIL.Image
 import utila
 import yaml
@@ -23,7 +24,8 @@ class ImageInformation:
     bounding: tuple = None
 
 
-def imageinfo(path: str, page: int) -> ImageInformation:
+def imageinfo(path: str, page: int, bounding: tuple) -> ImageInformation:
+    assert isinstance(bounding, iamraw.BoundingBox), type(bounding)
     try:
         image = PIL.Image.open(path)
         image.load()
@@ -39,6 +41,7 @@ def imageinfo(path: str, page: int) -> ImageInformation:
         height=height,
         dpi=dpi,
         page=page,
+        bounding=bounding,
     )
     return result
 

@@ -21,6 +21,7 @@ import collections
 import os
 import typing
 
+import iamraw
 import utila
 
 import rawmaker
@@ -62,10 +63,11 @@ def extract_pages(
     result = []
     for page, images in extracted.items():
         pagecontent = []
-        for image in images:
-            path = os.path.join(outputfolder, image)
+        for parsed in images:
+            bounding = iamraw.BoundingBox(0, 0, 0, 0)
+            path = os.path.join(outputfolder, parsed.name)
             loaded = utila.file_read_binary(path)
-            info = rawmaker.images.info.imageinfo(path, page)
+            info = rawmaker.images.info.imageinfo(path, page, bounding)
             pagecontent.append((info, loaded))
         if pagecontent:
             result.append(PageContentImages(page=page, content=pagecontent))

@@ -80,6 +80,9 @@ def extract_images(
     return result
 
 
+ExtractedImage = collections.namedtuple('ExtractedImage', 'image, name')
+
+
 class CollectAndMerge:
 
     def __init__(self, outputfolder):
@@ -117,7 +120,7 @@ class CollectAndMerge:
                     else:
                         # TODO: CHECK WHY THIS CAN HAPPEN
                         utila.error(f'empty export {image.name}')
-                self.written[page].append(filename)
+                self.written[page].append(ExtractedImage(image, filename))
         self.to_merge.clear()
         # convert defaultdict to normal dict, remove empty pages
         return {key: value for key, value in self.written.items() if value}

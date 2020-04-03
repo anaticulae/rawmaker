@@ -57,13 +57,11 @@ INCREASING_FONT_A5 = os.path.join(INCREASING_FONT, 'increasing_fonts_a5.pdf')
 INCREASING_ZZZ = os.path.join(INCREASING_FONT, 'increasing_fonts_a4_10_20_30_40.pdf') # yapf:disable
 
 HOW_TO_CPORTING_PDF = os.path.join(DOCU, 'porting_extension_modules.pdf')
-assert os.path.exists(HOW_TO_CPORTING_PDF), HOW_TO_CPORTING_PDF
 
 HOW_TO_CPORTING_BOX_COUNT = 10
 HOW_TO_CPORTING_HORIZONTAL_COUNT = 2
 
 MASTER72 = os.path.join(MASTER, 'page_72_noimages_toc.pdf')
-assert os.path.exists(MASTER72), str(MASTER72)
 
 HOWTOREAD_PDF = os.path.join(ORDER, 'howtowrite_pages9.pdf')
 

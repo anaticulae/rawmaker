@@ -18,15 +18,13 @@ Support formats:
 """
 
 import collections
-import dataclasses
 import os
 import typing
 
-import PIL.Image
 import utila
-import yaml
 
 import rawmaker
+import rawmaker.images.info
 import rawmaker.miner.images
 import rawmaker.reader
 
@@ -36,16 +34,12 @@ PageContentImagesList = typing.List[PageContentImages]
 ImageInformations = typing.List[typing.Tuple[str, bytes]]
 
 
-def work(
-        document: str,
-        pages: tuple = None,
-        # ) -> typing.List[typing.Tuple[str, bytes]]:
-) -> ImageInformations:
+def work(document: str, pages: tuple = None) -> ImageInformations:
     extracted = extract_pages(document, pages=pages)
     result = []
     for page in extracted:
         for info, rawimage in page.content:
-            info = dump_info(info)
+            info = rawmaker.images.info.dump_info(info)
             result.append((info, rawimage))
     return result
 
@@ -71,47 +65,8 @@ def extract_pages(
         for image in images:
             path = os.path.join(outputfolder, image)
             loaded = utila.file_read_binary(path)
-            info = imageinfo(path, page)
+            info = rawmaker.images.info.imageinfo(path, page)
             pagecontent.append((info, loaded))
         if pagecontent:
             result.append(PageContentImages(page=page, content=pagecontent))
     return result
-
-
-@dataclasses.dataclass
-class ImageInformation:
-    width: int = None
-    height: int = None
-    page: int = None
-    dpi: tuple = None
-    bounding: tuple = None
-
-
-def imageinfo(path: str, page: int):
-    try:
-        image = PIL.Image.open(path)
-        image.load()
-        # result.append(image)
-    except OSError as err:
-        utila.error(err)
-        return None
-    width, height = image.size
-    dpi = image.info.get('dpi', None)
-
-    result = ImageInformation(
-        width=width,
-        height=height,
-        dpi=dpi,
-        page=page,
-    )
-    return result
-
-
-def dump_info(info: ImageInformation) -> str:
-    result = {}
-    for key, value in vars(info).items():
-        if value is None:
-            continue
-        result[key] = value
-    dumped = yaml.dump(result)
-    return dumped

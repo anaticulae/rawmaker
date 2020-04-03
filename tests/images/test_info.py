@@ -28,7 +28,7 @@ def test_image_information(testdir):
         )
     assert len(extracted) == 1
     path = os.path.join(root, extracted[0][0])
-    info = rawmaker.features.images.imageinfo(path, page=0)
+    info = rawmaker.images.info.imageinfo(path, page=0)
     assert info, info
     assert info.width >= 500, str(info)
     assert info.height >= 200, str(info)

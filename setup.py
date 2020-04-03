@@ -75,6 +75,7 @@ if __name__ == "__main__":
             'rawmaker',
             'rawmaker.features',
             'rawmaker.fonts',
+            'rawmaker.images',
             'rawmaker.miner',
             'rawmaker.patch',
         ],

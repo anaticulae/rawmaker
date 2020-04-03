@@ -22,7 +22,6 @@ HEADLINE_MOVINGFOOTER_FOOTNOTES_PDF = os.path.join(
 EXAMPLES = [
     HEADLINE_MOVINGFOOTER_FOOTNOTES_PDF,
     tests.resources.HELLO_WORLD_PDF,
-    tests.resources.INCREASING_ZZZ,
 ]
 
 for item in EXAMPLES:

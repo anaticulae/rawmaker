@@ -70,11 +70,6 @@ BACHELOR56 = os.path.join(BACHELOR, 'page_56_hard_to_read.pdf')
 BACHELOR63 = os.path.join(BACHELOR, 'page_63_images_toc.pdf')
 PDF2008 = os.path.join(SPEC, 'PDF32000_2008.pdf')
 
-SINGLE_HEADLINE_MOVINGFOOTER = os.path.join(
-    SINGLE,
-    'headline_movingfooter_footnotes.pdf',
-)
-
 MASTER116 = os.path.join(MASTER, 'page_116_images_toc_formular.pdf')
 
 REQUIRED_RESOURCES = [
@@ -98,7 +93,6 @@ REQUIRED_RESOURCES = [
     PDF2008,
     RESOURCES,
     RESTRUCTURED_PDF,
-    SINGLE_HEADLINE_MOVINGFOOTER,
     TECHNICAL,
     TWINE_PDF,
     VIM_PDF,

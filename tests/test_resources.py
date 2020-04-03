@@ -18,6 +18,7 @@ import os
 import pytest
 import utila
 
+import tests
 import tests.resources
 
 COMMAND = 'power'
@@ -76,17 +77,11 @@ HUGE_RUN_PARAMETER = [
 ]
 
 
-# TODO: Installing requirements via pip does not install the packages as wheel,
-# therefore the project structure got lost. This is required, that power can
-# access `repository` path.
-# @skip_virtual  # TODO: REMOVE AFTER FIXING PROBLEM WITH SETUP TOOLS
 @pytest.mark.parametrize('pdffile', HUGE_RUN_PARAMETER)
 @utila.skip_nightly
-def test_run_huge(testdir, pdffile, layout):  # pylint:disable=W0621
+def test_run_huge(testdir, pdffile, layout, monkeypatch):  # pylint:disable=W0621
     # use first 10 pages for normal testing and extract complete document
     # only in nighly tests.
     pages = '' if utila.NIGHTLY else '--page=0:10'
-    cmd = f'rawmaker -i {pdffile} {layout} -j=4 {pages} -VVV'
-    result = utila.run(cmd)
-
-    assert result.returncode == utila.SUCCESS, utila.format_completed(result)
+    cmd = f'-i {pdffile} {layout} -j=8 {pages} -VVV'
+    tests.run_success(cmd, monkeypatch=monkeypatch)

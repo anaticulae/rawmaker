@@ -18,8 +18,6 @@ images. Sometimes one Image is splitted into two or three parts. The
 maximum of this split is one image per pixel line.
 
 NOTE Currently this feature is experimental.
-
-TODO: We do not support color in the images
 """
 
 import array
@@ -244,9 +242,7 @@ def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches,R0915
         images: typing.List[pdfminer.layout.LTImage],
         document,
 ) -> bytearray:
-    """Merge list of images to one image.
-    TODO: Support colors in images
-    """
+    """Merge list of images to one image."""
     image_height = sum(item.srcsize[1] for item in images)
     image_width = images[0].srcsize[0]
     size = (image_width, image_height)

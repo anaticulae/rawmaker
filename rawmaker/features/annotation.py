@@ -85,9 +85,7 @@ def parse_page(  # pylint:disable=R1260
     pagelinks, hyperlinks = [], []
     for reference in pageannotation:
         pageobject = page.doc.getobj(reference.objid)
-        # TODO: FLIP Y-COORDINATE?
-        # TODO: REMOVE ROUNDING AFTER PATCHING IAMRAW
-        coords = [utila.roundme(item) for item in pageobject['Rect']]
+        coords = [item for item in pageobject['Rect']]
         bounds = iamraw.BoundingBox.from_list(coords)
         try:
             typ = pageobject['Type'].name

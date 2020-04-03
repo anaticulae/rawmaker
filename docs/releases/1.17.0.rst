@@ -13,7 +13,7 @@ images
 maintenance
 -----------
 
-* [ ] solve five todos
+* [x] solve five todos
 
 code quality
 ------------

@@ -68,47 +68,6 @@ def test_images_export_master116(testdir):
     assert extracted
 
 
-@contextlib.contextmanager
-def increased_filecount(
-        path: str,
-        ext: str = None,
-        mindiff: int = None,
-        maxdiff: int = None,
-):
-    # TODO: REMOVE AFTER PATCHING UTILA
-    """Ensure that some files were created while yielded operation.
-
-    Args:
-        path(str): path to check for file creation
-        ext(str): look for a special file extention
-        mindiff(int): minimal number of created files, if None 1 is used
-        maxdiff(int): maximal number of created files, if None utila.INF is used
-    Raises:
-        AssertionError: if to few or less files are created
-    Yields:
-        None: to run file creation operation
-    """
-    import os
-    import glob
-    assert os.path.exists(path), str(path)
-    assert mindiff is None or mindiff, str(mindiff)
-    assert maxdiff is None or maxdiff, str(maxdiff)
-    pattern = '**/*.*' if ext is None else f'**/*.{ext}'
-    with utila.chdir(path):
-        before = list(glob.glob(pattern, recursive=True))
-        yield
-        after = list(glob.glob(pattern, recursive=True))
-    mindiff = 1 if mindiff is None else mindiff
-    maxdiff = utila.INF if maxdiff is None else maxdiff
-    current = len(after) - len(before)
-    assert mindiff <= current <= maxdiff, (
-        f'mindiff: {mindiff} maxdiff: {maxdiff}\n'
-        '{before}\n\n{after}')
-
-
-utila.increased_filecount = increased_filecount
-
-
 @pytest.mark.parametrize('page, expected, ext', [
     (10, 1, 'png'),
     (19, 1, 'png'),

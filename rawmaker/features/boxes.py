@@ -266,8 +266,6 @@ def type_in_document(
 ) -> typing.List[typing.Tuple[pdfminer.layout.LTPage, int]]:
     """Extract defined `datatype` out of `PDFDocument`
 
-    Hint: the location of pdfminer will be flipped
-
     Args:
         document(PDFDocument): pdf document to extract all types
         datatype: selected item type
@@ -278,20 +276,7 @@ def type_in_document(
     assert isinstance(document, pdfminer.pdfdocument.PDFDocument), type(document) # yapf:disable
     result = []
     for page in rawmaker.features.process_pagecontent(document, pages=pages):
-        _, height = pagesize(page.content)
         data = [item for item in page.content if isinstance(item, datatype)]
-        # pdfminer: left_down is origin
-        # our approach: top_down is origin
-        # Therefore the position must flipped.
-        # TODO: Run flip on base level/render/pdfinterpreter
-        for item in data:
-            box = item.bbox
-            item.bbox = (
-                box[0],
-                height - box[3],  # flip
-                box[2],
-                height - box[1],  # flip
-            )
         result.append((data, page.page))
     return result
 

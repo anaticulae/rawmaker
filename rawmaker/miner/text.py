@@ -77,6 +77,7 @@ class PrecisePDFConverter(rawmaker.miner.converter.FlippedLayoutAnalyzer):
         return document
 
     def receive_layout(self, ltpage):
+        super().receive_layout(ltpage)
         page = render(ltpage, strip=self.strip)
         self.document.pages.append(page)  # pylint:disable=E1101
 
@@ -112,7 +113,6 @@ FAST_KEY = set(SPECIAL_CHAR_TABLE.keys())
 def render_char(
         item: pdfminer.layout.LTChar,
         baseline: float,
-        pageheight: float,
 ) -> iamraw.Char:
     """Convert character and determine `fontrise` based on parent `baseline`
 
@@ -122,12 +122,13 @@ def render_char(
     Args:
         item(LTChar): single character
         baseline(float): bottom y-coordinate of parent text line
-        pageheight(float): height of current pdf page to flip coordinate
     Returns:
         Converted `iamraw.Char` with `fontsize` and `fontrise`.
     """
     try:
-        bounding = convert_bounding(*item.bbox, pageheight=pageheight)
+        # layout characher due pdfminer changes removes BoundingBox from
+        # item, therefore we have to add this again
+        bounding = iamraw.BoundingBox(*item.bbox)
     except AttributeError:
         # VirtualChar has no `iamraw.BoundingBox`
         bounding = None
@@ -169,7 +170,6 @@ def render_char(
 
 def render_textline(
         item: pdfminer.layout.LTTextBox,
-        pageheight: float,
         strip: bool = False,
 ) -> iamraw.Line:
     """Determine character Bounding and split character if required
@@ -177,20 +177,17 @@ def render_textline(
 
     Args:
         item: LTTextBox with list of containg LTChar's
-        pageheight: height of page to flip y-coordiante of BoundingBox
         strip: remove white spaces at begin and end of text line
     Returns:
         iamraw.Line with converted iamraw.Character
     """
-    bounding = convert_bounding(*item.bbox, pageheight=pageheight)
-    result = iamraw.Line(box=bounding)
-    baseline = bounding.y1
+    result = iamraw.Line(box=item.bbox)
+    baseline = item.bbox.y1
     for char in item._objs:  # pylint: disable=protected-access
         # pylint:disable=E1101
         character = render_char(
             char,
             baseline=baseline,
-            pageheight=pageheight,
         )
         if len(character.value) == 1:
             result.chars.append(character)
@@ -226,9 +223,9 @@ def render_textline(
             except AttributeError:
                 # VirtualChar has no BoundingBox, use one Char before
                 x1 = result.chars[-2].box.x1
-            bounding.x0 = x0
-            bounding.x1 = x1
-            assert bounding.x0 < bounding.x1, str(bounding)
+            result.box.x0 = x0
+            result.box.x1 = x1
+            assert result.box.x0 < result.box.x1, str(result.box)
     return result
 
 
@@ -293,17 +290,16 @@ def split_characters(char) -> list:
 
 def render_textcontainer(
         item: pdfminer.layout.LTTextBox,
-        pageheight: float,
         strip: bool = False,
 ) -> iamraw.TextContainer:
-    bounding = convert_bounding(*item.bbox, pageheight=pageheight)
+    bounding = item.bbox
     if vertical(item):
         container = iamraw.VerticalTextContainer(box=bounding)
     else:
         container = iamraw.TextContainer(box=bounding)
     for line in item:
         # pylint:disable=E1101
-        rendered = render_textline(line, pageheight=pageheight, strip=strip)
+        rendered = render_textline(line, strip=strip)
         if not rendered:
             continue
         container.lines.append(rendered)
@@ -325,25 +321,20 @@ def vertical(item: pdfminer.layout.LTTextBox):
     return False
 
 
-def render(item, pageheight: float = None, strip: bool = False):
+def render(item, strip: bool = False):
     if isinstance(item, pdfminer.layout.LTPage):
         pagenumber = item.pageid
         page = iamraw.Page(pagenumber, iamraw.BoundingBox(*item.bbox))
         # TODO: ENSURE ROTATED PAGES?
-        pageheight = item.bbox[3]
         for child in item:
             # pylint:disable=E1101
-            rendered = render(child, pageheight=pageheight, strip=strip)
+            rendered = render(child, strip=strip)
             if rendered is None:
                 continue
             page.children.append(rendered)
         return page
     if isinstance(item, pdfminer.layout.LTTextBox):
-        textcontainer = render_textcontainer(
-            item,
-            pageheight=pageheight,
-            strip=strip,
-        )
+        textcontainer = render_textcontainer(item, strip=strip)
         if strip:
             textcontainer.lines = [
                 line for line in textcontainer.lines if line.text.strip()
@@ -353,25 +344,3 @@ def render(item, pageheight: float = None, strip: bool = False):
                 return None
         return textcontainer
     return None
-
-
-def convert_bounding(*bounding, pageheight: float) -> iamraw.BoundingBox:
-    """Flip vertical y-component.
-
-    Args:
-        bounding(tuple(4)): tuple with computed location of `pdfminer`
-        pageheight(float): pageheight from bottom to top
-    Returns:
-        flipped `iamraw.BoundingBox`
-    """
-    xbottom, ybottom, xtop, ytop = bounding
-    height = ytop - ybottom
-    assert height >= 0
-    x0 = utila.roundme(xbottom)
-    y0 = utila.roundme(pageheight - ytop)
-    x1 = utila.roundme(xtop)
-    y1 = utila.roundme(y0 + height)
-    # developer friendly debugging
-    x0, y0, x1, y1 = utila.roundme([x0, y0, x1, y1])
-    bounding = iamraw.BoundingBox(x0=x0, y0=y0, x1=x1, y1=y1)
-    return bounding

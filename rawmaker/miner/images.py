@@ -148,23 +148,16 @@ class ImageConverter(rawmaker.miner.converter.FlippedLayoutAnalyzer):
         self.parsed = set()
 
     def receive_layout(self, ltpage):
-        pageheight = ltpage.bbox[3]
+        super().receive_layout(ltpage)
         for item in ltpage:
-            # flip y-coordinate
-            self.render_pagecontent(
-                ltpage.pageid,
-                item,
-                pageheight=pageheight,
-            )
+            self.render_pagecontent(ltpage.pageid, item)
 
-    def render_pagecontent(self, pageid, item, pageheight):
+    def render_pagecontent(self, pageid, item):
         """Collect all imageable items"""
-        # flip coordiante
-        item.y0, item.y1 = pageheight - item.y1, pageheight - item.y0
         if isinstance(item, pdfminer.layout.LTImage):
             self.render_result_image(item, pageid=pageid)
         elif isinstance(item, pdfminer.layout.LTFigure):
-            self.render_figure(item, pageid=pageid, pageheight=pageheight)
+            self.render_figure(item, pageid=pageid)
 
     def render_result_image(
             self,
@@ -180,7 +173,6 @@ class ImageConverter(rawmaker.miner.converter.FlippedLayoutAnalyzer):
             self,
             item: pdfminer.layout.LTFigure,
             pageid: int,
-            pageheight: int,
     ):
         # TODO: RENDER CURVES ETC.
         images = item._objs  # pylint:disable=W0212
@@ -192,7 +184,6 @@ class ImageConverter(rawmaker.miner.converter.FlippedLayoutAnalyzer):
         assert len(images) == 1, str(images)
         # TODO: Investigate with list
         image = images[0]  # pylint:disable=W0212
-        image.y0, image.y1 = pageheight - image.y1, pageheight - image.y0
         self.render_result_image(image, pageid)
 
 

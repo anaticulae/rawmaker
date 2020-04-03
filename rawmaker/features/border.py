@@ -70,7 +70,7 @@ def determine_boundingboxes(
         size = pagesize_from_page(page)
 
         pagebounding = iamraw.PageBoundings(
-            boundings=boundingboxes_from_page(content, contentid, size),
+            boundings=boundingboxes_from_page(content, contentid),
             page=pagenumber,
         )
         boxes.append(pagebounding)
@@ -109,31 +109,18 @@ def pagesizes(
 def boundingboxes_from_page(
         content: list,
         contentid: int,
-        pagesize: tuple,
 ) -> tuple:
     """Extract bounding boxes from page `content`.
 
     Args:
         content: content of a single page
         contentid: last id of the previous page
-        pagesize: tuple of width and height
     Returns:
         Cropbox which contains all items of this page
     """
     result = []
     for index, item in enumerate(content, start=contentid):
-        rounded = tuple([utila.roundme(value) for value in item.bbox])
-        # flip y coordinate from top down
-        # TODO: REMOVE AFTER UPGRADING PARSER
-        # See rawmaker/features/boxes.py
-        flipped = [
-            rounded[0],
-            pagesize.height - rounded[1],
-            rounded[2],
-            pagesize.height - rounded[3],
-        ]
-        rounded = tuple([utila.roundme(value) for value in flipped])
-        result.append((index, rounded))
+        result.append((index, item.bbox))
     return result
 
 
@@ -153,25 +140,15 @@ def pagesize_from_page(page: pdfminer.pdfdocument.PDFDocument,
 def cropborder_from_page(content) -> iamraw.Border:
     if not content:
         return iamraw.Border(None, None, None, None)
-
-    # Convert pdfminer coordinate to own system, see `BoundingBox`
-    # TODO: Create convertion method in `BoundingBox`
-    # left, bottom, right, top
-    height = content.bbox[3]
+    # left, top, right, bottom
     x0 = min([item.bbox[0] for item in content])
-    y0 = min([height - item.bbox[3] for item in content])
+    y0 = min([item.bbox[1] for item in content])
     x1 = max([item.bbox[2] for item in content])
-    y1 = max([height - item.bbox[1] for item in content])
+    y1 = max([item.bbox[3] for item in content])
     # left, right, top, bottom
-    x0, y0, x1, y1 = (
-        utila.roundme(x0),
-        utila.roundme(y0),
-        utila.roundme(x1),
-        utila.roundme(y1),
-    )
+    x0, y0, x1, y1 = utila.roundme((x0, y0, x1, y1))
     assert x0 < x1
     assert y0 < y1
-
     return iamraw.Border(left=x0, right=x1, top=y0, bottom=y1)
 
 

@@ -17,6 +17,7 @@ import rawmaker.reader
 import tests.resources
 
 
+@utila.skip_longrun
 def test_images_export_bachelor56(testdir):
     """Extract seven images out of four pages."""
     source = tests.resources.BACHELOR56

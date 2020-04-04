@@ -73,6 +73,7 @@ if __name__ == "__main__":
             'linero.features',
             'pdfinfo',
             'rawmaker',
+            'rawmaker.converter',
             'rawmaker.features',
             'rawmaker.fonts',
             'rawmaker.images',

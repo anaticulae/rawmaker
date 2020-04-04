@@ -21,13 +21,13 @@ import pdfminer.layout
 import pdfminer.pdfinterp
 import utila
 
-import rawmaker.miner.converter
+import rawmaker.converter.basic
 import rawmaker.miner.rawchar
 import rawmaker.parameter
 import rawmaker.patch.ltchar
 
 
-class PrecisePDFConverter(rawmaker.miner.converter.FlippedLayoutAnalyzer):
+class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
     """Parsing PDF-files based on given layout definition `laparams`.
 
     The `PrecisePDFConverter` parses every single page and run the

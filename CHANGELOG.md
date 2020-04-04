@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v1.17.1
+
+### Feature
+
+* store bounding of image in document (45fb2d77ef0c)
+* pass extracted image to extract position information (5518c5a05153)
+* add method to load image inforation (3ee9a1ea6534)
+
+### Fix
+
+* fix missing test resource (4f65bbf49462)
+* check later cause data is generated (9df72ad96f8b)
+
 ## v1.17.0
 
 ### Feature

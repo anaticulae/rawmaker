@@ -230,27 +230,10 @@ def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches,R0915
         size = image.srcsize
         bits = image.bits
         data = image.stream.get_data()
-        colorspace = image.colorspace[0]
-        if isinstance(colorspace, pdfminer.pdftypes.PDFObjRef):
-            colorspace = document.getobj(colorspace.objid)
-        elif isinstance(colorspace, list):
-            colorspace = colorspace[0]
-        # test list again!
-        if isinstance(colorspace, list):
-            # DEVICERGB
-            if len(colorspace) == 2:
-                if isinstance(colorspace[1], pdfminer.pdftypes.PDFObjRef):
-                    colorspace = colorspace[1].resolve()
-                else:
-                    colorspace = colorspace[1]
-            else:
-                if isinstance(colorspace[3], pdfminer.pdftypes.PDFObjRef):
-                    colorspace = colorspace[3].resolve()
-                else:
-                    colorspace = colorspace[3]
+
+        colorspace = get_colorspace(image)
+        if colorspace:
             data = rgb256_decoder(data, colorspace, bits=bits)
-        elif colorspace:
-            colorspace = colorspace.name
         else:
             # black and white
             mode = BITMAP
@@ -283,6 +266,30 @@ def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches,R0915
     return MergedImage(result, ext, bounding)
 
 
+def get_colorspace(image):
+    colorspace = image.colorspace[0]
+    if isinstance(colorspace, pdfminer.pdftypes.PDFObjRef):
+        colorspace = colorspace.resolve()
+    elif isinstance(colorspace, list):
+        colorspace = colorspace[0]
+    # test list again!
+    if isinstance(colorspace, list):
+        # DEVICERGB
+        if len(colorspace) == 2:
+            if isinstance(colorspace[1], pdfminer.pdftypes.PDFObjRef):
+                colorspace = colorspace[1].resolve()
+            else:
+                colorspace = colorspace[1]
+        else:
+            if isinstance(colorspace[3], pdfminer.pdftypes.PDFObjRef):
+                colorspace = colorspace[3].resolve()
+            else:
+                colorspace = colorspace[3]
+    elif colorspace:
+        colorspace = colorspace.name
+    return colorspace
+
+
 def rgb256_decoder(data, dataspace, bits=8):
     # RGB
     # TODO: FIX TABLE ERRORS
@@ -298,6 +305,7 @@ def rgb256_decoder(data, dataspace, bits=8):
             ])
         except IndexError:
             utila.error('rgb256 decoder out of bounds')
+            return data
     result = []
     for item in data:
         try:
@@ -312,7 +320,11 @@ def rgb256_decoder(data, dataspace, bits=8):
                 raise ValueError(f'{bits} bits not supported')
         except IndexError:
             utila.error('rgb256 decoder out of bounds')
-    data = array.array("B", result).tobytes()
+            return data
+    try:
+        data = array.array("B", result).tobytes()
+    except TypeError:
+        return data
     return data
 
 

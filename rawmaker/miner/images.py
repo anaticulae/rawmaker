@@ -80,9 +80,6 @@ def extract_images(
     return result
 
 
-ExtractedImage = collections.namedtuple('ExtractedImage', 'image, name')
-
-
 class CollectAndMerge:
 
     def __init__(self, outputfolder):
@@ -103,24 +100,25 @@ class CollectAndMerge:
         # write merged images
         merged = merge_document_images(self.to_merge, document)
         for page, values in merged.items():
-            for index, (image, ext) in enumerate(values):
+            for index, extracted in enumerate(values):
+                ext = extracted.ext
                 filename = f'{page}_{index}.{ext}'
-                if isinstance(image, PIL.Image.Image):
+                if isinstance(extracted.image, PIL.Image.Image):
                     outpath = os.path.join(self.outputfolder, filename)
                     with open(outpath, mode='wb') as output:
                         ext = ext.replace('jpg', 'jpeg')
-                        image.save(output, format=ext)
+                        extracted.image.save(output, format=ext)
                 else:
-                    image.name = f'{page}_{index}'
-                    if image:
+                    extracted.image.name = f'{page}_{index}'
+                    if extracted:  # TODO: THIS MAKES NO SENCE
                         try:
-                            self.writer.export_image(image)
+                            self.writer.export_image(extracted.image)
                         except TypeError:
-                            utila.error(f'empty export {image.name}')
+                            utila.error(f'empty export {extracted.image.name}')
                     else:
                         # TODO: CHECK WHY THIS CAN HAPPEN
-                        utila.error(f'empty export {image.name}')
-                self.written[page].append(ExtractedImage(image, filename))
+                        utila.error(f'empty export {extracted.image.name}')
+                self.written[page].append(extracted)
         self.to_merge.clear()
         # convert defaultdict to normal dict, remove empty pages
         return {key: value for key, value in self.written.items() if value}
@@ -240,23 +238,26 @@ def group_rectangles(rectangles):
 
 BITMAP = '1'
 
+MergedImage = collections.namedtuple('MergedImage', 'image, ext, bounding')
+
 
 def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches,R0915
         images: typing.List[pdfminer.layout.LTImage],
         document,
-) -> bytearray:
+) -> MergedImage:
     """Merge list of images to one image."""
-    image_height = sum(item.srcsize[1] for item in images)
-    image_width = images[0].srcsize[0]
-    size = (image_width, image_height)
-    line_height = max(images[0].srcsize[1], 1)
-
     ext = extention(images[0])
+    bounding = images[0].bbox
     if ext != 'png':
         # TODO: png is not supported by pdfimage exporter properly
         if len(images) == 1:
             # no merge required
-            return images[0], ext
+            return MergedImage(images[0], ext, bounding)
+
+    image_height = sum(item.srcsize[1] for item in images)
+    image_width = images[0].srcsize[0]
+    size = (image_width, image_height)
+    line_height = max(images[0].srcsize[1], 1)
 
     mode = 'RGB'
     result = PIL.Image.new(mode, size, color=0)
@@ -318,7 +319,7 @@ def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches,R0915
         current = PIL.Image.open(loaded)
         # render to common image
         renderer.bitmap((0, ypos * line_height), bitmap=current)
-    return result, ext
+    return MergedImage(result, ext, bounding)
 
 
 def rgb256_decoder(data, dataspace, bits=8):

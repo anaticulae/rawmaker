@@ -64,7 +64,7 @@ def extract_pages(
     for page, images in extracted.items():
         pagecontent = []
         for parsed in images:
-            bounding = iamraw.BoundingBox(0, 0, 0, 0)
+            bounding = parsed.bounding
             path = os.path.join(outputfolder, parsed.name)
             loaded = utila.file_read_binary(path)
             info = rawmaker.images.info.imageinfo(path, page, bounding)

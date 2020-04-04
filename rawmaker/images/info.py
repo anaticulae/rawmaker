@@ -29,7 +29,6 @@ def imageinfo(path: str, page: int, bounding: tuple) -> ImageInformation:
     try:
         image = PIL.Image.open(path)
         image.load()
-        # result.append(image)
     except OSError as err:
         utila.error(err)
         return None
@@ -47,6 +46,7 @@ def imageinfo(path: str, page: int, bounding: tuple) -> ImageInformation:
 
 
 def dump_info(info: ImageInformation) -> str:
+    assert isinstance(info, ImageInformation)
     result = {}
     for key, value in vars(info).items():
         if value is None:

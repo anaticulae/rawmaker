@@ -27,10 +27,15 @@ def test_image_information(testdir):
             outputfolder=root,
             pages=(0,),
         )
+    pageone_firstimage = extracted[0][0]
     assert len(extracted) == 1
-    path = os.path.join(root, extracted[0][0].name)
-    image = extracted[0][0].image
-    info = rawmaker.images.info.imageinfo(path, page=0, bounding=image.bbox)
+    filename = pageone_firstimage.image.name + '.' + extracted[0][0].ext
+    path = os.path.join(root, filename)
+    info = rawmaker.images.info.imageinfo(
+        path,
+        page=0,
+        bounding=pageone_firstimage.bounding,
+    )
     assert info, info
     assert info.width >= 500, str(info)
     assert info.height >= 200, str(info)

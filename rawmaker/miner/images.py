@@ -41,6 +41,8 @@ import utila
 
 import rawmaker.converter.images
 
+MergedImage = collections.namedtuple('MergedImage', 'image, ext, bounding')
+
 
 def extract_images(
         document: pdfminer.pdfdocument.PDFDocument,
@@ -96,8 +98,8 @@ class CollectAndMerge:
             # no images given
             return {}
         os.makedirs(self.outputfolder, exist_ok=True)
-        # write merged images
         merged = merge_document_images(self.to_merge, document)
+        # write merged images
         for page, values in merged.items():
             for index, extracted in enumerate(values):
                 write_image(
@@ -198,8 +200,6 @@ def group_rectangles(rectangles):
 
 
 BITMAP = '1'
-
-MergedImage = collections.namedtuple('MergedImage', 'image, ext, bounding')
 
 
 def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches,R0915

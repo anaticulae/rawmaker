@@ -75,7 +75,7 @@ def test_images_export_master116(testdir):
     (56, 1, 'png'),
     (57, 1, 'png'),
 ])
-def test_images_export_bachelor63_merge_image(page, expected, ext, testdir):
+def test_images_export_bachelor63_extract_images(page, expected, ext, testdir):
     source = tests.resources.BACHELOR63
     root = testdir.tmpdir
     pages = (page,)

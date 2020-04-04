@@ -87,8 +87,6 @@ class CollectAndMerge:
         self.to_merge = collections.defaultdict(list)
         self.written = collections.defaultdict(list)
 
-        self.writer = pdfminer.image.ImageWriter(outputfolder)
-
     def imagereciver(self, page, image):
         self.to_merge[page].append(image)
 
@@ -101,27 +99,42 @@ class CollectAndMerge:
         merged = merge_document_images(self.to_merge, document)
         for page, values in merged.items():
             for index, extracted in enumerate(values):
-                ext = extracted.ext
-                filename = f'{page}_{index}.{ext}'
-                if isinstance(extracted.image, PIL.Image.Image):
-                    outpath = os.path.join(self.outputfolder, filename)
-                    with open(outpath, mode='wb') as output:
-                        ext = ext.replace('jpg', 'jpeg')
-                        extracted.image.save(output, format=ext)
-                else:
-                    extracted.image.name = f'{page}_{index}'
-                    if extracted:  # TODO: THIS MAKES NO SENCE
-                        try:
-                            self.writer.export_image(extracted.image)
-                        except TypeError:
-                            utila.error(f'empty export {extracted.image.name}')
-                    else:
-                        # TODO: CHECK WHY THIS CAN HAPPEN
-                        utila.error(f'empty export {extracted.image.name}')
+                write_image(
+                    extracted,
+                    write_to=self.outputfolder,
+                    page=page,
+                    index=index,
+                )
                 self.written[page].append(extracted)
         self.to_merge.clear()
         # convert defaultdict to normal dict, remove empty pages
         return {key: value for key, value in self.written.items() if value}
+
+
+def write_image(extracted, write_to, page, index):
+    """Write image to `extracted` to directory `write_to`.
+
+    The file is named {page}_{index}.{extracted.ext}.
+    """
+    ext = extracted.ext
+    filename = f'{page}_{index}.{ext}'
+    if isinstance(extracted.image, PIL.Image.Image):
+        outpath = os.path.join(write_to, filename)
+        with open(outpath, mode='wb') as output:
+            ext = ext.replace('jpg', 'jpeg')
+            extracted.image.save(output, format=ext)
+        return
+
+    extracted.image.name = f'{page}_{index}'
+    if extracted:  # TODO: THIS MAKES NO SENCE
+        try:
+            writer = pdfminer.image.ImageWriter(write_to)
+            writer.export_image(extracted.image)
+        except TypeError:
+            utila.error(f'empty export {extracted.image.name}')
+    else:
+        # TODO: CHECK WHY THIS CAN HAPPEN
+        utila.error(f'empty export {extracted.image.name}')
 
 
 def merge_document_images(items, document):

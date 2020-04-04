@@ -64,7 +64,7 @@ def extract_pages(
         pagecontent = []
         for parsed in images:
             bounding = parsed.bounding
-            path = os.path.join(outputfolder, parsed.name)
+            path = os.path.join(outputfolder, parsed.filename)
             loaded = utila.file_read_binary(path)
             info = rawmaker.images.info.imageinfo(path, page, bounding)
             pagecontent.append((info, loaded))

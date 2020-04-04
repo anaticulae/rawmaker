@@ -42,6 +42,7 @@ import utila
 import rawmaker.converter.images
 
 MergedImage = collections.namedtuple('MergedImage', 'image, ext, bounding')
+WrittenImage = collections.namedtuple('WrittenImage', 'filename, bounding')
 
 
 def extract_images(
@@ -102,19 +103,21 @@ class CollectAndMerge:
         # write merged images
         for page, values in merged.items():
             for index, extracted in enumerate(values):
-                write_image(
+                if not extracted:
+                    continue
+                written = write_image(
                     extracted,
                     write_to=self.outputfolder,
                     page=page,
                     index=index,
                 )
-                self.written[page].append(extracted)
+                self.written[page].append(written)
         self.to_merge.clear()
         # convert defaultdict to normal dict, remove empty pages
         return {key: value for key, value in self.written.items() if value}
 
 
-def write_image(extracted, write_to, page, index):
+def write_image(extracted, write_to, page, index) -> WrittenImage:
     """Write image to `extracted` to directory `write_to`.
 
     The file is named {page}_{index}.{extracted.ext}.
@@ -126,18 +129,19 @@ def write_image(extracted, write_to, page, index):
         with open(outpath, mode='wb') as output:
             ext = ext.replace('jpg', 'jpeg')
             extracted.image.save(output, format=ext)
-        return
-
-    extracted.image.name = f'{page}_{index}'
-    if extracted:  # TODO: THIS MAKES NO SENCE
-        try:
-            writer = pdfminer.image.ImageWriter(write_to)
-            writer.export_image(extracted.image)
-        except TypeError:
-            utila.error(f'empty export {extracted.image.name}')
     else:
-        # TODO: CHECK WHY THIS CAN HAPPEN
-        utila.error(f'empty export {extracted.image.name}')
+        if extracted:  # TODO: THIS MAKES NO SENCE
+            try:
+                # images writer add file extention bt themself
+                writer = pdfminer.image.ImageWriter(write_to)
+                extracted.image.name = f'{page}_{index}'
+                writer.export_image(extracted.image)
+            except TypeError:
+                utila.error(f'empty export {extracted.image.name}')
+        else:
+            # TODO: CHECK WHY THIS CAN HAPPEN
+            utila.error(f'empty export {extracted.image.name}')
+    return WrittenImage(filename=filename, bounding=extracted.bounding)
 
 
 def merge_document_images(items):
@@ -168,8 +172,9 @@ def merge_page(images: typing.List[pdfminer.layout.LTImage], page: int):
     result = []
     try:
         result = [raw_images_merge(item) for item in lines]
-    except ValueError:
+    except ValueError as error:
         utila.error(f'could not parse images on page: {page}')
+        utila.error(error)
 
     return result
 
@@ -198,16 +203,17 @@ def group_rectangles(rectangles):
 BITMAP = '1'
 
 
-# pylint:disable=R1260,R0914
+# pylint:disable=R1260,R0914,R0915
 def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImage: # yapf:disable
     """Merge list of images to one image."""
     ext = extention(images[0])
     bounding = images[0].bbox
-    if ext != 'png':
+    if len(images) == 1:
         # TODO: png is not supported by pdfimage exporter properly
-        if len(images) == 1:
+        if ext != 'png':
             # no merge required
             return MergedImage(images[0], ext, bounding)
+        utila.error(f'extraction not supported: {images[0]}')
 
     image_height = sum(item.srcsize[1] for item in images)
     image_width = images[0].srcsize[0]
@@ -220,13 +226,16 @@ def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImag
 
     for ypos, image in enumerate(images):
         ext = extention(image)
+        colorspace = get_colorspace(image)
         mode = 'RGB'
         size = image.srcsize
         bits = image.bits
+
         data = image.stream.get_data()
 
-        colorspace = get_colorspace(image)
-        if colorspace:
+        if colorspace == 'DeviceGray':
+            mode = BITMAP
+        elif colorspace:
             data = rgb256_decoder(data, colorspace, bits=bits)
         else:
             # black and white
@@ -247,8 +256,7 @@ def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImag
             try:
                 current = PIL.Image.frombytes(mode, size, data)
             except ValueError:
-                utila.error('could not decode')
-                utila.error(vars(image))
+                utila.error(f'could not decode: {image}')
                 continue
 
         # convert to bitmap

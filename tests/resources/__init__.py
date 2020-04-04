@@ -68,12 +68,18 @@ HOWTOREAD_PDF = os.path.join(ORDER, 'howtowrite_pages9.pdf')
 BACHELOR37 = os.path.join(BACHELOR, 'page_37_tables.pdf')
 BACHELOR56 = os.path.join(BACHELOR, 'page_56_hard_to_read.pdf')
 BACHELOR63 = os.path.join(BACHELOR, 'page_63_images_toc.pdf')
+BACHELOR111 = os.path.join(BACHELOR, 'page_111_images_toc.pdf')
+
+TECHNICAL24 = os.path.join(TECHNICAL, 'page_24_color_figures_images.pdf')
+REPORT19 = os.path.join(TECHNICAL, 'report.pdf')
+
 PDF2008 = os.path.join(SPEC, 'PDF32000_2008.pdf')
 
 MASTER116 = os.path.join(MASTER, 'page_116_images_toc_formular.pdf')
 
 REQUIRED_RESOURCES = [
     BACHELOR,
+    BACHELOR111,
     BACHELOR37,
     BACHELOR56,
     BACHELOR63,
@@ -91,9 +97,11 @@ REQUIRED_RESOURCES = [
     NEGATIVE,
     NO_PDF,
     PDF2008,
+    REPORT19,
     RESOURCES,
     RESTRUCTURED_PDF,
     TECHNICAL,
+    TECHNICAL24,
     TWINE_PDF,
     VIM_PDF,
 ]

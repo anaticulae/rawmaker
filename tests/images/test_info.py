@@ -29,8 +29,7 @@ def test_image_information(testdir):
         )
     pageone_firstimage = extracted[0][0]
     assert len(extracted) == 1
-    filename = pageone_firstimage.image.name + '.' + extracted[0][0].ext
-    path = os.path.join(root, filename)
+    path = os.path.join(root, pageone_firstimage.filename)
     info = rawmaker.images.info.imageinfo(
         path,
         page=0,

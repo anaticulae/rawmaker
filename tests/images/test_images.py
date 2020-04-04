@@ -12,6 +12,7 @@ import utila
 
 import rawmaker.miner.images
 import rawmaker.reader
+import tests
 import tests.resources
 
 
@@ -92,3 +93,30 @@ def test_images_export_bachelor63_extract_images(page, expected, ext, testdir):
                 pages=pages,
             )
     assert extracted
+
+
+@pytest.mark.parametrize(
+    'source, expected',
+    [
+        pytest.param(
+            tests.resources.BACHELOR111,
+            999,
+            id='bachelor111',
+            marks=pytest.mark.xfail(reason='not fully supported'),
+        ),
+        # pytest.param(tests.resources.TWINE_PDF, 0, id='twine'),
+        pytest.param(tests.resources.TECHNICAL24, 8, id='technical24'),
+        pytest.param(tests.resources.REPORT19, 6, id='report19'),
+    ])
+# @utila.skip_longrun
+def test_images_export_document_complete(
+        source,
+        expected,
+        testdir,
+        monkeypatch,
+):
+    # for every image it is an additonal image info file extracted.
+    root = testdir.tmpdir
+    with utila.increased_filecount(root, mindiff=expected, maxdiff=expected):
+        cmd = f'-i {source} --images'
+        tests.run_success(cmd, monkeypatch=monkeypatch)

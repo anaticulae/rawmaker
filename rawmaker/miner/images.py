@@ -79,7 +79,7 @@ def extract_images(
             page.pageid = number
             interpreter.process_page(page)
 
-    result = collect.merge_and_write(document)
+    result = collect.merge_and_write()
     return result
 
 
@@ -93,12 +93,12 @@ class CollectAndMerge:
     def imagereciver(self, page, image):
         self.to_merge[page].append(image)
 
-    def merge_and_write(self, document) -> dict:
+    def merge_and_write(self) -> dict:
         if not self.to_merge:
             # no images given
             return {}
         os.makedirs(self.outputfolder, exist_ok=True)
-        merged = merge_document_images(self.to_merge, document)
+        merged = merge_document_images(self.to_merge)
         # write merged images
         for page, values in merged.items():
             for index, extracted in enumerate(values):
@@ -140,20 +140,16 @@ def write_image(extracted, write_to, page, index):
         utila.error(f'empty export {extracted.image.name}')
 
 
-def merge_document_images(items, document):
+def merge_document_images(items):
     result = collections.defaultdict(list)
     # merge pages by yposition
     for page, content in items.items():
-        merged = merge_page(content, document, page)
+        merged = merge_page(content, page)
         result[page].extend(merged)
     return result
 
 
-def merge_page(
-        images: typing.List[pdfminer.layout.LTImage],
-        document: callable,
-        page: int,
-):
+def merge_page(images: typing.List[pdfminer.layout.LTImage], page: int):
     todo = [(
         utila.roundme(image.x0),
         utila.roundme(image.y0),
@@ -171,7 +167,7 @@ def merge_page(
 
     result = []
     try:
-        result = [raw_images_merge(item, document) for item in lines]
+        result = [raw_images_merge(item) for item in lines]
     except ValueError:
         utila.error(f'could not parse images on page: {page}')
 
@@ -202,10 +198,8 @@ def group_rectangles(rectangles):
 BITMAP = '1'
 
 
-def raw_images_merge(  # pylint:disable=R1260,R0914,too-many-branches,R0915
-        images: typing.List[pdfminer.layout.LTImage],
-        document,
-) -> MergedImage:
+# pylint:disable=R1260,R0914
+def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImage: # yapf:disable
     """Merge list of images to one image."""
     ext = extention(images[0])
     bounding = images[0].bbox

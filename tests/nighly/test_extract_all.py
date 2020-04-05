@@ -19,6 +19,8 @@ import os
 import pytest
 import utila
 
+import tests
+import tests.linero_
 import tests.resources
 
 
@@ -38,15 +40,15 @@ def sources():
 
 @utila.skip_nightly
 @pytest.mark.parametrize('source', sources())
-def test_nightly_extract_all_rawmaker_linero(source, testdir):  # pylint:disable=W0621
+def test_nightly_extract_all_rawmaker_linero(source, testdir, monkeypatch):  # pylint:disable=W0621
     """Collect all existing pdf files an extract all features out of it."""
     source = os.path.join(tests.resources.RESOURCES, source)
 
-    completed = utila.run(f'rawmaker -i {source} -j=8', cwd=testdir.tmpdir)
-    assert completed.returncode == utila.SUCCESS, str(completed)
+    cmd = f'-i {source} -j=8'
+    tests.run_success(cmd, monkeypatch=monkeypatch)
 
-    completed = utila.run(f'linero -j=8', cwd=testdir.tmpdir)
-    assert completed.returncode == utila.SUCCESS, str(completed)
+    cmd = '-j=8'
+    tests.linero_.run_success(cmd, monkeypatch=monkeypatch)
 
 
 @utila.skip_nightly

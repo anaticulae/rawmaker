@@ -22,6 +22,7 @@ from utila import SkipCollector
 from utila import call
 from utila import debug
 
+import rawmaker.converter.basic
 import rawmaker.miner.text
 import rawmaker.parameter
 
@@ -30,10 +31,9 @@ PageContent = namedtuple('PageContent', 'content, page')
 
 def create_interpreter(layout=None) -> PDFPageInterpreter:
     if not layout:
-        layout = LAParams()
-    resources = PDFResourceManager()
-    device = PDFPageAggregator(resources, laparams=layout)
-    interpreter = PDFPageInterpreter(resources, device)
+        layout = rawmaker.parameter.ParsingConfiguration().laparams()
+    device = rawmaker.converter.basic.PageAggregator(laparams=layout)
+    interpreter = PDFPageInterpreter(device.resources, device)
     return interpreter, device
 
 

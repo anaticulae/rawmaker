@@ -149,14 +149,15 @@ def determine_pagehorizontals(
     for merged in cluster:
         if len(merged) != 1:
             continue
-        x0, y0, x1, y1 = utila.roundme(merged[0])
+        # convert from BoundingBox
+        x0, y0, x1, y1 = utila.roundme(tuple(merged[0]))
         height = abs(y1 - y0)
         width = abs(x1 - x0)
         assert height >= 0, str(height)
         assert width >= 0, str(width)
         if height < vertical_maxerror and width > horizontal_minwidth:
-            boxed = iamraw.BoundingBox.from_list(merged[0])
-            horizontal = iamraw.HorizontalLine(box=boxed)
+            box = iamraw.BoundingBox.from_list(merged[0])
+            horizontal = iamraw.HorizontalLine(box=box)
             result.append(horizontal)
         else:
             utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}')
@@ -347,7 +348,6 @@ def lines(  # pylint:disable=R1260
         pdfminer.layout.LTRect: accept_ltrect,
         pdfminer.layout.LTTextBoxHorizontal: accept_text_as_line,
     }
-
     result = []
     for content, pagenumber in possible_lines:
         page = []

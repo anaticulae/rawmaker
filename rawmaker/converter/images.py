@@ -20,8 +20,8 @@ import rawmaker.converter.basic
 
 class ImageConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
 
-    def __init__(self, rsrcmgr, imagewriter):
-        super().__init__(rsrcmgr=rsrcmgr)
+    def __init__(self, imagewriter):
+        super().__init__()
         assert callable(imagewriter), imagewriter
         self.imagewriter = imagewriter
         # TODO avoid duplicated parsed, check if we require this?
@@ -113,7 +113,6 @@ class FastImageInterpreter(pdfminer.pdfinterp.PDFPageInterpreter):
                 break
             if isinstance(obj, pdfminer.psparser.PSKeyword):
                 name = pdfminer.psparser.keyword_name(obj)
-                # print(name)
                 try:
                     func = self.fast[name]
                 except KeyError:
@@ -132,8 +131,9 @@ class FastImageInterpreter(pdfminer.pdfinterp.PDFPageInterpreter):
 
 
 def create_fastimageextractor(imagelistener):
-    rsrcmgr = pdfminer.pdfinterp.PDFResourceManager()
-    device = ImageConverter(rsrcmgr, imagewriter=imagelistener)
-    # interpreter = FastImageInterpreter(rsrcmgr, device)
-    interpreter = pdfminer.pdfinterp.PDFPageInterpreter(rsrcmgr, device)
+    device = ImageConverter(imagewriter=imagelistener)
+    interpreter = pdfminer.pdfinterp.PDFPageInterpreter(
+        device.resources,
+        device,
+    )
     return interpreter

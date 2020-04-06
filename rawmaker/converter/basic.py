@@ -11,17 +11,26 @@ import contextlib
 
 import iamraw
 import pdfminer.converter
+import pdfminer.pdfinterp
 import utila
 
 
 class FlippedLayoutAnalyzer(pdfminer.converter.PDFLayoutAnalyzer):
 
-    def __init__(self, rsrcmgr, pageno=0, laparams=None):
-        super().__init__(rsrcmgr=rsrcmgr, pageno=pageno, laparams=laparams)
+    def __init__(self, laparams=None, pageno=0):
+        super().__init__(
+            rsrcmgr=pdfminer.pdfinterp.PDFResourceManager(),
+            pageno=pageno,
+            laparams=laparams,
+        )
 
     def receive_layout(self, ltpage):
         for item in ltpage:
             flip_object(item, ltpage)
+
+    @property
+    def resources(self):
+        return self.rsrcmgr
 
 
 def flip_object(item, page):
@@ -42,3 +51,17 @@ def flip_object(item, page):
     with contextlib.suppress(AttributeError):
         for obj in item._objs:  # pylint:disable=W0212
             flip_object(obj, page)
+
+
+class PageAggregator(FlippedLayoutAnalyzer):
+
+    def __init__(self, laparams=None):
+        super().__init__(laparams=laparams)
+        self.result = None
+
+    def receive_layout(self, ltpage):
+        super().receive_layout(ltpage)
+        self.result = ltpage
+
+    def get_result(self):
+        return self.result

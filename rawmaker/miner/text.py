@@ -52,11 +52,7 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
             strip(bool): remove holy white spaces which are a result of
                          bad pdf printer or bad pdf parsing.
         """
-        super().__init__(
-            # Create a PDF resource manager object that stores shared resources.
-            rsrcmgr=pdfminer.pdfinterp.PDFResourceManager(),
-            laparams=rawmaker.parameter.from_config(config),
-        )
+        super().__init__(laparams=rawmaker.parameter.from_config(config))
         self.imagewriter = imagewriter
         self.strip = rawmaker.parameter.STRIP if strip is None else strip
         self.page = 0

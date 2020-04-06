@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.17.4
+
+### Fix
+
+* add missing flip of lines (63dab400fdb8)
+* enable doctests (ebbf2053357d)
+
 ## v1.17.3
 
 ### Feature

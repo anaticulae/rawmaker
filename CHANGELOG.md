@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v1.17.3
+
+### Feature
+
+* support specific data extension (c53ec340400f)
+
+### Fix
+
+* ensure to flip all chars correctly (ce9d9777129a)
+* write page count as number instead of string (eac0e02b991c)
+* do not fail if pdfinfo exists (4fef82e44cd2)
+* ensure that malformed bounding let not fail extraction (9496445541b9)
+
 ## v1.17.2
 
 ## v1.17.1

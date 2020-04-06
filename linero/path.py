@@ -11,30 +11,18 @@ import utila
 
 import linero
 
-# TODO: ENABLE DOCTEST AFTER FIXING UTILA
-
 
 def table(path: str, prefix: str = '') -> str:
     """Path to extraction result of linero --table step.
-    >>> table('/data/resources') # doctest: +SKIP
-    '/data/resources/linero__table_table.yaml
+    >>> table('/data/resources')
+    '/data/resources/linero__table_table.yaml'
     """
-    return utila.pathconnector(
-        path,
-        linero.PROCESS,
-        'table_table',
-        prefix,
-    )
+    return utila.pathconnector(path, linero.PROCESS, 'table_table', prefix)
 
 
 def figure(path: str, prefix: str = '') -> str:
     """Path to extraction result of linero --figure step.
-    >>> table('/data/resources') # doctest: +SKIP
-    '/data/resources/linero__figure_figure.yaml
+    >>> figure('/data/resources')
+    '/data/resources/linero__figure_figure.yaml'
     """
-    return utila.pathconnector(
-        path,
-        linero.PROCESS,
-        'figure_figure',
-        prefix,
-    )
+    return utila.pathconnector(path, linero.PROCESS, 'figure_figure', prefix)

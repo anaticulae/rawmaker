@@ -43,7 +43,7 @@ def determine_lines(
         # left point is left above from right down point
         content = [ensure_position(item) for item in content]
         # top down, left right
-        content = sorted(content, key=operator.itemgetter(0, 1))
+        content = sorted(content, key=operator.itemgetter(1, 0))
         result.append(iamraw.PageContentLine(content=content, page=number))
     return result
 

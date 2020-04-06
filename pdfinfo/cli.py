@@ -63,7 +63,7 @@ def validate(inpath, outpath) -> int:
 
     if os.path.isdir(outpath):
         outpath = os.path.join(outpath, 'pdfinfo.json')
-    utila.file_create(outpath, jsonify)
+    utila.file_replace(outpath, jsonify)
     return utila.SUCCESS
 
 

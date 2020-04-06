@@ -25,8 +25,12 @@ class FlippedLayoutAnalyzer(pdfminer.converter.PDFLayoutAnalyzer):
 
 
 def flip_object(item, page):
+    try:
+        box = list(item.bbox)
+    except AttributeError:
+        # VirtualChar for example
+        return
     pageheight = page.height
-    box = list(item.bbox)
     box[1], box[3] = pageheight - box[3], pageheight - box[1]
     box = utila.roundme(box)  # pylint:disable=R0204
     try:

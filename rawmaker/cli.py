@@ -87,7 +87,7 @@ WORKPLAN = [
         inputs=PDF_INPUT,
         output=[
             ('images/*', 'yaml'),
-            ('images/*', 'img'),  # TODO: REMOVE FILE EXTENSION
+            ('images/*', '???'),
         ],
     ),
     utila.create_step(

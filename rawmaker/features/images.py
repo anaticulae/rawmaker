@@ -38,9 +38,9 @@ def work(document: str, pages: tuple = None) -> ImageInformations:
     extracted = extract_pages(document, pages=pages)
     result = []
     for page in extracted:
-        for info, rawimage in page.content:
+        for info, (rawimage, ext) in page.content:
             info = rawmaker.images.info.dump_info(info)
-            result.append((info, rawimage))
+            result.append((info, (rawimage, ext)))
     return result
 
 
@@ -65,9 +65,11 @@ def extract_pages(
         for parsed in images:
             bounding = parsed.bounding
             path = os.path.join(outputfolder, parsed.filename)
+            # TODO: REPLACE WITH utila.FILE_EXT
+            ext = parsed.filename[-3:]
             loaded = utila.file_read_binary(path)
             info = rawmaker.images.info.imageinfo(path, page, bounding)
-            pagecontent.append((info, loaded))
+            pagecontent.append((info, (loaded, ext)))
         if pagecontent:
             result.append(PageContentImages(page=page, content=pagecontent))
     return result

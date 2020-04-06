@@ -24,7 +24,7 @@ class PdfInfo:
 
 def jsonify(info: PdfInfo) -> str:
     raw = {
-        'pages': str(info.pages),
+        'pages': info.pages,
         'generator': str(info.generator),
         'version': {
             'major': info.version.major,

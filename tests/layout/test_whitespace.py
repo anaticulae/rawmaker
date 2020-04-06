@@ -27,6 +27,10 @@ def test_whitespace_extractor_bachelor56_page49(testdir, monkeypatch):
     positions = serializeraw.load_textpositions(positions)[0].content.values()
     positions = list(positions)
 
-    for pos, item in [(positions[15], text[15]), (positions[16], text[16]),
-                      (positions[18], text[18])]:
+    expected = [
+        (positions[15], text[15]),
+        (positions[16], text[16]),
+        (positions[18], text[18]),
+    ]
+    for pos, item in expected:
         assert pos[0] > 135.0, str(pos) + '   ' + item.text

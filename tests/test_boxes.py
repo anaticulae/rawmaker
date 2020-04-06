@@ -9,6 +9,7 @@
 
 import iamraw
 import pytest
+import utila
 
 import rawmaker.features.border
 import rawmaker.features.boxes
@@ -114,9 +115,13 @@ def test_boxex_determine_horizontals_master72pages():
     with rawmaker.reader.read(tests.resources.MASTER72) as doc:
         horizontals = rawmaker.features.boxes.determine_horizontal(
             doc,
-            list(range(0, 10)),
+            tuple(range(10)),
         )
 
     # flatten boxes to compute horizontal count of document
     horizontals = [item.content for item in horizontals if item.content]
+    horizontals = utila.flatten(horizontals)
     assert len(horizontals) == 6, horizontals
+    yvalue = [item.box.y0 for item in horizontals]
+    expected = [410, 690, 714, 740, 720, 760]
+    assert all((item >= exp for item, exp in zip(yvalue, expected))), yvalue

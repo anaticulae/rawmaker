@@ -77,6 +77,9 @@ PDF2008 = os.path.join(SPEC, 'PDF32000_2008.pdf')
 
 MASTER116 = os.path.join(MASTER, 'page_116_images_toc_formular.pdf')
 
+GOLDEN = os.path.join(RESOURCES, 'golden')
+GOLDEN_VIM = os.path.join(GOLDEN, 'vim')
+
 REQUIRED_RESOURCES = [
     BACHELOR,
     BACHELOR111,
@@ -84,6 +87,7 @@ REQUIRED_RESOURCES = [
     BACHELOR56,
     BACHELOR63,
     GENERATED,
+    GOLDEN_VIM,
     HELLO_WORLD_PDF,
     HOWTOREAD_PDF,
     HOW_TO_CPORTING_PDF,

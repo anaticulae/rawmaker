@@ -1,0 +1,173 @@
+children:
+- level: 1
+  page: null
+  raw: null
+  title: Table of contents
+- children:
+  - level: 2
+    page: null
+    raw: null
+    title: Starting Vim
+  - level: 2
+    page: null
+    raw: null
+    title: Undo/Redo
+  - level: 2
+    page: null
+    raw: null
+    title: Insert
+  - level: 2
+    page: null
+    raw: null
+    title: Copy/Paste/Delete
+  - level: 2
+    page: null
+    raw: null
+    title: Paste in search or colon commands
+  - level: 2
+    page: null
+    raw: null
+    title: Search
+  - level: 2
+    page: null
+    raw: null
+    title: Replace
+  - level: 2
+    page: null
+    raw: null
+    title: Indentation
+  - level: 2
+    page: null
+    raw: null
+    title: Mouse settings
+  - level: 2
+    page: null
+    raw: null
+    title: Command/Visual Mode
+  - level: 2
+    page: null
+    raw: null
+    title: Cursor movement
+  - level: 2
+    page: null
+    raw: null
+    title: Screen movements
+  - level: 2
+    page: null
+    raw: null
+    title: Unix Shell
+  - level: 2
+    page: null
+    raw: null
+    title: Registers
+  - level: 2
+    page: null
+    raw: null
+    title: Multiple Files
+  - level: 2
+    page: null
+    raw: null
+    title: Mark
+  - level: 2
+    page: null
+    raw: null
+    title: Sorting
+  - level: 2
+    page: null
+    raw: null
+    title: Printing the code
+  - children:
+    - level: 3
+      page: null
+      raw: null
+      title: Copy/paste from clip board
+    - level: 3
+      page: null
+      raw: null
+      title: Disable arraow keys
+    - level: 3
+      page: null
+      raw: null
+      title: Code execution
+    level: 2
+    page: null
+    raw: null
+    title: Mapping
+  - level: 2
+    page: null
+    raw: null
+    title: Buffer
+  - level: 2
+    page: null
+    raw: null
+    title: Split windows
+  - level: 2
+    page: null
+    raw: null
+    title: Auto completion
+  - level: 2
+    page: null
+    raw: null
+    title: Text files
+  - level: 2
+    page: null
+    raw: null
+    title: Macros
+  - level: 2
+    page: null
+    raw: null
+    title: More commands
+  - level: 2
+    page: null
+    raw: null
+    title: Block Visual Mode
+  - level: 2
+    page: null
+    raw: null
+    title: Zoom Screen
+  - level: 2
+    page: null
+    raw: null
+    title: Save session
+  - level: 2
+    page: null
+    raw: null
+    title: Folding
+  - children:
+    - level: 3
+      page: null
+      raw: null
+      title: NERDTree
+    - level: 3
+      page: null
+      raw: null
+      title: Surround
+    - level: 3
+      page: null
+      raw: null
+      title: NerdCommenter
+    - level: 3
+      page: null
+      raw: null
+      title: vim-table-mode
+    - level: 3
+      page: null
+      raw: null
+      title: vim-extline
+    - level: 3
+      page: null
+      raw: null
+      title: ConqureShell
+    - level: 3
+      page: null
+      raw: null
+      title: Airline
+    level: 2
+    page: null
+    raw: null
+    title: Plugins
+  level: 1
+  page: null
+  raw: null
+  title: Vim Commands
+level: 0

@@ -191,10 +191,7 @@ def render_textline(
     baseline = item.bbox.y1
     for char in item._objs:  # pylint: disable=protected-access
         # pylint:disable=E1101
-        character = render_char(
-            char,
-            baseline=baseline,
-        )
+        character = render_char(char, baseline=baseline)
         if len(character.value) == 1:
             result.chars.append(character)
         else:
@@ -207,31 +204,31 @@ def render_textline(
     # ensure that chars are sorted from left to right
     # TODO: CHECK VERTICAL TEXT?
     result.chars = ensure_leftright(result.chars)
-    if strip:
-        # remove left
-        lstrip = len(result.text) - len(result.text.lstrip())
-        result.chars = result.chars[lstrip:]
-        # remove right
-        # +1 to preserve virtual newline char
-        rstrip = len(result.text.rstrip()) + 1
-        result.chars = result.chars[:rstrip]
+    if not strip:
+        return result
 
-        if result.chars:
-            # TODO: ENSURE THAT ONLY A SINGLE LINE IS RENDERED?
-            # IF MORE THAN ONE LINE IS RENDERED, LAST CHAR MUST NOT BE THE
-            # MOST RIGH CHAR.
-            # fix bounding box of line rectangle
-            # ensure to end with newline
-            result.chars[-1].value = '\n'
-            x0 = result.chars[0].box.x0
-            try:
-                x1 = result.chars[-1].box.x1
-            except AttributeError:
-                # VirtualChar has no BoundingBox, use one Char before
-                x1 = result.chars[-2].box.x1
-            result.box.x0 = x0
-            result.box.x1 = x1
-            assert result.box.x0 < result.box.x1, str(result.box)
+    # remove left
+    lstrip = len(result.text) - len(result.text.lstrip())
+    result.chars = result.chars[lstrip:]
+    # remove right
+    # +1 to preserve virtual newline char
+    rstrip = len(result.text.rstrip()) + 1
+    result.chars = result.chars[:rstrip]
+    if result.chars:
+        # TODO: ENSURE THAT ONLY A SINGLE LINE IS RENDERED?
+        # IF MORE THAN ONE LINE IS RENDERED, LAST CHAR MUST NOT BE THE
+        # MOST RIGHT CHAR.
+        # fix bounding box of line rectangle ensure to end with newline
+        result.chars[-1].value = '\n'
+        x0 = result.chars[0].box.x0
+        try:
+            x1 = result.chars[-1].box.x1
+        except AttributeError:
+            # VirtualChar has no BoundingBox, use one Char before
+            x1 = result.chars[-2].box.x1
+        result.box.x0 = x0
+        result.box.x1 = x1
+        assert result.box.x0 < result.box.x1, str(result.box)
     return result
 
 

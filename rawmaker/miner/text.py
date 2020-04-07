@@ -285,7 +285,7 @@ def split_characters(char) -> list:
         # that accurarcy is fine.
         bounding = iamraw.BoundingBox.from_list([
             charbounding.x0 + index * charstep,
-            charbounding.y1,
+            charbounding.y0,
             charbounding.x0 + (index + 1) * charstep,
             charbounding.y1,
         ])

@@ -14,7 +14,9 @@ Parses pdf document and extracts layouted text components.
 
 import contextlib
 import copy
+import math
 
+import configo
 import iamraw
 import pdfminer.converter
 import pdfminer.layout
@@ -25,6 +27,9 @@ import rawmaker.converter.basic
 import rawmaker.miner.rawchar
 import rawmaker.parameter
 import rawmaker.patch.ltchar
+
+# all rises lower this threshold are threated as noise, therefore zero.
+MIN_FONT_RISE = configo.HV_INT_PLUS(default=0.05)
 
 
 class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
@@ -137,8 +142,13 @@ def render_char(
         return virtual
     # chars with content
     fontsize = utila.roundme(item.fontsize)
+
     # distance to bottom y-coodinate
     fontrise = utila.roundme(baseline - bounding.y1)
+    if math.fabs(fontsize) <= MIN_FONT_RISE:
+        # add threshold to avoid noise in char-fontrise
+        fontrise = 0.0  # pylint:disable=R0204
+
     char = None
     if value in FAST_KEY:
         # Unicode character

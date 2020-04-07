@@ -7,15 +7,12 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import pytest
 import utila
 
 import tests
 import tests.resources
 
 
-@utila.refactor(major=1, minor=18, description='activate this test')
-@pytest.mark.xfail(reason='useless folder is created')
 def test_master_compare_vim(testdir, monkeypatch):
     """Update test data with `cmd` below. Copy from generated test."""
     cmd = f'-i {tests.resources.VIM_PDF} -j8 --pages=1:4'

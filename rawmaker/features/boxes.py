@@ -33,7 +33,7 @@ HORIZONTAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=2.0).value
 # maximal difference in x-component
 VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=2.0).value
 # minimal number of minus signs which build a horizontal line
-REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(default=50).value
+REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(default=40).value
 
 
 def work(document: str, pages: tuple) -> typing.Tuple[str, str]:

@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v1.17.5
+
+### Feature
+
+* add threshold to avoid mini font rises (849ad787db4b)
+* sort line data ascending by y-coordinate (cf25146878c3)
+
+### Fix
+
+* reduce min count of characters which represent a line (47c1f989b62a)
+* use center of textual horizontal lines (5e94a2afe92b)
+
 ## v1.17.4
 
 ### Fix

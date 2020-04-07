@@ -314,13 +314,10 @@ def lines(  # pylint:disable=R1260
         symbols = ['_', '-', '=']
         for symbol in symbols:
             if item.get_text().count(symbol) >= REQUIRED_MINUS_SIGNS:
-                # update bounding to pass vertical error test
-                item.bbox = (
-                    item.bbox[0],
-                    item.bbox[3],
-                    item.bbox[2],
-                    item.bbox[3],
-                )
+                # update bounding to pass vertical error test.
+                # use vertical centric position
+                middle = utila.roundme((item.bbox[1] + item.bbox[3]) / 2)
+                item.bbox = (item.bbox[0], middle, item.bbox[2], middle)
                 return True
         return False
 

@@ -8,8 +8,11 @@
 # =============================================================================
 """Save position of element by object hash"""
 
-from contextlib import suppress
+import contextlib
+import statistics
 
+import iamraw
+import utila
 from iamraw import BoundingBox
 from iamraw import Document
 from iamraw import PageContentTextPosition
@@ -23,12 +26,12 @@ from yaml import load
 
 class DocumentItemHasher:
 
+    # TODO: REMOVE THIS SENSELESS CLASS?
     def __init__(self, page: int = -1):
         self.data = {}
         self.page = page
 
-    def hashitem(self, item: str, position: BoundingBox):
-        assert isinstance(position, BoundingBox), type(position)
+    def hashitem(self, item: str, position):
         hashid = hash(item)
         # assert that hashid is not saved before, 'collision %s'  % item
         # TODO: Investigate later, how to avoid collision
@@ -82,17 +85,36 @@ def hash_positions(document: Document, pages=None) -> PageContentTextPositions:
             collected.append(hasher)
             index = 0
             for item in page:
-                with suppress(AttributeError):
+                try:
+                    # TODO: REMOVE?
                     # Not every element has text
                     _ = item.text
-                    hasher.hashitem(index, item.box)
-                    index += 1
+                except AttributeError:
+                    continue
+                # TODO: COMPUTE FOR OTHER LINES THAN ZERO
+                mean = mean_height(item.lines[0])
+                hasher.hashitem(
+                    index,
+                    iamraw.TextPosition(bounding=item.box, mean=mean),
+                )
+                index += 1
     result = []
     for page in collected:
         pagenumber = page.page
         content = dict(page.data)
         result.append(PageContentTextPosition(content=content, page=pagenumber))
     return result
+
+
+def mean_height(chars):
+    height = []
+    for char in chars:
+        with contextlib.suppress(AttributeError):
+            height.append(char.box.y1 - char.box.y0)
+    if not height:
+        return 0.0
+    mean = statistics.mean(height)
+    return utila.roundme(mean)
 
 
 class ItemNotFound(ValueError):

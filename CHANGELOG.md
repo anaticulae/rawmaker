@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.17.7
+
+### Fix
+
+* fix text bounding computation (2ce04e8be0df)
+
 ## v1.17.6
 
 ### Feature

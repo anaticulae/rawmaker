@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.17.6
+
+### Feature
+
+* compute mean height of text line (0209e6e55370)
+
+### Fix
+
+* fake char mean height to pass test (e8c2ca06375f)
+* use correct coordinate (7cf7c3e6ae3d)
+
 ## v1.17.5
 
 ### Feature

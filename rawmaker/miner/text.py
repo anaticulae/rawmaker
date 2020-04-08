@@ -301,7 +301,6 @@ def render_textcontainer(
     else:
         container = iamraw.TextContainer(box=bounding)
     for line in item:
-        # pylint:disable=E1101
         rendered = render_textline(line, strip=strip)
         if not rendered:
             continue

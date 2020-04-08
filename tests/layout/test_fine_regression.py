@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pytest
 import serializeraw
 import utila
 
@@ -28,6 +29,20 @@ def test_layout_fine_master72_page3_horizontal_problem(testdir, monkeypatch):
     first_footer_line = firstpage[32]
     text = normalize_whitespaces(first_footer_line.text)
     assert text.startswith('1 Aus Gründen'), text
+    msg = f'{first_footer_line} {horizontal}'
+    assert first_footer_line.bounding.y0 > horizontal.box.y1, msg
+
+
+@pytest.mark.xfail(reason='improve layout extraction')
+def test_layout_fine_bachelor111_page9_horizontal_problem(testdir, monkeypatch):
+    source = testdir.tmpdir
+    cmd = f'-i {tests.resources.BACHELOR111} --text --boxes --pages=9'
+    tests.run_success(cmd, monkeypatch=monkeypatch)
+    navigators = serializeraw.create_pagetextnavigators_frompath(source)
+    horizontal = serializeraw.load_horizontals(source)[0][0][-1]
+    first_footer_line = navigators[0][34]
+    text = normalize_whitespaces(first_footer_line.text)
+    assert text.startswith('1Personal Digital'), text
     msg = f'{first_footer_line} {horizontal}'
     assert first_footer_line.bounding.y0 > horizontal.box.y1, msg
 

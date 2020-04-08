@@ -124,16 +124,24 @@ def merge_document(path: str, size: int) -> iamraw.Document:
                 if not isinstance(item, iamraw.TextContainer):
                     continue
                 # bounding, mean
-                bounding, _ = utila.select_page(pos, page.page).content[index]
+                bounding, mean = utila.select_page(pos, page.page).content[index] # yapf:disable
+                fake_text_mean_height(item, bounding, mean)
                 item.box = bounding
                 index += 1
 
     document = iamraw.Document(dimension=text[0].dimension)
     for chunk in text:
         for page in chunk:
-            # page.content = [item for item in page if item.box]
             document.pages.append(page)  # pylint:disable=E1101
     return document
+
+
+def fake_text_mean_height(item, bounding, mean):
+    # TODO: REMOVE THIS HACK LATER
+    for line in item.lines:
+        for char in line:
+            # Fake mean char height
+            char.box = iamraw.BoundingBox(0, bounding.y1 - mean, 0, bounding.y1)
 
 
 def extract_document(

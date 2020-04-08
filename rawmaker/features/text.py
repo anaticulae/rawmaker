@@ -132,7 +132,7 @@ def merge_document(path: str, size: int) -> iamraw.Document:
     document = iamraw.Document(dimension=text[0].dimension)
     for chunk in text:
         for page in chunk:
-            document.pages.append(page)  # pylint:disable=E1101
+            document.append(page)
     return document
 
 

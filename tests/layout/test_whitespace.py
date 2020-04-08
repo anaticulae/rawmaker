@@ -25,7 +25,8 @@ def test_whitespace_extractor_bachelor56_page49(testdir, monkeypatch):
     text = serializeraw.load_document(text)[0]
     positions = iamraw.path.textposition(root, prefix='oneline')
     positions = serializeraw.load_textpositions(positions)[0].content.values()
-    positions = list(positions)
+    # select bounding
+    positions = [item[0] for item in positions]
 
     expected = [
         (positions[15], text[15]),

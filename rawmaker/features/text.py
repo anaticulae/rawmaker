@@ -123,7 +123,9 @@ def merge_document(path: str, size: int) -> iamraw.Document:
             for item in page:
                 if not isinstance(item, iamraw.TextContainer):
                     continue
-                item.box = utila.select_page(pos, page.page).content[index]
+                # bounding, mean
+                bounding, _ = utila.select_page(pos, page.page).content[index]
+                item.box = bounding
                 index += 1
 
     document = iamraw.Document(dimension=text[0].dimension)

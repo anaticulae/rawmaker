@@ -13,15 +13,7 @@ import statistics
 
 import iamraw
 import utila
-from iamraw import BoundingBox
-from iamraw import Document
-from iamraw import PageContentTextPosition
-from iamraw import PageContentTextPositions
-from utila import NEWLINE
-from utila import SkipCollector
-from utila import from_raw_or_path
-from yaml import FullLoader
-from yaml import load
+import yaml
 
 
 class DocumentItemHasher:
@@ -55,12 +47,12 @@ class DocumentItemHasher:
         result = ['DocumentItemHasher, size: %d' % len(self.data)]
         for key, value in self.data.items():
             result.append('%s %s' % (key, value))
-        return NEWLINE.join(result)
+        return utila.NEWLINE.join(result)
 
 
 def load_hasher(content: str) -> DocumentItemHasher:
-    content = from_raw_or_path(content, ftype='yaml')
-    loaded = load(content, Loader=FullLoader)
+    content = utila.from_raw_or_path(content, ftype='yaml')
+    loaded = yaml.load(content, Loader=yaml.FullLoader)
 
     result = []
     for page in loaded:
@@ -68,15 +60,18 @@ def load_hasher(content: str) -> DocumentItemHasher:
         hasher = DocumentItemHasher(page=pagenumber)
         for item in page['content']:
             key, position = item.split(maxsplit=1)
-            hasher.data[int(key)] = BoundingBox.from_str(position)
+            hasher.data[int(key)] = iamraw.BoundingBox.from_str(position)
         result.append(hasher)
     return result
 
 
-def hash_positions(document: Document, pages=None) -> PageContentTextPositions:
-    assert isinstance(document, Document), type(document)
+def hash_positions(
+        document: iamraw.Document,
+        pages=None,
+) -> iamraw.PageContentTextPositions:
+    assert isinstance(document, iamraw.Document), type(document)
     collected = []
-    with SkipCollector(pages) as collector:
+    with utila.SkipCollector(pages) as collector:
         for page in document:
             pagenumber = page.page
             if collector.skip(pagenumber):
@@ -102,7 +97,11 @@ def hash_positions(document: Document, pages=None) -> PageContentTextPositions:
     for page in collected:
         pagenumber = page.page
         content = dict(page.data)
-        result.append(PageContentTextPosition(content=content, page=pagenumber))
+        result.append(
+            iamraw.PageContentTextPosition(
+                content=content,
+                page=pagenumber,
+            ))
     return result
 
 

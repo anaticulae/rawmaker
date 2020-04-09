@@ -6,4 +6,9 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-"""See iamraw.path."""
+
+import utila
+
+
+def images(path: str, prefix: str = '') -> str:
+    return utila.pathconnector(path, 'rawmaker', 'images_images', prefix)

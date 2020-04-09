@@ -27,7 +27,7 @@ def test_layout_fine_master72_page3_horizontal_problem(testdir, monkeypatch):
     horizontal = serializeraw.load_horizontals(source)[0][0][0]
     firstpage = navigators[0]
     first_footer_line = firstpage[32]
-    text = normalize_whitespaces(first_footer_line.text)
+    text = utila.normalize_whitespaces(first_footer_line.text)
     assert text.startswith('1 Aus Gründen'), text
     msg = f'{first_footer_line} {horizontal}'
     assert first_footer_line.bounding.y0 > horizontal.box.y1, msg
@@ -41,17 +41,7 @@ def test_layout_fine_bachelor111_page9_horizontal_problem(testdir, monkeypatch):
     navigators = serializeraw.create_pagetextnavigators_frompath(source)
     horizontal = serializeraw.load_horizontals(source)[0][0][-1]
     first_footer_line = navigators[0][34]
-    text = normalize_whitespaces(first_footer_line.text)
+    text = utila.normalize_whitespaces(first_footer_line.text)
     assert text.startswith('1Personal Digital'), text
     msg = f'{first_footer_line} {horizontal}'
     assert first_footer_line.bounding.y0 > horizontal.box.y1, msg
-
-
-@utila.refactor(major=1, minor=18, description='replace with utila code')
-def normalize_whitespaces(text: str) -> str:
-    """Remove unnecessary white spaces.
-
-    >>> normalize_whitespaces(' make    me happy' + utila.NEWLINE)
-    'make me happy'
-    """
-    return ' '.join(text.strip().split())

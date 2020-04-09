@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.17.8
+
+### Feature
+
+* add path images determination method (d1d7bd785351)
+
 ## v1.17.7
 
 ### Fix

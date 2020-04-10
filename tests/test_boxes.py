@@ -110,7 +110,7 @@ def test_intersecting_lines():
     assert intersected
 
 
-def test_boxex_determine_horizontals_master72pages():
+def test_boxes_determine_horizontals_master72pages():
     horizontals = None
     with rawmaker.reader.read(tests.resources.MASTER72) as doc:
         horizontals = rawmaker.features.boxes.determine_horizontal(

@@ -56,10 +56,7 @@ def work(document: str, pages: tuple) -> typing.Tuple[str, str]:
     return dumped_boxes, dumped_horizontal
 
 
-def determine_boxes(
-        document: pdfminer.pdfdocument.PDFDocument,
-        pages=None,
-):
+def determine_boxes(document: pdfminer.pdfdocument.PDFDocument, pages=None):
     result = determine_clusteritem(
         document,
         determine_pageboxes,
@@ -92,8 +89,13 @@ def determine_clusteritem(
 ):
     result = []
     document_lines = lines(document, pages=pages)
+
     for lines_in_page, page in document_lines:
         lines_in_page = bounding(lines_in_page)
+        # remove lines which are to short and represent a dot
+        lines_in_page = [item for item in lines_in_page if not dot(item)]
+        # remove duplicated lines
+        lines_in_page = make_unique(lines_in_page)
         grouped = determine_cluster(lines_in_page)
         collected = collector(grouped, page)
         result.append(collected)
@@ -357,14 +359,34 @@ def lines(  # pylint:disable=R1260
                 page.append(item)
             except KeyError:
                 utila.error(f'unsupported strategy {item}')
-        result.append((
-            page,
-            pagenumber,
-        ))
+        result.append((page, pagenumber))
     return result
 
 
-def distance(x0, y0, x1, y1):
+def make_unique(items: list) -> list:
+    # TODO: MOVE TO UTILA
+    result = []
+    for item in items:
+        if any((equals(item, it) for it in result)):
+            continue
+        result.append(item)
+    return result
+
+
+def equals(first, second, diff: float = 3.0) -> bool:
+    # TODO: MOVE TO UTILA
+    if distance(first.x0, first.y0, second.x0, second.y0) > diff:
+        return False
+    if distance(first.x1, first.y1, second.x1, second.y1) > diff:
+        return False
+    return True
+
+
+def dot(item) -> bool:
+    return distance(item[0], item[1], item[2], item[3]) <= 3.0
+
+
+def distance(x0, y0, x1, y1) -> float:
     return math.sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2))
 
 

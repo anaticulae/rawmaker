@@ -125,3 +125,12 @@ def test_boxes_determine_horizontals_master72pages():
     yvalue = [item.box.y0 for item in horizontals]
     expected = [405, 690, 714, 740, 720, 760]
     assert all((item >= exp for item, exp in zip(yvalue, expected))), yvalue
+
+
+def test_boxes_determine_boxes_bachelor56_titlepage():
+    firstpage = (0,)
+    with rawmaker.reader.read(tests.resources.BACHELOR56) as doc:
+        pages = rawmaker.features.boxes.determine_boxes(doc, firstpage)
+        boxes = pages[0].content
+
+    assert len(boxes) == 1, str(boxes)

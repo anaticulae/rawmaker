@@ -388,11 +388,3 @@ def dot(item) -> bool:
 
 def distance(x0, y0, x1, y1) -> float:
     return math.sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2))
-
-
-def commandline():
-    return utila.Flag(longcut=name(), message='Extract boxes out of document.')
-
-
-def name():
-    return 'boxes'

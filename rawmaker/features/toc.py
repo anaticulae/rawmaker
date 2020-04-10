@@ -15,7 +15,6 @@ from iamraw import Section
 from iamraw import create_toc
 from pdfminer.pdfdocument import PDFNoOutlines
 from serializeraw import dump_toc
-from utila import Flag
 from utila import error
 
 from rawmaker.reader import read
@@ -39,11 +38,3 @@ def work(document: str) -> str:
     # toc to yaml
     yaml = dump_toc(toc)
     return yaml
-
-
-def commandline():
-    return Flag(longcut=name(), message='Extract table of content.')
-
-
-def name():
-    return 'toc'

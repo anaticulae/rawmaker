@@ -163,11 +163,3 @@ def extract_document(
             pages=pages,
         )
     return document
-
-
-def commandline():
-    return utila.Flag(longcut=name(), message='Extract text of document.')
-
-
-def name():
-    return 'text'

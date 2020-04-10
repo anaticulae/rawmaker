@@ -150,11 +150,3 @@ def cropborder_from_page(content) -> iamraw.Border:
     assert x0 < x1
     assert y0 < y1
     return iamraw.Border(left=x0, right=x1, top=y0, bottom=y1)
-
-
-def commandline():
-    return utila.Flag(longcut=name(), message='Extract border for every page.')
-
-
-def name():
-    return 'border'

@@ -375,9 +375,9 @@ def make_unique(items: list) -> list:
 
 def equals(first, second, diff: float = 3.0) -> bool:
     # TODO: MOVE TO UTILA
-    if distance(first.x0, first.y0, second.x0, second.y0) > diff:
+    if distance(first[0], first[1], second[0], second[1]) > diff:
         return False
-    if distance(first.x1, first.y1, second.x1, second.y1) > diff:
+    if distance(first[2], first[3], second[2], second[3]) > diff:
         return False
     return True
 

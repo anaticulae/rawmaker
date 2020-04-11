@@ -52,7 +52,7 @@ def render_char(  # pylint:disable=W9015,W9016
     """
     try:
         text = font.to_unichr(cid)
-        assert isinstance(text, str)
+        assert isinstance(text, str), type(text)
     except pdfminer.pdffont.PDFUnicodeNotDefined:
         text = self.handle_undefined_char(font, cid)
 

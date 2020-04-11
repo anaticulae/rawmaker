@@ -28,6 +28,8 @@ backlog
 * add method to handle undefined character/ pdfminer. This is a source of
   characters which are longer than one!
 
+* run pdfminer with settings.STRICT = True to collect implementation error
+
 layout estimator
 ----------------
 

@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v1.17.10
+
+### Fix
+
+* support tuple and BoundingBox (7d2be27f95b0)
+* solve some problems with pdfminer text mining (ec63d576291c)
+* filter duplicated lines (60c3c2e78fa4)
+
 ## v1.17.9
 
 ## v1.17.8

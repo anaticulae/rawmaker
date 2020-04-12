@@ -102,14 +102,6 @@ def test_determine_textboxes():
     assert count == BOX_COUNT
 
 
-def test_intersecting_lines():
-    horizontal = (5, 0, 10, 0)
-    vertical = (10, 0, 10, 30)
-    intersected = rawmaker.features.boxes.intersecting_lines(
-        horizontal, vertical)
-    assert intersected
-
-
 def test_boxes_determine_horizontals_master72pages():
     horizontals = None
     with rawmaker.reader.read(tests.resources.MASTER72) as doc:

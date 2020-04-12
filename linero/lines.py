@@ -12,8 +12,6 @@ import statistics
 import configo
 import utila
 
-import linero.math
-
 HORIZONTAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=0.01).value
 
 VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=0.01)
@@ -45,7 +43,7 @@ def horiverti_percentage(items) -> float:
 
 
 def length_avg(items) -> float:
-    length = [linero.math.length(item) for item in items]
+    length = [utila.length(*item) for item in items]
     mean = statistics.mean(length)
     rounded = utila.roundme(mean)
     return rounded

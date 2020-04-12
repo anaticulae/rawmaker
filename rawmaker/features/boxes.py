@@ -6,8 +6,8 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+
 import functools
-import math
 import operator
 import typing
 
@@ -16,6 +16,7 @@ import iamraw
 import pdfminer.layout
 import serializeraw
 import utila
+import utila.math.line
 
 import rawmaker.features
 import rawmaker.features.border
@@ -93,9 +94,11 @@ def determine_clusteritem(
     for lines_in_page, page in document_lines:
         lines_in_page = bounding(lines_in_page)
         # remove lines which are to short and represent a dot
-        lines_in_page = [item for item in lines_in_page if not dot(item)]
+        lines_in_page = [
+            item for item in lines_in_page if not utila.isdot(item)
+        ]
         # remove duplicated lines
-        lines_in_page = make_unique(lines_in_page)
+        lines_in_page = utila.unique_lines(lines_in_page)
         grouped = determine_cluster(lines_in_page)
         collected = collector(grouped, page)
         result.append(collected)
@@ -178,11 +181,12 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
     def match(result, current):
         for clusterindex, cluster in enumerate(result):
             for clusteritem in cluster:
-                match = [
-                    intersecting_lines(clusteritem, test) for test in current
-                ]
-                if any(match):
-                    return clusterindex
+                for test in current:
+                    if intersecting_endings(
+                            clusteritem,
+                            test,
+                    ):
+                        return clusterindex
         return None
 
     def cluster(result):
@@ -212,37 +216,6 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
 
 
 MIN_DISTANCE = 3
-
-
-def intersecting_lines(
-        first: iamraw.BoundingBox,
-        second: iamraw.BoundingBox,
-) -> bool:
-    """Check if start or end point of two line match.
-
-    Args:
-        first(BoundingBox): line to cross
-        second(BoundingBox): line to cross
-    Returns:
-        True if least one elements matches, else False
-    """
-    # Check only if points intersects
-    x0, y0, x2, y2 = first
-    x1, y1, x3, y3 = second
-
-    first_distance = min(distance(x0, y0, x1, y1), distance(x0, y0, x3, y3))
-    second_distance = min(distance(x2, y2, x3, y3), distance(x2, y2, x1, y1))
-    if first_distance < 0.00001 and second_distance < 0.00001:
-        # intersecting with themself
-        return None
-
-    if first_distance < MIN_DISTANCE:
-        return True
-
-    if second_distance < MIN_DISTANCE:
-        return True
-
-    return False
 
 
 def bounding(items):
@@ -363,28 +336,34 @@ def lines(  # pylint:disable=R1260
     return result
 
 
-def make_unique(items: list) -> list:
-    # TODO: MOVE TO UTILA
-    result = []
-    for item in items:
-        if any((equals(item, it) for it in result)):
-            continue
-        result.append(item)
-    return result
+def intersecting_endings(
+        first: iamraw.BoundingBox,
+        second: iamraw.BoundingBox,
+) -> bool:
+    """Check if start or end point of two line match.
 
+    Args:
+        first(BoundingBox): line to cross
+        second(BoundingBox): line to cross
+    Returns:
+        True if least one elements matches, else False
+    """
+    # Check only if points intersects
+    x0, y0, x2, y2 = first
+    x1, y1, x3, y3 = second
 
-def equals(first, second, diff: float = 3.0) -> bool:
-    # TODO: MOVE TO UTILA
-    if distance(first[0], first[1], second[0], second[1]) > diff:
-        return False
-    if distance(first[2], first[3], second[2], second[3]) > diff:
-        return False
-    return True
+    first_distance = min(
+        utila.length(x0, y0, x1, y1), utila.length(x0, y0, x3, y3))
+    second_distance = min(
+        utila.length(x2, y2, x3, y3), utila.length(x2, y2, x1, y1))
+    if first_distance < 0.00001 and second_distance < 0.00001:
+        # intersecting with themself
+        return None
 
+    if first_distance < MIN_DISTANCE:
+        return True
 
-def dot(item) -> bool:
-    return distance(item[0], item[1], item[2], item[3]) <= 3.0
+    if second_distance < MIN_DISTANCE:
+        return True
 
-
-def distance(x0, y0, x1, y1) -> float:
-    return math.sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2))
+    return False

@@ -8,8 +8,7 @@
 # =============================================================================
 
 import iamraw
-
-import linero.math
+import utila.math.line
 
 
 def run(lines: iamraw.BoundingBoxes, maxdiff=5.0) -> iamraw.BoundingBoxes:  # pylint:disable=R1260
@@ -26,13 +25,13 @@ def run(lines: iamraw.BoundingBoxes, maxdiff=5.0) -> iamraw.BoundingBoxes:  # py
             for clusteritem in cluster:
                 for test in current:
                     try:
-                        if not linero.math.intersecting_lines(
+                        if not utila.math.line.intersecting_lines(
                                 clusteritem,
                                 test,
                                 max_diff=maxdiff,
                         ):
                             continue
-                    except linero.math.IndenticalLineError:
+                    except utila.math.line.IndenticalLineError:
                         return clusterindex
                     return clusterindex
         return None

@@ -13,6 +13,7 @@ import tests
 import tests.resources
 
 
+@utila.skip_longrun
 def test_master_compare_vim(testdir, monkeypatch):
     """Update test data with `cmd` below. Copy from generated test."""
     cmd = f'-i {tests.resources.VIM_PDF} -j8 --pages=1:4'

@@ -99,6 +99,7 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
     assert len(files_written) == expected, str(files_written)
 
 
+@utila.skip_longrun
 def test_rawmaker_cli_run_file_without_extention(testdir, monkeypatch):
     source = os.path.join(str(testdir), 'hello')
     utila.file_copy(tests.resources.RESTRUCTURED_PDF, source)

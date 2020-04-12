@@ -23,5 +23,5 @@ def test_master_compare_vim(testdir, monkeypatch):
     diff = f'diff -rd --suppress-common-lines -y {golden} {current}'
 
     completed = utila.run(diff)
-    print(completed.stdout)
+    utila.error(completed.stdout)
     assert completed.returncode == utila.SUCCESS

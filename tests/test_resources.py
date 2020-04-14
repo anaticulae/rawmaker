@@ -13,7 +13,6 @@ Use multiprocessing to reduce test duration.
 """
 
 import glob
-import os
 
 import pytest
 import utila
@@ -23,18 +22,27 @@ import tests.resources
 
 COMMAND = 'power'
 
+SKIP = {
+    'PDF32000_2008.pdf',
+}
+
 
 def prepare_resources():
-    command = 'power --all -o %s' % tests.resources.RESOURCES
-
-    completed = utila.run(command, tests.resources.RESOURCES)
-    assert completed.returncode == utila.SUCCESS, str(completed)
+    with utila.chdir(tests.resources.RESOURCES):
+        command = 'power --all'
+        completed = utila.run(command, tests.resources.RESOURCES)
+        assert completed.returncode == utila.SUCCESS, str(completed)
 
 
 def locate_all_pdfs():
-    pattern = os.path.join(tests.resources.RESOURCES, '**/*.pdf')
-    located = glob.glob(pattern, recursive=True)
-    return located
+    with utila.chdir(tests.resources.RESOURCES):
+        located = glob.glob('**/*.pdf', recursive=True)
+    result = []
+    for item in located:
+        if any((test in str(item) for test in SKIP)):
+            continue
+        result.append(item)
+    return result
 
 
 def test_locate_test_resources():

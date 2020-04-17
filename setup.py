@@ -67,6 +67,7 @@ if __name__ == "__main__":
             ],
         },
         packages=[
+            'figureo',
             'letty',
             'letty.quality',
             'linero',

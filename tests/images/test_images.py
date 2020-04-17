@@ -67,16 +67,22 @@ def test_images_export_master116(testdir):
     assert extracted
 
 
-@pytest.mark.parametrize('page, expected, ext', [
-    (10, 1, 'png'),
-    (19, 1, 'png'),
-    (54, 1, 'png'),
-    (54, 1, 'jpg'),
-    (55, 1, 'png'),
-    (56, 1, 'png'),
-    (57, 1, 'png'),
+@pytest.mark.parametrize('page, expected, ext, expected_bounding_height', [
+    (10, 1, 'png', 140),
+    (19, 1, 'png', 291),
+    (54, 1, 'png', 340),
+    (54, 1, 'jpg', 340),
+    (55, 1, 'png', 600),
+    (56, 1, 'png', 600),
+    (57, 1, 'png', 600),
 ])
-def test_images_export_bachelor63_extract_images(page, expected, ext, testdir):
+def test_images_export_bachelor63_extract_images(
+        page,
+        expected,
+        ext,
+        expected_bounding_height,
+        testdir,
+):
     source = tests.resources.BACHELOR63
     root = testdir.tmpdir
     pages = (page,)
@@ -93,6 +99,10 @@ def test_images_export_bachelor63_extract_images(page, expected, ext, testdir):
                 pages=pages,
             )
     assert extracted
+    image = extracted[0][0]
+    bounding = image.bounding
+    height = bounding[3] - bounding[1]
+    assert height >= expected_bounding_height, str(bounding)
 
 
 @pytest.mark.parametrize(

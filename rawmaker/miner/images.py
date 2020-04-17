@@ -207,7 +207,7 @@ BITMAP = '1'
 def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImage: # yapf:disable
     """Merge list of images to one image."""
     ext = extention(images[0])
-    bounding = images[0].bbox
+    bounding = tuple(images[0].bbox)
     if len(images) == 1:
         # TODO: png is not supported by pdfimage exporter properly
         if ext != 'png':
@@ -265,7 +265,10 @@ def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImag
         current = PIL.Image.open(loaded)
         # render to common image
         renderer.bitmap((0, ypos * line_height), bitmap=current)
-    return MergedImage(result, ext, bounding)
+    # update bottom bounding of merged rectangle
+    last = images[-1].bbox
+    multi_bounding = (bounding[0], bounding[1], last[2], last[3])
+    return MergedImage(result, ext, multi_bounding)
 
 
 def get_colorspace(image):

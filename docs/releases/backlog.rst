@@ -19,7 +19,26 @@ backlog
 
 * Imagero (planned)
 
-* Figero (planned)
+* support rotated pages, see master116
+
+* add black and white analysis, move to image analysis package? Make this
+  optional in GUI to let the user check if paper is black and white
+  printable.
+
+Figero (planned)
+----------------
+
+* add gray image with detected message to mark area of figure
+
+Math detector
+-------------
+
+* detect areas of math formulars
+
+* run char-based analysis on math area
+
+* add feature to merge different layout analysis: normal and char based
+  for example
 
 * Tabelero (planned)
 

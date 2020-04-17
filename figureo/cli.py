@@ -11,6 +11,7 @@ import utila
 import utila.cli
 
 import figureo
+import figureo.extract
 
 
 @utila.saveme
@@ -31,9 +32,12 @@ def main() -> int:
 
     inpath, _ = utila.cli.sources(args, singleinput=True)
     inpath = inpath[0]
+
     pages = None
     if args['pages'] is not None:
         pages = utila.parse_pages(args['pages'])
+
+    figureo.extract.extract_figures(inpath, pages=pages)
 
     parser.print_help()
     return utila.FAILURE

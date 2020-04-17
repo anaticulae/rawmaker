@@ -14,7 +14,6 @@ a pdf file.
 Support formats:
     - png?
     - jpg?
-
 """
 
 import collections
@@ -65,10 +64,9 @@ def extract_pages(
         for parsed in images:
             bounding = parsed.bounding
             path = os.path.join(outputfolder, parsed.filename)
-            # TODO: REPLACE WITH utila.FILE_EXT
-            ext = parsed.filename[-3:]
             loaded = utila.file_read_binary(path)
             info = rawmaker.images.info.imageinfo(path, page, bounding)
+            ext = utila.file_ext(path)
             pagecontent.append((info, (loaded, ext)))
         if pagecontent:
             result.append(PageContentImages(page=page, content=pagecontent))

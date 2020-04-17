@@ -25,11 +25,6 @@ backlog
   optional in GUI to let the user check if paper is black and white
   printable.
 
-Figero (planned)
-----------------
-
-* add gray image with detected message to mark area of figure
-
 Math detector
 -------------
 

@@ -1,0 +1,22 @@
+.. _1_18_0:
+
+RP 1.18.0
+=========
+
+figero
+------
+
+* [ ] extract areas of figures
+
+* [ ] add yaml file with figure information (bounding, position)
+
+* [ ] add optional disabled message
+
+
+code quality
+------------
+
+before
+~~~~~~
+
+* Your code has been rated at 10.00/10

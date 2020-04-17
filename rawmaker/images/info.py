@@ -25,7 +25,7 @@ class ImageInformation:
 
 
 def imageinfo(path: str, page: int, bounding: tuple) -> ImageInformation:
-    assert isinstance(bounding, iamraw.BoundingBox), type(bounding)
+    assert isinstance(bounding, (iamraw.BoundingBox, tuple)), type(bounding)
     try:
         image = PIL.Image.open(path)
         image.load()

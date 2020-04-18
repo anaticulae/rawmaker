@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v1.18.0
+
+### Feature
+
+* add extraction to command line interface (78dccc6a3ee1)
+* add method to dump raw figures and figure information (482b83188184)
+* add method to extract bounding and position of figures (c8b42fa4b551)
+* add basic cli structure and testing infrastructure (9a4589235124)
+
+### Fix
+
+* extend interface documentation (1abddf4d3db8)
+* merge bounding of merged images correctly (20b45707cafd)
+* allow tuple bounding boxes in images info analysis (ffbe900e13fd)
+
 ## v1.17.13
 
 ## v1.17.12

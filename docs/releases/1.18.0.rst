@@ -6,11 +6,11 @@ RP 1.18.0
 figero
 ------
 
-* [ ] extract areas of figures
+* [x] extract areas of figures
 
-* [ ] add yaml file with figure information (bounding, position)
+* [x] add yaml file with figure information (bounding, position)
 
-* [ ] add optional disabled message
+* [/] add optional disabled message
 
 
 code quality

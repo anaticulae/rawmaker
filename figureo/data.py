@@ -12,7 +12,7 @@ import itertools
 import os
 import typing
 
-import PIL
+import PIL.Image
 import utila
 import yaml
 
@@ -20,7 +20,7 @@ import yaml
 @dataclasses.dataclass
 class Figure:
 
-    data: PIL.Image = None
+    data: PIL.Image.Image = None
     bounding: tuple = None
     page: int = None
     index: int = None
@@ -58,7 +58,7 @@ def load_figures(path: str, skip_raw: bool = True):
     return result
 
 
-def write_image_raw(data: PIL.Image, path: str, page: int, index: int):
+def write_image_raw(data: PIL.Image.Image, path: str, page: int, index: int):
     name = filename(page, index, ext=EXT)
     outpath = os.path.join(path, name)
     with open(outpath, mode='wb') as output:
@@ -87,7 +87,7 @@ def _load_figure(path: str) -> Figure:
     return Figure(page=page, index=index, bounding=bounding)
 
 
-def _load_image_raw(path: str) -> PIL.Image:
+def _load_image_raw(path: str) -> PIL.Image.Image:
     try:
         image = PIL.Image.open(path)
         image.load()

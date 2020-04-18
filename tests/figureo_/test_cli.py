@@ -16,6 +16,6 @@ import tests.resources
 @pytest.mark.parametrize('command', [
     '--help',
 ])
-def test_figureo_help(command, testdir, monkeypatch):  #pylint: disable=W0613
+def test_figures_help(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
     tests.figureo_.run(command, monkeypatch=monkeypatch)

@@ -15,6 +15,7 @@ import utila
 
 import figureo.data
 import rawmaker.converter.basic
+import rawmaker.reader
 
 
 def extract_figures(path: str, pages: tuple = None):

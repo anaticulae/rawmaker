@@ -7,10 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
+
 import utila
 import utila.cli
 
 import figureo
+import figureo.data
 import figureo.extract
 
 
@@ -30,14 +33,19 @@ def main() -> int:
     )
     args = utila.parse(parser)  # pylint:disable=W0612
 
-    inpath, _ = utila.cli.sources(args, singleinput=True)
+    inpath, outpath = utila.cli.sources(args, singleinput=True)
     inpath = inpath[0]
+    if not os.path.isfile(inpath):
+        utila.error(f'require pdf file: {inpath}')
+        return utila.FAILURE
 
     pages = None
     if args['pages'] is not None:
         pages = utila.parse_pages(args['pages'])
 
-    figureo.extract.extract_figures(inpath, pages=pages)
-
-    parser.print_help()
-    return utila.FAILURE
+    extracted = figureo.extract.extract_figures(inpath, pages=pages)
+    if extracted:
+        os.makedirs(outpath, exist_ok=True)
+        utila.log(f'write {len(extracted)} figures')
+        figureo.data.dump_figures(extracted, outpath)
+    return utila.SUCCESS

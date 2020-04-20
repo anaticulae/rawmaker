@@ -21,6 +21,7 @@ import utila
 
 import tests
 import tests.linero_
+import tests.pdfinfo_
 import tests.resources
 
 
@@ -53,6 +54,8 @@ def test_nightly_extract_all_rawmaker_linero(source, testdir, monkeypatch):  # p
 
 @utila.skip_nightly
 @pytest.mark.parametrize('source', sources())
-def test_nightly_pdfinfo(source, testdir):  # pylint:disable=W0621
-    completed = utila.run(f'pdfinfo -i {source}', cwd=testdir.tmpdir)
-    assert completed.returncode == utila.SUCCESS, str(completed)
+def test_nightly_pdfinfo(source, testdir, monkeypatch):  # pylint:disable=W0621
+    cmd = f'-i {source}'
+    tests.pdfinfo_.run_success(cmd, monkeypatch=monkeypatch)
+
+

@@ -20,6 +20,7 @@ import pytest
 import utila
 
 import tests
+import tests.figureo_
 import tests.linero_
 import tests.pdfinfo_
 import tests.resources
@@ -59,3 +60,8 @@ def test_nightly_pdfinfo(source, testdir, monkeypatch):  # pylint:disable=W0621
     tests.pdfinfo_.run_success(cmd, monkeypatch=monkeypatch)
 
 
+@utila.skip_nightly
+@pytest.mark.parametrize('source', sources())
+def test_nightly_figureo(source, testdir, monkeypatch):  # pylint:disable=W0621
+    cmd = f'-i {source}'
+    tests.figureo_.run(cmd, monkeypatch=monkeypatch)

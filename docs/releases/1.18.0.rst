@@ -3,8 +3,8 @@
 RP 1.18.0
 =========
 
-figero
-------
+figuero
+-------
 
 * [x] extract areas of figures
 
@@ -19,4 +19,10 @@ code quality
 before
 ~~~~~~
 
+* Your code has been rated at 10.00/10
+
+after
+~~~~~
+
+* Total coverage: 91.81%
 * Your code has been rated at 10.00/10

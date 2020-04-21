@@ -35,8 +35,7 @@ def prepare_resources():
 
 
 def locate_all_pdfs():
-    with utila.chdir(tests.resources.RESOURCES):
-        located = glob.glob('**/*.pdf', recursive=True)
+    located = glob.glob(f'{tests.resources.RESOURCES}/**/*.pdf', recursive=True)
     result = []
     for item in located:
         if any((test in str(item) for test in SKIP)):
@@ -63,9 +62,11 @@ def layout(request):
     return request.param
 
 
-def convert_path(path):
+def convert_path(path: str) -> str:
     """Convert to relative and forward slashed path, remove leading slash"""
-    return path.replace(tests.resources.RESOURCES, '').replace('\\', '/')[1:]
+    relative = utila.make_relative(path, tests.resources.RESOURCES)
+    result = relative.replace('\\', '_')[1:]
+    return result
 
 
 # documents which does not pass the current implementation

@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.18.1
+
+### Fix
+
+* fix huge running path (afc7d25f5211)
+
 ## v1.18.0
 
 ### Feature

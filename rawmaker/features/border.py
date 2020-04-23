@@ -106,10 +106,7 @@ def pagesizes(
     return result
 
 
-def boundingboxes_from_page(
-        content: list,
-        contentid: int,
-) -> tuple:
+def boundingboxes_from_page(content: list, contentid: int) -> tuple:
     """Extract bounding boxes from page `content`.
 
     Args:

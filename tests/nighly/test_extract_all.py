@@ -14,7 +14,6 @@ reposity are extractable by rawmaker and exit with exitcode 0.
 """
 
 import glob
-import os
 
 import pytest
 import utila
@@ -26,31 +25,57 @@ import tests.pdfinfo_
 import tests.resources
 
 
+def pdf():
+    located = glob.glob(f'{tests.resources.RESOURCES}/**/*.pdf', recursive=True)
+    result = []
+    for item in located:
+        if any((test in str(item) for test in SKIP)):
+            continue
+        result.append(item)
+    return result
+
+
+def convert_path(path: str) -> str:
+    """Convert to relative and forward slashed path, remove leading slash."""
+    relative = utila.make_relative(path, tests.resources.RESOURCES)
+    result = relative.replace('\\', '_')[1:]
+    return result
+
+
+SKIP = {
+    'PDF32000_2008.pdf',
+}
+
+# documents which does not pass the current implementation
+# add location to mark document as unsupported
+UNSUPPORTED_DOCUMENTS = {}
+
+
 def sources():
-    root = tests.resources.RESOURCES
-    with utila.chdir(root):
-        collected = glob.glob('**/*.pdf')
-    joined = [utila.make_absolute(item, cwd=root) for item in collected]
     result = [
         pytest.param(
             item,
-            id=utila.make_relative(item, root=root),
-        ) for item in joined
+            id=convert_path(item),
+            marks=pytest.mark.xfail(reason="unsupported implementation"),
+        ) if convert_path(item) in UNSUPPORTED_DOCUMENTS else pytest.param(
+            item,
+            id=convert_path(item),
+        ) for item in pdf()
     ]
     return result
 
 
-@utila.skip_nightly
+@utila.skip_longrun
 @pytest.mark.parametrize('source', sources())
-def test_nightly_extract_all_rawmaker_linero(source, testdir, monkeypatch):  # pylint:disable=W0621
-    """Collect all existing pdf files an extract all features out of it."""
-    source = os.path.join(tests.resources.RESOURCES, source)
-
-    cmd = f'-i {source} -j=8'
+def test_nightly_rawmaker_and_linero(source, testdir, monkeypatch):  # pylint:disable=W0621
+    # use first 10 pages for normal testing and extract complete document
+    # only in nighly tests.
+    layout = '--char_margin 5.0 --boxes_flow 1.0 --line_margin 0.3'
+    pages = '' if utila.NIGHTLY else '--page=0:10'
+    cmd = f'-i {source} {layout} -j=8 {pages} -VVV'
     tests.run_success(cmd, monkeypatch=monkeypatch)
 
-    cmd = '-j=8'
-    tests.linero_.run_success(cmd, monkeypatch=monkeypatch)
+    tests.linero_.run_success('', monkeypatch=monkeypatch)
 
 
 @utila.skip_nightly
@@ -65,3 +90,8 @@ def test_nightly_pdfinfo(source, testdir, monkeypatch):  # pylint:disable=W0621
 def test_nightly_figureo(source, testdir, monkeypatch):  # pylint:disable=W0621
     cmd = f'-i {source}'
     tests.figureo_.run(cmd, monkeypatch=monkeypatch)
+
+
+def test_locate_test_resources():
+    located = pdf()
+    assert len(located) > 20

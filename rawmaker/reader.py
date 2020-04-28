@@ -11,6 +11,7 @@ from contextlib import contextmanager
 from os.path import exists
 from os.path import isfile
 
+import utila
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfdocument import PDFSyntaxError
 from pdfminer.pdfparser import PDFParser
@@ -68,6 +69,7 @@ def open_document(parser: PDFParser, path: str, password: str) -> PDFDocument:
         return document
 
     try:
+        utila.info('try to use `fallback` pdf loader')
         document = PDFDocument(parser, password, fallback=True)
     except PDFSyntaxError as exc:
         raise InvalidPDF(path) from exc

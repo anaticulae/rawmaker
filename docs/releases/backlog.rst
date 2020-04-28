@@ -60,3 +60,9 @@ pdfinfo
 * inform about using compatible mode, which requires more exection time
 
 * print evaluation result to stdout if flag is used?
+
+linero
+------
+
+* box matching is very slow, split into multiple corese? Replace with
+  better algo approach.

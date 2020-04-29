@@ -41,7 +41,7 @@ def main() -> int:
 
     pages = None
     if args['pages'] is not None:
-        pages = utila.parse_pages(args['pages'])
+        pages = utila.parse_pages(','.join(args['pages']))
 
     extracted = figureo.extract.extract_figures(inpath, pages=pages)
     if extracted:

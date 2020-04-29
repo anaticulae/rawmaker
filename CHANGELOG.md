@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.18.3
+
+### Feature
+
+* log using fallback mode (d7590f92041a)
+
 ## v1.18.2
 
 ## v1.18.1

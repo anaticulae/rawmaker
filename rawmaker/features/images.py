@@ -30,10 +30,10 @@ import rawmaker.reader
 PageContentImages = collections.namedtuple('PageContentImages', 'content, page')
 PageContentImagesList = typing.List[PageContentImages]
 
-ImageInformations = typing.List[typing.Tuple[str, bytes]]
+DumpedImageInformations = typing.List[typing.Tuple[str, bytes]]
 
 
-def work(document: str, pages: tuple = None) -> ImageInformations:
+def work(document: str, pages: tuple = None) -> DumpedImageInformations:
     extracted = extract_pages(document, pages=pages)
     result = []
     for page in extracted:

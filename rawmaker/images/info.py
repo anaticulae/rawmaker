@@ -8,6 +8,7 @@
 # =============================================================================
 
 import dataclasses
+import typing
 
 import iamraw
 import PIL.Image
@@ -22,6 +23,9 @@ class ImageInformation:
     page: int = None
     dpi: tuple = None
     bounding: tuple = None
+
+
+ImageInformations = typing.List[ImageInformation]
 
 
 def imageinfo(path: str, page: int, bounding: tuple) -> ImageInformation:

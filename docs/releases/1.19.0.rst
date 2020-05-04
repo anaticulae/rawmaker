@@ -8,7 +8,7 @@ outlines
 
 * [x] rename toc step to outlines
 
-* [ ] add documentation
+* [x] add documentation
 
 * [ ] save raw text
 

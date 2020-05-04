@@ -6,9 +6,22 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-"""Table of content.
+"""Document Outlines
+=================
+
+See PDF2008: 12.3.3 Document Outline
 
 Basic structure of get_outlines: (level, title, args, children)
+
+Entries of outlines dict
+------------------------
+
+Dest(str, list): destination if item was clicked/activated, not present
+                 if A is present.
+A(dict): Action(launch application, play sound, chaning state) Shall
+         not be present if an DEST item is present
+SE(dict): Reference to structure element(see Structural Hierarchy)
+
 """
 
 from iamraw import Section
@@ -21,8 +34,9 @@ from rawmaker.reader import read
 
 
 def work(document: str) -> str:
-    """Extract table of content from pdf document. If no outlines are provided
-    by the document, an empty list is returned"""
+    """Extract outlines of a pdf document. If there are no outlines
+    provided dump empty list.
+    """
     assert isinstance(document, str), str(document)
     outlines = []
     with read(document) as pdf:

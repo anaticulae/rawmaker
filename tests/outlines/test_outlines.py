@@ -62,14 +62,31 @@ def present_inerror(*items, captured):
 
 
 def bachelor37(toc):
-    assert len(toc.children) == 6
+    assert len(toc) == 6
     # ensure to parse pages correctly
     pages = [item.page for item in toc.children]
     assert pages == [5, 6, 15, 22, 27, 33], str(pages)
 
 
+def vim(toc):
+    assert len(toc) == 2
+    assert len(toc[1]) == 30
+
+
+def master116(toc):
+    """Hint: table of content does not matches seen table of content."""
+    assert len(toc) == 16
+
+
+def bachelor111(toc):
+    assert len(toc) == 13
+
+
 @pytest.mark.parametrize('source, validate', [
+    pytest.param(tests.resources.VIM_PDF, vim, id='vim'),
     pytest.param(tests.resources.BACHELOR37, bachelor37, id='bachelor37'),
+    pytest.param(tests.resources.MASTER116, master116, id='master116'),
+    pytest.param(tests.resources.BACHELOR111, bachelor111, id='bachelor111'),
 ])
 def test_outlines_validate(source, validate):
     extracted = rawmaker.features.outlines.work(source)

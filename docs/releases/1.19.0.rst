@@ -12,7 +12,7 @@ outlines
 
 * [x] save raw text
 
-* [ ] validate with 5 examples
+* [x] validate with 5 examples
 
 code quality
 ------------
@@ -21,4 +21,11 @@ before
 ~~~~~~
 
 * Total coverage: 91.81%
+* Your code has been rated at 10.00/10
+
+after
+~~~~~
+
+* Todo: 50
+* Total coverage: 92.51%
 * Your code has been rated at 10.00/10

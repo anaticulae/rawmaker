@@ -69,6 +69,7 @@ BACHELOR37 = os.path.join(BACHELOR, 'page_37_tables.pdf')
 BACHELOR56 = os.path.join(BACHELOR, 'page_56_hard_to_read.pdf')
 BACHELOR63 = os.path.join(BACHELOR, 'page_63_images_toc.pdf')
 BACHELOR111 = os.path.join(BACHELOR, 'page_111_images_toc.pdf')
+BACHELOR241 = os.path.join(BACHELOR, 'page241.pdf')
 
 TECHNICAL24 = os.path.join(TECHNICAL, 'page_24_color_figures_images.pdf')
 REPORT19 = os.path.join(TECHNICAL, 'report.pdf')
@@ -83,6 +84,7 @@ GOLDEN_VIM = os.path.join(GOLDEN, 'vim')
 REQUIRED_RESOURCES = [
     BACHELOR,
     BACHELOR111,
+    BACHELOR241,
     BACHELOR37,
     BACHELOR56,
     BACHELOR63,

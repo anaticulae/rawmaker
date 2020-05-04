@@ -8,6 +8,8 @@
 # =============================================================================
 
 import pdfminer
+import pytest
+import serializeraw
 import utila
 
 import rawmaker.error
@@ -57,3 +59,20 @@ def present_inerror(*items, captured):
         for item in collected:
             utila.error(f'missing: {item}')
     assert not collected, 'see error log'
+
+
+def bachelor37(toc):
+    assert len(toc.children) == 6
+    # ensure to parse pages correctly
+    pages = [item.page for item in toc.children]
+    assert pages == [5, 6, 15, 22, 27, 33], str(pages)
+
+
+@pytest.mark.parametrize('source, validate', [
+    pytest.param(tests.resources.BACHELOR37, bachelor37, id='bachelor37'),
+])
+def test_outlines_validate(source, validate):
+    extracted = rawmaker.features.outlines.work(source)
+    toc = serializeraw.load_toc(extracted)
+    assert toc
+    validate(toc)

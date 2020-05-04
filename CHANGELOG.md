@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v1.19.0
+
+### Feature
+
+* parse raw pdf page count to outlines (e7fa72e46925)
+* add destination parser (9eedd85a2e59)
+* rename `toc` to `outlines` step (14a33f75d452)
+* introduce ImageInformation and solve naming conflict (ac59c5e9b4af)
+
+### Fix
+
+* fix accessing holy value (d11a98ea954c)
+
+### Documentation
+
+* add basic module documentation (82a914da2ba4)
+
 ## v1.18.3
 
 ### Feature

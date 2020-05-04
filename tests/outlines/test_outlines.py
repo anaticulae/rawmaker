@@ -8,6 +8,7 @@
 # =============================================================================
 
 import pdfminer
+import utila
 
 import rawmaker.error
 import rawmaker.features.outlines
@@ -26,12 +27,9 @@ def test_outlines_from_document_no_outlines(monkeypatch, capsys):
             'get_outlines',
             get_outlines,
         )
-        # from pdfminer.pdfdocument import PDFDocument
         rawmaker.features.outlines.work(tests.resources.VIM_PDF)
-    _, error = capsys.readouterr()
 
-    assert 'error' in error.lower(), error
-    assert 'outlines' in error.lower(), error
+    present_inerror('error', 'outlines', captured=capsys)
 
 
 def test_outlines_without_outlines():
@@ -40,3 +38,22 @@ def test_outlines_without_outlines():
 
     # no toc extraction
     assert len(extracted) < 10, str(extracted)
+
+
+def present_inerror(*items, captured):
+    # TODO: MOVE TO UTILA>TEST
+    # TODO: SUPPORT SINGLE STRING?
+    stdout, error = captured.readouterr()
+    error = error.lower()
+    collected = []
+    for item in items:
+        if item in error:
+            continue
+        collected.append(item)
+
+    if collected:
+        utila.log(stdout)
+        utila.log(error)
+        for item in collected:
+            utila.error(f'missing: {item}')
+    assert not collected, 'see error log'

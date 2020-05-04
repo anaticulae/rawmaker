@@ -104,9 +104,9 @@ WORKPLAN = [
         ),
     ),
     utila.create_step(
-        'toc',
+        'outlines',
         inputs=PDF_INPUT,
-        output=('toc',),
+        output=('outlines',),
     ),
 ]
 

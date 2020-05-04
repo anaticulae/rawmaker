@@ -6,7 +6,7 @@ RP 1.19.0
 outlines
 --------
 
-* [ ] rename toc step to outlines
+* [x] rename toc step to outlines
 
 * [ ] add documentation
 

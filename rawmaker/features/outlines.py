@@ -24,13 +24,12 @@ SE(dict): Reference to structure element(see Structural Hierarchy)
 
 """
 
-from iamraw import Section
-from iamraw import create_toc
-from pdfminer.pdfdocument import PDFNoOutlines
-from serializeraw import dump_toc
-from utila import error
+import iamraw
+import pdfminer.pdfdocument
+import serializeraw
+import utila
 
-from rawmaker.reader import read
+import rawmaker.reader
 
 
 def work(document: str) -> str:
@@ -38,17 +37,19 @@ def work(document: str) -> str:
     provided dump empty list.
     """
     assert isinstance(document, str), str(document)
-    outlines = []
-    with read(document) as pdf:
+    with rawmaker.reader.read(document) as pdf:
         try:
             # extract all outlines from pdf
             outlines = list(pdf.get_outlines())
-        except PDFNoOutlines:
-            error('Could not locatate any outlines')
+        except pdfminer.pdfdocument.PDFNoOutlines:
+            outlines = []
+            utila.error('could not locatate any outlines')
 
-    data = [Section(level, title) for (level, title, dest, a, se) in outlines]
-    toc = create_toc(data)
+    data = []
+    for (level, title, dest, a, se) in outlines:  # pylint:disable=W0612,C0103
+        data.append(iamraw.Section(level, title))
 
+    toc = iamraw.create_toc(data)
     # toc to yaml
-    yaml = dump_toc(toc)
+    yaml = serializeraw.dump_toc(toc)
     return yaml

@@ -13,6 +13,12 @@ Hint: There is no direct link between `Annotation` a the real pdf page.
 Therefore we have to extract the reference and link them with the
 page-header to determine the real pdf page. See: `pageids` and
 `solve_pageid.`
+
+Types:
+
+- Simple: Page Number is directly encoded
+- Named: Solve `Destination` reference to determine page number
+- Explicit: PDFPageReference is given
 """
 
 import contextlib
@@ -48,7 +54,17 @@ class NamedDestination(DestinationMixin):
 
 
 def parse(item, pagelookup: dict = None) -> ExplicitDestination:
-    explicit = parse_explict(item.resolve())
+    fitr = parse_fitr(item)
+    if fitr:
+        return fitr
+
+    simple = parse_simple(item)
+    if simple:
+        return simple
+    try:
+        explicit = parse_explict(item.resolve())
+    except AttributeError:
+        explicit = parse_explict(item)
     if explicit:
         if pagelookup:
             explicit.page = pagelookup[explicit.page]
@@ -62,11 +78,40 @@ def parse(item, pagelookup: dict = None) -> ExplicitDestination:
     return None
 
 
+def parse_simple(item):
+    # Page number is directly encoded, therefore we can convert and
+    # return. Example: # {'S': /'GoTo', 'D': b'0'}
+    with contextlib.suppress(TypeError, AttributeError):
+        page = item['D'].decode('ascii')
+        return ExplicitDestination(page=page)
+    return None
+
+
+def parse_fitr(item):
+    with contextlib.suppress(AttributeError):
+        item = item.resolve()
+    try:
+        item = item['D']
+    except TypeError:
+        return None
+    # {'S': /'GoTo', 'D': [0, /'FitR', 0, 625, 440, 309]}
+    # [0, /'FitR', 0, 625, 440, 309]
+    with contextlib.suppress(TypeError, AttributeError, IndexError):
+        if item[1].name == 'FitR':
+            return ExplicitDestination(page=item[0])
+    return None
+
+
 def parse_explict(item) -> ExplicitDestination:
     with contextlib.suppress(KeyError):
         item = item['D']
+
+    if isinstance(item, bytes):
+        # {'S': /'GoTo', 'D': b'subsection.A.5.4'}
+        return None
+
     try:
-        page, _, left, top, zoom = item
+        page, _, left, top, zoom = item  # TODO: FLIP Y-Coordinate
     except ValueError:
         return None
 
@@ -96,6 +141,10 @@ def parse_named(item) -> ExplicitDestination:
 def pageids(path: str) -> dict:
     result = {}
     with open(path, mode='rb') as pdf:
-        for index, page in enumerate(pdfminer.pdfpage.PDFPage.get_pages(pdf)):
+        pages = pdfminer.pdfpage.PDFPage.get_pages(
+            pdf,
+            check_extractable=False,
+        )
+        for index, page in enumerate(pages):
             result[page.pageid] = index
     return result

@@ -21,14 +21,15 @@ Dest(str, list): destination if item was clicked/activated, not present
 A(dict): Action(launch application, play sound, chaning state) Shall
          not be present if an DEST item is present
 SE(dict): Reference to structure element(see Structural Hierarchy)
-
 """
 
 import iamraw
 import pdfminer.pdfdocument
+import pdfminer.pdfpage
 import serializeraw
 import utila
 
+import rawmaker.destination
 import rawmaker.reader
 
 
@@ -37,19 +38,30 @@ def work(document: str) -> str:
     provided dump empty list.
     """
     assert isinstance(document, str), str(document)
+    data = []
     with rawmaker.reader.read(document) as pdf:
         try:
             # extract all outlines from pdf
             outlines = list(pdf.get_outlines())
+            pagelookup = rawmaker.destination.pageids(document)
         except pdfminer.pdfdocument.PDFNoOutlines:
             outlines = []
             utila.error('could not locatate any outlines')
-
-    data = []
-    for (level, title, dest, a, se) in outlines:  # pylint:disable=W0612,C0103
-        data.append(iamraw.Section(level, title))
-
+        for (level, title, dest, action, se) in outlines:  # pylint:disable=W0612,C0103
+            # TODO: MOVE TO SEPARATE METHOD
+            if action:
+                parsed = rawmaker.destination.parse(action, pagelookup)
+            elif dest:
+                resolved = pdf.lookup_name('Dests', dest).resolve()
+                parsed = rawmaker.destination.parse(resolved, pagelookup)
+            data.append(
+                iamraw.Section(
+                    level,
+                    title,
+                    page=parsed.page,
+                    raw='absolute toc outline page',
+                ))
     toc = iamraw.create_toc(data)
     # toc to yaml
-    yaml = serializeraw.dump_toc(toc)
-    return yaml
+    dumped = serializeraw.dump_toc(toc)
+    return dumped

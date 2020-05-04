@@ -10,7 +10,7 @@ outlines
 
 * [x] add documentation
 
-* [ ] save raw text
+* [x] save raw text
 
 * [ ] validate with 5 examples
 

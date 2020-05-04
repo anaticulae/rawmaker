@@ -1,0 +1,24 @@
+.. _1_19_0:
+
+RP 1.19.0
+=========
+
+outlines
+--------
+
+* [ ] rename toc step to outlines
+
+* [ ] add documentation
+
+* [ ] save raw text
+
+* [ ] validate with 5 examples
+
+code quality
+------------
+
+before
+~~~~~~
+
+* Total coverage: 91.81%
+* Your code has been rated at 10.00/10

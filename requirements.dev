@@ -9,3 +9,5 @@
 
 # test data provider
 power==0.8.2
+
+jam==0.2.0

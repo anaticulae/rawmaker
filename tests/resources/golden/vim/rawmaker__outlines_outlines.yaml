@@ -1,173 +1,215 @@
 children:
 - level: 1
   page: 1
-  raw: absolute toc outline page
+  raw: toc outline page
+  raw_location: -1
   title: Table of contents
 - children:
   - level: 2
     page: 2
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Starting Vim
   - level: 2
     page: 3
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Undo/Redo
   - level: 2
     page: 3
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Insert
   - level: 2
     page: 3
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Copy/Paste/Delete
   - level: 2
     page: 4
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Paste in search or colon commands
   - level: 2
     page: 4
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Search
   - level: 2
     page: 4
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Replace
   - level: 2
     page: 5
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Indentation
   - level: 2
     page: 5
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Mouse settings
   - level: 2
     page: 5
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Command/Visual Mode
   - level: 2
     page: 5
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Cursor movement
   - level: 2
     page: 6
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Screen movements
   - level: 2
     page: 7
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Unix Shell
   - level: 2
     page: 7
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Registers
   - level: 2
     page: 7
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Multiple Files
   - level: 2
     page: 7
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Mark
   - level: 2
     page: 7
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Sorting
   - level: 2
     page: 8
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Printing the code
   - children:
     - level: 3
       page: 8
-      raw: absolute toc outline page
+      raw: toc outline page
+      raw_location: -1
       title: Copy/paste from clip board
     - level: 3
       page: 8
-      raw: absolute toc outline page
+      raw: toc outline page
+      raw_location: -1
       title: Disable arraow keys
     - level: 3
       page: 8
-      raw: absolute toc outline page
+      raw: toc outline page
+      raw_location: -1
       title: Code execution
     level: 2
     page: 8
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Mapping
   - level: 2
     page: 9
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Buffer
   - level: 2
     page: 9
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Split windows
   - level: 2
     page: 9
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Auto completion
   - level: 2
     page: 9
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Text files
   - level: 2
     page: 10
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Macros
   - level: 2
     page: 10
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: More commands
   - level: 2
     page: 10
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Block Visual Mode
   - level: 2
     page: 10
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Zoom Screen
   - level: 2
     page: 10
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Save session
   - level: 2
     page: 11
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Folding
   - children:
     - level: 3
       page: 11
-      raw: absolute toc outline page
+      raw: toc outline page
+      raw_location: -1
       title: NERDTree
     - level: 3
       page: 11
-      raw: absolute toc outline page
+      raw: toc outline page
+      raw_location: -1
       title: Surround
     - level: 3
       page: 11
-      raw: absolute toc outline page
+      raw: toc outline page
+      raw_location: -1
       title: NerdCommenter
     - level: 3
       page: 12
-      raw: absolute toc outline page
+      raw: toc outline page
+      raw_location: -1
       title: vim-table-mode
     - level: 3
       page: 12
-      raw: absolute toc outline page
+      raw: toc outline page
+      raw_location: -1
       title: vim-extline
     - level: 3
       page: 12
-      raw: absolute toc outline page
+      raw: toc outline page
+      raw_location: -1
       title: ConqureShell
     - level: 3
       page: 12
-      raw: absolute toc outline page
+      raw: toc outline page
+      raw_location: -1
       title: Airline
     level: 2
     page: 11
-    raw: absolute toc outline page
+    raw: toc outline page
+    raw_location: -1
     title: Plugins
   level: 1
   page: 2
-  raw: absolute toc outline page
+  raw: toc outline page
+  raw_location: -1
   title: Vim Commands
 level: 0

@@ -55,11 +55,12 @@ def work(document: str) -> str:
                 resolved = pdf.lookup_name('Dests', dest).resolve()
                 parsed = rawmaker.destination.parse(resolved, pagelookup)
             data.append(
-                iamraw.Section(
+                iamraw.SectionRaw(
                     level,
                     title,
                     page=parsed.page,
-                    raw='absolute toc outline page',
+                    raw='toc outline page',
+                    raw_location=-1,
                 ))
     toc = iamraw.create_toc(data)
     # toc to yaml

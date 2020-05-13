@@ -27,10 +27,6 @@ mm: offset in minutes
 import dataclasses
 import re
 
-PATTERN = (r'D:(?P<year>\d{4})(?P<month>\d{2})(?P<day>\d{2})'
-           r'(?P<hour>\d{2})(?P<minute>\d{2})(?P<second>\d{2})(?P<sign>[+-])'
-           r'(?P<utc_hour>\d{2})\'(?P<utc_minute>\d{2})')
-
 
 @dataclasses.dataclass
 class PDFDate:
@@ -43,17 +39,22 @@ class PDFDate:
     utc_hour: int = None
     utc_minute: int = None
 
-    @property
-    def raw(self) -> str:
-        sign = '+' if self.utc_hour >= 0 else '-'
-        result = (f'D:{self.year:04d}{self.month:02d}{self.day:02d}'
-                  f'{self.hour:02d}{self.minute:02d}{self.second:02d}'
-                  f'{sign}{self.utc_hour:02d}\'{self.utc_minute:02d}')
-        return result
+
+PATTERN = (r'D:(?P<year>\d{4})(?P<month>\d{2})(?P<day>\d{2})'
+           r'(?P<hour>\d{2})(?P<minute>\d{2})(?P<second>\d{2})(?P<sign>[+-])'
+           r'(?P<utc_hour>\d{2})\'(?P<utc_minute>\d{2})')
+
+
+def raw(date: PDFDate) -> str:
+    sign = '+' if date.utc_hour >= 0 else '-'
+    result = (f'D:{date.year:04d}{date.month:02d}{date.day:02d}'
+              f'{date.hour:02d}{date.minute:02d}{date.second:02d}'
+              f'{sign}{date.utc_hour:02d}\'{date.utc_minute:02d}')
+    return result
 
 
 def parse(item: str) -> PDFDate:
-    """Parse ASN.1 date pattern
+    """Parse ASN.1 date pattern.
 
     >>> parse("D:20160419072554+02'00")
     PDFDate(year=2016, month=4, day=19, hour=7, minute=25, second=54, utc_hour=2, utc_minute=0)

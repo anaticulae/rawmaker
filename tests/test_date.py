@@ -13,4 +13,5 @@ import rawmaker.date
 def test_parse_date():
     time = "D:20160419072554+02'00"
     parsed = rawmaker.date.parse(time)
-    assert parsed.raw == time, parsed.raw
+    raw = rawmaker.date.raw(parsed)
+    assert raw == time, raw

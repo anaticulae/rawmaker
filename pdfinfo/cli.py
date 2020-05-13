@@ -42,7 +42,11 @@ def main():
     if args['status']:
         return status(inpath)
 
-    return validate(inpath, outpath)
+    # TODO: REPLACE AFTER UPGRADING UTILA
+    if args['output'] is None:
+        outpath = None
+    validated = validate(inpath, outpath)
+    return validated
 
 
 def validate(inpath, outpath) -> int:
@@ -61,9 +65,13 @@ def validate(inpath, outpath) -> int:
     if parsed is not None:
         jsonify = pdfinfo.data.jsonify(parsed)
 
-    if os.path.isdir(outpath):
-        outpath = os.path.join(outpath, 'pdfinfo.json')
-    utila.file_replace(outpath, jsonify)
+    if outpath is None:
+        # print to stdout
+        utila.log(jsonify)
+    else:
+        if outpath is not None and os.path.isdir(outpath):
+            outpath = os.path.join(outpath, 'pdfinfo.json')
+        utila.file_replace(outpath, jsonify)
     return utila.SUCCESS
 
 

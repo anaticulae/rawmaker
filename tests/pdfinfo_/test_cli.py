@@ -61,3 +61,12 @@ def test_pdfinfo_status_invalid(testdir, monkeypatch):
 
     returncode = tests.pdfinfo_.run_failure('--status', monkeypatch=monkeypatch)
     assert returncode == pdfinfo.INVALID_PDF
+
+
+def test_pdfinfo_stdout(testdir, monkeypatch, capsys):
+    root = testdir.tmpdir
+    source = tests.resources.RESTRUCTURED_PDF
+    with utila.increased_filecount(root, mindiff=0, maxdiff=0):
+        tests.pdfinfo_.run_success(f'-i {source}', monkeypatch=monkeypatch)
+    stdout, _ = capsys.readouterr()
+    assert stdout == '{"pages": 27, "generator": "latex", "version": {"major": 1, "minor": 5}}\n'

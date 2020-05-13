@@ -6,7 +6,7 @@ RP 1.20.0
 pdfinfo
 -------
 
-* [ ] print evaluation result to stdout if output is not given
+* [x] print evaluation result to stdout if output is not given
 
 * [ ] extract meta information: author, date etc.
 

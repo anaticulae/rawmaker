@@ -13,7 +13,7 @@ Hint: Pay attention to the public API on this file!
 """
 import os
 
-__version__ = '1.19.4'
+__version__ = '1.20.0'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 

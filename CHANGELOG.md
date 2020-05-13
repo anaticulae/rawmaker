@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v1.20.0
+
+### Feature
+
+* add method to parse pdf dates (4f18e167e6e1)
+* add meta data extraction to cli (45f6d8a5feb5)
+* add method to parse pdf meta information (73518c3a690f)
+* add option to choose output data format (eceecd241728)
+* add pdfinfo to description (1b2f7266ae5a)
+* add option to print validation result to console (7fa3e42fd3ed)
+
 ## v1.19.4
 
 ## v1.19.3

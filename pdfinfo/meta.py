@@ -1,0 +1,26 @@
+# =============================================================================
+# C O P Y R I G H T
+# -----------------------------------------------------------------------------
+# Copyright (c) 2020 by Helmut Konrad Fahrendholz. All rights reserved.
+# This file is property of Helmut Konrad Fahrendholz. Any unauthorized copy,
+# use or distribution is an offensive act against international law and may
+# be prosecuted under federal law. Its content is company confidential.
+# =============================================================================
+
+import utila
+
+import rawmaker.reader
+
+
+def determine(path: str) -> dict:
+    result = {}
+    with rawmaker.reader.read(path) as document:
+        infos = document.info
+        assert len(infos) == 1, str(infos)
+        infos = infos[0]
+        for key, value in infos.items():
+            if isinstance(value, bytes):
+                result[key] = value.decode(encoding='ascii')
+            else:
+                result[key] = utila.str2bool(value.name)
+    return result

@@ -24,6 +24,7 @@ Verify given -i input file that file is a valid pdf file. Extract:
 If no output is given, print validation result to stdout.
 """
 
+
 @utila.saveme
 def main():
     commands = [
@@ -32,6 +33,17 @@ def main():
             message=('evaluate pdfinfo.json. '
                      'return 0 if info is valid, 4 if pdfinfo is invalid, '
                      '2 if pdfinfo does not exists')),
+        utila.cli.Command(
+            longcut='--format',
+            message='choose output format, json is default',
+            args={
+                'nargs': '?',
+                'const': 'auto',
+                'choices': [
+                    'json',
+                    'yaml',
+                ],
+            })
     ]
     parser = utila.cli.create_parser(
         config=utila.ParserConfiguration(
@@ -54,11 +66,14 @@ def main():
     # TODO: REPLACE AFTER UPGRADING UTILA
     if args['output'] is None:
         outpath = None
-    validated = validate(inpath, outpath)
+    ext = args['format']
+    if ext is None:
+        ext = 'json'
+    validated = validate(inpath, outpath, ext)
     return validated
 
 
-def validate(inpath, outpath) -> int:
+def validate(inpath, outpath, ext='json') -> int:
     if not os.path.isfile(inpath):
         utila.error(f'require valid file resource: {inpath}')
         return utila.INVALID_COMMAND
@@ -70,17 +85,19 @@ def validate(inpath, outpath) -> int:
         # not a valid pdf file
         parsed = None
 
-    jsonify = '{}'
+    raw = '{}'
     if parsed is not None:
-        jsonify = pdfinfo.data.jsonify(parsed)
+        raw = pdfinfo.data.dump(parsed, ext)
 
     if outpath is None:
         # print to stdout
-        utila.log(jsonify)
+        utila.log(raw)
     else:
-        if outpath is not None and os.path.isdir(outpath):
-            outpath = os.path.join(outpath, 'pdfinfo.json')
-        utila.file_replace(outpath, jsonify)
+        if os.path.isdir(outpath):
+            outpath = os.path.join(outpath, f'pdfinfo.{ext}')
+        assert str(outpath).endswith(
+            ext), f'missmatching --format and --outpath {outpath}'
+        utila.file_replace(outpath, raw)
     return utila.SUCCESS
 
 

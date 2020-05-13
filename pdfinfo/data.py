@@ -10,6 +10,8 @@
 import dataclasses
 import json
 
+import yaml
+
 import pdfinfo.info
 import pdfinfo.pages
 import pdfinfo.version
@@ -22,8 +24,18 @@ class PdfInfo:
     version: pdfinfo.version.Version = None
 
 
-def jsonify(info: PdfInfo) -> str:
-    raw = {
+def dump(info: PdfInfo, ext: str = 'json') -> str:
+    assert ext in ('yaml', 'json'), ext
+    simple = raw(info)
+    if ext == 'yaml':
+        return yaml.dump(simple)
+    if ext == 'json':
+        return json.dumps(simple)
+    return None
+
+
+def raw(info: PdfInfo) -> dict:
+    result = {
         'pages': info.pages,
         'generator': str(info.generator),
         'version': {
@@ -31,7 +43,6 @@ def jsonify(info: PdfInfo) -> str:
             'minor': info.version.minor,
         }
     }
-    result = json.dumps(raw)
     return result
 
 

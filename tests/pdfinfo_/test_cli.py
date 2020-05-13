@@ -22,6 +22,7 @@ import tests.resources
 @pytest.mark.parametrize('command', [
     '--help',
     pytest.param(f'-i {tests.resources.NO_PDF}', id='invalid_pdf'),
+    pytest.param(f'-i {tests.resources.NO_PDF} --format=yaml', id='use yaml'),
     pytest.param(f'-i {tests.resources.RESTRUCTURED_PDF}', id='valid_pdf'),
 ])
 def test_pdfinfo_run(command, testdir, monkeypatch):  #pylint: disable=W0613
@@ -47,7 +48,7 @@ def test_pdfinfo_status_valid(testdir, monkeypatch):
         generator=pdfinfo.info.Generator.MSWord,
         version=pdfinfo.version.Version(1, 5),
     )
-    raw = pdfinfo.data.jsonify(valid)
+    raw = pdfinfo.data.dump(valid)
     path = os.path.join(workspace, 'pdfinfo.json')
     utila.file_create(path, raw)
 

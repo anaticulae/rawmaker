@@ -15,7 +15,7 @@ def test_pdfinfo_data_jsonify():
     resource = tests.resources.RESTRUCTURED_PDF
     info = pdfinfo.data.parse(resource)
 
-    jsoned = pdfinfo.data.jsonify(info)
+    jsoned = pdfinfo.data.dump(info)
     assert isinstance(jsoned, str), str(jsoned)
     assert 'latex' in jsoned
     assert 'version' in jsoned

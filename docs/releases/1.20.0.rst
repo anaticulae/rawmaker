@@ -10,7 +10,7 @@ pdfinfo
 
 * [ ] extract meta information: author, date etc.
 
-* [ ] add format jaml/json
+* [x] add format yaml/json
 
 code quality
 ------------

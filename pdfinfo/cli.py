@@ -15,6 +15,14 @@ import pdfinfo
 import pdfinfo.data
 import rawmaker.error
 
+DESCRIPTION = """\
+Verify given -i input file that file is a valid pdf file. Extract:
+ + version
+ + generator
+ + pages
+
+If no output is given, print validation result to stdout.
+"""
 
 @utila.saveme
 def main():
@@ -26,12 +34,13 @@ def main():
                      '2 if pdfinfo does not exists')),
     ]
     parser = utila.cli.create_parser(
-        todo=commands,
         config=utila.ParserConfiguration(
             outputparameter=True,
             inputparameter=True,
             prefix=False,
         ),
+        description=DESCRIPTION,
+        todo=commands,
         version=pdfinfo.__version__,
     )
     args = utila.parse(parser)

@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pdfminer.utils
 import utila
 
 import rawmaker.reader
@@ -20,7 +21,8 @@ def determine(path: str) -> dict:
         infos = infos[0]
         for key, value in infos.items():
             if isinstance(value, bytes):
-                result[key] = value.decode(encoding='ascii')
+                # SEE PDFDocEncoding Character Set
+                result[key] = pdfminer.utils.decode_text(value)
             else:
                 result[key] = utila.str2bool(value.name)
     return result

@@ -24,6 +24,9 @@ import tests.resources
     pytest.param(f'-i {tests.resources.NO_PDF}', id='invalid_pdf'),
     pytest.param(f'-i {tests.resources.NO_PDF} --format=yaml', id='use yaml'),
     pytest.param(f'-i {tests.resources.RESTRUCTURED_PDF}', id='valid_pdf'),
+    pytest.param(f'-i {tests.resources.MASTER116}', id='master116'),
+    pytest.param(f'-i {tests.resources.MASTER89}', id='master89'),
+    pytest.param(f'-i {tests.resources.MASTER98}', id='master98'),
 ])
 def test_pdfinfo_run(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""

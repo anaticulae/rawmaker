@@ -77,6 +77,8 @@ REPORT19 = os.path.join(TECHNICAL, 'report.pdf')
 PDF2008 = os.path.join(SPEC, 'PDF32000_2008.pdf')
 
 MASTER116 = os.path.join(MASTER, 'page_116_images_toc_formular.pdf')
+MASTER89 = os.path.join(MASTER, 'page_89_noimages_toc.pdf')
+MASTER98 = os.path.join(MASTER, 'page98.pdf')
 
 GOLDEN = os.path.join(RESOURCES, 'golden')
 GOLDEN_VIM = os.path.join(GOLDEN, 'vim')
@@ -100,6 +102,8 @@ REQUIRED_RESOURCES = [
     LEFTRIGHT,
     MASTER116,
     MASTER72,
+    MASTER89,
+    MASTER98,
     NEGATIVE,
     NO_PDF,
     PDF2008,

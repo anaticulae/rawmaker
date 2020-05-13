@@ -13,6 +13,7 @@ import json
 import yaml
 
 import pdfinfo.info
+import pdfinfo.meta
 import pdfinfo.pages
 import pdfinfo.version
 
@@ -22,6 +23,7 @@ class PdfInfo:
     pages: int = None
     generator: pdfinfo.info.Generator = None
     version: pdfinfo.version.Version = None
+    meta: dict = None
 
 
 def dump(info: PdfInfo, ext: str = 'json') -> str:
@@ -43,6 +45,8 @@ def raw(info: PdfInfo) -> dict:
             'minor': info.version.minor,
         }
     }
+    if info.meta:
+        result['meta'] = info.meta
     return result
 
 
@@ -53,10 +57,11 @@ def parse(path: str) -> PdfInfo:
         return None
     pages = pdfinfo.pages.determine(path)
     generator = pdfinfo.info.generator(path)
-
+    meta = pdfinfo.meta.determine(path)
     info = PdfInfo(
         pages=pages,
         version=version,
         generator=generator,
+        meta=meta,
     )
     return info

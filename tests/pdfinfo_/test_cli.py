@@ -70,4 +70,8 @@ def test_pdfinfo_stdout(testdir, monkeypatch, capsys):
     with utila.increased_filecount(root, mindiff=0, maxdiff=0):
         tests.pdfinfo_.run_success(f'-i {source}', monkeypatch=monkeypatch)
     stdout, _ = capsys.readouterr()
-    assert stdout == '{"pages": 27, "generator": "latex", "version": {"major": 1, "minor": 5}}\n'
+
+    expected = (
+        '{"pages": 27, "generator": "latex", "version": {"major": 1, '
+        '"minor": 5}, "meta": {"Author": "", "Title": "", "Subject": "",')
+    assert expected in stdout  # do not verify all parsed meta data

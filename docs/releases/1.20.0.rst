@@ -8,7 +8,7 @@ pdfinfo
 
 * [x] print evaluation result to stdout if output is not given
 
-* [ ] extract meta information: author, date etc.
+* [x] extract meta information: author, date etc.
 
 * [x] add format yaml/json
 

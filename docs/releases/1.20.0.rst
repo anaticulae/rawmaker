@@ -1,0 +1,26 @@
+.. _1_20_0:
+
+RP 1.20.0
+=========
+
+pdfinfo
+-------
+
+* [ ] print evaluation result to stdout if output is not given
+
+* [ ] extract meta information: author, date etc.
+
+* [ ] add format jaml/json
+
+code quality
+------------
+
+before
+~~~~~~
+
+* Todo: 50
+* Total coverage: 92.51%
+* Your code has been rated at 10.00/10
+
+after
+~~~~~

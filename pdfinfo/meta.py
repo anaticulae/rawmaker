@@ -17,6 +17,10 @@ def determine(path: str) -> dict:
     result = {}
     with rawmaker.reader.read(path) as document:
         infos = document.info
+        if not infos:
+            # no meta information available
+            utila.error(f'could not read any meta information: {path}')
+            return {}
         assert len(infos) == 1, str(infos)
         infos = infos[0]
         for key, value in infos.items():

@@ -20,6 +20,7 @@ def determine(path: str) -> dict:
         assert len(infos) == 1, str(infos)
         infos = infos[0]
         for key, value in infos.items():
+            key = key.lower()
             if isinstance(value, bytes):
                 # SEE PDFDocEncoding Character Set
                 result[key] = pdfminer.utils.decode_text(value)

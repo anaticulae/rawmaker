@@ -76,5 +76,5 @@ def test_pdfinfo_stdout(testdir, monkeypatch, capsys):
 
     expected = (
         '{"pages": 27, "generator": "latex", "version": {"major": 1, '
-        '"minor": 5}, "meta": {"Author": "", "Title": "", "Subject": "",')
+        '"minor": 5}, "meta": {"author": "", "title": "", "subject": "",')
     assert expected in stdout  # do not verify all parsed meta data

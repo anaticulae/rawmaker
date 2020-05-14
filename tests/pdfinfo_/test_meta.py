@@ -14,6 +14,6 @@ import tests.resources
 def test_pdfinfo_meta():
     resource = tests.resources.RESTRUCTURED_PDF
     meta = pdfinfo.meta.determine(resource)
-    assert 'Author' in meta
-    assert 'Title' in meta
-    assert 'Subject' in meta
+    assert 'author' in meta
+    assert 'title' in meta
+    assert 'subject' in meta

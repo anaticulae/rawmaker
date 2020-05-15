@@ -342,7 +342,12 @@ def extention(image) -> str:
         'FlateDecode': 'png',
     }
     try:
-        imagefilter = image.stream['Filter'].name
+        filter_ = image.stream['Filter']
+        if isinstance(filter_, list):
+            # TODO: SUPPORT MULTIPLE FILTER
+            assert len(filter_) == 1, str(filter_)
+            filter_ = filter_[0]
+        imagefilter = filter_.name
     except KeyError:
         imagefilter = 'Default'
     ext = decoder[imagefilter]

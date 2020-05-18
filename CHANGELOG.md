@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v1.20.1
+
+### Fix
+
+* fix accessing list of filters (700ae2197323)
+* detect missing meta information (2d65ebbce53c)
+* use lower data keys (27272568e326)
+* use PDFDocEncoding to encode correctly (85d1b13f0671)
+
 ## v1.20.0
 
 ### Feature

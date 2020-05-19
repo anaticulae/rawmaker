@@ -55,13 +55,13 @@ def test_maximize_bounding_box(boxdata_from_pdf):  #pylint:disable=W0621
     ])
 def test_page_size(increasing_fonts, expected_size_in_mm):
     with rawmaker.reader.read(increasing_fonts) as pdf:
-        sizeandborders, _ = rawmaker.features.border.determine_boundingboxes(
-            pdf)
-    size = sizeandborders[0].size  # First page
-    assert rawmaker.utils.tomilimeter(*size) == expected_size_in_mm
+        sizeandborders = rawmaker.features.border.determine_boundingboxes(pdf)
+    size = sizeandborders[0][0].size  # First page
+    assert rawmaker.utils.millimeters(*size, digits=0) == expected_size_in_mm
 
     expected = tuple([round(item) for item in size])
-    current = rawmaker.utils.topixel(*rawmaker.utils.tomilimeter(*size))
+    current = rawmaker.utils.points(
+        *rawmaker.utils.millimeters(*size), digits=0)
     assert current == expected
 
 

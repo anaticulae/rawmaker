@@ -53,7 +53,7 @@ class NamedDestination(DestinationMixin):
         return self.reference.encode('ascii')
 
 
-def parse(item, pagelookup: dict = None) -> ExplicitDestination:
+def parse(item, pagelookup: dict = None) -> ExplicitDestination:  # pylint:disable=R1260
     fitr = parse_fitr(item)
     if fitr:
         return fitr
@@ -67,13 +67,22 @@ def parse(item, pagelookup: dict = None) -> ExplicitDestination:
         explicit = parse_explict(item)
     if explicit:
         if pagelookup:
-            explicit.page = pagelookup[explicit.page]
+            if not isinstance(explicit.page, int):
+                explicit.page = pagelookup[explicit.page.objid]
+            else:
+                # in some cases, the page number is stored directly and
+                # not as a reference.
+                pass
         return explicit
-
     explicit = parse_named(item)
     if explicit:
         if pagelookup:
-            explicit.page = pagelookup[explicit.page]
+            if not isinstance(explicit.page, int):
+                explicit.page = pagelookup[explicit.page.objid]
+            else:
+                # in some cases, the page number is stored
+                # directly and not as a reference.
+                pass
         return explicit
     return None
 
@@ -103,7 +112,10 @@ def parse_fitr(item):
 
 
 def parse_explict(item) -> ExplicitDestination:
-    with contextlib.suppress(KeyError):
+    with contextlib.suppress(KeyError, TypeError):
+        # KeyError: ? add docs here ?
+        # TypeError: item is already the requested list:
+        # [34, /'XYZ', 72.4799999, 532.319999, 0]
         item = item['D']
 
     if isinstance(item, bytes):
@@ -114,14 +126,13 @@ def parse_explict(item) -> ExplicitDestination:
         page, _, left, top, zoom = item  # TODO: FLIP Y-Coordinate
     except ValueError:
         return None
-
     with contextlib.suppress(AttributeError):
         # skip when zoom is already a float
         if zoom.name == b'null':
             zoom = 0.0
 
     result = ExplicitDestination(
-        page=page.objid,
+        page=page,
         left=left,
         top=top,
         zoom=zoom,

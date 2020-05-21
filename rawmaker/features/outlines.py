@@ -52,7 +52,8 @@ def work(document: str) -> str:
             if action:
                 parsed = rawmaker.destination.parse(action, pagelookup)
             elif dest:
-                resolved = pdf.lookup_name('Dests', dest).resolve()
+                destname = dest if isinstance(dest, bytes) else dest.name
+                resolved = pdf.get_dest(destname).resolve()
                 parsed = rawmaker.destination.parse(resolved, pagelookup)
             data.append(
                 iamraw.SectionRaw(

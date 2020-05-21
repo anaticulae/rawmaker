@@ -47,23 +47,31 @@ def work(document: str) -> str:
         except pdfminer.pdfdocument.PDFNoOutlines:
             outlines = []
             utila.error('could not locatate any outlines')
-        for (level, title, dest, action, se) in outlines:  # pylint:disable=W0612,C0103
-            # TODO: MOVE TO SEPARATE METHOD
-            if action:
-                parsed = rawmaker.destination.parse(action, pagelookup)
-            elif dest:
-                destname = dest if isinstance(dest, bytes) else dest.name
-                resolved = pdf.get_dest(destname).resolve()
-                parsed = rawmaker.destination.parse(resolved, pagelookup)
-            data.append(
-                iamraw.SectionRaw(
-                    level,
-                    title,
-                    page=parsed.page,
-                    raw='toc outline page',
-                    raw_location=-1,
-                ))
+
+        for (level, title, dest, action, _) in outlines:
+            outline_pagenumber = pagenumber(action, dest, pagelookup, pdf)
+            raw_section = iamraw.SectionRaw(
+                level,
+                title,
+                page=outline_pagenumber,
+                raw='toc outline page',
+                raw_location=-1,
+            )
+            data.append(raw_section)
+
     toc = iamraw.create_toc(data)
     # toc to yaml
     dumped = serializeraw.dump_toc(toc)
     return dumped
+
+
+def pagenumber(action, dest, pagelookup, pdf) -> rawmaker.destination.ExplicitDestination: # yapf:disable
+    parsed = None
+    if action:
+        parsed = rawmaker.destination.parse(action, pagelookup)
+    elif dest:
+        destname = dest if isinstance(dest, bytes) else dest.name
+        resolved = pdf.get_dest(destname).resolve()
+        parsed = rawmaker.destination.parse(resolved, pagelookup)
+    assert parsed
+    return parsed.page

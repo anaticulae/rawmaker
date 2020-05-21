@@ -118,7 +118,7 @@ def test_images_export_bachelor63_extract_images(
         pytest.param(tests.resources.TECHNICAL24, 8, id='technical24'),
         pytest.param(tests.resources.REPORT19, 6, id='report19'),
     ])
-# @utila.skip_longrun
+@utila.skip_longrun
 def test_images_export_document_complete(
         source,
         expected,

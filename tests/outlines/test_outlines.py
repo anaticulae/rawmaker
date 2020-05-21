@@ -88,6 +88,7 @@ def bachelor111(toc):
     pytest.param(tests.resources.MASTER116, master116, id='master116'),
     pytest.param(tests.resources.BACHELOR111, bachelor111, id='bachelor111'),
 ])
+@utila.skip_longrun
 def test_outlines_validate(source, validate):
     extracted = rawmaker.features.outlines.work(source)
     toc = serializeraw.load_toc(extracted)

@@ -8,9 +8,9 @@
 # =============================================================================
 
 import pytest
+import utila
 
 import rawmaker.features.border
-import rawmaker.reader
 import rawmaker.utils
 import tests.resources
 from tests.resources import INCREASING_FONT_A3
@@ -57,11 +57,10 @@ def test_page_size(increasing_fonts, expected_size_in_mm):
     with rawmaker.reader.read(increasing_fonts) as pdf:
         sizeandborders = rawmaker.features.border.determine_boundingboxes(pdf)
     size = sizeandborders[0][0].size  # First page
-    assert rawmaker.utils.millimeters(*size, digits=0) == expected_size_in_mm
+    assert utila.millimeters(*size, digits=0) == expected_size_in_mm
 
     expected = tuple([round(item) for item in size])
-    current = rawmaker.utils.points(
-        *rawmaker.utils.millimeters(*size), digits=0)
+    current = utila.points(*utila.millimeters(*size), digits=0)
     assert current == expected
 
 

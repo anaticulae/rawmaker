@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.20.3
+
+### Fix
+
+* outline name is directly stored as bytes (aef1b913a2ab)
+* add non reference page number (d565ad774125)
+
 ## v1.20.2
 
 ## v1.20.1

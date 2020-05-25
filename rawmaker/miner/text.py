@@ -114,6 +114,7 @@ SPECIAL_CHAR_TABLE = {
     '\uFB01': 'fi',
     '\uFB02': 'fl',
     '\uFB03': 'ffi',
+    '\xA8': '¨',
     '\xC4': 'Ä',
     '\xDC': 'Ü',
     '\xE4': 'ä',

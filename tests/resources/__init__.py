@@ -65,6 +65,8 @@ MASTER72 = os.path.join(MASTER, 'page_72_noimages_toc.pdf')
 
 HOWTOREAD_PDF = os.path.join(ORDER, 'howtowrite_pages9.pdf')
 
+HOWTO_ARGPARSE = os.path.join(DOCU, 'howto_argparse.pdf')
+
 BACHELOR37 = os.path.join(BACHELOR, 'page_37_tables.pdf')
 BACHELOR56 = os.path.join(BACHELOR, 'page_56_hard_to_read.pdf')
 BACHELOR63 = os.path.join(BACHELOR, 'page_63_images_toc.pdf')
@@ -94,6 +96,7 @@ REQUIRED_RESOURCES = [
     GOLDEN_VIM,
     HELLO_WORLD_PDF,
     HOWTOREAD_PDF,
+    HOWTO_ARGPARSE,
     HOW_TO_CPORTING_PDF,
     INCREASING_FONT,
     INCREASING_FONT_A3,

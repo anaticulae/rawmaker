@@ -94,3 +94,24 @@ def test_outlines_validate(source, validate):
     toc = serializeraw.load_toc(extracted)
     assert toc
     validate(toc)
+
+
+def test_outlines_howto_argparse():
+    """Some NamedDestinations are store as hexdecimal numbers. This test
+    ensures, that parsing, lookup in pdf dest dict and converting the
+    page number works correctly."""
+    source = tests.resources.HOWTO_ARGPARSE
+    extracted = rawmaker.features.outlines.work(source)
+    toc = serializeraw.load_toc(extracted)
+
+    first_level = [(item.page, item.title) for item in toc]
+    expected = [
+        (1, 'Concepts'),
+        (1, 'The basics'),
+        (2, 'Introducing Positional arguments'),
+        (4, 'Introducing Optional arguments'),
+        (6, 'Combining Positional and Optional arguments'),
+        (10, 'Getting a little more advanced'),
+        (13, 'Conclusion'),
+    ]
+    assert first_level == expected

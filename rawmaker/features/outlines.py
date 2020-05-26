@@ -49,11 +49,14 @@ def work(document: str) -> str:
             utila.error('could not locatate any outlines')
 
         for (level, title, dest, action, _) in outlines:
-            outline_pagenumber = pagenumber(action, dest, pagelookup, pdf)
+            page = pagenumber(action, dest, pdf)
+            if not isinstance(page, int):
+                page = pagelookup[page.objid]
+            assert isinstance(page, int), f'require convertion: {type(page)}'
             raw_section = iamraw.SectionRaw(
                 level,
                 title,
-                page=outline_pagenumber,
+                page=page,
                 raw='toc outline page',
                 raw_location=-1,
             )
@@ -71,13 +74,20 @@ def work(document: str) -> str:
     return dumped
 
 
-def pagenumber(action, dest, pagelookup, pdf) -> rawmaker.destination.ExplicitDestination: # yapf:disable
+def pagenumber(action, dest, pdf) -> rawmaker.destination.ExplicitDestination:
     parsed = None
     if action:
-        parsed = rawmaker.destination.parse(action, pagelookup)
+        parsed = rawmaker.destination.parse(action)
+        if isinstance(parsed, rawmaker.destination.NamedDestination):
+            resolved = pdf.get_dest(parsed.pdf_reference).resolve()
+            parsed = rawmaker.destination.parse(resolved)
     elif dest:
-        destname = dest if isinstance(dest, bytes) else dest.name
-        resolved = pdf.get_dest(destname).resolve()
-        parsed = rawmaker.destination.parse(resolved, pagelookup)
+        if isinstance(dest, list):
+            # pdf 1.5: [<PDFObjRef:13>, /'XYZ', 72.0, 769.89, None]
+            resolved = dest
+        else:
+            destname = dest if isinstance(dest, bytes) else dest.name
+            resolved = pdf.get_dest(destname).resolve()
+        parsed = rawmaker.destination.parse(resolved)
     assert parsed
     return parsed.page

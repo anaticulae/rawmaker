@@ -19,6 +19,7 @@ Types:
 - Simple: Page Number is directly encoded
 - Named: Solve `Destination` reference to determine page number
 - Explicit: PDFPageReference is given
+
 """
 
 import contextlib
@@ -53,7 +54,7 @@ class NamedDestination(DestinationMixin):
         return self.reference.encode('ascii')
 
 
-def parse(item, pagelookup: dict = None) -> ExplicitDestination:  # pylint:disable=R1260
+def parse(item) -> ExplicitDestination:  # pylint:disable=R1260
     fitr = parse_fitr(item)
     if fitr:
         return fitr
@@ -61,57 +62,55 @@ def parse(item, pagelookup: dict = None) -> ExplicitDestination:  # pylint:disab
     simple = parse_simple(item)
     if simple:
         return simple
-    try:
-        explicit = parse_explict(item.resolve())
-    except AttributeError:
-        explicit = parse_explict(item)
-    if explicit:
-        if pagelookup:
-            if not isinstance(explicit.page, int):
-                explicit.page = pagelookup[explicit.page.objid]
-            else:
-                # in some cases, the page number is stored directly and
-                # not as a reference.
-                pass
-        return explicit
-    explicit = parse_named(item)
-    if explicit:
-        if pagelookup:
-            if not isinstance(explicit.page, int):
-                explicit.page = pagelookup[explicit.page.objid]
-            else:
-                # in some cases, the page number is stored
-                # directly and not as a reference.
-                pass
-        return explicit
+
+    for method in (parse_explict, parse_named):
+        explicit = method(item)
+        if explicit:
+            return explicit
     return None
 
 
-def parse_simple(item):
-    # Page number is directly encoded, therefore we can convert and
-    # return. Example: # {'S': /'GoTo', 'D': b'0'}
-    with contextlib.suppress(TypeError, AttributeError):
-        page = item['D'].decode('ascii')
-        return ExplicitDestination(page=page)
-    return None
+def parse_simple(item) -> NamedDestination:
+    """Page number is directly encoded, therefore we can convert and
+    return.
+
+    >>> from pdfminer.psparser import PSLiteral as PS
+    >>> parse_simple({'S': PS('GoTo'), 'D': b'FF'}).reference
+    'FF'
+
+    """
+    if not isinstance(item, dict):
+        return None
+    if not item['S'].name == 'GoTo':
+        # 12.6.4.2 Go-To Actions
+        return None
+    reference = item['D'].decode('ascii')
+    return NamedDestination(reference=reference)
 
 
-def parse_fitr(item):
+def parse_fitr(item) -> ExplicitDestination:
+    """\
+    >>> from pdfminer.psparser import PSLiteral as PS
+    >>> parse_fitr({'S': 'GoTo', 'D': [5, PS('FitR'), 0, 625, 440, 309]}).page
+    5
+    """
     with contextlib.suppress(AttributeError):
         item = item.resolve()
-    try:
-        item = item['D']
-    except TypeError:
-        return None
     # {'S': /'GoTo', 'D': [0, /'FitR', 0, 625, 440, 309]}
+    with contextlib.suppress(TypeError):
+        item = item['D']
     # [0, /'FitR', 0, 625, 440, 309]
-    with contextlib.suppress(TypeError, AttributeError, IndexError):
-        if item[1].name == 'FitR':
-            return ExplicitDestination(page=item[0])
-    return None
+    if not isinstance(item, list):
+        return None
+    if not item[1].name in ('FitR', 'XYZ'):
+        return None
+    pagenumber = item[0]
+    return ExplicitDestination(page=pagenumber)
 
 
 def parse_explict(item) -> ExplicitDestination:
+    with contextlib.suppress(AttributeError):
+        item = item.resolve()
     with contextlib.suppress(KeyError, TypeError):
         # KeyError: ? add docs here ?
         # TypeError: item is already the requested list:

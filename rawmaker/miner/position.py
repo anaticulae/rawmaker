@@ -52,7 +52,7 @@ class DocumentItemHasher:
 
 def load_hasher(content: str) -> DocumentItemHasher:
     content = utila.from_raw_or_path(content, ftype='yaml')
-    loaded = yaml.load(content, Loader=yaml.FullLoader)
+    loaded = yaml.safe_load(content)
 
     result = []
     for page in loaded:

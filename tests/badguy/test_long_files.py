@@ -16,6 +16,7 @@ import tests
 import tests.pdfinfo_
 
 
+@utila.skip_nightly
 def test_badguy_longpdf_rawmaker(testdir, monkeypatch):
     very_long = os.path.join(testdir.tmpdir, 'balong.pdf')
     jam.write_blank_pdf(1000, very_long)

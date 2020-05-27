@@ -79,10 +79,7 @@ def test_mining_increasing_fonts():
     result = rawmaker.features.fonts.work(tests.resources.INCREASING_FONT_A4)
     header, _ = result
 
-    font_sizes = [
-        item['font']['scale']
-        for item in yaml.load(header, Loader=yaml.FullLoader)
-    ]
+    font_sizes = [item['font']['scale'] for item in yaml.safe_load(header)]
     font_sizes = font_sizes[0:-1]  # remove the last one(page number)
 
     increases = [

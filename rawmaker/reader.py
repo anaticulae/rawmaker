@@ -21,7 +21,7 @@ from rawmaker.error import PDFParserImplementationError
 
 
 @contextmanager
-def read(path: str, password: str = '') -> PDFDocument:
+def read(path: str, password: str = None) -> PDFDocument:
     """Open pdf from `path`.
 
     Args:
@@ -59,6 +59,7 @@ def open_document(parser: PDFParser, path: str, password: str) -> PDFDocument:
         valid documents. If the run without fallback fails, start it
         with fallback again.
     """
+    password = password if password is not None else ''
     try:
         document = PDFDocument(parser, password, fallback=False)
     except PDFSyntaxError:

@@ -72,14 +72,14 @@ def write_image_info(bounding, path: str, page: int, index: int):
         'bounding': '%s %s %s %s' % bounding,
         'index': index,
     }
-    dumped = yaml.dump(raw)
+    dumped = yaml.safe_dump(raw)
     outpath = os.path.join(path, name)
     utila.file_create(outpath, dumped)
 
 
 def _load_figure(path: str) -> Figure:
     content = utila.from_raw_or_path(path, ftype='yaml')
-    loaded = yaml.load(content, Loader=yaml.FullLoader)
+    loaded = yaml.safe_load(content)
 
     page = int(loaded['page'])
     bounding = utila.parse_tuple(loaded['bounding'])

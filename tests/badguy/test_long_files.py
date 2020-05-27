@@ -10,6 +10,7 @@
 import os
 
 import jam
+import pytest
 import utila
 
 import tests
@@ -17,6 +18,7 @@ import tests.pdfinfo_
 
 
 @utila.skip_nightly
+@pytest.mark.security
 def test_badguy_longpdf_rawmaker(testdir, monkeypatch):
     very_long = os.path.join(testdir.tmpdir, 'balong.pdf')
     jam.write_blank_pdf(1000, very_long)
@@ -25,6 +27,7 @@ def test_badguy_longpdf_rawmaker(testdir, monkeypatch):
 
 
 @utila.skip_nightly
+@pytest.mark.security
 def test_badguy_longpdf_pdfinfo(testdir, monkeypatch):
     """Test that program success on very long, empty pdf file. Long
     files with content are catched by file size limit."""

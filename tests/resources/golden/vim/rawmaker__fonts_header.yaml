@@ -2,54 +2,43 @@
     flags: 4
     name: SFBX2488
     scale: 18.5
-    weight: LIGHT
 - font:
     flags: 4
     name: SFBX1000
     scale: 7.43
-    weight: LIGHT
 - font:
     flags: 4
     name: SFRM1000
     scale: 7.43
-    weight: LIGHT
 - font:
     flags: 4
     name: SFBX2074
     scale: 15.42
-    weight: LIGHT
 - font:
     flags: 4
     name: SFTT0900
     scale: 6.69
-    weight: LIGHT
 - font:
     flags: 4
     name: CMMI5
     scale: 3.72
-    weight: LIGHT
 - font:
     flags: 4
     name: CMSY5
     scale: 3.72
-    weight: LIGHT
 - font:
     flags: 4
     name: SFBX1440
     scale: 10.71
-    weight: LIGHT
 - font:
     flags: 4
     name: SFSS1000
     scale: 7.43
-    weight: LIGHT
 - font:
     flags: 4
     name: SFRM0900
     scale: 6.69
-    weight: LIGHT
 - font:
     flags: 4
     name: SFRM0500
     scale: 3.72
-    weight: LIGHT

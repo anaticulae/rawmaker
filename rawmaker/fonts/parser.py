@@ -111,19 +111,26 @@ def font_fromraw(font: str, scale: float, flags: int = 0) -> iamraw.Font:
     basefont = parse_basefont(font)
     cidfont = parse_cidfont(font)
     default = parse_default(font)
+    styled = parse_font_styled(font)
+    simple = parse_font_simple(font)
 
     fontname, style = None, None
     if cidfont is not None:
         # cidfont at first, cause cidfont selector is the clearest and not
         # ambigous.
         fontname, style = cidfont
+    elif simple:
+        fontname, style = simple
+    elif styled:
+        fontname, style = styled
     elif basefont is not None:
         fontname, style = basefont
     elif default is not None:
         fontname, style = default
+
     weight, style, stretch = style if style else (None, None, None)
 
-    if '+' in fontname or ',' in fontname:
+    if fontname is None or '+' in fontname or ',' in fontname:
         utila.error(f'detected fontname {fontname}; input: {font}')
 
     font = iamraw.Font(
@@ -138,29 +145,48 @@ def font_fromraw(font: str, scale: float, flags: int = 0) -> iamraw.Font:
 
 
 def parse_basefont(font: str):
-    basefont = True
-    with contextlib.suppress(IndexError):
-        # see above
-        # ('WTUVLZ+NimbusRomNo9L-Regu', 9.60),
-        basefont = font[6] != '+'
-    if basefont:
-        # Example: Arial,Bold
-        fontname, raw_style = font, ''
-        with contextlib.suppress(ValueError):
-            fontname, raw_style = font.split(',')
-        style = parse_style(raw_style)
-        return fontname, style
-    return None
+    """\
+    >>> parse_basefont('Arial,Bold')
+    ('Arial',...Weight.BOLD...)
+    >>> parse_basefont('WTUVLZ+NimbusRomNo9L-Regu') is None
+    True
+    """
+    if '+' in font:
+        return None
+    # Example: Arial,Bold
+    fontname, raw_style = font, ''
+    with contextlib.suppress(ValueError):
+        fontname, raw_style = font.split(',')
+    style = parse_style(raw_style)
+    if not style:
+        return None
+    return fontname, style
 
 
 def parse_cidfont(font: str):
+    """\
+    >>> parse_cidfont('CIDFont+F1')
+    ('F1', None)
+    """
     cidfont = font.startswith('CIDFont+')
-    if cidfont:
-        # Example: CIDFont+F1
-        # remove cid tag and plus sign
-        fontname = font[8:]
+    if not cidfont:
+        return None
+    # Example: CIDFont+F1
+    # remove cid tag and plus sign
+    fontname = font[8:]
+    return fontname, None
+
+
+def parse_postscript14(fontname: str):
+    if fontname not in POSTSCRIPT_14_DEFAULT:
+        return None
+    if '-' not in fontname:
+        # Courier
         return fontname, None
-    return None
+    # 'Courier-Oblique',
+    fontname, style = fontname.split('-')
+    style = parse_style(style)
+    return fontname, style
 
 
 def parse_default(font: str):
@@ -168,9 +194,11 @@ def parse_default(font: str):
     # remove base tag and plus sign
     font = font[7:]
     fontname, raw_style = font, ''
-    # 'AIDZQU+Times-Roman' no style parsing is required
-    if fontname in POSTSCRIPT_14_DEFAULT:
-        return fontname, None
+
+    parsed = parse_postscript14(font)
+    if parsed:
+        # 'AIDZQU+Times-Roman' no style parsing is required
+        return parsed
 
     style = None
     with contextlib.suppress(ValueError):
@@ -178,48 +206,105 @@ def parse_default(font: str):
     with contextlib.suppress(ValueError):
         fontname, raw_style = font.split('-')
     style = parse_style(raw_style)
+    if not raw_style:
+        parsed = parse_font_simple(fontname)
+        if parsed:
+            fontname, style = parsed
+    if not style:
+        # TODO: FONT STYLE PARSER
+        return fontname, None
     return fontname, style
+
+
+def parse_font_styled(font: str):
+    if not font.count('-') == 1 or '+' in font:
+        return None
+    name, style = font.split('-')
+    style = parse_style(style)
+
+    if not style:
+        return None
+    name = named(name)
+    return name, style
+
+
+def parse_font_simple(font: str):
+    if any(char in font for char in ['+', '-', ',']):
+        return None
+    styles = []
+    for item in STYLES:
+        if item[0] not in font:
+            continue
+        styles.append((item[1], item[2], item[3]))
+        font = font.replace(item[0], '')
+
+    weight, style, stretch = MEDIUM, NORMAL, REGULAR
+    for item in styles:
+        if item[0]:
+            weight = item[0]
+        if item[1]:
+            style = item[1]
+        if item[2]:
+            stretch = item[2]
+    return font, (weight, style, stretch)
+
+
+def named(font: str):
+    for item in STYLES:
+        font = font.replace(item[0], '')
+    return font
 
 
 def parse_style(raw_style):  # pylint:disable=R1260,R0912
     save = raw_style
-    if 'Regular' in raw_style:
-        stretch = iamraw.Stretch.REGULAR
-        raw_style = raw_style.replace('Regular', '')
-    elif 'Regu' in raw_style:
-        stretch = iamraw.Stretch.REGULAR
-        raw_style = raw_style.replace('Regu', '')
-    else:
-        stretch = iamraw.Stretch.REGULAR
-
-    if 'Italic' in raw_style:
-        style = iamraw.Style.ITALIC
-        raw_style = raw_style.replace('Italic', '')
-    elif 'Ital' in raw_style:
-        style = iamraw.Style.ITALIC
-        raw_style = raw_style.replace('Ital', '')
-    elif 'Oblique' in raw_style:
-        style = iamraw.Style.OBLIQUE
-        raw_style = raw_style.replace('Oblique', '')
-    elif 'Obli' in raw_style:
-        style = iamraw.Style.OBLIQUE
-        raw_style = raw_style.replace('Obli', '')
-    else:
-        style = iamraw.Style.NORMAL
-
-    if 'Bold' in raw_style:
-        weight = iamraw.Weight.BOLD
-        raw_style = raw_style.replace('Bold', '')
-    elif 'Medium' in raw_style:
-        weight = iamraw.Weight.MEDIUM
-        raw_style = raw_style.replace('Medium', '')
-    elif 'Medi' in raw_style:
-        weight = iamraw.Weight.MEDIUM
-        raw_style = raw_style.replace('Medi', '')
-    else:
-        weight = iamraw.Weight.LIGHT
-
+    weight, style, stretch = LIGHT, NORMAL, REGULAR
+    for item in STYLES:
+        if item[0] not in raw_style:
+            continue
+        raw_style = raw_style.replace(item[0], '')
+        if item[1]:
+            weight = item[1]  # pylint:disable=R0204
+        if item[2]:
+            style = item[2]
+        if item[3]:
+            stretch = item[3]
     if raw_style:  # TODO: Remove before going live
         # at the end, everything must be replaced
         utila.error(f'unsupported style {save}, maybe a name: {raw_style}')
+    if raw_style:
+        return None
     return weight, style, stretch
+
+
+BOLD = iamraw.Weight.BOLD
+ITALIC = iamraw.Style.ITALIC
+LIGHT = iamraw.Weight.LIGHT
+MEDIUM = iamraw.Weight.MEDIUM
+NORMAL = iamraw.Style.NORMAL
+OBLIQUE = iamraw.Style.OBLIQUE
+REGULAR = iamraw.Stretch.REGULAR
+
+# TODO: INVESTIGATE MT
+# BOLD = BOLD
+# MT = MEDIUM
+# HOW TO DEAL WITH BOLD MT?
+
+STYLES = [
+    ('Bd', BOLD, None, None),
+    ('Italic', None, ITALIC, None),
+    ('Ital', None, ITALIC, None),
+    # ('MI', MEDIUM, ITALIC, None),
+    ('Medium', MEDIUM, None, None),
+    ('Medi', MEDIUM, None, None),
+    # ('M', MEDIUM, None, None),  # HOW TO DEAL WITH ?BOLDMT?
+    ('MT', None, None, None),  # HOW TO DEAL WITH ?BOLDMT? TODO: DECIDE LATER
+    ('Bold', BOLD, None, None),  # HOW TO DEAL WITH ?BOLDMT?
+    ('Oblique', None, OBLIQUE, None),
+    ('Obli', None, OBLIQUE, None),
+    ('PSMT', MEDIUM, None, None),
+    ('PS', MEDIUM, None, None),
+    ('Regular', None, None, REGULAR),
+    ('Regu', None, None, REGULAR),
+    ('Rg', None, None, REGULAR),
+    ('Roman', None, None, None),
+]

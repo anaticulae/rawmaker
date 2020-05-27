@@ -123,32 +123,58 @@ def test_mining_fonts_restruct_page_5(restructed_fonts):  # pylint:disable=W0621
     assert result == expected
 
 
+@pytest.mark.font
 @pytest.mark.parametrize('font, scale, expected_name', [
     ('WTUVLZ + NimbusRomNo9L - Regu', 9.60, 'NimbusRomNo9L'),
     ('CGWFDF + NimbusRomNo9L - ReguItal', 11.90, 'NimbusRomNo9L'),
     ('GAGKNR + NimbusRomNo9L - Medi', 13.00, 'NimbusRomNo9L'),
     ('ZTJCPR + NimbusRomNo9L - MediItal', 11.50, 'NimbusRomNo9L'),
-    ('CHABPE + TimesNewRomanPSMT', 14.40, 'TimesNewRomanPSMT'),
-    ('TimesNewRomanPS - ItalicMT', 13.30, 'TimesNewRomanPS-ItalicMT'),
+    ('CHABPE + TimesNewRomanPSMT', 14.40, 'TimesNew'),
+    ('TimesNewRomanPS - ItalicMT', 13.30, 'TimesNew'),
     ('LGAZPG + SegoeUI, Bold', 27.50, 'SegoeUI'),
     ('ALONFR + SegoeUI', 13.10, 'SegoeUI'),
-    ('Helvetica - Bold', 16.70, 'Helvetica-Bold'),
-    ('Times - Roman', 13.40, 'Times-Roman'),
+    ('Helvetica - Bold', 16.70, 'Helvetica'),
+    ('Times - Roman', 13.40, 'Times'),
     ('CIDFont+F1', 6.60, 'F1'),
     ('Arial,Bold', 15.00, 'Arial'),
     ('ABCDEE + Verdana,Bold', 15.00, 'Verdana'),
-    ('AIDZQU+Times-Roman', 13.00, 'Times-Roman'),
+    ('AIDZQU+Times-Roman', 13.00, 'Times'),
     ('KCXMNX+TeX-feymr10', 10.00, 'TeX'),
     ('JBLIUJ+Arial-BoldMT', 10.00, 'Arial'),
 ])
-def test_convert_font_from_raw(font, scale, expected_name):
+def test_font_convert_from_raw(font, scale, expected_name):
     parsed = rawmaker.fonts.parser.font_fromraw(font, scale)
     assert parsed
 
     assert '+' not in parsed.name, str(parsed)
     assert ',' not in parsed.name, str(parsed)
 
-    assert expected_name == parsed.name, str(expected_name)
+    assert parsed.name == expected_name, str(expected_name)
+
+
+BOLD = iamraw.fonts.Weight.BOLD
+MEDIUM = iamraw.fonts.Weight.MEDIUM
+NORMAL = iamraw.fonts.Style.NORMAL
+REGULAR = iamraw.fonts.Stretch.REGULAR
+
+
+@pytest.mark.font
+@pytest.mark.parametrize('font, expected, style', [
+    ('ArialMT', 'Arial', None),
+    ('TimesNewRomanPSMT', 'TimesNew', None),
+    ('TimesNewRomanPS-ItalicMT', 'TimesNew', None),
+    ('TimesNewRomanPS-BoldMT', 'TimesNew', (BOLD, NORMAL, REGULAR)),
+    ('DDPEIM+Helvetica-Bold', 'Helvetica', (BOLD, NORMAL, REGULAR)),
+])
+def test_font_name_fromraw(font, expected, style):
+    parsed = rawmaker.fonts.parser.font_fromraw(font, scale=10.0)
+    assert parsed.name == expected
+
+    if not style:
+        return
+    assert parsed.weight == style[0]
+    assert parsed.style == style[1]
+    assert parsed.stretch == style[2]
 
 
 @pytest.mark.parametrize('font, expected_name', [
@@ -157,8 +183,7 @@ def test_convert_font_from_raw(font, scale, expected_name):
 def test_convert_font_from_raw_pdf_naming_problem(font, expected_name):
     parsed = rawmaker.fonts.parser.font_fromraw(font, scale=10.0)
     assert parsed
-
-    assert expected_name == parsed.name, str(expected_name)
+    assert parsed.name == expected_name, str(expected_name)
 
 
 def test_strip_correct_bounding_box(testdir, monkeypatch):

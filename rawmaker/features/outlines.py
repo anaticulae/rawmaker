@@ -60,8 +60,14 @@ def work(document: str) -> str:
             data.append(raw_section)
 
     toc = iamraw.create_toc(data)
-    # toc to yaml
-    dumped = serializeraw.dump_toc(toc)
+    try:
+        # toc to yaml
+        dumped = serializeraw.dump_toc(toc)
+    except TypeError:
+        utila.error('could not convert toc to YAML.')
+        utila.error('The toc may contain indirect references, buffer, etc.')
+        utila.error('Outline implementation seem not complete, yet.')
+        dumped = None
     return dumped
 
 

@@ -6,6 +6,16 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+"""Boxes
+=====
+
+Whats the difference between `boxes_horizontals` and `lines`?
+`boxes_horizontals` contain only vertical lines. `lines` can contain
+every lines in every direction.
+
+Why do we cluster for horizontal lines?
+To ignore lines which are part of a box and can not be a horizontal line.
+"""
 
 import functools
 import operator
@@ -57,7 +67,10 @@ def work(document: str, pages: tuple) -> typing.Tuple[str, str]:
     return dumped_boxes, dumped_horizontal
 
 
-def determine_boxes(document: pdfminer.pdfdocument.PDFDocument, pages=None):
+def determine_boxes(
+        document: pdfminer.pdfdocument.PDFDocument,
+        pages: tuple = None,
+):
     result = determine_clusteritem(
         document,
         determine_pageboxes,
@@ -68,7 +81,7 @@ def determine_boxes(document: pdfminer.pdfdocument.PDFDocument, pages=None):
 
 def determine_horizontal(
         document: pdfminer.pdfdocument.PDFDocument,
-        pages=None,
+        pages: tuple = None,
 ):
     # prepare worker
     pagewidth = rawmaker.features.border.pagesizes(document, pages=pages)
@@ -86,7 +99,7 @@ def determine_horizontal(
 def determine_clusteritem(
         document: pdfminer.pdfdocument.PDFDocument,
         collector: callable,
-        pages=None,
+        pages: tuple = None,
 ):
     result = []
     document_lines = lines(document, pages=pages)
@@ -153,6 +166,7 @@ def determine_pagehorizontals(
     result = []
     for merged in cluster:
         if len(merged) != 1:
+            # ignore boxed lines
             continue
         # convert from BoundingBox
         x0, y0, x1, y1 = utila.roundme(tuple(merged[0]))
@@ -238,7 +252,7 @@ def pagesize(page: pdfminer.layout.LTPage) -> typing.Tuple[float, float]:
 def type_in_document(
         document: pdfminer.pdfdocument.PDFDocument,
         datatype: object,
-        pages=None,
+        pages: tuple = None,
 ) -> typing.List[typing.Tuple[pdfminer.layout.LTPage, int]]:
     """Extract defined `datatype` out of `PDFDocument`
 

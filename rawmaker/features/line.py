@@ -15,7 +15,9 @@ to right and if required merged together.
 """
 
 import operator
+import typing
 
+import configo
 import iamraw
 import pdfminer.pdfdocument
 import serializeraw
@@ -24,12 +26,19 @@ import utila
 import rawmaker.features.boxes
 import rawmaker.reader
 
+# maximal difference in y-component
+HORIZONTAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=2.0).value
+# maximal difference in x-component
+VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=2.0).value
+# minimal number of minus signs which build a horizontal line
+REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(default=40).value
+
 
 def work(document: str, pages: tuple = None) -> str:
     with rawmaker.reader.read(document) as pdf:
-        lines = determine_lines(pdf, pages=pages)
+        result = determine_lines(pdf, pages=pages)
 
-    dumped = serializeraw.dump_lines(lines)
+    dumped = serializeraw.dump_lines(result)
     return dumped
 
 
@@ -37,9 +46,9 @@ def determine_lines(
         document: pdfminer.pdfdocument.PDFDocument,
         pages: tuple = None,
 ) -> iamraw.PageContentLines:
-    lines = rawmaker.features.boxes.lines(document, pages=pages)
+    lines_ = lines(document, pages=pages)
     result = []
-    for content, number in lines:
+    for content, number in lines_:
         # left point is left above from right down point
         content = [ensure_position(item) for item in content]
         # top down, left right
@@ -47,6 +56,95 @@ def determine_lines(
         # merge lines which are divided by pdf printer
         merged = merge_lines(content)
         result.append(iamraw.PageContentLine(content=merged, page=number))
+    return result
+
+
+def lines(  # pylint:disable=R1260
+        document: pdfminer.pdfdocument.PDFDocument,
+        pages: tuple = None,
+) -> list:
+    """Extract all `LTLine` out of `PDFDocument` page wise
+
+    Support 3 different types of pdf layout elements:
+        LTLine:
+        LTRect: small difference between oposite lines
+        LTTextBoxHorizontal:
+
+    Args:
+        document: pdf document to collect lines
+        pages: select pages to run anlaysis on
+    Returns:
+        list of line objects[LTLine, LTRect, LTTextBoxHorizontal]
+    """
+    assert isinstance(document, pdfminer.pdfdocument.PDFDocument), type(document) # yapf:disable
+    possible_lines = type_in_document(
+        document,
+        datatype=(
+            pdfminer.layout.LTLine,
+            pdfminer.layout.LTRect,
+            pdfminer.layout.LTTextBoxHorizontal,
+        ),
+        pages=pages,
+    )
+
+    def accept_text_as_line(item: pdfminer.layout.LTTextBoxHorizontal):
+        symbols = ['_', '-', '=']
+        for symbol in symbols:
+            if item.get_text().count(symbol) >= REQUIRED_MINUS_SIGNS:
+                # update bounding to pass vertical error test.
+                # use vertical centric position
+                # TODO: CHECK THIS: Make it symbol dependend?
+                middle = utila.roundme((item.bbox[1] + item.bbox[3]) / 2)
+                item.bbox = (item.bbox[0], middle, item.bbox[2], middle)
+                return True
+        return False
+
+    def accept_ltrect(item: pdfminer.layout.LTRect):
+        return accept_ltline(item)
+
+    def accept_ltline(item: pdfminer.layout.LTLine):
+        """Accept horizontal or vertical lines
+
+        The lines must vary only little. A crossing line has vertical
+        and horizontal error. We want | or - not / or \\.
+        """
+        assert item.bbox[3] >= item.bbox[1], str(item.bbox)
+        assert item.bbox[0] <= item.bbox[2], str(item.bbox)
+
+        horizontal_error = item.bbox[3] - item.bbox[1] >= HORIZONTAL_MAX_DIFF
+        vertical_error = item.bbox[2] - item.bbox[0] >= VERTICAL_MAX_DIFF
+
+        if horizontal_error and vertical_error:
+            return False
+        return True
+
+    strategy = {
+        pdfminer.layout.LTLine: accept_ltline,
+        pdfminer.layout.LTRect: accept_ltrect,
+        pdfminer.layout.LTTextBoxHorizontal: accept_text_as_line,
+    }
+    result = []
+    for content, pagenumber in possible_lines:
+        page = []
+        for item in content:
+            # check item against strategy. If no stategy is supported, the
+            # element is skipped.
+            try:
+                if not strategy[type(item)](item):
+                    continue
+                page.append(item)
+            except KeyError:
+                utila.error(f'unsupported strategy {item}')
+        # convert bounding
+        page = [
+            utila.roundme((
+                item.bbox[0],
+                item.bbox[1],
+                item.bbox[2],
+                item.bbox[3],
+            )) for item in page
+        ]
+        result.append((page, pagenumber))
     return result
 
 
@@ -106,5 +204,23 @@ def ensure_position(item: tuple) -> tuple:
     return (x0, y0, x1, y1)
 
 
-def bbox_tobounding(bbox) -> tuple:
-    return tuple([utila.roundme(var) for var in bbox])
+def type_in_document(
+        document: pdfminer.pdfdocument.PDFDocument,
+        datatype: object,
+        pages: tuple = None,
+) -> typing.List[typing.Tuple[pdfminer.layout.LTPage, int]]:
+    """Extract defined `datatype` out of `PDFDocument`
+
+    Args:
+        document(PDFDocument): pdf document to extract all types
+        datatype: selected item type
+        pages(tuple): select pages
+    Returns:
+        List with selected `datatype`.
+    """
+    assert isinstance(document, pdfminer.pdfdocument.PDFDocument), type(document) # yapf:disable
+    result = []
+    for page in rawmaker.features.process_pagecontent(document, pages=pages):
+        data = [item for item in page.content if isinstance(item, datatype)]
+        result.append((data, page.page))
+    return result

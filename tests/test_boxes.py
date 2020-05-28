@@ -13,6 +13,7 @@ import utila
 
 import rawmaker.features.border
 import rawmaker.features.boxes
+import rawmaker.features.line
 import rawmaker.reader
 import tests.resources
 from tests.resources import HOW_TO_CPORTING_BOX_COUNT as BOX_COUNT
@@ -24,7 +25,7 @@ from tests.resources import HOW_TO_CPORTING_PDF as TEST_DOCUMENT
 def linecluster():
     result = []
     with rawmaker.reader.read(TEST_DOCUMENT) as doc:
-        parsed = rawmaker.features.boxes.lines(doc)
+        parsed = rawmaker.features.line.lines(doc)
         size = rawmaker.features.border.pagesizes(doc)[0].size
         for pagelines, _ in parsed:
             cluster = rawmaker.features.boxes.determine_cluster(pagelines)

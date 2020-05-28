@@ -71,7 +71,7 @@ def test_nightly_rawmaker_and_linero(source, testdir, monkeypatch):  # pylint:di
     # use first 10 pages for normal testing and extract complete document
     # only in nighly tests.
     layout = '--char_margin 5.0 --boxes_flow 1.0 --line_margin 0.3'
-    pages = '' if utila.NIGHTLY else '--page=0:10'
+    pages = '' if utila.NIGHTLY else '--page=0:5'
     cmd = f'-i {source} {layout} -j=8 {pages} -VVV'
     tests.run_success(cmd, monkeypatch=monkeypatch)
 

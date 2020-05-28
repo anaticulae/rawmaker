@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v1.21.0
+
+### Feature
+
+* merge divided lines together (923f2a0fbfcf)
+* ensure top down, left right item order (f307d1866398)
+* ensure (left, top, right, down) bounding order (063e0e87a48d)
+* convert lines to tuple early (28347d2966fe)
+* merge divided lines together (64b1b86bf4f2)
+* improve font parser (f0beab61ad95)
+* add error handler for not support outline parsing (d7baf488ef12)
+* extend special char table (596909035898)
+
+### Documentation
+
+* add module documentation (1a6019b1b32d)
+
 ## v1.20.3
 
 ### Fix

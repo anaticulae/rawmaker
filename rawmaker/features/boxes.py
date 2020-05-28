@@ -88,11 +88,7 @@ def determine_horizontal(
     pagewidth = pagewidth[0].size.width
     worker = functools.partial(determine_pagehorizontals, page_width=pagewidth)
     # run worker
-    result = determine_clusteritem(
-        document,
-        worker,
-        pages=pages,
-    )
+    result = determine_clusteritem(document, worker, pages=pages)
     return result
 
 
@@ -105,7 +101,8 @@ def determine_clusteritem(
     document_lines = lines(document, pages=pages)
 
     for lines_in_page, page in document_lines:
-        lines_in_page = bounding(lines_in_page)
+        # bounding of element
+        lines_in_page = [item.bbox for item in lines_in_page]
         # remove lines which are to short and represent a dot
         lines_in_page = [
             item for item in lines_in_page if not utila.isdot(item)
@@ -144,7 +141,7 @@ def determine_pagehorizontals(
         cluster: LineClusters,
         page: int,
         *,
-        page_width: float = 1000,
+        page_width: float,
         vertical_maxerror: float = VERTICAL_MAX_DIFF,
         horizontal_minwidth: float = HORIZONTAL_MIN_WIDTH,
 ) -> iamraw.PageContentHorizontals:
@@ -232,12 +229,6 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
 MIN_DISTANCE = 3
 
 
-def bounding(items):
-    """Extract boundingbox out of LT-Element"""
-    result = [item.bbox for item in items]
-    return result
-
-
 def pagesize(page: pdfminer.layout.LTPage) -> typing.Tuple[float, float]:
     """Determine `pagesize` from `LTPage`.
 
@@ -305,6 +296,7 @@ def lines(  # pylint:disable=R1260
             if item.get_text().count(symbol) >= REQUIRED_MINUS_SIGNS:
                 # update bounding to pass vertical error test.
                 # use vertical centric position
+                # TODO: CHECK THIS: Make it symbol dependend?
                 middle = utila.roundme((item.bbox[1] + item.bbox[3]) / 2)
                 item.bbox = (item.bbox[0], middle, item.bbox[2], middle)
                 return True

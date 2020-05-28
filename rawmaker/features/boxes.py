@@ -33,6 +33,8 @@ import rawmaker.features.border
 import rawmaker.features.line
 import rawmaker.reader
 
+# TODO: MOVE HORIZONTALS TO SEPARATE STEP
+
 # TODO: LTLine - replace with own data structure to reduce dependencies to
 # rawmaker
 LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]

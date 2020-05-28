@@ -136,14 +136,10 @@ def lines(  # pylint:disable=R1260
             except KeyError:
                 utila.error(f'unsupported strategy {item}')
         # convert bounding
-        page = [
-            utila.roundme((
-                item.bbox[0],
-                item.bbox[1],
-                item.bbox[2],
-                item.bbox[3],
-            )) for item in page
-        ]
+        page = [(item.bbox[0], item.bbox[1], item.bbox[2], item.bbox[3])
+                for item in page]
+        # round bounding
+        page = [utila.roundme(item) for item in page]
         # ensure left, top, right, down bounding
         page = [ensure_position(item) for item in page]
         # sort item top down; left right

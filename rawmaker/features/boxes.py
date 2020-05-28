@@ -188,10 +188,7 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
         for clusterindex, cluster in enumerate(result):
             for clusteritem in cluster:
                 for test in current:
-                    if intersecting_endings(
-                            clusteritem,
-                            test,
-                    ):
+                    if intersecting_endings(clusteritem, test):
                         return clusterindex
         return None
 

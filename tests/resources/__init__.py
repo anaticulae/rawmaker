@@ -70,6 +70,7 @@ HOWTO_ARGPARSE = os.path.join(DOCU, 'howto_argparse.pdf')
 BACHELOR37 = os.path.join(BACHELOR, 'page_37_tables.pdf')
 BACHELOR56 = os.path.join(BACHELOR, 'page_56_hard_to_read.pdf')
 BACHELOR63 = os.path.join(BACHELOR, 'page_63_images_toc.pdf')
+BACHELOR90 = os.path.join(BACHELOR, 'bachelor90.pdf')
 BACHELOR111 = os.path.join(BACHELOR, 'page_111_images_toc.pdf')
 BACHELOR241 = os.path.join(BACHELOR, 'page241.pdf')
 
@@ -92,6 +93,7 @@ REQUIRED_RESOURCES = [
     BACHELOR37,
     BACHELOR56,
     BACHELOR63,
+    BACHELOR90,
     GENERATED,
     GOLDEN_VIM,
     HELLO_WORLD_PDF,

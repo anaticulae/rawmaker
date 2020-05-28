@@ -53,3 +53,11 @@ def test_line_dump_load():
     assert loaded
 
     assert loaded == lines
+
+
+def test_line_merge_horizontals_bachelor90(testdir):
+    pages = (13, 14)
+    with rawmaker.reader.read(tests.resources.BACHELOR90) as pdf:
+        lines = rawmaker.features.line.determine_lines(pdf, pages=pages)
+    lines = utila.flatten([item.content for item in lines])
+    assert len(lines) == 2

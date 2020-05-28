@@ -40,8 +40,6 @@ def determine_lines(
     lines = rawmaker.features.boxes.lines(document, pages=pages)
     result = []
     for content, number in lines:
-        # convert LTLine to tuple of boundingbox(x0,y0,x1,y1)
-        content = [bbox_tobounding(item.bbox) for item in content]
         # left point is left above from right down point
         content = [ensure_position(item) for item in content]
         # top down, left right

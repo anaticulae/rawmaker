@@ -101,8 +101,6 @@ def determine_clusteritem(
     document_lines = lines(document, pages=pages)
 
     for lines_in_page, page in document_lines:
-        # bounding of element
-        lines_in_page = [item.bbox for item in lines_in_page]
         # remove lines which are to short and represent a dot
         lines_in_page = [
             item for item in lines_in_page if not utila.isdot(item)
@@ -338,6 +336,15 @@ def lines(  # pylint:disable=R1260
                 page.append(item)
             except KeyError:
                 utila.error(f'unsupported strategy {item}')
+        # convert bounding
+        page = [
+            utila.roundme((
+                item.bbox[0],
+                item.bbox[1],
+                item.bbox[2],
+                item.bbox[3],
+            )) for item in page
+        ]
         result.append((page, pagenumber))
     return result
 

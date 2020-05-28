@@ -27,8 +27,7 @@ def linecluster():
         parsed = rawmaker.features.boxes.lines(doc)
         size = rawmaker.features.border.pagesizes(doc)[0].size
         for pagelines, _ in parsed:
-            cluster = rawmaker.features.boxes.determine_cluster(
-                [item.bbox for item in pagelines])
+            cluster = rawmaker.features.boxes.determine_cluster(pagelines)
             result.append(cluster)
     assert result
     return result, size

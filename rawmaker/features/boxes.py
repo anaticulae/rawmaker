@@ -175,6 +175,7 @@ def determine_pagehorizontals(
 
 
 def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # pylint:disable=R1260
+    # TODO: REPLACE THIS CODE
     if not items:
         return []
 
@@ -206,15 +207,13 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
                 result[index].extend(current)
         return result
 
-    # Break when cluster does not change result
-    # Cluster till cluster move does not change the result
-    before = set()
+    single = utila.Single()
     while True:
+        # Break when cluster does not change result Cluster till cluster
+        # move does not change the result.
         result = cluster(result)
-        hashid = hash(str(result))
-        if hashid in before:
+        if single.contains(result):
             break
-        before.add(hashid)
     return result
 
 

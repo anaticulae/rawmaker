@@ -144,6 +144,9 @@ def lines(  # pylint:disable=R1260
                 item.bbox[3],
             )) for item in page
         ]
+        # ensure left, top, right, down bounding
+        page = [ensure_position(item) for item in page]
+
         result.append((page, pagenumber))
     return result
 

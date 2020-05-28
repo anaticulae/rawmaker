@@ -144,6 +144,8 @@ def lines(  # pylint:disable=R1260
         page = [ensure_position(item) for item in page]
         # sort item top down; left right
         page = sorted(page, key=operator.itemgetter(1, 0))
+        # merges divided lines
+        page = merge_lines(page)
 
         result.append((page, pagenumber))
     return result

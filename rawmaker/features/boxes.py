@@ -41,7 +41,8 @@ LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]
 
 # minimal length of a horizontal line
 HORIZONTAL_MIN_WIDTH = configo.HV_FLOAT(default=0.2).value
-
+# maximal difference in x-component
+HORIZONTAL_VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=2.0).value
 
 def work(document: str, pages: tuple) -> typing.Tuple[str, str]:
     """Extract content boxes and horizontal lines from given `document`
@@ -136,7 +137,7 @@ def determine_pagehorizontals(
         page: int,
         *,
         page_width: float,
-        vertical_maxerror: float = rawmaker.features.line.VERTICAL_MAX_DIFF,
+        vertical_maxerror: float = HORIZONTAL_VERTICAL_MAX_DIFF,
         horizontal_minwidth: float = HORIZONTAL_MIN_WIDTH,
 ) -> iamraw.PageContentHorizontals:
     """Collect single line which are expanded horizontal

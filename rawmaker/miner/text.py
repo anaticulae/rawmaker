@@ -304,6 +304,7 @@ def merge_special_char(items):
         try:
             replaced = MERGES[result[-1].value]
         except KeyError:
+            # TODO: REMOVE ERROR LOG LATER
             utila.error(f'could not merge with before {item}')
             result.append(item)
             continue

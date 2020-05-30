@@ -143,3 +143,16 @@ def mine_holywhitespace(source, remove_whitespace, pages, expected_length):
             holywhitespaces = [len(line) for line in text]
             assert not all(holywhitespaces), text
     return extracted
+
+
+def test_text_mining_convert_special_chars():
+    parsed = rawmaker.features.text.work(
+        tests.resources.BACHELOR90,
+        boxes_flow=1.0,
+        pages=(1,),
+    )
+    document = serializeraw.load_document(parsed[0])
+    # first page, fourth line
+    text = document[0][3].text
+    expected = 'für die Anwendung auf einem Embedded System\n'
+    assert text == expected

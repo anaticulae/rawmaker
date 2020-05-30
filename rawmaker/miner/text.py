@@ -162,7 +162,6 @@ def render_char(
     if math.fabs(fontsize) <= MIN_FONT_RISE:
         # add threshold to avoid noise in char-fontrise
         fontrise = 0.0  # pylint:disable=R0204
-
     char = None
     if value in FAST_KEY:
         # Unicode character
@@ -218,6 +217,9 @@ def render_textline(
     # ensure that chars are sorted from left to right
     # TODO: CHECK VERTICAL TEXT?
     result.chars = ensure_leftright(result.chars)
+    result.chars = merge_special_char(result.chars)
+    result.chars = merge_small_whitespaces(result.chars)
+
     if not strip:
         return result
 
@@ -269,6 +271,74 @@ def ensure_leftright(items):
     # remove mapped coordiante
     items = [item[1] for item in boundings]
     return items
+
+
+MERGES = {
+    'A': 'Ä',
+    'a': 'ä',
+    'O': 'Ö',
+    'o': 'ö',
+    'U': 'Ü',
+    'u': 'ü',
+}
+
+
+def merge_special_char(items):
+    """Convert `A¨` to `Ä` etc.
+
+    See bachelor90 example.
+    """
+    if not items:
+        return []
+    # TODO: SPECIAL CHAR AT FIRST?
+    result = [items[0]]
+    for item in items[1:]:
+        try:
+            special = item.special
+        except AttributeError:
+            special = None
+        if special != '¨':
+            result.append(item)
+            continue
+        # merge with before
+        try:
+            replaced = MERGES[result[-1].value]
+        except KeyError:
+            utila.error(f'could not merge with before {item}')
+            result.append(item)
+            continue
+        result[-1].value = replaced
+
+    return result
+
+
+def merge_small_whitespaces(items):
+    """Removed unnescessary bad printed white spaces.
+
+    See bachelor90 example.
+    """
+    if len(items) < 3:
+        return items
+    result = [items[0]]
+    for current, after in zip(items[1:-1], items[2:]):
+        if not isinstance(current, iamraw.VirtualChar):
+            result.append(current)
+            continue
+        try:
+            before_x1 = result[-1].box.x1
+            after_x0 = after.box.x0
+        except AttributeError:
+            # TODO: INVESTIGATE LATER
+            # whitespace before or after
+            result.append(current)
+            continue
+        if utila.near(before_x1, after_x0, diff=0.3):  # TODO: HOLY VALUE
+            # remove unnecessary virtual char
+            continue
+        # add required virtual char
+        result.append(current)
+    result.append(items[-1])
+    return result
 
 
 def split_characters(char) -> list:

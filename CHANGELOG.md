@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.21.2
+
+### Fix
+
+* fix bad printed text mining (3f00c5635b0d)
+* fix importing order bug on runtime (ced7f4139c40)
+
 ## v1.21.1
 
 ## v1.21.0

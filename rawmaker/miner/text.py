@@ -217,8 +217,8 @@ def render_textline(
     # ensure that chars are sorted from left to right
     # TODO: CHECK VERTICAL TEXT?
     result.chars = ensure_leftright(result.chars)
-    result.chars = merge_special_char(result.chars)
     result.chars = merge_small_whitespaces(result.chars)
+    result.chars = merge_special_char(result.chars)
 
     if not strip:
         return result
@@ -326,6 +326,7 @@ def merge_small_whitespaces(items):
             result.append(current)
             continue
         try:
+            before_x0 = result[-1].box.x0
             before_x1 = result[-1].box.x1
             after_x0 = after.box.x0
         except AttributeError:
@@ -333,7 +334,10 @@ def merge_small_whitespaces(items):
             # whitespace before or after
             result.append(current)
             continue
-        if utila.near(before_x1, after_x0, diff=0.3):  # TODO: HOLY VALUE
+        if before_x0 <= after_x0 <= before_x1:
+            # ensure to overlap and not merge hthan required
+            # TODO: is 0.01 required?
+            # if utila.near(before_x1, after_x0, diff=2.5):  # TODO: HOLY VALUE
             # remove unnecessary virtual char
             continue
         # add required virtual char

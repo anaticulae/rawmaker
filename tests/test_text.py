@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+
 import iamraw
 import pytest
 import serializeraw
@@ -156,3 +157,27 @@ def test_text_mining_convert_special_chars():
     text = document[0][3].text
     expected = 'für die Anwendung auf einem Embedded System\n'
     assert text == expected
+
+
+def test_text_mining_convert_special_whitespace_between_special():
+    """A whitespace between expected vowel and '¨' requires to remove
+    small whitespace before merging both chars.
+
+    Normal:
+    text u¨ hello -> textü hello
+    Here:
+    textu ¨ hello -> textü hello
+
+    Solution remove small whitespaces before merging.
+    """
+    parsed = rawmaker.features.text.work(
+        tests.resources.BACHELOR90,
+        boxes_flow=1.0,
+        pages=(5,),
+    )
+    document = serializeraw.load_document(parsed[0])
+    text = document[0][1].text
+    expected = '3.4.3. Vollständige Automatisierung . .'
+    assert expected in text
+    expected = 'Automatisierung, manuelle Verknüpfung . . . .'
+    assert expected in text

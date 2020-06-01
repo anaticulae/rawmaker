@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.21.3
+
+### Fix
+
+* handle more special chars correctly (acc5f751cb75)
+
 ## v1.21.2
 
 ### Fix

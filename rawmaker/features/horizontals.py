@@ -63,7 +63,8 @@ def determine_horizontal(
         pages: tuple = None,
 ):
     # prepare worker
-    pagewidth = rawmaker.features.border.pagesizes(document, pages=pages)
+    # TODO: IS PAGE ZERO ENOUGH?
+    pagewidth = rawmaker.features.border.pagesizes(document, pages=(0,))
     pagewidth = pagewidth[0].size.width
     worker = functools.partial(determine_pagehorizontals, page_width=pagewidth)
     # run worker

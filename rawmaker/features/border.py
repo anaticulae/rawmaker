@@ -87,19 +87,19 @@ def determine_boundingboxes(
 
 
 def pagesizes(
-        document: pdfminer.pdfdocument.PDFDocument,
+        pdf: pdfminer.pdfdocument.PDFDocument,
         pages: tuple = None,
 ) -> typing.List[iamraw.PageSize]:
     """Extract page sizes of `PDFDocument`.
 
     Args:
-        document(PDFDocument): load pdf document
+        pdf(PDFDocument): load pdf document
         pages: tuple of processed pages
     Returns:
         List of page sizes.
     """
     result = []
-    for page, content in rawmaker.features.process_document(document, pages=pages): # yapf:disable
+    for page, content in rawmaker.features.process_document(pdf, pages=pages):
         content, pagenumber = content.content, content.page
         size = pagesize_from_page(page)
         result.append(PagePageSize(size=size, page=pagenumber))

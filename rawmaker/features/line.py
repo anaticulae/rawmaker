@@ -60,7 +60,7 @@ def determine_lines(
 
 
 def lines(  # pylint:disable=R1260
-        document: pdfminer.pdfdocument.PDFDocument,
+        pdf: pdfminer.pdfdocument.PDFDocument,
         pages: tuple = None,
 ) -> list:
     """Extract all `LTLine` out of `PDFDocument` page wise
@@ -71,14 +71,14 @@ def lines(  # pylint:disable=R1260
         LTTextBoxHorizontal:
 
     Args:
-        document: pdf document to collect lines
+        pdf: pdf document to collect lines
         pages: select pages to run anlaysis on
     Returns:
         list of line objects[LTLine, LTRect, LTTextBoxHorizontal]
     """
-    assert isinstance(document, pdfminer.pdfdocument.PDFDocument), type(document) # yapf:disable
+    assert isinstance(pdf, pdfminer.pdfdocument.PDFDocument), type(pdf)
     possible_lines = type_in_document(
-        document,
+        pdf,
         datatype=(
             pdfminer.layout.LTLine,
             pdfminer.layout.LTRect,

@@ -13,6 +13,7 @@ import utila
 
 import rawmaker.features.border
 import rawmaker.features.boxes
+import rawmaker.features.horizontals
 import rawmaker.features.line
 import rawmaker.reader
 import tests.resources
@@ -83,7 +84,7 @@ def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
     pagewidth = size.width
     document_lines = []
     for index, page in enumerate(linecluster):
-        horizontal = rawmaker.features.boxes.determine_pagehorizontals(
+        horizontal = rawmaker.features.horizontals.determine_pagehorizontals(
             cluster=page,
             page=index,
             page_width=pagewidth,
@@ -105,7 +106,7 @@ def test_determine_textboxes():
 def test_boxes_determine_horizontals_master72pages():
     horizontals = None
     with rawmaker.reader.read(tests.resources.MASTER72) as doc:
-        horizontals = rawmaker.features.boxes.determine_horizontal(
+        horizontals = rawmaker.features.horizontals.determine_horizontal(
             doc,
             tuple(range(10)),
         )

@@ -69,10 +69,12 @@ WORKPLAN = [
     utila.create_step(
         'boxes',
         inputs=PDF_INPUT,
-        output=(
-            'boxes',
-            'horizontal',
-        ),
+        output=('boxes',),
+    ),
+    utila.create_step(
+        'horizontals',
+        inputs=PDF_INPUT,
+        output=('horizontals',),
     ),
     utila.create_step(
         'fonts',

@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v1.21.4
+
+### Feature
+
+* reduce required runtime (5a7c75081dec)
+* move horizontals to a separate rawmaker step (af22aa80bd1f)
+
 ## v1.21.3
 
 ### Fix

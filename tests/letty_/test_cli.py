@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
 import pytest
 
 import tests.letty_
@@ -29,7 +30,7 @@ def test_letty_cli_run_failure(command, testdir, monkeypatch):  #pylint: disable
 
 
 def test_letty_whitespaces(monkeypatch, capsys):  #pylint: disable=W0613
-    cmd = f'-i {tests.resources.VIM_GENERATED} --whitespace'
+    cmd = f'-i {power.link(power.DOCU13_PDF)} --whitespace'
     tests.letty_.run_success(cmd, monkeypatch=monkeypatch)
 
     stdout = capsys.readouterr().out

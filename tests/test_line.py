@@ -6,6 +6,8 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+
+import power
 import pytest
 import serializeraw
 import utila
@@ -25,7 +27,7 @@ def test_line_run_cli(testdir, monkeypatch):  #pylint: disable=W0613
 
 @pytest.mark.parametrize('source, expected', [
     pytest.param(
-        tests.resources.VIM_PDF,
+        power.DOCU13_PDF,
         (0, 1, 1, 3, 3, 5, 2, 5, 6, 4, 5, 3, 2),
         id='vim',
     ),

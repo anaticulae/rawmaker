@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
 import utila
 
 import letty.optimizer
@@ -23,7 +24,7 @@ def test_optimizer():
 
 @utila.skip_longrun
 def test_optimizer_hardtoread():
-    path = tests.resources.BACHELOR37
+    path = power.BACHELOR037_PDF
     pages = (6,)
     result = letty.optimizer.run(
         path,

@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
 import utila
 
 import tests
@@ -16,7 +17,7 @@ import tests.resources
 @utila.skip_longrun
 def test_master_compare_vim(testdir, monkeypatch):
     """Update test data with `cmd` below. Copy from generated test."""
-    cmd = f'-i {tests.resources.VIM_PDF} -j8 --pages=1:4'
+    cmd = f'-i {power.DOCU13_PDF} -j8 --pages=1:4'
     tests.run_success(cmd, monkeypatch=monkeypatch)
 
     golden = tests.resources.GOLDEN_VIM

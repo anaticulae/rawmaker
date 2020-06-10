@@ -8,6 +8,7 @@
 # =============================================================================
 
 import iamraw.path
+import power
 import pytest
 import serializeraw
 import utila
@@ -25,7 +26,7 @@ def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
 
 @pytest.mark.parametrize('source, expected', [
     pytest.param(
-        tests.resources.VIM_GENERATED,
+        power.link(power.DOCU13_PDF),
         (1, 3, 3, 5, 2, 5, 6, 4, 5, 3, 1),
         id='vim',
     ),
@@ -40,7 +41,7 @@ def test_table_extract(source, expected):
 
 
 def test_table_dump_and_load():
-    source = iamraw.path.line(tests.resources.VIM_GENERATED)
+    source = iamraw.path.line(power.link(power.DOCU13_PDF))
     loaded = serializeraw.load_lines(source, pages=(0, 1, 2))
     grouped = linero.features.table.locate_tables(loaded)
     tables = linero.features.table.judge_tables(grouped)
@@ -51,7 +52,8 @@ def test_table_dump_and_load():
 
 
 def test_table_extract_negative():
-    source = iamraw.path.line(tests.resources.LEFTRIGHT_GENERATED)
+    source = power.link(power.BOOK007_PDF)
+    source = iamraw.path.line(source)
 
     tables = linero.features.table.work(source)
 

@@ -11,6 +11,7 @@ import operator
 
 import iamraw
 import iamraw.path
+import power
 import pytest
 import serializeraw
 import utila
@@ -191,7 +192,7 @@ def test_strip_correct_bounding_box(testdir, monkeypatch):
     there is a shortcut column and on the right side there is the
     description of the shortcut. Two item must have a near y-coordinate
     because there are on the same line."""
-    source = tests.resources.BACHELOR37
+    source = power.BACHELOR037_PDF
     config = rawmaker.parameter.ParsingConfiguration(line_margin=0.25)
     cmd = f'-i {source} --text --pages=1 {config.cmdline()}'
     tests.run_success(cmd, monkeypatch=monkeypatch)

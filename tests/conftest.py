@@ -7,10 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
 import pytest
 import utila
 
-import power
 import rawmaker
 import tests.resources
 

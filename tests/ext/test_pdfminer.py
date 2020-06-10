@@ -11,6 +11,7 @@
 The functionality is encapsulated by `rawmaker` api.
 """
 
+import power
 import pytest
 
 import rawmaker.error
@@ -20,7 +21,7 @@ import tests.resources
 
 def test_outline_count():
     """Test reading outlines from document."""
-    with rawmaker.reader.read(tests.resources.VIM_PDF) as document:
+    with rawmaker.reader.read(power.DOCU13_PDF) as document:
         outlines = document.get_outlines()
         # pylint: disable=unused-variable
         # pylint: disable=invalid-name

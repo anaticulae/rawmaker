@@ -8,6 +8,7 @@
 # =============================================================================
 
 import pdfminer
+import power
 import pytest
 import serializeraw
 import utila
@@ -29,7 +30,7 @@ def test_outlines_from_document_no_outlines(monkeypatch, capsys):
             'get_outlines',
             get_outlines,
         )
-        rawmaker.features.outlines.work(tests.resources.VIM_PDF)
+        rawmaker.features.outlines.work(power.DOCU13_PDF)
 
     present_inerror('error', 'outlines', captured=capsys)
 
@@ -83,8 +84,8 @@ def bachelor111(toc):
 
 
 @pytest.mark.parametrize('source, validate', [
-    pytest.param(tests.resources.VIM_PDF, vim, id='vim'),
-    pytest.param(tests.resources.BACHELOR37, bachelor37, id='bachelor37'),
+    pytest.param(power.DOCU13_PDF, vim, id='vim'),
+    pytest.param(power.BACHELOR037_PDF, bachelor37, id='bachelor37'),
     pytest.param(tests.resources.MASTER116, master116, id='master116'),
     pytest.param(tests.resources.BACHELOR111, bachelor111, id='bachelor111'),
 ])

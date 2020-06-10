@@ -32,11 +32,7 @@ SPEC = os.path.join(RESOURCES, 'spec')
 
 NO_PDF = os.path.join(NEGATIVE, 'no_pdf')
 
-LEFTRIGHT = os.path.join(BOOK, 'leftright.pdf')
-LEFTRIGHT_GENERATED = os.path.join(GENERATED, 'leftright')
-
 VIM_PDF = os.path.join(DOCU, 'vimguide.pdf')
-VIM_GENERATED = os.path.join(GENERATED, 'vim')
 
 VIM_PAGE_COUNT = 13
 VIM_OUTLINES = 42
@@ -67,7 +63,6 @@ HOWTOREAD_PDF = os.path.join(ORDER, 'howtowrite_pages9.pdf')
 
 HOWTO_ARGPARSE = os.path.join(DOCU, 'howto_argparse.pdf')
 
-BACHELOR37 = os.path.join(BACHELOR, 'page_37_tables.pdf')
 BACHELOR56 = os.path.join(BACHELOR, 'page_56_hard_to_read.pdf')
 BACHELOR63 = os.path.join(BACHELOR, 'page_63_images_toc.pdf')
 BACHELOR90 = os.path.join(BACHELOR, 'bachelor90.pdf')
@@ -90,7 +85,6 @@ REQUIRED_RESOURCES = [
     BACHELOR,
     BACHELOR111,
     BACHELOR241,
-    BACHELOR37,
     BACHELOR56,
     BACHELOR63,
     BACHELOR90,
@@ -104,7 +98,6 @@ REQUIRED_RESOURCES = [
     INCREASING_FONT_A3,
     INCREASING_FONT_A4,
     INCREASING_FONT_A5,
-    LEFTRIGHT,
     MASTER116,
     MASTER72,
     MASTER89,
@@ -118,6 +111,5 @@ REQUIRED_RESOURCES = [
     TECHNICAL,
     TECHNICAL24,
     TWINE_PDF,
-    VIM_GENERATED,
     VIM_PDF,
 ]

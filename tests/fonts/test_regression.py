@@ -8,6 +8,7 @@
 # =============================================================================
 
 import iamraw.path
+import power
 import pytest
 import serializeraw
 import utila
@@ -19,7 +20,7 @@ import tests.resources
 @pytest.mark.xfail(reason='incomplete font detection implementation')
 def test_leftright_book_font_name(testdir, monkeypatch, capsys):
     tests.run_success(
-        f'-i {tests.resources.LEFTRIGHT} --fonts',
+        f'-i {power.BOOK007_PDF} --fonts',
         monkeypatch=monkeypatch,
     )
     _, err = capsys.readouterr()
@@ -29,7 +30,7 @@ def test_leftright_book_font_name(testdir, monkeypatch, capsys):
 @utila.skip_longrun
 def test_leftright_book_font_size(testdir, monkeypatch):
     tests.run_success(
-        f'-i {tests.resources.LEFTRIGHT} --text',
+        f'-i {power.BOOK007_PDF} --text',
         monkeypatch=monkeypatch,
     )
     source = iamraw.path.text(testdir.tmpdir)

@@ -8,6 +8,7 @@
 #==============================================================================
 
 import iamraw
+import power
 import pytest
 import serializeraw
 import utila
@@ -19,7 +20,7 @@ import tests.resources
 
 @utila.skip_longrun
 def test_miner_pdf():
-    parsed_file = rawmaker.features.text.work(tests.resources.VIM_PDF)
+    parsed_file = rawmaker.features.text.work(power.DOCU13_PDF)
     assert parsed_file
 
 
@@ -35,7 +36,7 @@ def test_mine_hello_world_pdf():
     'pdf_path',
     [
         tests.resources.HELLO_WORLD_PDF,
-        tests.resources.VIM_PDF,
+        power.DOCU13_PDF,
     ],
     ids=[
         'hello_world.pdf',
@@ -72,7 +73,7 @@ def test_dump_and_load_pdf(pdf_path):
 def test_text_mine_pdf_page_0():
     selected_pages = [3, 4, 5]
     parsed = rawmaker.features.text.work(
-        tests.resources.VIM_PDF,
+        power.DOCU13_PDF,
         pages=selected_pages,
     )
     dumped_text, _ = parsed
@@ -84,7 +85,7 @@ def test_text_mine_pdf_page_0():
 
 @pytest.mark.parametrize('remove_whitespace', [True, False])
 def test_text_mine_bachelor37_holy_whitespaces_remove(remove_whitespace):
-    source = tests.resources.BACHELOR37
+    source = power.BACHELOR037_PDF
     pages = (1,)
     mine_holywhitespace(source, remove_whitespace, pages, 1)
 

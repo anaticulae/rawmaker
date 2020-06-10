@@ -8,15 +8,14 @@
 # =============================================================================
 
 import iamraw.path
+import power
 import pytest
 import serializeraw
-
-import tests.resources
 
 
 def test_linero_figure_extract():
     pytest.skip('work in progress')
-    source = tests.resources.LEFTRIGHT_GENERATED
+    source = power.link(power.BOOK007_PDF)
     pages = (5)
     lines = iamraw.path.line(source)
     textpositions = iamraw.path.textposition(source)

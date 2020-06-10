@@ -7,36 +7,30 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
-import sys
-
+import pytest
 import utila
 
+import power
+import rawmaker
 import tests.resources
-import tests.resources.update
 
 pytest_plugins = ['pytester', 'xdist']  # pylint: disable=invalid-name
 
+PACKAGE = rawmaker.PROCESS_NAME
 
-def pytest_sessionstart(session):  # pylint:disable=W0613
-    if 'PYTEST_XDIST_WORKER' in os.environ:
-        # master process only
-        return
+power.setup(rawmaker.ROOT)
 
-    single_test = '-k' in sys.argv
-    if not single_test and ('GENERATE' in os.environ or utila.test.LONGRUN):
 
-        utila.log('install requirements')
-        tests.resources.update.install_requirements()
+@pytest.mark.usefixtures('session')
+def pytest_sessionstart():
+    power.run(tests.resources.REQUIRED_RESOURCES)
 
-        # ensure that all test resources exists
-        utila.log('synchronize test resources')
-        tests.resources.update.sync_resources()
 
-        utila.log('extract resources')
-        tests.resources.update.extract_examples()
-
-    for item in tests.resources.REQUIRED_RESOURCES:
-        advice = 'run `baw --test=generate` to generate test data'
-        msg = f'required test path does not exists: {item}, {advice}'
-        assert os.path.exists(item), msg
+def extract():
+    todo = [
+        (power.BOOK007_PDF, power.link(power.BOOK007_PDF)),
+        (power.DOCU13_PDF, power.link(power.DOCU13_PDF)),
+    ]
+    todo = [f'rawmaker -i {source} -o {dest} -j=8' for source, dest in todo]
+    completed = utila.run_parallel(todo)
+    assert completed == utila.SUCCESS

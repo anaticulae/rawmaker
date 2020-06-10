@@ -8,6 +8,7 @@
 # =============================================================================
 
 import dataclasses
+import functools
 import typing
 
 import iamraw
@@ -52,18 +53,35 @@ def imageinfo(path: str, page: int, bounding: tuple) -> ImageInformation:
 def dump_info(info: ImageInformation) -> str:
     assert isinstance(info, ImageInformation)
     result = {}
-    for key, value in vars(info).items():
-        if value is None:
-            continue
-        result[key] = value
-    dumped = yaml.dump(result)
+    if info.height is not None:
+        result['height'] = info.height
+    if info.width is not None:
+        result['width'] = info.width
+    if info.page is not None:
+        result['page'] = info.page
+    if info.bounding:
+        result['bounding'] = utila.from_tuple(info.bounding)
+    if info.dpi:
+        result['dpi'] = utila.from_tuple(info.dpi)
+    dumped = yaml.safe_dump(result)
     return dumped
 
 
 def load_info(content: str) -> ImageInformation:
     source = utila.from_raw_or_path(content, ftype='yaml')
-    loaded = yaml.load(source, Loader=yaml.FullLoader)
+    loaded = yaml.safe_load(source)
     parsed = ImageInformation()
-    for key, value in loaded.items():
+    loader = [
+        ('page', int),
+        ('width', float),
+        ('height', float),
+        ('dpi', functools.partial(utila.parse_tuple, length=2)),
+        ('bounding', functools.partial(utila.parse_tuple, length=4)),
+    ]
+    for key, typ in loader:
+        try:
+            value = typ(loaded[key])
+        except KeyError:
+            continue
         setattr(parsed, key, value)
     return parsed

@@ -38,10 +38,3 @@ def test_image_information(testdir):
     assert info, info
     assert info.width >= 500, str(info)
     assert info.height >= 200, str(info)
-
-
-def test_image_dump_and_load_info():
-    image = rawmaker.images.info.ImageInformation(width=345, height=500)
-    dumped = rawmaker.images.info.dump_info(image)
-    loaded = rawmaker.images.info.load_info(dumped)
-    assert loaded == image

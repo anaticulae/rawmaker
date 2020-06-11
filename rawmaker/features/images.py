@@ -20,6 +20,7 @@ import collections
 import os
 import typing
 
+import serializeraw
 import utila
 
 import rawmaker
@@ -38,7 +39,7 @@ def work(document: str, pages: tuple = None) -> DumpedImageInformations:
     result = []
     for page in extracted:
         for info, (rawimage, ext) in page.content:
-            info = rawmaker.images.info.dump_info(info)
+            info = serializeraw.dump_image_info(info)
             result.append((info, (rawimage, ext)))
     return result
 

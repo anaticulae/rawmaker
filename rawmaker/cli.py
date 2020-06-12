@@ -135,6 +135,7 @@ def main():
         pages=True,
         profileflag=True,
         singleinput=True,
+        verboseflag=True,
         version=rawmaker.__version__,
     )
     with linter():

@@ -23,10 +23,11 @@ def main() -> int:
     parser = utila.cli.create_parser(
         todo=commands,
         config=utila.ParserConfiguration(
-            outputparameter=True,
             inputparameter=True,
-            prefix=False,
+            outputparameter=True,
             pages=True,
+            prefix=False,
+            verboseflag=True,
         ),
         version=figureo.__version__,
         prog=figureo.PROCESS,

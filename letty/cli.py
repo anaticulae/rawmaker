@@ -22,10 +22,11 @@ def main() -> int:
     parser = utila.cli.create_parser(
         todo=commands,
         config=utila.ParserConfiguration(
-            outputparameter=False,
             inputparameter=True,
-            prefix=False,
+            outputparameter=False,
             pages=True,
+            prefix=False,
+            verboseflag=True,
         ),
         version=letty.__version__,
         prog=letty.PROCESS,

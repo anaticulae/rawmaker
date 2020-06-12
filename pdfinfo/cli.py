@@ -47,9 +47,10 @@ def main():
     ]
     parser = utila.cli.create_parser(
         config=utila.ParserConfiguration(
-            outputparameter=True,
             inputparameter=True,
+            outputparameter=True,
             prefix=False,
+            verboseflag=True,
         ),
         description=DESCRIPTION,
         todo=commands,

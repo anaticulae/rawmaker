@@ -41,6 +41,7 @@ def main():
             pages=True,
             profileflag=True,
             singleinput=True,
+            verboseflag=True,
             version=linero.__version__,
         ),
     )

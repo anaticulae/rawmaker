@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.22.0
+
+### Feature
+
+* add missing verbose flag (2217799cbfa3)
+
 ## v1.21.5
 
 ## v1.21.4

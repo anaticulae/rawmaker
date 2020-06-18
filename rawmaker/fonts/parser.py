@@ -306,5 +306,7 @@ STYLES = [
     ('Regular', None, None, REGULAR),
     ('Regu', None, None, REGULAR),
     ('Rg', None, None, REGULAR),
-    ('Roman', None, None, None),
 ]
+#  TODO: Roman converts TimesNewRoman to TimesNew. I could not verify if
+#  that is a smart necessary option or it will introduce more problems?
+# ('Roman', None, None, None),

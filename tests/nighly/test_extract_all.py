@@ -17,6 +17,7 @@ import glob
 
 import pytest
 import utila
+import utilatest
 
 import tests
 import tests.figureo_
@@ -65,27 +66,27 @@ def sources():
     return result
 
 
-@utila.skip_longrun
+@utilatest.skip_longrun
 @pytest.mark.parametrize('source', sources())
 def test_nightly_rawmaker_and_linero(source, testdir, monkeypatch):  # pylint:disable=W0621
     # use first 10 pages for normal testing and extract complete document
     # only in nighly tests.
     layout = '--char_margin 5.0 --boxes_flow 1.0 --line_margin 0.3'
-    pages = '' if utila.NIGHTLY else '--page=0:5'
+    pages = '' if utilatest.NIGHTLY else '--page=0:5'
     cmd = f'-i {source} {layout} -j=8 {pages} -VVV'
     tests.run_success(cmd, monkeypatch=monkeypatch)
 
     tests.linero_.run_success('', monkeypatch=monkeypatch)
 
 
-@utila.skip_nightly
+@utilatest.skip_nightly
 @pytest.mark.parametrize('source', sources())
 def test_nightly_pdfinfo(source, testdir, monkeypatch):  # pylint:disable=W0621
     cmd = f'-i {source}'
     tests.pdfinfo_.run_success(cmd, monkeypatch=monkeypatch)
 
 
-@utila.skip_nightly
+@utilatest.skip_nightly
 @pytest.mark.parametrize('source', sources())
 def test_nightly_figureo(source, testdir, monkeypatch):  # pylint:disable=W0621
     cmd = f'-i {source}'

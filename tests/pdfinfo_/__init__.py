@@ -9,20 +9,20 @@
 
 import functools
 
-import utila
+import utilatest
 
 import pdfinfo
 import pdfinfo.cli
 
 run_success = functools.partial(  # pylint:disable=C0103
-    utila.run_command,
+    utilatest.run_command,
     main=pdfinfo.cli.main,
     process=pdfinfo.PROCESS,
     success=True,
 )
 
 run_failure = functools.partial(  # pylint:disable=C0103
-    utila.run_command,
+    utilatest.run_command,
     main=pdfinfo.cli.main,
     process=pdfinfo.PROCESS,
     success=False,

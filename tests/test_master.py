@@ -9,12 +9,13 @@
 
 import power
 import utila
+import utilatest
 
 import tests
 import tests.resources
 
 
-@utila.skip_longrun
+@utilatest.skip_longrun
 def test_master_compare_vim(testdir, monkeypatch):
     """Update test data with `cmd` below. Copy from generated test."""
     cmd = f'-i {power.DOCU13_PDF} -j8 --pages=1:4'

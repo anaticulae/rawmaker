@@ -9,20 +9,20 @@
 
 import functools
 
-import utila
+import utilatest
 
 import figureo
 import figureo.cli
 
 run = functools.partial(  # pylint:disable=C0103
-    utila.run_command,
+    utilatest.run_command,
     main=figureo.cli.main,
     process=figureo.PROCESS,
     success=True,
 )
 
 fail = functools.partial(  # pylint:disable=C0103
-    utila.run_command,
+    utilatest.run_command,
     main=figureo.cli.main,
     process=figureo.PROCESS,
     success=False,

@@ -11,6 +11,7 @@ import os
 
 import pytest
 import utila
+import utilatest
 
 import tests
 import tests.resources
@@ -28,7 +29,7 @@ from tests.resources import TWINE_PDF
     ['-i', RESTRUCTURED_PDF, '-o', 'output'],
     ['-i', TWINE_PDF, '-o', 'output'],
 ])
-@utila.skip_longrun
+@utilatest.skip_longrun
 def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
     run_success(command, monkeypatch=monkeypatch)
@@ -59,7 +60,7 @@ def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):  #pylint: disab
         # DO NOT REMOVE A SINGLE SOURCE OF THIS TEST
         ['-i', HOW_TO_CPORTING_PDF, '-o', 'output'],
     ])
-@utila.skip_longrun
+@utilatest.skip_longrun
 def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: disable=W0613
     """This test run the rawmaker with problematic resources which led to an
     error on parsing/converting the document in the past."""
@@ -99,7 +100,7 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
     assert len(files_written) == expected, str(files_written)
 
 
-@utila.skip_longrun
+@utilatest.skip_longrun
 def test_rawmaker_cli_run_file_without_extention(testdir, monkeypatch):
     source = os.path.join(str(testdir), 'hello')
     utila.file_copy(tests.resources.RESTRUCTURED_PDF, source)

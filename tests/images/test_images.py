@@ -8,7 +8,7 @@
 # =============================================================================
 
 import pytest
-import utila
+import utilatest
 
 import rawmaker.miner.images
 import rawmaker.reader
@@ -16,13 +16,13 @@ import tests
 import tests.resources
 
 
-@utila.skip_longrun
+@utilatest.skip_longrun
 def test_images_export_bachelor56(testdir):
     """Extract seven images out of four pages."""
     source = tests.resources.BACHELOR56
     root = testdir.tmpdir
     pages = None
-    with utila.increased_filecount(root, mindiff=7, maxdiff=7):
+    with utilatest.increased_filecount(root, mindiff=7, maxdiff=7):
         with rawmaker.reader.read(source) as pdf:
             extracted = rawmaker.miner.images.extract_images(
                 pdf,
@@ -33,13 +33,13 @@ def test_images_export_bachelor56(testdir):
     assert len(extracted) == four_image_pages, str(extracted)
 
 
-@utila.skip_longrun
+@utilatest.skip_longrun
 def test_images_export_bachelor63_complete(testdir):
     """Extract seven images out of four pages."""
     source = tests.resources.BACHELOR63
     root = testdir.tmpdir
     pages = None
-    with utila.increased_filecount(root, mindiff=41, maxdiff=41):
+    with utilatest.increased_filecount(root, mindiff=41, maxdiff=41):
         with rawmaker.reader.read(source) as pdf:
             extracted = rawmaker.miner.images.extract_images(
                 pdf,
@@ -49,7 +49,7 @@ def test_images_export_bachelor63_complete(testdir):
     assert extracted
 
 
-@utila.skip_nightly
+@utilatest.skip_nightly
 def test_images_export_master116(testdir):
     source = tests.resources.MASTER116
     root = testdir.tmpdir
@@ -57,7 +57,7 @@ def test_images_export_master116(testdir):
     # master116 contains **9** extractable images, but on page 50 the png
     # extraction is broken. After fix this issue we have to increase
     # number of extracted images.
-    with utila.increased_filecount(root, mindiff=8, maxdiff=8):
+    with utilatest.increased_filecount(root, mindiff=8, maxdiff=8):
         with rawmaker.reader.read(source) as pdf:
             extracted = rawmaker.miner.images.extract_images(
                 pdf,
@@ -86,7 +86,7 @@ def test_images_export_bachelor63_extract_images(
     source = tests.resources.BACHELOR63
     root = testdir.tmpdir
     pages = (page,)
-    with utila.increased_filecount(
+    with utilatest.increased_filecount(
             root,
             ext=ext,
             mindiff=expected,
@@ -118,7 +118,7 @@ def test_images_export_bachelor63_extract_images(
         pytest.param(tests.resources.TECHNICAL24, 8, id='technical24'),
         pytest.param(tests.resources.REPORT19, 6, id='report19'),
     ])
-@utila.skip_longrun
+@utilatest.skip_longrun
 def test_images_export_document_complete(
         source,
         expected,
@@ -127,6 +127,7 @@ def test_images_export_document_complete(
 ):
     # for every image it is an additonal image info file extracted.
     root = testdir.tmpdir
-    with utila.increased_filecount(root, mindiff=expected, maxdiff=expected):
+    with utilatest.increased_filecount(
+            root, mindiff=expected, maxdiff=expected):
         cmd = f'-i {source} --images'
         tests.run_success(cmd, monkeypatch=monkeypatch)

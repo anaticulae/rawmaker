@@ -11,6 +11,7 @@ import power
 import pytest
 import serializeraw
 import utila
+import utilatest
 
 import rawmaker.features.line
 import rawmaker.reader
@@ -21,7 +22,7 @@ import tests.resources
 def test_line_run_cli(testdir, monkeypatch):  #pylint: disable=W0613
     root = str(testdir)
     cmd = f'-i {tests.resources.BOOK} --line'
-    with utila.increased_filecount(root, ext='yaml'):
+    with utilatest.increased_filecount(root, ext='yaml'):
         tests.run_success(cmd, monkeypatch=monkeypatch)
 
 

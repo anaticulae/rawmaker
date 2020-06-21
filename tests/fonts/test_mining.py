@@ -15,6 +15,7 @@ import power
 import pytest
 import serializeraw
 import utila
+import utilatest
 import yaml
 
 import rawmaker
@@ -25,7 +26,7 @@ import rawmaker.reader
 import tests.resources
 
 
-@utila.skip_longrun
+@utilatest.skip_longrun
 def test_mining_fonts(testdir):
     header, content = rawmaker.features.fonts.work(tests.resources.TWINE_PDF)
 

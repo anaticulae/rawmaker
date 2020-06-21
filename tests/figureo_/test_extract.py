@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila
+import utilatest
 
 import figureo.data
 import figureo.extract
@@ -33,7 +33,7 @@ def test_figures_dump_and_load(testdir):
     outpath = testdir.tmpdir
     extracted = extract_figures()
     # 3 figures and 3 information
-    with utila.increased_filecount(outpath, mindiff=6, maxdiff=6):
+    with utilatest.increased_filecount(outpath, mindiff=6, maxdiff=6):
         figureo.data.dump_figures(extracted, outpath)
 
     loaded = figureo.data.load_figures(outpath)
@@ -44,5 +44,5 @@ def test_figures_extract_master116_page19(testdir):
     outpath = testdir.tmpdir
     extracted = extract_figures((19, 38))
     # 3 figures and 3 information
-    with utila.increased_filecount(outpath, mindiff=6, maxdiff=6):
+    with utilatest.increased_filecount(outpath, mindiff=6, maxdiff=6):
         figureo.data.dump_figures(extracted, outpath)

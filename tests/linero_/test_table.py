@@ -11,7 +11,7 @@ import iamraw.path
 import power
 import pytest
 import serializeraw
-import utila
+import utilatest
 
 import linero.cluster
 import linero.features.table
@@ -31,7 +31,7 @@ def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
         id='vim',
     ),
 ])
-@utila.skip_nightly
+@utilatest.skip_nightly
 def test_table_extract(source, expected):
     source = iamraw.path.line(source)
     loaded = serializeraw.load_lines(source)

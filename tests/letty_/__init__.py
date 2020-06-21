@@ -9,20 +9,20 @@
 
 import functools
 
-import utila
+import utilatest
 
 import letty
 import letty.cli
 
 run_success = functools.partial(  # pylint:disable=C0103
-    utila.run_command,
+    utilatest.run_command,
     main=letty.cli.main,
     process=letty.PROCESS,
     success=True,
 )
 
 run_failure = functools.partial(  # pylint:disable=C0103
-    utila.run_command,
+    utilatest.run_command,
     main=letty.cli.main,
     process=letty.PROCESS,
     success=False,

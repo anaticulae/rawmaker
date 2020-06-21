@@ -10,6 +10,7 @@ import os
 
 import pytest
 import utila
+import utilatest
 
 import pdfinfo
 import pdfinfo.data
@@ -70,7 +71,7 @@ def test_pdfinfo_status_invalid(testdir, monkeypatch):
 def test_pdfinfo_stdout(testdir, monkeypatch, capsys):
     root = testdir.tmpdir
     source = tests.resources.RESTRUCTURED_PDF
-    with utila.increased_filecount(root, mindiff=0, maxdiff=0):
+    with utilatest.increased_filecount(root, mindiff=0, maxdiff=0):
         tests.pdfinfo_.run_success(f'-i {source}', monkeypatch=monkeypatch)
     stdout, _ = capsys.readouterr()
 

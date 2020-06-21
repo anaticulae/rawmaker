@@ -9,20 +9,20 @@
 
 import functools
 
-import utila
+import utilatest
 
 import linero
 import linero.cli
 
 run_success = functools.partial(  # pylint:disable=C0103
-    utila.run_command,
+    utilatest.run_command,
     main=linero.cli.main,
     process=linero.PROCESS,
     success=True,
 )
 
 run_failure = functools.partial(  # pylint:disable=C0103
-    utila.run_command,
+    utilatest.run_command,
     main=linero.cli.main,
     process=linero.PROCESS,
     success=False,

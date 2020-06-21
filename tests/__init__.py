@@ -7,11 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-from functools import partial
+import functools
 
-from pytest import mark
-from utila import run_command
-from utila.test import NONVIRTUAL
+import pytest
+import utilatest
 
 from rawmaker import PROCESS_NAME
 from rawmaker import ROOT
@@ -19,22 +18,22 @@ from rawmaker.cli import main
 from tests.resources import RESOURCES
 
 #pylint: disable=invalid-name
-run_success = partial(
-    run_command,
+run_success = functools.partial(
+    utilatest.run_command,
     main=main,
     process=PROCESS_NAME,
     success=True,
 )
 
-run_failure = partial(
-    run_command,
+run_failure = functools.partial(
+    utilatest.run_command,
     main=main,
     process=PROCESS_NAME,
     success=False,
 )
 
-skip_virtual = mark.skipif(
-    not NONVIRTUAL,
+skip_virtual = pytest.mark.skipif(
+    not utilatest.NONVIRTUAL,
     reason="require non virtual environment",
 )
 

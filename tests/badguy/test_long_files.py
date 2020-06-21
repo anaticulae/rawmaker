@@ -11,13 +11,13 @@ import os
 
 import jam
 import pytest
-import utila
+import utilatest
 
 import tests
 import tests.pdfinfo_
 
 
-@utila.skip_nightly
+@utilatest.skip_nightly
 @pytest.mark.security
 def test_badguy_longpdf_rawmaker(testdir, monkeypatch):
     very_long = os.path.join(testdir.tmpdir, 'balong.pdf')
@@ -26,7 +26,7 @@ def test_badguy_longpdf_rawmaker(testdir, monkeypatch):
     tests.run_success(f'-i {very_long} -j=8', monkeypatch=monkeypatch)
 
 
-@utila.skip_nightly
+@utilatest.skip_nightly
 @pytest.mark.security
 def test_badguy_longpdf_pdfinfo(testdir, monkeypatch):
     """Test that program success on very long, empty pdf file. Long

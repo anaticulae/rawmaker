@@ -10,7 +10,7 @@
 import pytest
 import serializeraw
 import texmex
-import utila
+import utilatest
 
 import tests.resources
 
@@ -20,7 +20,7 @@ import tests.resources
     (8, False, False),
     (7, True, True),
 ])
-@utila.skip_longrun
+@utilatest.skip_longrun
 def test_parse_howtoread_vertically(
         page,
         vertical,

@@ -8,13 +8,13 @@
 # =============================================================================
 
 import power
-import utila
+import utilatest
 
 import letty.optimizer
 import tests.resources
 
 
-@utila.skip_longrun
+@utilatest.skip_longrun
 def test_optimizer():
     path = tests.resources.MASTER72
     pages = (3,)
@@ -22,7 +22,7 @@ def test_optimizer():
     assert result
 
 
-@utila.skip_longrun
+@utilatest.skip_longrun
 def test_optimizer_hardtoread():
     path = power.BACHELOR037_PDF
     pages = (6,)

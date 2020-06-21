@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v1.22.4
+
+### Fix
+
+* disable Roman style detection (6d489b762250)
+
 ## v1.22.3
 
 ## v1.22.2

@@ -9,12 +9,14 @@
 
 import os
 
+import power
+
 import rawmaker
+
+power.setup(rawmaker.ROOT)
 
 RESOURCES = os.path.join(rawmaker.ROOT, 'tests/resources')
 assert os.path.exists(RESOURCES), RESOURCES
-
-GENERATED = os.path.join(RESOURCES, 'generated')
 
 EXAMPLES = os.path.join(rawmaker.ROOT, 'tests/examples')
 assert os.path.exists(EXAMPLES), EXAMPLES
@@ -82,13 +84,15 @@ GOLDEN = os.path.join(RESOURCES, 'golden')
 GOLDEN_VIM = os.path.join(GOLDEN, 'vim')
 
 REQUIRED_RESOURCES = [
+    power.link(power.BOOK007_PDF),
+    power.link(power.DOCU13_PDF),
+    power.link(power.BACHELOR090_PDF),
     BACHELOR,
     BACHELOR111,
     BACHELOR241,
     BACHELOR56,
     BACHELOR63,
     BACHELOR90,
-    GENERATED,
     GOLDEN_VIM,
     HELLO_WORLD_PDF,
     HOWTOREAD_PDF,

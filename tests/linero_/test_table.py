@@ -21,7 +21,7 @@ import tests.resources
 
 def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
     cmd = f'-i {tests.resources.BOOK} --line'
-    tests.run_success(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, monkeypatch=monkeypatch)
 
 
 @pytest.mark.parametrize('source, expected', [

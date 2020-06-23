@@ -23,7 +23,7 @@ def test_line_run_cli(testdir, monkeypatch):  #pylint: disable=W0613
     root = str(testdir)
     cmd = f'-i {tests.resources.BOOK} --line'
     with utilatest.increased_filecount(root, ext='yaml'):
-        tests.run_success(cmd, monkeypatch=monkeypatch)
+        tests.run(cmd, monkeypatch=monkeypatch)
 
 
 @pytest.mark.parametrize('source, expected', [

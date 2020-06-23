@@ -31,7 +31,7 @@ import tests.resources
 ])
 def test_pdfinfo_run(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
-    tests.pdfinfo_.run_success(command, monkeypatch=monkeypatch)
+    tests.pdfinfo_.run(command, monkeypatch=monkeypatch)
 
 
 @pytest.mark.parametrize(
@@ -42,7 +42,7 @@ def test_pdfinfo_run(command, testdir, monkeypatch):  #pylint: disable=W0613
 )
 def test_pdfinfo_run_invalid(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
-    tests.pdfinfo_.run_failure(command, monkeypatch=monkeypatch)
+    tests.pdfinfo_.failure(command, monkeypatch=monkeypatch)
 
 
 def test_pdfinfo_status_valid(testdir, monkeypatch):
@@ -56,7 +56,7 @@ def test_pdfinfo_status_valid(testdir, monkeypatch):
     path = os.path.join(workspace, 'pdfinfo.json')
     utila.file_create(path, raw)
 
-    tests.pdfinfo_.run_success('--status', monkeypatch=monkeypatch)
+    tests.pdfinfo_.run('--status', monkeypatch=monkeypatch)
 
 
 def test_pdfinfo_status_invalid(testdir, monkeypatch):
@@ -64,7 +64,7 @@ def test_pdfinfo_status_invalid(testdir, monkeypatch):
     path = os.path.join(workspace, 'pdfinfo.json')
     utila.file_create(path, '{}')
 
-    returncode = tests.pdfinfo_.run_failure('--status', monkeypatch=monkeypatch)
+    returncode = tests.pdfinfo_.failure('--status', monkeypatch=monkeypatch)
     assert returncode == pdfinfo.INVALID_PDF
 
 
@@ -72,7 +72,7 @@ def test_pdfinfo_stdout(testdir, monkeypatch, capsys):
     root = testdir.tmpdir
     source = tests.resources.RESTRUCTURED_PDF
     with utilatest.increased_filecount(root, mindiff=0, maxdiff=0):
-        tests.pdfinfo_.run_success(f'-i {source}', monkeypatch=monkeypatch)
+        tests.pdfinfo_.run(f'-i {source}', monkeypatch=monkeypatch)
     stdout, _ = capsys.readouterr()
 
     expected = (

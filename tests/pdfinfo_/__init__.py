@@ -14,14 +14,14 @@ import utilatest
 import pdfinfo
 import pdfinfo.cli
 
-run_success = functools.partial(  # pylint:disable=C0103
+run = functools.partial(  # pylint:disable=C0103
     utilatest.run_command,
     main=pdfinfo.cli.main,
     process=pdfinfo.PROCESS,
     success=True,
 )
 
-run_failure = functools.partial(  # pylint:disable=C0103
+failure = functools.partial(  # pylint:disable=C0103
     utilatest.run_command,
     main=pdfinfo.cli.main,
     process=pdfinfo.PROCESS,

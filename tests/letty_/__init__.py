@@ -14,14 +14,14 @@ import utilatest
 import letty
 import letty.cli
 
-run_success = functools.partial(  # pylint:disable=C0103
+run = functools.partial(  # pylint:disable=C0103
     utilatest.run_command,
     main=letty.cli.main,
     process=letty.PROCESS,
     success=True,
 )
 
-run_failure = functools.partial(  # pylint:disable=C0103
+failure = functools.partial(  # pylint:disable=C0103
     utilatest.run_command,
     main=letty.cli.main,
     process=letty.PROCESS,

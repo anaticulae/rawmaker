@@ -23,7 +23,7 @@ def test_badguy_longpdf_rawmaker(testdir, monkeypatch):
     very_long = os.path.join(testdir.tmpdir, 'balong.pdf')
     jam.write_blank_pdf(1000, very_long)
 
-    tests.run_success(f'-i {very_long} -j=8', monkeypatch=monkeypatch)
+    tests.run(f'-i {very_long} -j=8', monkeypatch=monkeypatch)
 
 
 @utilatest.skip_nightly
@@ -34,4 +34,4 @@ def test_badguy_longpdf_pdfinfo(testdir, monkeypatch):
     very_long = os.path.join(testdir.tmpdir, 'mejabalong.pdf')
     jam.write_blank_pdf(100000, very_long)
 
-    tests.pdfinfo_.run_success(f'-i {very_long}', monkeypatch=monkeypatch)
+    tests.pdfinfo_.run(f'-i {very_long}', monkeypatch=monkeypatch)

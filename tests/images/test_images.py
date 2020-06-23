@@ -130,4 +130,4 @@ def test_images_export_document_complete(
     with utilatest.increased_filecount(
             root, mindiff=expected, maxdiff=expected):
         cmd = f'-i {source} --images'
-        tests.run_success(cmd, monkeypatch=monkeypatch)
+        tests.run(cmd, monkeypatch=monkeypatch)

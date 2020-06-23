@@ -19,7 +19,7 @@ import tests.resources
 def test_rawmaker_cli_superfast(testdir, monkeypatch):
     source = tests.resources.RESTRUCTURED_PDF
     cmd = ['--sf', '-i', source, '--text']
-    tests.run_success(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, monkeypatch=monkeypatch)
 
 
 @utilatest.skip_longrun  # requires installed package
@@ -35,11 +35,11 @@ def test_rawmaker_cli_superfast_compare(testdir, monkeypatch):
 
     with utila.chdir(first):
         cmd = ['--sf', '-i', source, '--text']
-        tests.run_success(cmd, monkeypatch=monkeypatch)
+        tests.run(cmd, monkeypatch=monkeypatch)
 
     with utila.chdir(second):
         cmd = ['-i', source, '--text']
-        tests.run_success(cmd, monkeypatch=monkeypatch)
+        tests.run(cmd, monkeypatch=monkeypatch)
 
     first_text = utila.file_read(
         os.path.join(first, 'rawmaker__text_text.yaml'))

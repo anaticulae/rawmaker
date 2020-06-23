@@ -18,4 +18,4 @@ import tests.resources
 ])
 def test_linero_cli_run(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
-    tests.linero_.run_success(command, monkeypatch=monkeypatch)
+    tests.linero_.run(command, monkeypatch=monkeypatch)

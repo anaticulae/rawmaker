@@ -20,7 +20,7 @@ import tests.resources
 
 @pytest.mark.xfail(reason='incomplete font detection implementation')
 def test_leftright_book_font_name(testdir, monkeypatch, capsys):
-    tests.run_success(
+    tests.run(
         f'-i {power.BOOK007_PDF} --fonts',
         monkeypatch=monkeypatch,
     )
@@ -30,7 +30,7 @@ def test_leftright_book_font_name(testdir, monkeypatch, capsys):
 
 @utilatest.skip_longrun
 def test_leftright_book_font_size(testdir, monkeypatch):
-    tests.run_success(
+    tests.run(
         f'-i {power.BOOK007_PDF} --text',
         monkeypatch=monkeypatch,
     )
@@ -51,7 +51,7 @@ def test_porting_module_font_index(strip, testdir, monkeypatch):
     nostrip = '' if strip else '--nostrip'
     cmd = (f'-i {tests.resources.HOW_TO_CPORTING_PDF}'
            f' --fonts --text {nostrip}')
-    tests.run_success(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, monkeypatch=monkeypatch)
     source = iamraw.path.fontcontent(testdir.tmpdir)
     position = serializeraw.load_font_content(source)
 
@@ -78,7 +78,7 @@ def test_regression_extract_text_and_fonts(pdf, strip, testdir, monkeypatch):
     line."""
     nostrip = '' if strip else '--nostrip'
     cmd = f'-i {pdf} --fonts {nostrip}'
-    tests.run_success(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, monkeypatch=monkeypatch)
     source = iamraw.path.fontcontent(testdir.tmpdir)
     position = serializeraw.load_font_content(source)
     for page in position:

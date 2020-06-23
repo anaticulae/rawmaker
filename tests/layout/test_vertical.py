@@ -33,7 +33,7 @@ def test_parse_howtoread_vertically(
     flag = '--detect_vertical' if vertical else ''
     config = '--char_margin=2.0 --word_margin=0.1 --line_margin=0.001'
     cmd = f'-i {source} --text --pages={page} {flag} {config}'
-    tests.run_success(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, monkeypatch=monkeypatch)
 
     if vertical:
         mode = texmex.PageTextNavigatorMode.VERTICAL

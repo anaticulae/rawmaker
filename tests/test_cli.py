@@ -15,8 +15,8 @@ import utilatest
 
 import tests
 import tests.resources
-from tests import run_failure
-from tests import run_success
+from tests import failure
+from tests import run
 from tests.resources import HELLO_WORLD
 from tests.resources import HOW_TO_CPORTING_PDF
 from tests.resources import RESTRUCTURED_PDF
@@ -32,7 +32,7 @@ from tests.resources import TWINE_PDF
 @utilatest.skip_longrun
 def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
-    run_success(command, monkeypatch=monkeypatch)
+    run(command, monkeypatch=monkeypatch)
 
 
 @pytest.mark.parametrize('command', [
@@ -41,14 +41,14 @@ def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
 ])
 def test_run_rawmaker_failed_empty_folder(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
-    run_failure(command, monkeypatch=monkeypatch)
+    failure(command, monkeypatch=monkeypatch)
 
 
 def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
     testdir.mkdir('empty')
     command = ['-i', 'empty', '-o', 'output']  # no pdf input
-    run_failure(command, monkeypatch=monkeypatch)
+    failure(command, monkeypatch=monkeypatch)
 
     stderr = capsys.readouterr().err
     assert '[ERROR]' in stderr
@@ -64,7 +64,7 @@ def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):  #pylint: disab
 def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: disable=W0613
     """This test run the rawmaker with problematic resources which led to an
     error on parsing/converting the document in the past."""
-    run_success(command, monkeypatch=monkeypatch)
+    run(command, monkeypatch=monkeypatch)
 
 
 @pytest.mark.parametrize('pages', [
@@ -74,7 +74,7 @@ def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: d
 def test_run_rawmaker_with_pages(testdir, monkeypatch, pages, capsys):  #pylint: disable=W0613
     """Extract special pages"""
     cmd = ['-i', RESTRUCTURED_PDF, '-o', 'output', '--pages', pages, '-VVV']
-    run_success(cmd, monkeypatch=monkeypatch)
+    run(cmd, monkeypatch=monkeypatch)
     out, err = capsys.readouterr()
     print(out)
     print(err)
@@ -88,7 +88,7 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
     utila.file_create(brokenpath, 'content = non valid pdf document')
 
     command = f'-i {root} --linter'
-    run_failure(command, monkeypatch=monkeypatch)
+    failure(command, monkeypatch=monkeypatch)
 
     # check that result is written
     files_written = list(os.scandir(root))
@@ -104,4 +104,4 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
 def test_rawmaker_cli_run_file_without_extention(testdir, monkeypatch):
     source = os.path.join(str(testdir), 'hello')
     utila.file_copy(tests.resources.RESTRUCTURED_PDF, source)
-    tests.run_success(f'-i {source}', monkeypatch=monkeypatch)
+    tests.run(f'-i {source}', monkeypatch=monkeypatch)

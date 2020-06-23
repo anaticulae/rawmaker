@@ -19,7 +19,7 @@ import tests.resources
 def test_master_compare_vim(testdir, monkeypatch):
     """Update test data with `cmd` below. Copy from generated test."""
     cmd = f'-i {power.DOCU13_PDF} -j8 --pages=1:4'
-    tests.run_success(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, monkeypatch=monkeypatch)
 
     golden = tests.resources.GOLDEN_VIM
     current = testdir.tmpdir

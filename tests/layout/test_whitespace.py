@@ -20,7 +20,7 @@ def test_whitespace_extractor_bachelor56_page49(testdir, monkeypatch):
     # oneline
     config = '--boxes_flow=1.0 --char_margin=100.0 --line_margin=0.0001'
     cmd = f'-i {source} --text --pages=49 --prefix=oneline {config}'
-    tests.run_success(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, monkeypatch=monkeypatch)
     text = iamraw.path.text(root, prefix='oneline')
     text = serializeraw.load_document(text)[0]
     positions = iamraw.path.textposition(root, prefix='oneline')

@@ -18,14 +18,14 @@ from rawmaker.cli import main
 from tests.resources import RESOURCES
 
 #pylint: disable=invalid-name
-run_success = functools.partial(
+run = functools.partial(
     utilatest.run_command,
     main=main,
     process=PROCESS_NAME,
     success=True,
 )
 
-run_failure = functools.partial(
+failure = functools.partial(
     utilatest.run_command,
     main=main,
     process=PROCESS_NAME,

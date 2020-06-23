@@ -19,19 +19,19 @@ import tests.resources
 ])
 def test_letty_cli_run(command, testdir, monkeypatch):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
-    tests.letty_.run_success(command, monkeypatch=monkeypatch)
+    tests.letty_.run(command, monkeypatch=monkeypatch)
 
 
 @pytest.mark.parametrize('command', [
     '',
 ])
-def test_letty_cli_run_failure(command, testdir, monkeypatch):  #pylint: disable=W0613
-    tests.letty_.run_failure(command, monkeypatch=monkeypatch)
+def test_letty_cli_failure(command, testdir, monkeypatch):  #pylint: disable=W0613
+    tests.letty_.failure(command, monkeypatch=monkeypatch)
 
 
 def test_letty_whitespaces(monkeypatch, capsys):  #pylint: disable=W0613
     cmd = f'-i {power.link(power.DOCU13_PDF)} --whitespace'
-    tests.letty_.run_success(cmd, monkeypatch=monkeypatch)
+    tests.letty_.run(cmd, monkeypatch=monkeypatch)
 
     stdout = capsys.readouterr().out
 

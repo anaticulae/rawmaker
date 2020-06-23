@@ -22,7 +22,7 @@ def test_bachelor63_text_extraction(testdir, monkeypatch):
     source = tests.resources.BACHELOR63
     config = ''
     cmd = f'-i {source} --text --pages=0 {config}'
-    tests.run_success(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, monkeypatch=monkeypatch)
 
     navigator = serializeraw.create_pagetextnavigators_frompath(root)[0]
     text = [str(item).strip() for item in navigator]

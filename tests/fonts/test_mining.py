@@ -201,7 +201,7 @@ def test_strip_correct_bounding_box(testdir, monkeypatch):
     source = power.BACHELOR037_PDF
     config = rawmaker.parameter.ParsingConfiguration(line_margin=0.25)
     cmd = f'-i {source} --text --pages=1 {config.cmdline()}'
-    tests.run_success(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, monkeypatch=monkeypatch)
 
     navigators = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)
     navigator = navigators[0]
@@ -228,7 +228,7 @@ def test_strip_correct_bounding_box_master116(testdir, monkeypatch):
     source = tests.resources.MASTER116
     config = rawmaker.parameter.ParsingConfiguration(line_margin=0.25)
     cmd = f'-i {source} --text --pages=96 {config.cmdline()}'
-    tests.run_success(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, monkeypatch=monkeypatch)
 
     navigators = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)
     navigator = navigators[0]

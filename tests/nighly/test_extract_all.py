@@ -74,16 +74,16 @@ def test_nightly_rawmaker_and_linero(source, testdir, monkeypatch):  # pylint:di
     layout = '--char_margin 5.0 --boxes_flow 1.0 --line_margin 0.3'
     pages = '' if utilatest.NIGHTLY else '--page=0:5'
     cmd = f'-i {source} {layout} -j=8 {pages} -VVV'
-    tests.run_success(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, monkeypatch=monkeypatch)
 
-    tests.linero_.run_success('', monkeypatch=monkeypatch)
+    tests.linero_.run('', monkeypatch=monkeypatch)
 
 
 @utilatest.skip_nightly
 @pytest.mark.parametrize('source', sources())
 def test_nightly_pdfinfo(source, testdir, monkeypatch):  # pylint:disable=W0621
     cmd = f'-i {source}'
-    tests.pdfinfo_.run_success(cmd, monkeypatch=monkeypatch)
+    tests.pdfinfo_.run(cmd, monkeypatch=monkeypatch)
 
 
 @utilatest.skip_nightly

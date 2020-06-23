@@ -28,9 +28,18 @@ def pytest_sessionstart():
 
 def extract():
     todo = [
-        (power.BOOK007_PDF, power.link(power.BOOK007_PDF)),
-        (power.DOCU13_PDF, power.link(power.DOCU13_PDF)),
+        (power.BOOK007_PDF, power.link(power.BOOK007_PDF), None),
+        (power.DOCU13_PDF, power.link(power.DOCU13_PDF), None),
     ]
-    todo = [f'rawmaker -i {source} -o {dest} -j=8' for source, dest in todo]
+    todo = [
+        f'rawmaker -i {source} -o {dest} -j=8 --pages={strpages(pages)}'
+        for source, dest, pages in todo
+    ]
     completed = utila.run_parallel(todo)
     assert completed == utila.SUCCESS
+
+
+def strpages(item) -> str:
+    if item is None:
+        return ':'
+    return item

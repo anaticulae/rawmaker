@@ -21,6 +21,7 @@ Example:
 
 """
 import math
+import operator
 
 import configo
 import iamraw
@@ -39,6 +40,33 @@ def work(lines: str, pages: tuple = None) -> str:
 
     dumped = serializeraw.dump_tables(result)
     return dumped
+
+
+def cluster_page(navigator, horizontals):
+    boundings = [item.bounding for item in navigator]
+    horizontals = [item.box for item in horizontals]
+    # left to right
+    boundings.sort(key=operator.itemgetter(0))
+    # top down
+    boundings.sort(key=operator.itemgetter(3))
+
+    clustered = same_line_cluster(boundings, min_elements=2)  # TODO: HOLY VALUE
+
+    buckets = Buckets(horizontals)
+    for cluster in clustered:
+        for item in cluster:
+            buckets.add(item)
+
+    merged = [item for item in buckets]
+
+    merged = [index if item else None for index, item in enumerate(merged)]
+    merged = [item for item in utila.groupby_none(merged)]
+
+    tables = [
+        table_bounding((horizontals[group[0] - 1], horizontals[group[-1]]))
+        for group in merged
+    ]
+    return tables
 
 
 def table_bounding(items):
@@ -120,3 +148,40 @@ def devide(items):
         pre.extend(clustered)
     result = linero.cluster.run(pre)
     return result
+
+
+def same_line_cluster(
+        todo,
+        max_difference: float = 10.0,
+        min_elements: int = 1,
+):
+
+    def classifier(candidat, clusteritem, max_difference=max_difference):
+
+        def matcher(candidat, clusteritem):
+            diff = math.fabs(candidat.y1 - clusteritem.y1)
+            return diff <= max_difference
+
+        return matcher(candidat, clusteritem)
+
+    return utila.determine_cluster(todo, classifier, min_elements=min_elements)
+
+
+class Buckets:
+
+    # TODO: MOVE TO UTILA
+    # TODO: MAKE MORE GENERIC
+    def __init__(self, horizontals):
+        self.horizontals = [item.y1 for item in horizontals]
+        self.horizontals.append(utila.INF)
+        self.bucket = [[] for _ in range(len(self.horizontals))]
+
+    def add(self, bounding):
+        for index, item in enumerate(self.horizontals):
+            if bounding.y1 >= item:
+                continue
+            self.bucket[index].append(bounding)
+            break
+
+    def __getitem__(self, index):
+        return self.bucket[index]

@@ -28,6 +28,7 @@ def pytest_sessionstart():
 
 def extract():
     todo = [
+        (power.BACHELOR056_PDF, power.link(power.BACHELOR056_PDF), '14:34'),
         (power.BOOK007_PDF, power.link(power.BOOK007_PDF), None),
         (power.DOCU13_PDF, power.link(power.DOCU13_PDF), None),
         (power.BACHELOR090_PDF, power.link(power.BACHELOR090_PDF), '76:81'),

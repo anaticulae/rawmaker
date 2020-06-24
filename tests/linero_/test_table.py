@@ -83,6 +83,13 @@ def test_table_extract_negative():
         id='vimguide',
         marks=pytest.mark.xfail(reason='improve horizontal check'),
     ),
+    pytest.param(
+        power.link(power.BACHELOR056_PDF),
+        '15',
+        [1],
+        id='bachelor56',
+        marks=pytest.mark.xfail(reason='improve horizontal check'),
+    ),
 ])
 def test_detect_table(source, pages, expected, testdir, monkeypatch):
     tests.linero_.run(

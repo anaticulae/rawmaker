@@ -6,7 +6,7 @@ RP 1.23.0
 linero
 ------
 
-* [ ] improve table extractor step
+* [x] improve table extractor step
 
 code quality
 ------------

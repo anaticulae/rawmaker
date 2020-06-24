@@ -15,7 +15,9 @@ import utilatest
 
 import linero.cluster
 import linero.features.table
+import linero.path
 import tests
+import tests.linero_
 import tests.resources
 
 
@@ -53,9 +55,46 @@ def test_table_dump_and_load():
 
 def test_table_extract_negative():
     source = power.link(power.BOOK007_PDF)
-    source = iamraw.path.line(source)
+    text = iamraw.path.text(source)
+    textposition = iamraw.path.textposition(source)
+    horizontals = iamraw.path.horizontals(source)
 
-    tables = linero.features.table.work(source)
+    tables = linero.features.table.work(
+        text,
+        textposition,
+        horizontals=horizontals,
+    )
 
     loaded = serializeraw.load_tables(tables)
     assert not loaded, str(loaded)
+
+
+def test_detect_table_bachelor90(testdir, monkeypatch):
+    source = power.link(power.BACHELOR090_PDF)
+    pages = '75:80'
+    tests.linero_.run(
+        f'-i {source} --pages={pages} --table',
+        monkeypatch=monkeypatch,
+    )
+    tables = linero.path.table(testdir.tmpdir)
+    loaded = serializeraw.load_tables(tables)
+
+    expected = [1, 3, 3, 3]
+    current = [len(item) for item in loaded]
+
+    assert current == expected
+
+
+@pytest.mark.xfail(reason='improve table single headline extractor')
+def test_detect_table_bachelor90_page80(testdir, monkeypatch):
+    source = power.link(power.BACHELOR090_PDF)
+    pages = '80'
+    tests.linero_.run(
+        f'-i {source} --pages={pages} --table',
+        monkeypatch=monkeypatch,
+    )
+
+    tables = linero.path.table(testdir.tmpdir)
+    loaded = serializeraw.load_tables(tables)[0].content
+
+    assert len(loaded) == 1

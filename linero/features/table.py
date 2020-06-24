@@ -32,19 +32,45 @@ import linero.cluster
 import linero.lines
 
 
-def work(lines: str, pages: tuple = None) -> str:
-    loaded = serializeraw.load_lines(lines, pages=pages)
+def work(
+        text: str,
+        textposition: str,
+        horizontals: str,
+        pages: tuple = None,
+) -> str:
+    lines = serializeraw.load_horizontals(horizontals, pages=pages)
+    navigators = serializeraw.create_pagetextnavigators_fromfile(
+        text,
+        textposition,
+        pages=pages,
+    )
 
-    grouped = locate_tables(loaded)
-    result = judge_tables(grouped)
-
+    result = []
+    for navigator in navigators:
+        pagehorizontals = utila.select_page(lines, page=navigator.page)
+        if not pagehorizontals:
+            continue
+        pagehorizontals = pagehorizontals.content
+        extracted = cluster_page(navigator, pagehorizontals)
+        if not extracted:
+            continue
+        result.append(
+            iamraw.PageContentTableBounding(
+                page=navigator.page,
+                content=extracted,
+            ))
     dumped = serializeraw.dump_tables(result)
     return dumped
 
 
 def cluster_page(navigator, horizontals):
+    if len(horizontals) <= 2:
+        # TODO: SINGLE LINE TABLE?
+        return []
+
     boundings = [item.bounding for item in navigator]
     horizontals = [item.box for item in horizontals]
+    # TODO: REPLACE WITH UTILA CODE
     # left to right
     boundings.sort(key=operator.itemgetter(0))
     # top down
@@ -62,10 +88,18 @@ def cluster_page(navigator, horizontals):
     merged = [index if item else None for index, item in enumerate(merged)]
     merged = [item for item in utila.groupby_none(merged)]
 
-    tables = [
-        table_bounding((horizontals[group[0] - 1], horizontals[group[-1]]))
-        for group in merged
-    ]
+    tables = []
+    for group in merged:
+        if len(group) < 2:
+            # TODO: MULTIPLE ITEMS IN ONLY ONE GROUP BETWEEN HORIZONTAL LINES
+            continue
+        topline = horizontals[group[0] - 1]
+        # double content below table?
+        bottomline = horizontals[min(group[-1], len(horizontals) - 1)]
+        table = table_bounding((topline, bottomline))
+        tables.append(table)
+    # TODO: ADD LINES
+    tables = [iamraw.TableBounding(bounding=item) for item in tables]
     return tables
 
 

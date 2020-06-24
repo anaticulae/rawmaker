@@ -15,7 +15,9 @@ WORKPLAN = [
     utila.create_step(
         'table',
         [
-            utila.ResultFile('rawmaker', 'line_line'),
+            utila.ResultFile('rawmaker', 'text_text'),
+            utila.ResultFile('rawmaker', 'text_positions'),
+            utila.ResultFile('rawmaker', 'horizontals_horizontals'),
         ],
         ('table',),
     ),

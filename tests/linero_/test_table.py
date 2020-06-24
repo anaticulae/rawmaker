@@ -69,9 +69,12 @@ def test_table_extract_negative():
     assert not loaded, str(loaded)
 
 
-def test_detect_table_bachelor90(testdir, monkeypatch):
-    source = power.link(power.BACHELOR090_PDF)
-    pages = '75:80'
+# yapf:disable
+@pytest.mark.parametrize('source, pages, expected', [
+    pytest.param(power.link(power.BACHELOR090_PDF), '75:80', [1, 3, 3, 3], id='bachelor90'),
+])
+# yapf:enable
+def test_detect_table(source, pages, expected, testdir, monkeypatch):
     tests.linero_.run(
         f'-i {source} --pages={pages} --table',
         monkeypatch=monkeypatch,
@@ -79,7 +82,6 @@ def test_detect_table_bachelor90(testdir, monkeypatch):
     tables = linero.path.table(testdir.tmpdir)
     loaded = serializeraw.load_tables(tables)
 
-    expected = [1, 3, 3, 3]
     current = [len(item) for item in loaded]
 
     assert current == expected

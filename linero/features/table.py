@@ -31,6 +31,7 @@ import utila
 
 import linero.cluster
 import linero.lines
+import linero.utils
 
 
 def work(
@@ -70,7 +71,7 @@ def cluster_page(navigator, horizontals) -> iamraw.TableBoundings:
         return []
 
     boundings = [item.bounding for item in navigator]
-    boundings = sort_leftright_topdown(boundings)
+    boundings = linero.utils.sort_leftright_topdown(boundings)
 
     double_table = extract_potential_table(
         boundings,
@@ -94,10 +95,16 @@ def cluster_page(navigator, horizontals) -> iamraw.TableBoundings:
 
 
 def extract_potential_table(boundings, horizontals, min_elements=2):
-    clustered = same_line_cluster(boundings, min_elements=min_elements)
+    clustered = linero.utils.same_line_cluster(
+        boundings,
+        min_elements=min_elements,
+    )
 
     horizontals = [item.box for item in horizontals]
-    buckets = Buckets(horizontals, selector=operator.attrgetter('y1'))
+    buckets = linero.utils.Buckets(
+        horizontals,
+        selector=operator.attrgetter('y1'),
+    )
     for cluster in clustered:
         for item in cluster:
             buckets.add(item)
@@ -197,64 +204,3 @@ def devide(items):
         pre.extend(clustered)
     result = linero.cluster.run(pre)
     return result
-
-
-def same_line_cluster(
-        todo,
-        max_difference: float = 10.0,
-        min_elements: int = 1,
-):
-
-    def classifier(candidat, clusteritem, max_difference=max_difference):
-
-        def matcher(candidat, clusteritem):
-            diff = math.fabs(candidat.y1 - clusteritem.y1)
-            return diff <= max_difference
-
-        return matcher(candidat, clusteritem)
-
-    return utila.determine_cluster(todo, classifier, min_elements=min_elements)
-
-
-class Buckets:
-    """Fill items depending on values into upper limit buckets.
-
-    >>> bucket = Buckets((50, 100, 400), sorting=True)
-    >>> for item in (70, 85, 500, 130, 100):
-    ...    bucket.add(item)
-    >>> list(bucket)
-    [[], [70, 85], [100, 130], [500]]
-
-    Possible selector:
-        selector=operator.attrgetter('y1')
-    """
-
-    def __init__(self, border, selector=None, sorting: bool = False):
-        self.sorting = sorting
-        self.selector = selector if selector else lambda x: x
-
-        self.border = [self.selector(item) for item in border]
-        self.border.append(utila.INF)
-
-        self.bucket = [[] for _ in range(len(self.border))]
-
-    def add(self, item):
-        for border, bucket in zip(self.border, self.bucket):
-            if self.selector(item) >= border:
-                continue
-            bucket.append(item)
-            return
-
-    def __getitem__(self, index):
-        data = self.bucket[index]
-        if not self.sorting:
-            return data
-        return sorted(data, key=self.selector)
-
-
-def sort_leftright_topdown(items):
-    # left to right
-    items = sorted(items, key=operator.itemgetter(0))
-    # top down
-    items = sorted(items, key=operator.itemgetter(3))
-    return items

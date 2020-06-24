@@ -1,0 +1,19 @@
+.. _1_23_0:
+
+RP 1.23.0
+=========
+
+linero
+------
+
+* [ ] improve table extractor step
+
+code quality
+------------
+
+before
+~~~~~~
+
+* Todo: 71
+* Total coverage: 92.32%
+* Your code has been rated at 10.00/10

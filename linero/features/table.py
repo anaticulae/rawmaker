@@ -72,7 +72,21 @@ def cluster_page(navigator, horizontals) -> iamraw.TableBoundings:
     boundings = [item.bounding for item in navigator]
     boundings = sort_leftright_topdown(boundings)
 
-    tables = extract_potential_table(boundings, horizontals, min_elements=2)
+    double_table = extract_potential_table(
+        boundings,
+        horizontals,
+        min_elements=2,
+    )
+
+    single_table = extract_potential_table(
+        boundings,
+        horizontals,
+        min_elements=1,
+    )
+
+    tables = double_table
+    if len(single_table) > len(double_table):
+        tables = single_table
 
     # TODO: ADD LINES
     result = [iamraw.TableBounding(bounding=item) for item in tables]

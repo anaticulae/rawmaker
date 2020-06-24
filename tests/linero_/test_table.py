@@ -85,8 +85,8 @@ def test_detect_table_bachelor90(testdir, monkeypatch):
     assert current == expected
 
 
-@pytest.mark.xfail(reason='improve table single headline extractor')
 def test_detect_table_bachelor90_page80(testdir, monkeypatch):
+    """The table header contains only one connected textual string."""
     source = power.link(power.BACHELOR090_PDF)
     pages = '80'
     tests.linero_.run(

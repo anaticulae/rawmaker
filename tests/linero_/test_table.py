@@ -84,14 +84,12 @@ def test_table_extract_negative():
         '15',
         [1],
         id='bachelor56_page15',
-        marks=pytest.mark.xfail(reason='improve horizontal check'),
     ),
     pytest.param(
         power.link(power.BACHELOR056_PDF),
         '31',
         [2],
         id='bachelor56_page31',
-        marks=pytest.mark.xfail(reason='improve horizontal check'),
     ),
 ])
 def test_detect_table(source, pages, expected, testdir, monkeypatch):

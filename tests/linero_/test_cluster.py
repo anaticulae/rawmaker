@@ -19,10 +19,11 @@ def extract_tables(source, page):
         source,
         pages=(page,),
     )[0]
-    lines = serializeraw.load_horizontals(
-        iamraw.path.horizontals(source),
+    lines = serializeraw.load_lines(
+        iamraw.path.line(source),
         pages=(page,),
-    )[0].content
+    )
+    lines = lines[0].content
     tables = linero.features.table.cluster_page(ptn, lines)
     return tables
 

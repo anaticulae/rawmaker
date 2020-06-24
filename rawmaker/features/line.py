@@ -182,20 +182,12 @@ def merge_lines(items):
     return result
 
 
-# TODO: MOVE TO UTILA
-def zero(item):
-    return utila.near(item, 0.0, 0.0001)
-
-
-utila.zero = zero
-
-
 def raising(item) -> float:
     xdiff = (item[2] - item[0])
     ydiff = (item[3] - item[1])
-    if utila.zero(ydiff):
+    if utila.iszero(ydiff):
         return 0.0
-    if utila.zero(xdiff):
+    if utila.iszero(xdiff):
         return utila.INF
     return xdiff / ydiff
 

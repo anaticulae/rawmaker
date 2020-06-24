@@ -71,7 +71,16 @@ def cluster_page(navigator, horizontals) -> iamraw.TableBoundings:
 
     boundings = [item.bounding for item in navigator]
     boundings = sort_leftright_topdown(boundings)
-    clustered = same_line_cluster(boundings, min_elements=2)  # TODO: HOLY VALUE
+
+    tables = extract_potential_table(boundings, horizontals, min_elements=2)
+
+    # TODO: ADD LINES
+    result = [iamraw.TableBounding(bounding=item) for item in tables]
+    return result
+
+
+def extract_potential_table(boundings, horizontals, min_elements=2):
+    clustered = same_line_cluster(boundings, min_elements=min_elements)
 
     horizontals = [item.box for item in horizontals]
     buckets = Buckets(horizontals, selector=operator.attrgetter('y1'))
@@ -89,13 +98,10 @@ def cluster_page(navigator, horizontals) -> iamraw.TableBoundings:
             continue
         topline = horizontals[group[0] - 1]
         # double content below table?
-        bottomline = horizontals[min(group[-1], len(horizontals) - 1)]
+        bottomline = horizontals[min((group[-1], len(horizontals) - 1))]
         table = table_bounding((topline, bottomline))
         tables.append(table)
-
-    # TODO: ADD LINES
-    result = [iamraw.TableBounding(bounding=item) for item in tables]
-    return result
+    return tables
 
 
 def table_bounding(items):

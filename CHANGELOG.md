@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v1.23.0
+
+### Feature
+
+* exclude small, not possible tables (ebe6cf957272)
+* use lines for small tables (40efab55e0d1)
+* remove very short lines (35dc7a4ebb18)
+* improve line merger to reduce potential line count (4d54a0360aff)
+* support single line content table (14723045e9b3)
+* improve bucket implementation (104b657758ac)
+* use a new table detection approach (9b89c57ef302)
+* add algorithm to extract tables (e8d794004d0d)
+
+### Fix
+
+* fix percentage computation (91f4106e1604)
+
 ## v1.22.6
 
 ## v1.22.5

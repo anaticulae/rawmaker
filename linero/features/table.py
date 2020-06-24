@@ -78,7 +78,7 @@ def cluster_page(navigator, horizontals):
 
     clustered = same_line_cluster(boundings, min_elements=2)  # TODO: HOLY VALUE
 
-    buckets = Buckets(horizontals)
+    buckets = Buckets(horizontals, selector=operator.attrgetter('y1'))
     for cluster in clustered:
         for item in cluster:
             buckets.add(item)
@@ -202,20 +202,36 @@ def same_line_cluster(
 
 
 class Buckets:
+    """Fill items depending on values into upper limit buckets.
 
-    # TODO: MOVE TO UTILA
-    # TODO: MAKE MORE GENERIC
-    def __init__(self, horizontals):
-        self.horizontals = [item.y1 for item in horizontals]
-        self.horizontals.append(utila.INF)
-        self.bucket = [[] for _ in range(len(self.horizontals))]
+    >>> bucket = Buckets((50, 100, 400), sorting=True)
+    >>> for item in (70, 85, 500, 130, 100):
+    ...    bucket.add(item)
+    >>> list(bucket)
+    [[], [70, 85], [100, 130], [500]]
 
-    def add(self, bounding):
-        for index, item in enumerate(self.horizontals):
-            if bounding.y1 >= item:
+    Possible selector:
+        selector=operator.attrgetter('y1')
+    """
+
+    def __init__(self, border, selector=None, sorting: bool = False):
+        self.sorting = sorting
+        self.selector = selector if selector else lambda x: x
+
+        self.border = [self.selector(item) for item in border]
+        self.border.append(utila.INF)
+
+        self.bucket = [[] for _ in range(len(self.border))]
+
+    def add(self, item):
+        for border, bucket in zip(self.border, self.bucket):
+            if self.selector(item) >= border:
                 continue
-            self.bucket[index].append(bounding)
-            break
+            bucket.append(item)
+            return
 
     def __getitem__(self, index):
-        return self.bucket[index]
+        data = self.bucket[index]
+        if not self.sorting:
+            return data
+        return sorted(data, key=self.selector)

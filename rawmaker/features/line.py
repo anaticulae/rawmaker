@@ -201,6 +201,9 @@ def merge_lines(items, diff: float = 3.0):  # TODO: HOLY VALUE
             new = (result[-1][0], result[-1][1], item[2], item[3])
             result.pop()
             result.append(new)
+
+    # sort item top down; left right after merging
+    result = sorted(result, key=operator.itemgetter(1, 0))
     return result
 
 

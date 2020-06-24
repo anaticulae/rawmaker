@@ -17,11 +17,11 @@ HORIZONTAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=0.01).value
 VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=0.01)
 
 
-def horizontal(item: tuple) -> bool:
+def horizontal(item: tuple, maxdiff=HORIZONTAL_MAX_DIFF) -> bool:
     """Check that difference between two line ending points is in range
     to accept as horizontal line."""
     diff = math.fabs(item[1] - item[3])
-    return diff <= HORIZONTAL_MAX_DIFF
+    return diff <= maxdiff
 
 
 def vertical(item: tuple) -> bool:

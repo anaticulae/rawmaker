@@ -37,10 +37,11 @@ import linero.utils
 def work(
         text: str,
         textposition: str,
-        horizontals: str,
+        lines: str,
         pages: tuple = None,
 ) -> str:
-    horizontals = serializeraw.load_horizontals(horizontals, pages=pages)
+    lines = serializeraw.load_lines(lines, pages=pages)
+
     navigators = serializeraw.create_pagetextnavigators_fromfile(
         text,
         textposition,
@@ -49,11 +50,10 @@ def work(
 
     result = []
     for navigator in navigators:
-        pagehorizontals = utila.select_page(horizontals, page=navigator.page)
-        if not pagehorizontals:
+        pagelines = utila.select_page(lines, page=navigator.page)
+        if not pagelines:
             continue
-        pagehorizontals = pagehorizontals.content
-        extracted = cluster_page(navigator, pagehorizontals)
+        extracted = cluster_page(navigator, pagelines.content)
         if not extracted:
             continue
         result.append(
@@ -65,7 +65,12 @@ def work(
     return dumped
 
 
-def cluster_page(navigator, horizontals) -> iamraw.TableBoundings:
+def cluster_page(navigator, lines) -> iamraw.TableBoundings:
+    horizontals = [
+        item for item in lines
+        if linero.lines.horizontal(item, maxdiff=4.0)  # TODO: HOLY VALUE
+    ]
+
     if len(horizontals) <= 2:
         # TODO: SINGLE LINE TABLE?
         return []
@@ -88,7 +93,6 @@ def cluster_page(navigator, horizontals) -> iamraw.TableBoundings:
     tables = double_table
     if len(single_table) > len(double_table):
         tables = single_table
-
     # TODO: ADD LINES
     result = [iamraw.TableBounding(bounding=item) for item in tables]
     return result
@@ -100,10 +104,9 @@ def extract_potential_table(boundings, horizontals, min_elements=2):
         min_elements=min_elements,
     )
 
-    horizontals = [item.box for item in horizontals]
     buckets = linero.utils.Buckets(
         horizontals,
-        selector=operator.attrgetter('y1'),
+        selector=operator.itemgetter(3),  # y1
     )
     for cluster in clustered:
         for item in cluster:

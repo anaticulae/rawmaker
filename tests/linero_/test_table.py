@@ -57,13 +57,9 @@ def test_table_extract_negative():
     source = power.link(power.BOOK007_PDF)
     text = iamraw.path.text(source)
     textposition = iamraw.path.textposition(source)
-    horizontals = iamraw.path.horizontals(source)
+    lines = iamraw.path.line(source)
 
-    tables = linero.features.table.work(
-        text,
-        textposition,
-        horizontals=horizontals,
-    )
+    tables = linero.features.table.work(text, textposition, lines=lines)
 
     loaded = serializeraw.load_tables(tables)
     assert not loaded, str(loaded)
@@ -87,7 +83,14 @@ def test_table_extract_negative():
         power.link(power.BACHELOR056_PDF),
         '15',
         [1],
-        id='bachelor56',
+        id='bachelor56_page15',
+        marks=pytest.mark.xfail(reason='improve horizontal check'),
+    ),
+    pytest.param(
+        power.link(power.BACHELOR056_PDF),
+        '31',
+        [2],
+        id='bachelor56_page31',
         marks=pytest.mark.xfail(reason='improve horizontal check'),
     ),
 ])
@@ -100,7 +103,6 @@ def test_detect_table(source, pages, expected, testdir, monkeypatch):
     loaded = serializeraw.load_tables(tables)
 
     current = [len(item) for item in loaded]
-
     assert current == expected
 
 

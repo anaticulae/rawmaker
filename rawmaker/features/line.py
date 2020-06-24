@@ -140,6 +140,8 @@ def lines(  # pylint:disable=R1260
                 for item in page]
         # round bounding
         page = [utila.roundme(item) for item in page]
+        # remove very short lines/dots
+        page = [item for item in page if not utila.isdot(item, max_length=5.0)]
         # ensure left, top, right, down bounding
         page = [ensure_position(item) for item in page]
         # sort item top down; left right

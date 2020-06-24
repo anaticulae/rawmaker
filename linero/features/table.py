@@ -20,6 +20,7 @@ Example:
     Indicates that table are styled different.
 
 """
+
 import math
 import operator
 
@@ -38,7 +39,7 @@ def work(
         horizontals: str,
         pages: tuple = None,
 ) -> str:
-    lines = serializeraw.load_horizontals(horizontals, pages=pages)
+    horizontals = serializeraw.load_horizontals(horizontals, pages=pages)
     navigators = serializeraw.create_pagetextnavigators_fromfile(
         text,
         textposition,
@@ -47,7 +48,7 @@ def work(
 
     result = []
     for navigator in navigators:
-        pagehorizontals = utila.select_page(lines, page=navigator.page)
+        pagehorizontals = utila.select_page(horizontals, page=navigator.page)
         if not pagehorizontals:
             continue
         pagehorizontals = pagehorizontals.content
@@ -63,29 +64,22 @@ def work(
     return dumped
 
 
-def cluster_page(navigator, horizontals):
+def cluster_page(navigator, horizontals) -> iamraw.TableBoundings:
     if len(horizontals) <= 2:
         # TODO: SINGLE LINE TABLE?
         return []
 
     boundings = [item.bounding for item in navigator]
-    horizontals = [item.box for item in horizontals]
-    # TODO: REPLACE WITH UTILA CODE
-    # left to right
-    boundings.sort(key=operator.itemgetter(0))
-    # top down
-    boundings.sort(key=operator.itemgetter(3))
-
+    boundings = sort_leftright_topdown(boundings)
     clustered = same_line_cluster(boundings, min_elements=2)  # TODO: HOLY VALUE
 
+    horizontals = [item.box for item in horizontals]
     buckets = Buckets(horizontals, selector=operator.attrgetter('y1'))
     for cluster in clustered:
         for item in cluster:
             buckets.add(item)
 
-    merged = [item for item in buckets]
-
-    merged = [index if item else None for index, item in enumerate(merged)]
+    merged = [index if item else None for index, item in enumerate(buckets)]
     merged = [item for item in utila.groupby_none(merged)]
 
     tables = []
@@ -98,9 +92,10 @@ def cluster_page(navigator, horizontals):
         bottomline = horizontals[min(group[-1], len(horizontals) - 1)]
         table = table_bounding((topline, bottomline))
         tables.append(table)
+
     # TODO: ADD LINES
-    tables = [iamraw.TableBounding(bounding=item) for item in tables]
-    return tables
+    result = [iamraw.TableBounding(bounding=item) for item in tables]
+    return result
 
 
 def table_bounding(items):
@@ -235,3 +230,11 @@ class Buckets:
         if not self.sorting:
             return data
         return sorted(data, key=self.selector)
+
+
+def sort_leftright_topdown(items):
+    # left to right
+    items = sorted(items, key=operator.itemgetter(0))
+    # top down
+    items = sorted(items, key=operator.itemgetter(3))
+    return items

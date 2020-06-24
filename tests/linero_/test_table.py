@@ -69,11 +69,21 @@ def test_table_extract_negative():
     assert not loaded, str(loaded)
 
 
-# yapf:disable
 @pytest.mark.parametrize('source, pages, expected', [
-    pytest.param(power.link(power.BACHELOR090_PDF), '75:80', [1, 3, 3, 3], id='bachelor90'),
+    pytest.param(
+        power.link(power.BACHELOR090_PDF),
+        '75:80',
+        [1, 3, 3, 3],
+        id='bachelor90',
+    ),
+    pytest.param(
+        power.link(power.DOCU13_PDF),
+        '2:7',
+        [1, 3, 3, 5, 2],
+        id='vimguide',
+        marks=pytest.mark.xfail(reason='improve horizontal check'),
+    ),
 ])
-# yapf:enable
 def test_detect_table(source, pages, expected, testdir, monkeypatch):
     tests.linero_.run(
         f'-i {source} --pages={pages} --table',

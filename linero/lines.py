@@ -39,7 +39,7 @@ def horiverti_percentage(items) -> float:
     if not items:
         return None
     matched = len(horiverti_lines(items))
-    return len(items) / matched
+    return matched / len(items)
 
 
 def length_avg(items) -> float:

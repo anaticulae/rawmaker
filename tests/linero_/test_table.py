@@ -16,6 +16,7 @@ import utilatest
 import linero.cluster
 import linero.features.table
 import linero.path
+import linero.table.word
 import tests
 import tests.linero_
 import tests.resources
@@ -37,16 +38,16 @@ def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
 def test_table_extract(source, expected):
     source = iamraw.path.line(source)
     loaded = serializeraw.load_lines(source)
-    grouped = linero.features.table.locate_tables(loaded)
-    tables = linero.features.table.judge_tables(grouped)
+    grouped = linero.table.word.locate_tables(loaded)
+    tables = linero.table.word.judge_tables(grouped)
     assert len(tables) == len(expected), f'{len(tables)} != {len(expected)}'
 
 
 def test_table_dump_and_load():
     source = iamraw.path.line(power.link(power.DOCU13_PDF))
     loaded = serializeraw.load_lines(source, pages=(0, 1, 2))
-    grouped = linero.features.table.locate_tables(loaded)
-    tables = linero.features.table.judge_tables(grouped)
+    grouped = linero.table.word.locate_tables(loaded)
+    tables = linero.table.word.judge_tables(grouped)
 
     dumped = serializeraw.dump_tables(tables)
     loaded = serializeraw.load_tables(dumped)

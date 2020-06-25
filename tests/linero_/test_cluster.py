@@ -12,6 +12,7 @@ import power
 import serializeraw
 
 import linero.features.table
+import linero.table.horizontal
 
 
 def extract_tables(source, page):
@@ -24,7 +25,7 @@ def extract_tables(source, page):
         pages=(page,),
     )
     lines = lines[0].content
-    tables = linero.features.table.cluster_page(ptn, lines)
+    tables = linero.table.horizontal.cluster_page(ptn, lines)
     return tables
 
 

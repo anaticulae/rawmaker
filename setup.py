@@ -73,6 +73,7 @@ if __name__ == "__main__":
             'letty.quality',
             'linero',
             'linero.features',
+            'linero.table',
             'pdfinfo',
             'rawmaker',
             'rawmaker.converter',

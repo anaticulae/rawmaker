@@ -52,11 +52,10 @@ def work(
     result = []
     for navigator in navigators:
         pagelines = utila.select_page(lines, page=navigator.page)
-        if not pagelines:
-            continue
-        extracted = cluster_page(navigator, pagelines.content)
-        if not extracted:
-            continue
+        if pagelines:
+            extracted = cluster_page(navigator, pagelines.content)
+        else:
+            extracted = []
         result.append(
             iamraw.PageContentTableBounding(
                 page=navigator.page,

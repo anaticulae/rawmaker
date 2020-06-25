@@ -62,6 +62,7 @@ def test_table_extract_negative():
     tables = linero.features.table.work(text, textposition, lines=lines)
 
     loaded = serializeraw.load_tables(tables)
+    loaded = [item for item in loaded if item.content]
     assert not loaded, str(loaded)
 
 

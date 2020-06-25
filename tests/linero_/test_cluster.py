@@ -28,7 +28,7 @@ def extract_tables(source, page):
     return tables
 
 
-def test_table_cluster_page_bachelor90_page76_extract_table():
+def test_table_bachelor90_page76_extract_table():
     source = power.link(power.BACHELOR090_PDF)
     page = 76
 
@@ -36,7 +36,7 @@ def test_table_cluster_page_bachelor90_page76_extract_table():
     assert len(tables) == 1
 
 
-def test_table_cluster_page_bachelor90_page77_extract_table():
+def test_table_bachelor90_page77_extract_table():
     source = power.link(power.BACHELOR090_PDF)
     page = 77
 

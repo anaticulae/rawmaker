@@ -55,7 +55,10 @@ def test_line_dump_load():
     loaded = serializeraw.load_lines(dumped)
     assert loaded
 
-    assert loaded == lines
+    # TODO: MOVE THIS METHOD TO IAMRAW?
+    # select content pages, cause dumping removes empty pages
+    content_only = [item for item in lines if item.content]
+    assert loaded == content_only
 
 
 def test_line_merge_horizontals_bachelor90(testdir):

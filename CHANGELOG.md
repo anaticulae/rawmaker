@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v1.24.0
+
+### Feature
+
+* add second table extraction strategy (39ac911322bb)
+* improve table extractor (d17898a7c905)
+* add algorithm debugging information (7e36a286dd8e)
+* merge table with are near together to a single table (fa17652faa75)
+* add table validator (a826b3e657f2)
+
+### Fix
+
+* fix test after changing dumping behavior (6359ba9ee239)
+* do not skip empty result (d3f3e3d09b73)
+
 ## v1.23.0
 
 ### Feature

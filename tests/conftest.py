@@ -32,6 +32,7 @@ def extract():
         (power.BOOK007_PDF, power.link(power.BOOK007_PDF), None),
         (power.DOCU13_PDF, power.link(power.DOCU13_PDF), None),
         (power.BACHELOR090_PDF, power.link(power.BACHELOR090_PDF), '76:81'),
+        (power.DOCU07_PDF, power.link(power.DOCU07_PDF), None),
     ]
     todo = [
         f'rawmaker -i {source} -o {dest} -j=8 --pages={strpages(pages)}'

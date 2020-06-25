@@ -129,20 +129,9 @@ def extract_potential_table(boundings, horizontals, min_elements=2):
         topline = horizontals[group[0] - 1]
         # double content below table?
         bottomline = horizontals[min((group[-1], len(horizontals) - 1))]
-        table = table_bounding((topline, bottomline))
+        table = linero.table.table_bounding((topline, bottomline))
         tables.append(table)
     return tables
-
-
-def table_bounding(items):
-    """Maxmize bounding"""
-    x0, y0, x1, y1 = utila.INF, utila.INF, -utila.INF, -utila.INF
-    for xx0, yy0, xx1, yy1 in items:
-        x0 = min((x0, xx0))
-        y0 = min((y0, yy0))
-        x1 = max((x1, xx1))
-        y1 = max((y1, yy1))
-    return x0, y0, x1, y1
 
 
 # a table must have at least this amout of lines
@@ -173,7 +162,7 @@ def judge_tables(grouped):
             avg = linero.lines.length_avg(item)
             if avg < TABLE_MIN_AVG_LINE_LENGTH:
                 continue
-            bounding = table_bounding(item)
+            bounding = linero.table.table_bounding(item)
             pageresult.append(
                 iamraw.TableBounding(
                     bounding=bounding,

@@ -42,3 +42,14 @@ def valid_table(bounding, navigator) -> bool:
 
     # table seems to be valid
     return True
+
+
+def table_bounding(items):
+    """Maxmize bounding"""
+    x0, y0, x1, y1 = utila.INF, utila.INF, -utila.INF, -utila.INF
+    for xx0, yy0, xx1, yy1 in items:
+        x0 = min((x0, xx0))
+        y0 = min((y0, yy0))
+        x1 = max((x1, xx1))
+        y1 = max((y1, yy1))
+    return x0, y0, x1, y1

@@ -94,6 +94,9 @@ def cluster_page(navigator, lines) -> iamraw.TableBoundings:
     if len(single_table) > len(double_table):
         tables = single_table
 
+    # merge connected tables
+    tables = linero.table.merge_tables(tables)
+
     tables = [
         # judge tables
         item for item in tables if linero.table.valid_table(item, navigator)

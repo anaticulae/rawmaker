@@ -7,10 +7,15 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import math
+
 import utila
 
 TABLE_MIN_HEIGHT = 50  # TODO: HOLY VALUE
-MAX_SINGLE_LINE_QUOTE = 0.2
+# TODO: USE TABLE APROACH
+MAX_SINGLE_LINE_QUOTE = 0.4  # TODO: HOLY VALUE
+
+TABLE_MERGE_DISTANCE = 30  # TODO: HOLY VALUE
 
 
 def valid_table(bounding, navigator) -> bool:
@@ -36,12 +41,27 @@ def valid_table(bounding, navigator) -> bool:
     )
     singles = len([item for item in clustered if len(item) == 1])
     single_quote = singles / len(clustered)
+
     if singles >= 2 and single_quote > MAX_SINGLE_LINE_QUOTE:
         # invalid table content
         return False
 
     # table seems to be valid
     return True
+
+
+def merge_tables(boundings):
+    if not boundings:
+        return []
+    result = [boundings[0]]
+    for bounding in boundings[1:]:
+        tabledistance = utila.roundme(math.fabs(result[-1][3] - bounding[1]))
+        utila.debug(tabledistance)
+        if tabledistance < TABLE_MERGE_DISTANCE:
+            result[-1] = table_bounding((result[-1], bounding))
+        else:
+            result.append(bounding)
+    return result
 
 
 def table_bounding(items):

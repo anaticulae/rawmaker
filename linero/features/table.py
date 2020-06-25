@@ -31,9 +31,8 @@ import utila
 
 import linero.cluster
 import linero.lines
+import linero.table
 import linero.utils
-
-TABLE_MIN_HEIGHT = 50  # TODO: HOLY VALUE
 
 
 def work(
@@ -96,8 +95,10 @@ def cluster_page(navigator, lines) -> iamraw.TableBoundings:
     if len(single_table) > len(double_table):
         tables = single_table
 
-    # remove to small tables
-    tables = [item for item in tables if item[3] - item[1] > TABLE_MIN_HEIGHT]
+    tables = [
+        # judge tables
+        item for item in tables if linero.table.valid_table(item, navigator)
+    ]
 
     # TODO: ADD LINES
     result = [iamraw.TableBounding(bounding=item) for item in tables]

@@ -49,6 +49,24 @@ def work(
         pages=pages,
     )
 
+    result = table_strategy(lines, navigators)
+
+    dumped = serializeraw.dump_tables(result)
+    return dumped
+
+
+def table_strategy(lines, navigators):
+    latex = horizontal_table(lines, navigators)
+    word = simple_word_table(lines)
+
+    latex_detected = sum([len(item.content) for item in latex])
+    word_detected = sum([len(item.content) for item in word])
+
+    result = word if word_detected >= latex_detected else latex
+    return result
+
+
+def horizontal_table(lines, navigators):
     result = []
     for navigator in navigators:
         pagelines = utila.select_page(lines, page=navigator.page)
@@ -61,8 +79,13 @@ def work(
                 page=navigator.page,
                 content=extracted,
             ))
-    dumped = serializeraw.dump_tables(result)
-    return dumped
+    return result
+
+
+def simple_word_table(lines):
+    grouped = locate_tables(lines)
+    result = judge_tables(grouped)
+    return result
 
 
 def cluster_page(navigator, lines) -> iamraw.TableBoundings:
@@ -189,8 +212,6 @@ def judge_tables(grouped):
                     bounding=bounding,
                     lines=item,
                 ))
-        if not pageresult:
-            continue
         result.append(pageresult)
     return result
 

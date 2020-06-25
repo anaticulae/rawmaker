@@ -76,3 +76,24 @@ def table_bounding(items):
         x1 = max((x1, xx1))
         y1 = max((y1, yy1))
     return x0, y0, x1, y1
+
+
+def group_horizontals(items, xdiff: float = 30.0):  # TODO: HOLY VALUE
+    """\
+    >>> group_horizontals([(100, 50, 500, 50),
+    ...                    (98, 150, 510, 150),
+    ...                    (50, 200, 205, 200),
+    ...                    (50, 250, 195, 250)])
+    [[(100, 50, 500, 50), (98, 150, 510, 150)], [(50, 200, 205, 200), (50, 250, 195, 250)]]
+    """
+    if not items:
+        return []
+    result = [[items[0]]]
+    for item in items[1:]:
+        x0, _, x1, __ = result[-1][-1]
+        x00, _, x11, __ = item
+        if utila.near(x0, x00, xdiff) and utila.near(x1, x11, xdiff):
+            result[-1].append(item)
+        else:
+            result.append([item])
+    return result

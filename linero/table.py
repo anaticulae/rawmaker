@@ -24,6 +24,7 @@ def valid_table(bounding, navigator) -> bool:
     height = bottom - top
     if height < TABLE_MIN_HEIGHT:
         # remove to small tables
+        utila.log(f'table to small: {height}')
         return False
 
     table_content = navigator.between(
@@ -32,6 +33,7 @@ def valid_table(bounding, navigator) -> bool:
     )
     if not table_content:
         # no content in table
+        utila.log('no table content')
         return False
 
     boundings = [item.bounding for item in table_content]
@@ -44,6 +46,7 @@ def valid_table(bounding, navigator) -> bool:
 
     if singles >= 2 and single_quote > MAX_SINGLE_LINE_QUOTE:
         # invalid table content
+        utila.log(f'singe quote: {single_quote}')
         return False
 
     # table seems to be valid

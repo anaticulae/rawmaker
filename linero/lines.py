@@ -14,7 +14,7 @@ import utila
 
 HORIZONTAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=0.01).value
 
-VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=0.01)
+VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=0.01).value
 
 
 def horizontal(item: tuple, maxdiff=HORIZONTAL_MAX_DIFF) -> bool:
@@ -24,11 +24,11 @@ def horizontal(item: tuple, maxdiff=HORIZONTAL_MAX_DIFF) -> bool:
     return diff <= maxdiff
 
 
-def vertical(item: tuple) -> bool:
+def vertical(item: tuple, maxdiff=VERTICAL_MAX_DIFF) -> bool:
     """Check that difference between two line ending points is in range
     to accept as vertical line."""
     diff = math.fabs(item[0] - item[2])
-    return diff <= VERTICAL_MAX_DIFF
+    return diff <= maxdiff
 
 
 def horiverti_lines(items):

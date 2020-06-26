@@ -67,8 +67,9 @@ def sources():
 
 
 @utilatest.skip_longrun
+@pytest.mark.usefixtures('testdir')
 @pytest.mark.parametrize('source', sources())
-def test_nightly_rawmaker_and_linero(source, testdir, monkeypatch):  # pylint:disable=W0621
+def test_rawmaker_linero(source, monkeypatch):
     # use first 10 pages for normal testing and extract complete document
     # only in nighly tests.
     layout = '--char_margin 5.0 --boxes_flow 1.0 --line_margin 0.3'
@@ -80,15 +81,17 @@ def test_nightly_rawmaker_and_linero(source, testdir, monkeypatch):  # pylint:di
 
 
 @utilatest.skip_nightly
+@pytest.mark.usefixtures('testdir')
 @pytest.mark.parametrize('source', sources())
-def test_nightly_pdfinfo(source, testdir, monkeypatch):  # pylint:disable=W0621
+def test_pdfinfo(source, monkeypatch):
     cmd = f'-i {source}'
     tests.pdfinfo_.run(cmd, monkeypatch=monkeypatch)
 
 
 @utilatest.skip_nightly
+@pytest.mark.usefixtures('testdir')
 @pytest.mark.parametrize('source', sources())
-def test_nightly_figureo(source, testdir, monkeypatch):  # pylint:disable=W0621
+def test_figureo(source, monkeypatch):
     cmd = f'-i {source}'
     tests.figureo_.run(cmd, monkeypatch=monkeypatch)
 

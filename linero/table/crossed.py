@@ -6,6 +6,18 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+"""Table Extraction Strategy: Crossed:
+===================================
+
+Detect tables which are build out of horizontal lines which are
+connected due vertical lines.
+
+Strategy:
+    1. Add buckets with horizontal lines
+    2. Iter thru vertical lines and add boundings in every hitted bucket
+    3. Select connected buckets
+    4. Connect small table framents which are next and close to each other
+"""
 
 import operator
 

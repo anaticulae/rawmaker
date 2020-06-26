@@ -13,42 +13,6 @@ import operator
 import utila
 
 
-class Buckets:
-    """Fill items depending on values into upper limit buckets.
-
-    >>> bucket = Buckets((50, 100, 400), sorting=True)
-    >>> for item in (70, 85, 500, 130, 100):
-    ...    bucket.add(item)
-    >>> list(bucket)
-    [[], [70, 85], [100, 130], [500]]
-
-    Possible selector:
-        selector=operator.attrgetter('y1')
-    """
-
-    def __init__(self, border, selector=None, sorting: bool = False):
-        self.sorting = sorting
-        self.selector = selector if selector else lambda x: x
-
-        self.border = [self.selector(item) for item in border]
-        self.border.append(utila.INF)
-
-        self.bucket = [[] for _ in range(len(self.border))]
-
-    def add(self, item):
-        for border, bucket in zip(self.border, self.bucket):
-            if self.selector(item) >= border:
-                continue
-            bucket.append(item)
-            return
-
-    def __getitem__(self, index):
-        data = self.bucket[index]
-        if not self.sorting:
-            return data
-        return sorted(data, key=self.selector)
-
-
 def sort_leftright_topdown(items):
     # left to right
     items = sorted(items, key=operator.itemgetter(0))

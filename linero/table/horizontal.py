@@ -98,7 +98,7 @@ def extract_potential_table(boundings, horizontals, min_elements=2):
     if singlequote > 0.4:  # TODO: HOLY VALUE
         return []
 
-    buckets = linero.utils.Buckets(
+    buckets = utila.Buckets(
         horizontals,
         selector=operator.itemgetter(3),  # y1
     )

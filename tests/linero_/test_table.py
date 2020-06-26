@@ -91,8 +91,8 @@ def test_table_extract_negative():
     ),
     pytest.param(
         power.link(power.BACHELOR056_PDF),
-        '15',
-        [1],
+        '15,18',
+        [1, 1],
         id='bachelor56_page15',
     ),
     pytest.param(

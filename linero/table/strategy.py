@@ -7,16 +7,24 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import linero.table.crossed
 import linero.table.horizontal
 import linero.table.word
 
 
 def run(lines, navigators):
+    crossed = linero.table.crossed.run(lines)
+
     latex = linero.table.horizontal.run(lines, navigators)
     word = linero.table.word.run(lines)
 
     latex_detected = sum([len(item.content) for item in latex])
     word_detected = sum([len(item.content) for item in word])
+    crossed_detected = sum([len(item.content) for item in crossed])
 
-    result = word if word_detected >= latex_detected else latex
+    result = crossed
+    if word_detected > crossed_detected:
+        result = word
+    if latex_detected > word_detected and latex_detected > crossed_detected:
+        result = latex
     return result

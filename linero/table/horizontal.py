@@ -13,6 +13,7 @@ import iamraw
 import utila
 
 import linero.lines
+import linero.table
 import linero.utils
 
 
@@ -34,8 +35,10 @@ def run(lines, navigators):
 
 def cluster_page(navigator, lines) -> iamraw.TableBoundings:
     horizontals = [
-        item for item in lines
-        if linero.lines.horizontal(item, maxdiff=4.0)  # TODO: HOLY VALUE
+        item for item in lines if linero.lines.horizontal(
+            item,
+            maxdiff=linero.table.TABLE_HORIZONTAL_MAX_DIFF,
+        )
     ]
 
     if len(horizontals) <= 2:

@@ -6,3 +6,8 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+
+import configo
+
+TABLE_HORIZONTAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=4.0).value
+TABLE_VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=4.0).value

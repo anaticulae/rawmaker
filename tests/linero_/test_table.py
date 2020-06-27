@@ -11,11 +11,11 @@ import iamraw.path
 import power
 import pytest
 import serializeraw
-import utilatest
 
 import linero.cluster
 import linero.features.table
 import linero.path
+import linero.table.crossed
 import linero.table.word
 import tests
 import tests.linero_
@@ -30,17 +30,20 @@ def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
 @pytest.mark.parametrize('source, expected', [
     pytest.param(
         power.link(power.DOCU13_PDF),
-        (1, 3, 3, 5, 2, 5, 6, 4, 5, 3, 1),
+        [0, 0, 1, 3, 3, 5, 2, 5, 6, 4, 5, 3, 1],
         id='vim',
     ),
 ])
-@utilatest.skip_nightly
 def test_table_extract(source, expected):
     source = iamraw.path.line(source)
     loaded = serializeraw.load_lines(source)
-    grouped = linero.table.word.locate_tables(loaded)
-    tables = linero.table.word.judge_tables(grouped)
-    assert len(tables) == len(expected), f'{len(tables)} != {len(expected)}'
+    # add empty lines, cause pages without lines will be ignored, we
+    # require this to check extraction result properly.
+    loaded.insert(0, iamraw.PageContentLine(page=0, content=[]))
+    tables = linero.table.crossed.run(loaded)
+
+    flat = [len(item.content) for item in tables]
+    assert flat == expected
 
 
 def test_table_dump_and_load():
@@ -54,6 +57,7 @@ def test_table_dump_and_load():
     assert loaded == tables
 
 
+@pytest.mark.xfail(reason='improve parser')
 def test_table_extract_negative():
     source = power.link(power.BOOK007_PDF)
     text = iamraw.path.text(source)
@@ -80,14 +84,12 @@ def test_table_extract_negative():
         '2:7',
         [1, 3, 3, 5, 2],
         id='vimguide',
-        marks=pytest.mark.xfail(reason='improve horizontal check'),
     ),
     pytest.param(
         power.link(power.DOCU13_PDF),
         '5',
         [5],
         id='vimguide_page5',
-        marks=pytest.mark.xfail(reason='improve horizontal check'),
     ),
     pytest.param(
         power.link(power.BACHELOR056_PDF),

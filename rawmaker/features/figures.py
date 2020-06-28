@@ -10,8 +10,6 @@
 import typing
 
 import iamraw
-import pdfminer.layout
-import pdfminer.pdfpage
 import serializeraw
 import utila
 
@@ -27,22 +25,13 @@ DumpedFigureInformation = typing.List[typing.Tuple[str, bytes]]
 def work(path: str, pages: tuple = None) -> DumpedFigureInformation:
     pages = sorted(pages) if pages else pages
 
-    with rawmaker.reader.read(path) as document:
-        # Processing layout
-        content = pdfminer.pdfpage.PDFPage.create_pages(document)
+    figures = rawmaker.converter.figure.extract_figures(path, pages=pages)
 
-        device, interpreter = rawmaker.converter.figure.create_figure_extractor(
-        )
+    dumped = dump_figures(figures)
+    return dumped
 
-        with utila.SkipCollector(pages) as collector:
-            for number, page in enumerate(content):
-                if collector.skip(number):
-                    continue
-                device.page = number
-                interpreter.process_page(page)
 
-    figures = device.figures()
-
+def dump_figures(figures) -> DumpedFigureInformation:
     result = []
     for figure in figures:
         width = figure.bounding[2] - figure.bounding[0]

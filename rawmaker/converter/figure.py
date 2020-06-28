@@ -44,6 +44,28 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         return self.content
 
 
+def extract_figures(
+        document: str,
+        pages: tuple = None,
+) -> rawmaker.figure.data.Figures:
+    with rawmaker.reader.read(document) as pdf:
+        # Processing layout
+        content = pdfminer.pdfpage.PDFPage.create_pages(pdf)
+
+        device, interpreter = rawmaker.converter.figure.create_figure_extractor(
+        )
+
+        with utila.SkipCollector(pages) as collector:
+            for number, page in enumerate(content):
+                if collector.skip(number):
+                    continue
+                device.page = number
+                interpreter.process_page(page)
+
+    figures = device.figures()
+    return figures
+
+
 def create_figure_extractor():
     device = FigureConverter()
     interpreter = pdfminer.pdfinterp.PDFPageInterpreter(

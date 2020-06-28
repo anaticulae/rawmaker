@@ -67,7 +67,6 @@ if __name__ == "__main__":
             ],
         },
         packages=[
-            'figureo',
             'letty',
             'letty.quality',
             'linero',
@@ -77,6 +76,7 @@ if __name__ == "__main__":
             'rawmaker',
             'rawmaker.converter',
             'rawmaker.features',
+            'rawmaker.figure',
             'rawmaker.fonts',
             'rawmaker.images',
             'rawmaker.miner',

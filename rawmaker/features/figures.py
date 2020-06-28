@@ -18,8 +18,8 @@ import PIL.ImageDraw
 import serializeraw
 import utila
 
-import figureo.data
 import rawmaker.converter.basic
+import rawmaker.figure.data
 import rawmaker.reader
 
 DumpedFigureInformation = typing.List[typing.Tuple[str, bytes]]
@@ -98,11 +98,11 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         rendered.page = pageid
         self.content.append(rendered)
 
-    def figures(self) -> figureo.data.Figures:
+    def figures(self) -> rawmaker.figure.data.Figures:
         return self.content
 
 
-def extract_figure(figure) -> figureo.data.Figure:
+def extract_figure(figure) -> rawmaker.figure.data.Figure:
     content = figure._objs  #  pylint:disable=W0212
     if len(content) == 1 and isinstance(content[0], pdfminer.layout.LTImage):
         # no figure, just an image container
@@ -122,5 +122,5 @@ def extract_figure(figure) -> figureo.data.Figure:
     renderer.rectangle((0, 0, width, height), width=5, outline='black')
     renderer.text((width / 2, height / 2), 'left blank', fill='black', size=34)
 
-    result = figureo.data.Figure(data=raw, bounding=bounding)
+    result = rawmaker.figure.data.Figure(data=raw, bounding=bounding)
     return result

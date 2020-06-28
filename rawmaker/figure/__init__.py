@@ -6,9 +6,3 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-
-import rawmaker
-
-__version__ = rawmaker.__version__
-ROOT = rawmaker.ROOT
-PROCESS = 'figuero'

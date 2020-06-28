@@ -11,6 +11,9 @@ import math
 
 import utila
 
+import linero.lines
+import linero.table
+
 TABLE_MIN_HEIGHT = 50  # TODO: HOLY VALUE
 # TODO: USE TABLE APROACH
 MAX_SINGLE_LINE_QUOTE = 0.4  # TODO: HOLY VALUE
@@ -96,4 +99,41 @@ def group_horizontals(items, xdiff: float = 30.0):  # TODO: HOLY VALUE
             result[-1].append(item)
         else:
             result.append([item])
+    return result
+
+
+def ranges(start, stop, step):
+    assert start <= stop
+    assert step > 0
+
+    while start < stop:
+        yield start
+        start += step
+
+
+def between(lines, bounding):
+    result = [
+        item for item in lines
+        if bounding[1] <= item[1] <= item[3] <= bounding[3]
+    ]
+    return result
+
+
+def determine_verticals(items):
+    result = [
+        item for item in items if linero.lines.vertical(
+            item,
+            maxdiff=linero.table.TABLE_VERTICAL_MAX_DIFF,
+        )
+    ]
+    return result
+
+
+def determine_horizontals(lines):
+    result = [
+        item for item in lines if linero.lines.horizontal(
+            item,
+            maxdiff=linero.table.TABLE_HORIZONTAL_MAX_DIFF,
+        )
+    ]
     return result

@@ -25,7 +25,7 @@ import iamraw
 import utila
 
 import linero.lines
-import linero.table
+import linero.table.utils
 import linero.utils
 
 
@@ -42,20 +42,24 @@ def run(lines):
 
 
 def cluster_page(lines) -> iamraw.TableBoundings:
-    horizontals_ = determine_horizontals(lines)
-    verticals_ = determine_verticals(lines)
+    horizontals_ = linero.table.utils.determine_horizontals(lines)
+    verticals_ = linero.table.utils.determine_verticals(lines)
     result = extract_potential_table(verticals_, horizontals_)
 
     result = [
         iamraw.TableBounding(
             bounding=item,
-            lines=between(lines=verticals_ + horizontals_, bounding=item),
+            lines=linero.table.utils.between(
+                lines=verticals_ + horizontals_,
+                bounding=item,
+            ),
         ) for item in result
     ]
 
     # exclude bounding box, which has two vertical lines
     result = [
-        item for item in result if len(determine_verticals(item.lines)) >= 3
+        item for item in result
+        if len(linero.table.utils.determine_verticals(item.lines)) >= 3
     ]
     return result
 
@@ -67,7 +71,7 @@ def extract_potential_table(verticals, horizontals):
     )
     for vertical in verticals:
         x0, top, x1, bottom = vertical
-        for item in ranges(top, bottom, 10):
+        for item in linero.table.utils.ranges(top, bottom, 10):
             buckets.add((x0, item, x1, item))
 
     merged = [index if item else None for index, item in enumerate(buckets)]
@@ -83,40 +87,3 @@ def extract_potential_table(verticals, horizontals):
         tables.append(table)
     tables = linero.table.utils.merge_tables(tables)
     return tables
-
-
-def ranges(start, stop, step):
-    assert start <= stop
-    assert step > 0
-
-    while start < stop:
-        yield start
-        start += step
-
-
-def between(lines, bounding):
-    result = [
-        item for item in lines
-        if bounding[1] <= item[1] <= item[3] <= bounding[3]
-    ]
-    return result
-
-
-def determine_verticals(items):
-    result = [
-        item for item in items if linero.lines.vertical(
-            item,
-            maxdiff=linero.table.TABLE_VERTICAL_MAX_DIFF,
-        )
-    ]
-    return result
-
-
-def determine_horizontals(lines):
-    result = [
-        item for item in lines if linero.lines.horizontal(
-            item,
-            maxdiff=linero.table.TABLE_HORIZONTAL_MAX_DIFF,
-        )
-    ]
-    return result

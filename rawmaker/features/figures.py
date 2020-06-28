@@ -34,6 +34,7 @@ def work(path: str, pages: tuple = None) -> DumpedFigureInformation:
 def dump_figures(figures) -> DumpedFigureInformation:
     result = []
     for figure in figures:
+        bounding = tuple(figure.bounding)
         width = figure.bounding[2] - figure.bounding[0]
         height = figure.bounding[3] - figure.bounding[1]
         width, height = utila.roundme(width, height)
@@ -41,6 +42,7 @@ def dump_figures(figures) -> DumpedFigureInformation:
             page=figure.page,
             width=width,
             height=height,
+            bounding=bounding,
         )
         info = serializeraw.dump_image_info(info)
         result.append((info, rawmaker.figure.utils.image_tobytes(figure.data)))

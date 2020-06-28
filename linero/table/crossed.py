@@ -26,6 +26,7 @@ import utila
 
 import linero.lines
 import linero.table.utils
+import linero.table.word
 import linero.utils
 
 
@@ -60,6 +61,11 @@ def cluster_page(lines) -> iamraw.TableBoundings:
     result = [
         item for item in result
         if len(linero.table.utils.determine_verticals(item.lines)) >= 3
+    ]
+
+    result = [
+        item for item in result if linero.lines.length_avg(item.lines) >=
+        linero.table.TABLE_MIN_AVG_LINE_LENGTH
     ]
     return result
 

@@ -57,7 +57,6 @@ def test_table_dump_and_load():
     assert loaded == tables
 
 
-@pytest.mark.xfail(reason='improve parser')
 def test_table_extract_negative():
     source = power.link(power.BOOK007_PDF)
     text = iamraw.path.text(source)

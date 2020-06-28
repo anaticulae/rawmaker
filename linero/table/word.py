@@ -13,6 +13,7 @@ import configo
 import iamraw
 
 import linero.cluster
+import linero.table
 import linero.table.utils
 
 # a table must have at least this amout of lines
@@ -21,10 +22,6 @@ TABLE_MIN_LINE_COUNT = configo.HV_INT_PLUS(10)
 # tables are build out of vertical and horizontal lines, but only a few
 # cross lines.
 TABLE_MIN_HORIZONTAL_VERTICAL_LINE = configo.HV_PERCENT_PLUS(0.9)
-
-# tables are buld ouf long lines. The average line length is used to
-# exclude figures etc.
-TABLE_MIN_AVG_LINE_LENGTH = configo.HV_FLOAT_PLUS(40.0)
 
 
 def run(lines):
@@ -59,7 +56,7 @@ def judge_tables(grouped):
             if percentage < TABLE_MIN_HORIZONTAL_VERTICAL_LINE:
                 continue
             avg = linero.lines.length_avg(item)
-            if avg < TABLE_MIN_AVG_LINE_LENGTH:
+            if avg < linero.table.TABLE_MIN_AVG_LINE_LENGTH:
                 continue
             bounding = linero.table.utils.table_bounding(item)
             pageresult.append(

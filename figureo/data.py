@@ -10,11 +10,12 @@
 import dataclasses
 import itertools
 import os
+import re
 import typing
 
 import PIL.Image
+import serializeraw
 import utila
-import yaml
 
 
 @dataclasses.dataclass
@@ -36,10 +37,13 @@ def dump_figures(figures: Figures, path: str):
     `figure information` to `path`."""
     assert os.path.exists(path), str(path)
 
-    for page, values in itertools.groupby(figures, key=lambda item: item.page):
-        for index, figure in enumerate(values):
-            write_image_raw(figure.data, path, page, index)
-            write_image_info(figure.bounding, path, page, index)
+    for page, values in itertools.groupby(
+            figures,
+            key=lambda item: serializeraw.load_image_info(item[0]).page,
+    ):
+        for index, (info, raw) in enumerate(values):
+            write_image_info(info, path, page, index)
+            write_image_raw(raw, path, page, index)
 
 
 def load_figures(path: str, skip_raw: bool = True):
@@ -58,33 +62,30 @@ def load_figures(path: str, skip_raw: bool = True):
     return result
 
 
-def write_image_raw(data: PIL.Image.Image, path: str, page: int, index: int):
+def write_image_raw(data: bytes, path: str, page: int, index: int):
     name = filename(page, index, ext=EXT)
     outpath = os.path.join(path, name)
     with open(outpath, mode='wb') as output:
-        data.save(output)
+        output.write(data)
 
 
-def write_image_info(bounding, path: str, page: int, index: int):
+def write_image_info(dumped: str, path: str, page: int, index: int):
+    assert isinstance(dumped, str), type(dumped)
     name = filename(page, index, ext='yaml')
-    raw = {
-        'page': page,
-        'bounding': '%s %s %s %s' % bounding,
-        'index': index,
-    }
-    dumped = yaml.safe_dump(raw)
     outpath = os.path.join(path, name)
     utila.file_create(outpath, dumped)
 
 
 def _load_figure(path: str) -> Figure:
-    content = utila.from_raw_or_path(path, ftype='yaml')
-    loaded = yaml.safe_load(content)
+    info = serializeraw.load_image_info(path)
+    index = parse_index(path)
 
-    page = int(loaded['page'])
-    bounding = utila.parse_tuple(loaded['bounding'])
-    index = int(loaded['index'])
-    return Figure(page=page, index=index, bounding=bounding)
+    result = Figure(
+        page=info.page,
+        index=index,
+        bounding=info.bounding,
+    )
+    return result
 
 
 def _load_image_raw(path: str) -> PIL.Image.Image:
@@ -101,3 +102,16 @@ def filename(page, index, ext):
     page = f'{page}'.zfill(3)
     index = f'{index}'.zfill(2)
     return f'{page}_{index}.{ext}'
+
+
+def parse_index(item: str) -> int:
+    """\
+    >>> parse_index('005_43.yaml')
+    43
+    """
+    pattern = r'\d{3}\_(?P<index>\d{2})\.yaml'
+    matched = re.search(pattern, item)
+    if not matched:
+        return None
+    matched = int(matched['index'])
+    return matched

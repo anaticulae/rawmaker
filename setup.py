@@ -60,7 +60,6 @@ if __name__ == "__main__":
         ],
         entry_points={
             'console_scripts': [
-                'figureo = figureo.cli:main',
                 'letty = letty.cli:main',
                 'linero = linero.cli:main',
                 'pdfinfo = pdfinfo.cli:main',

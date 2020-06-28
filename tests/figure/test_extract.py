@@ -7,10 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pytest
+import utila
 import utilatest
 
 import figureo.data
-import figureo.extract
+import rawmaker.features.figures
+import tests
 import tests.resources
 
 
@@ -19,7 +22,7 @@ def extract_figures(pages=None):
     source = tests.resources.MASTER116
     if pages is None:
         pages = (12, 13)
-    extracted = figureo.extract.extract_figures(source, pages=pages)
+    extracted = rawmaker.features.figures.work(source, pages=pages)
     assert extracted
     return extracted
 
@@ -46,3 +49,14 @@ def test_figures_extract_master116_page19(testdir):
     # 3 figures and 3 information
     with utilatest.increased_filecount(outpath, mindiff=6, maxdiff=6):
         figureo.data.dump_figures(extracted, outpath)
+
+
+@pytest.mark.usefixtures('testdir')
+def test_figures_run_master116(monkeypatch):  #pylint: disable=W0613
+    source = tests.resources.MASTER116
+    cmd = f'-i {source} --pages=17:24 --figures'
+    tests.run(cmd, monkeypatch=monkeypatch)
+
+    expected_file_count = 7 * 2
+    written = utila.file_list('rawmaker__figures_figures')
+    assert len(written) == expected_file_count, str(written)

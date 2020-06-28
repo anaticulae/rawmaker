@@ -20,7 +20,6 @@ import utila
 import utilatest
 
 import tests
-import tests.figureo_
 import tests.linero_
 import tests.pdfinfo_
 import tests.resources
@@ -86,14 +85,6 @@ def test_rawmaker_linero(source, monkeypatch):
 def test_pdfinfo(source, monkeypatch):
     cmd = f'-i {source}'
     tests.pdfinfo_.run(cmd, monkeypatch=monkeypatch)
-
-
-@utilatest.skip_nightly
-@pytest.mark.usefixtures('testdir')
-@pytest.mark.parametrize('source', sources())
-def test_figureo(source, monkeypatch):
-    cmd = f'-i {source}'
-    tests.figureo_.run(cmd, monkeypatch=monkeypatch)
 
 
 def test_locate_test_resources():

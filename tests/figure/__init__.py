@@ -6,24 +6,3 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-
-import functools
-
-import utilatest
-
-import figureo
-import figureo.cli
-
-run = functools.partial(  # pylint:disable=C0103
-    utilatest.run_command,
-    main=figureo.cli.main,
-    process=figureo.PROCESS,
-    success=True,
-)
-
-fail = functools.partial(  # pylint:disable=C0103
-    utilatest.run_command,
-    main=figureo.cli.main,
-    process=figureo.PROCESS,
-    success=False,
-)

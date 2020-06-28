@@ -7,20 +7,26 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import io
+import typing
+
+import iamraw
 import pdfminer.layout
 import pdfminer.pdfpage
 import PIL.Image
 import PIL.ImageDraw
+import serializeraw
 import utila
 
 import figureo.data
 import rawmaker.converter.basic
 import rawmaker.reader
 
+DumpedFigureInformation = typing.List[typing.Tuple[str, bytes]]
 
-def extract_figures(path: str, pages: tuple = None):
-    if pages:
-        pages = sorted(pages)
+
+def work(path: str, pages: tuple = None) -> DumpedFigureInformation:
+    pages = sorted(pages) if pages else pages
 
     with rawmaker.reader.read(path) as document:
         # Processing layout
@@ -35,7 +41,27 @@ def extract_figures(path: str, pages: tuple = None):
                 device.page = number
                 interpreter.process_page(page)
 
-    result = device.figures()
+    figures = device.figures()
+    result = []
+    for figure in figures:
+        width = figure.bounding[2] - figure.bounding[0]
+        height = figure.bounding[3] - figure.bounding[1]
+        width, height = utila.roundme(width, height)
+        info = iamraw.ImageInformation(
+            page=figure.page,
+            width=width,
+            height=height,
+        )
+        info = serializeraw.dump_image_info(info)
+        result.append((info, image_tobytes(figure.data)))
+    return result
+
+
+def image_tobytes(image) -> bytes:
+    raw = io.BytesIO()
+    image.save(raw, format='PNG')
+    raw.seek(0)
+    result = raw.getvalue()
     return result
 
 
@@ -72,7 +98,7 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         rendered.page = pageid
         self.content.append(rendered)
 
-    def figures(self):
+    def figures(self) -> figureo.data.Figures:
         return self.content
 
 

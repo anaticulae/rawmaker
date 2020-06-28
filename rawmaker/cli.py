@@ -72,6 +72,14 @@ WORKPLAN = [
         output=('boxes',),
     ),
     utila.create_step(
+        'figures',
+        inputs=PDF_INPUT,
+        output=[
+            ('figures/*', 'yaml'),
+            ('figures/*', 'png'),
+        ],
+    ),
+    utila.create_step(
         'horizontals',
         inputs=PDF_INPUT,
         output=('horizontals',),

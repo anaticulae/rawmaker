@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v1.25.0
+
+### Feature
+
+* make crossed more robust against false detection (ccd1a066bb13)
+* improve table crossed parser (998273392a8a)
+* add crossed table detection strategy (89e9aa3a2ad6)
+* add vertical diff tolerance (afa6eba19aab)
+
+### Fix
+
+* adjust test, empty pages are skipped (7add92fafc1c)
+
+### Documentation
+
+* fix spelling error (7198363deb73)
+* add table extraction strategy documentation (2854bba34735)
+
 ## v1.24.0
 
 ### Feature

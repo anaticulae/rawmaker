@@ -9,7 +9,7 @@
 """Date
 ====
 
-See 7.9.4.
+See Adobe PDF 2008 REF 7.9.4.
 
 Format: (D:YYYYMMDDHHmmSSOHH'mm)
 YYYY: Year
@@ -22,6 +22,16 @@ O: + or -
 HH: offset in hours
 '
 mm: offset in minutes
+
+Parse and generate raw data again.
+
+>>> time = "D:20160419072554+02'00"
+>>> parsed = parse(time)
+
+Convert parsed back to raw string
+
+>>> raw(parsed)
+"D:20160419072554+02'00"
 """
 
 import dataclasses

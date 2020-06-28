@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import math
+
 import pdfminer
 import pdfminer.layout
 import pdfminer.utils
@@ -81,6 +83,12 @@ def extract_figure(figure) -> rawmaker.figure.data.Figure:
         # no figure, just an image container
         return None
     scalex, scaley = 1 / figure.matrix[0], 1 / figure.matrix[3]
+    if scalex < 0 or scaley < 0:
+        # TODO: DONT KNOW WHY THIS CAN HAPPEN?
+        # TODO: INDICATE THIS FOR SOME USER DEFINED LAYOUT ERROR?
+        utila.error(f'negative scaling: {scalex} {scaley}')
+        scalex, scaley = math.fabs(scalex), math.fabs(scaley)
+
     bounding = (
         figure.x0 * scalex,
         figure.y0 * scaley,
@@ -97,10 +105,16 @@ def extract_figure(figure) -> rawmaker.figure.data.Figure:
     width = utila.maxs(width)
     height = utila.maxs(height)
 
-    width = (bounding[2] - bounding[0]) + 3
+    width = (bounding[2] - bounding[0])
     height = (bounding[3] - bounding[1])
     offset = bounding[0], bounding[1]
     scale = scalex, scaley
+
+    # ensure positive figure size
+    if width < 0 or height < 0:
+        utila.error(f'negative figure size: {width} {height}')
+    width = utila.maxs(width, 1)
+    height = utila.maxs(height, 1)
     size = (int(width), int(height))
 
     raw = PIL.Image.new(mode, size, color=1)
@@ -108,10 +122,6 @@ def extract_figure(figure) -> rawmaker.figure.data.Figure:
 
     for item in figure:
         render(item, offset, scale, renderer)
-
-    # add text information and image border
-    # renderer.rectangle((0, 0, width, height), width=5, outline='black')
-    # renderer.text((width / 2, height / 2), 'left blank', fill='black', size=34)
 
     result = rawmaker.figure.data.Figure(data=raw, bounding=bounding)
     return result

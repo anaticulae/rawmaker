@@ -43,15 +43,16 @@ def run(lines):
 
 
 def cluster_page(lines) -> iamraw.TableBoundings:
-    horizontals_ = linero.table.utils.determine_horizontals(lines)
-    verticals_ = linero.table.utils.determine_verticals(lines)
-    result = extract_potential_table(verticals_, horizontals_)
+    horizontals = linero.table.utils.determine_horizontals(lines)
+    verticals = linero.table.utils.determine_verticals(lines)
+
+    result = extract_potential_table(verticals, horizontals)
 
     result = [
         iamraw.TableBounding(
             bounding=item,
             lines=linero.table.utils.between(
-                lines=verticals_ + horizontals_,
+                lines=verticals + horizontals,
                 bounding=item,
             ),
         ) for item in result

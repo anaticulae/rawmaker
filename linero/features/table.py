@@ -42,5 +42,8 @@ def work(
 
     result = linero.table.strategy.run(lines, navigators)
 
+    # remove empty pages
+    result = [item for item in result if item.content]
+
     dumped = serializeraw.dump_tables(result)
     return dumped

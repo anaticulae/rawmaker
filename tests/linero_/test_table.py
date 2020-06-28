@@ -105,7 +105,7 @@ def test_table_extract_negative():
     pytest.param(
         power.link(power.DOCU07_PDF),
         '0,1,2',
-        [0],
+        [],
         id='notable_howto_pyporting',
     ),
 ])

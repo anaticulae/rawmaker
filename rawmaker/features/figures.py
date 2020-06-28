@@ -6,6 +6,13 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+"""Figure Extractor
+
+Extract figures and convert to images
+
+# TODO: CHANGE ASCENDING NUMBERS TO PAGE DEPENDENT NUMBER
+
+"""
 
 import typing
 

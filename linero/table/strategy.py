@@ -9,7 +9,7 @@
 """Table Extraction Strategy
 ============================
 
-TODO: Add optimal table extraction seletor for every single page, cause
+TODO: Add optimal table extraction selector for every single page, cause
 table style can change in document.
 """
 

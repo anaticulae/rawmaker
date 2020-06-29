@@ -55,7 +55,10 @@ def extract_figures(
         # Processing layout
         content = pdfminer.pdfpage.PDFPage.create_pages(pdf)
 
-        device, interpreter = rawmaker.converter.figure.create_figure_extractor(
+        device = FigureConverter()
+        interpreter = pdfminer.pdfinterp.PDFPageInterpreter(
+            device.resources,
+            device,
         )
 
         with utila.SkipCollector(pages) as collector:
@@ -67,15 +70,6 @@ def extract_figures(
 
     figures = device.figures()
     return figures
-
-
-def create_figure_extractor():
-    device = FigureConverter()
-    interpreter = pdfminer.pdfinterp.PDFPageInterpreter(
-        device.resources,
-        device,
-    )
-    return device, interpreter
 
 
 def extract_figure(figure) -> rawmaker.figure.data.Figure:

@@ -226,49 +226,56 @@ def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImag
 
     for ypos, image in enumerate(images):
         ext = extention(image)
-        colorspace = get_colorspace(image)
-        mode = 'RGB'
-        size = image.srcsize
-        bits = image.bits
-
-        data = image.stream.get_data()
-
-        if colorspace == 'DeviceGray':
-            mode = BITMAP
-        elif colorspace:
-            data = rgb256_decoder(data, colorspace, bits=bits)
-        else:
-            # black and white
-            mode = BITMAP
-
-        if bits == 4:
-            # TODO Do not know why this is required
-            size = (size[0] + 1, size[1])
-            mode = 'RGB'
-        if colorspace == 'DeviceRGB':
-            try:
-                # open jpg etc.
-                buffer = io.BytesIO(data)
-                current = PIL.Image.open(buffer)
-            except IOError:
-                current = PIL.Image.frombytes(mode, size, data)
-        else:
-            try:
-                current = PIL.Image.frombytes(mode, size, data)
-            except ValueError:
-                utila.error(f'could not decode: {image}')
-                continue
-
-        # convert to bitmap
-        current = current.convert(mode=BITMAP, colors=1024, palette='1')
-        loaded = io.BytesIO(current.tobitmap())
-        current = PIL.Image.open(loaded)
+        current = image_fromlt(image)
+        if not current:
+            continue
         # render to common image
         renderer.bitmap((0, ypos * line_height), bitmap=current)
     # update bottom bounding of merged rectangle
     last = images[-1].bbox
     multi_bounding = (bounding[0], bounding[1], last[2], last[3])
     return MergedImage(result, ext, multi_bounding)
+
+
+def image_fromlt(image) -> PIL.Image:
+    colorspace = get_colorspace(image)
+    mode = 'RGB'
+    size = image.srcsize
+    bits = image.bits
+
+    data = image.stream.get_data()
+
+    if colorspace == 'DeviceGray':
+        mode = BITMAP
+    elif colorspace:
+        data = rgb256_decoder(data, colorspace, bits=bits)
+    else:
+        # black and white
+        mode = BITMAP
+
+    if bits == 4:
+        # TODO Do not know why this is required
+        size = (size[0] + 1, size[1])
+        mode = 'RGB'
+    if colorspace == 'DeviceRGB':
+        try:
+            # open jpg etc.
+            buffer = io.BytesIO(data)
+            current = PIL.Image.open(buffer)
+        except IOError:
+            current = PIL.Image.frombytes(mode, size, data)
+    else:
+        try:
+            current = PIL.Image.frombytes(mode, size, data)
+        except ValueError:
+            utila.error(f'could not decode: {image}')
+            return None
+
+    # convert to bitmap
+    current = current.convert(mode=BITMAP, colors=1024, palette='1')
+    loaded = io.BytesIO(current.tobitmap())
+    current = PIL.Image.open(loaded)
+    return current
 
 
 def get_colorspace(image):

@@ -5,7 +5,6 @@ yaml-files.
 
 ## Introduction
 
-
 Supported functions:
 
 * border: get outline of pdf content

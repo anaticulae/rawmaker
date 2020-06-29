@@ -72,27 +72,17 @@ Every noteable change is logged here.
 
 ## v1.22.6
 
-## v1.22.5
-
 ## v1.22.4
 
 ### Fix
 
 * disable Roman style detection (6d489b762250)
 
-## v1.22.3
-
-## v1.22.2
-
-## v1.22.1
-
 ## v1.22.0
 
 ### Feature
 
 * add missing verbose flag (2217799cbfa3)
-
-## v1.21.5
 
 ## v1.21.4
 
@@ -113,8 +103,6 @@ Every noteable change is logged here.
 
 * fix bad printed text mining (3f00c5635b0d)
 * fix importing order bug on runtime (ced7f4139c40)
-
-## v1.21.1
 
 ## v1.21.0
 
@@ -140,8 +128,6 @@ Every noteable change is logged here.
 * outline name is directly stored as bytes (aef1b913a2ab)
 * add non reference page number (d565ad774125)
 
-## v1.20.2
-
 ## v1.20.1
 
 ### Fix
@@ -161,14 +147,6 @@ Every noteable change is logged here.
 * add option to choose output data format (eceecd241728)
 * add pdfinfo to description (1b2f7266ae5a)
 * add option to print validation result to console (7fa3e42fd3ed)
-
-## v1.19.4
-
-## v1.19.3
-
-## v1.19.2
-
-## v1.19.1
 
 ## v1.19.0
 
@@ -193,8 +171,6 @@ Every noteable change is logged here.
 
 * log using fallback mode (d7590f92041a)
 
-## v1.18.2
-
 ## v1.18.1
 
 ### Fix
@@ -216,12 +192,6 @@ Every noteable change is logged here.
 * merge bounding of merged images correctly (20b45707cafd)
 * allow tuple bounding boxes in images info analysis (ffbe900e13fd)
 
-## v1.17.13
-
-## v1.17.12
-
-## v1.17.11
-
 ## v1.17.10
 
 ### Fix
@@ -229,8 +199,6 @@ Every noteable change is logged here.
 * support tuple and BoundingBox (7d2be27f95b0)
 * solve some problems with pdfminer text mining (ec63d576291c)
 * filter duplicated lines (60c3c2e78fa4)
-
-## v1.17.9
 
 ## v1.17.8
 
@@ -286,8 +254,6 @@ Every noteable change is logged here.
 * write page count as number instead of string (eac0e02b991c)
 * do not fail if pdfinfo exists (4fef82e44cd2)
 * ensure that malformed bounding let not fail extraction (9496445541b9)
-
-## v1.17.2
 
 ## v1.17.1
 
@@ -349,8 +315,6 @@ Every noteable change is logged here.
 * disable annotation parser (f597c01bfc90)
 * add missing nostrip flag (df81414e7ec4)
 
-## v1.15.2
-
 ## v1.15.1
 
 ### Feature
@@ -367,10 +331,6 @@ Every noteable change is logged here.
 * add method to determine count of white space (8c723020944b)
 * add basic cli structure (9457e5f813e8)
 
-## v1.14.3
-
-## v1.14.2
-
 ## v1.14.1
 
 ### Fix
@@ -384,8 +344,6 @@ Every noteable change is logged here.
 
 * close current release plan (eb222dae0655)
 
-## v1.13.9
-
 ## v1.13.8
 
 ### Feature
@@ -396,23 +354,11 @@ Every noteable change is logged here.
 
 * fix accessing holy values (d99e1985d6ae)
 
-## v1.13.7
-
-## v1.13.6
-
-## v1.13.5
-
-## v1.13.4
-
 ## v1.13.3
 
 ### Fix
 
 * ensure parsing files without editor information (d2ef1d9b7e9f)
-
-## v1.13.2
-
-## v1.13.1
 
 ## v1.13.0
 
@@ -432,8 +378,6 @@ Every noteable change is logged here.
 ### Fix
 
 * set correct rawmaker default strip value (7dc6599d70de)
-
-## v1.12.1
 
 ## v1.12.0
 
@@ -510,17 +454,7 @@ Every noteable change is logged here.
 
 * flip y-coordinate of extracted BoundingBox (21c6cd90cc26)
 
-## v1.9.3
-
-## v1.9.2
-
-## v1.9.1
-
 ## v1.9.0
-
-## v1.8.3
-
-## v1.8.2
 
 ## v1.8.1
 
@@ -548,8 +482,6 @@ Every noteable change is logged here.
 
 * extend interface documentation (81ad0759a253)
 
-## v1.7.4
-
 ## v1.7.3
 
 ### Documentation
@@ -574,14 +506,6 @@ Every noteable change is logged here.
 
 * add code quality to current release plan (70699ef4d49f)
 
-## v1.6.12
-
-## v1.6.11
-
-## v1.6.10
-
-## v1.6.9
-
 ## v1.6.8
 
 ### Documentation
@@ -593,18 +517,6 @@ Every noteable change is logged here.
 ### Fix
 
 * add more special character (437e096a043d)
-
-## v1.6.6
-
-## v1.6.5
-
-## v1.6.4
-
-## v1.6.3
-
-## v1.6.2
-
-## v1.6.1
 
 ## v1.6.0
 
@@ -631,12 +543,6 @@ Every noteable change is logged here.
 ### Documentation
 
 * setup doc strategy (835b290a82c8)
-
-## v1.5.4
-
-## v1.5.3
-
-## v1.5.2
 
 ## v1.5.1
 
@@ -666,8 +572,6 @@ Every noteable change is logged here.
 * skip TextNotAllowed-Flag to avoid crash in analysis (25b10c166d36)
 * catch annotation and log error - rework later (882cbfadbf5f)
 
-## v1.4.2
-
 ## v1.4.1
 
 ### Feature
@@ -686,21 +590,11 @@ Every noteable change is logged here.
 
 * improve reading performance enormous (2da5eb6e15b9)
 
-## v1.2.10
-
 ## v1.2.9
 
 ### Feature
 
 * mine complete document in NIGHTLY tests (37060ad1e20a)
-
-## v1.2.8
-
-## v1.2.7
-
-## v1.2.6
-
-## v1.2.5
 
 ## v1.2.4
 
@@ -736,23 +630,11 @@ Every noteable change is logged here.
 
 * extend font style parser to support type1, typ2 and mmfonts (baaab90e9707)
 
-## v1.1.9
-
-## v1.1.8
-
-## v1.1.7
-
-## v1.1.6
-
 ## v1.1.5
 
 ### Feature
 
 * use multiprocessing to reduce single runtime (6e295f08f79d)
-
-## v1.1.4
-
-## v1.1.3
 
 ## v1.1.2
 
@@ -760,35 +642,17 @@ Every noteable change is logged here.
 
 * skip unsupported annotation (17fac8d0a655)
 
-## v1.1.1
-
 ## v1.1.0
 
 ### Feature
 
 * add external test data provider (52bbc6e3091e)
 
-## v1.0.11
-
-## v1.0.10
-
-## v1.0.9
-
 ## v1.0.8
 
 ### Fix
 
 * fix annotation parser to support reference lists (7325f4da8ed7)
-
-## v1.0.7
-
-## v1.0.6
-
-## v1.0.5
-
-## v1.0.4
-
-## v1.0.3
 
 ## v1.0.2
 
@@ -799,8 +663,6 @@ Every noteable change is logged here.
 ### Fix
 
 * fix border cropping (91b665519ec7)
-
-## v1.0.1
 
 ## v1.0.0
 
@@ -928,10 +790,6 @@ Every noteable change is logged here.
 * determine fonts for every character (1c7115820817)
 * add font extractor/miner (f82e89ae2312)
 
-## v0.4.5
-
-## v0.4.4
-
 ## v0.4.3
 
 ### Feature
@@ -942,8 +800,6 @@ Every noteable change is logged here.
 * add multiple return files to save in different files (6015936e0773)
 * add bigger pdf file with empty page to coverer more cases (3a3a9aa55afd)
 * catch error that pdf does not contains outlines (f445b4a181f8)
-
-## v0.4.2
 
 ## v0.4.1
 
@@ -1002,4 +858,3 @@ Every noteable change is logged here.
 * add absolute file-ROOT to package (44cc011995d1)
 
 ## v0.0.0 Initial release
-

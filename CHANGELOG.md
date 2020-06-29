@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v2.0.0
+
+### Feature
+
+* move figure scaling to user interface (1a63fc314a29)
+* add experimental image renderer (cf9912670e48)
+* dump bounding information of figure (638a939da6ed)
+* add first buggy figure renderer approach (3f7861dcc4e8)
+
+### Fix
+
+* fix and log negative figure dimension (99e7c0763a75)
+* do not dump pages without tables (a7ed7eeae07d)
+
+### Documentation
+
+* extend module documentation (4645df32ede0)
+
 ## v1.25.0
 
 ### Feature

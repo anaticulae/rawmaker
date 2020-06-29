@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.0.1
+
+### Documentation
+
+* remove empty changelog entrees (c1add919edb2)
+
 ## v2.0.0
 
 ### Feature

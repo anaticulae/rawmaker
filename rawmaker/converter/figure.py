@@ -16,6 +16,7 @@ import PIL.Image
 import utila
 
 import rawmaker.figure.data
+import rawmaker.miner.images
 
 
 class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
@@ -121,13 +122,14 @@ def extract_figure(figure) -> rawmaker.figure.data.Figure:
     renderer = PIL.ImageDraw.Draw(raw, mode=mode)
 
     for item in figure:
-        render(item, offset, scale, renderer)
+        render(item, offset, scale, renderer, raw)
 
     result = rawmaker.figure.data.Figure(data=raw, bounding=bounding)
     return result
 
 
-def render(item, offset, scale, renderer):
+def render(item, offset, scale, renderer, rawbuffer):
+    size = rawbuffer._size  # pylint:disable=W0212
     bounding = list(item.bbox)
     bounding[0] *= scale[0]
     bounding[2] *= scale[0]
@@ -138,6 +140,7 @@ def render(item, offset, scale, renderer):
     bounding[2] -= offset[0]
     bounding[1] -= offset[1]
     bounding[3] -= offset[1]
+
     if isinstance(item, pdfminer.layout.LTLine):
         renderer.line(
             bounding,
@@ -158,7 +161,18 @@ def render(item, offset, scale, renderer):
                 p1=after,
             )
             # TODO: 200 HACK FOR NOT FLIPPED COORDINATE
-            render(expanded, (0, 200), (1.0, 1.0), renderer)
+            render(expanded, (0, 200), (1.0, 1.0), renderer, rawbuffer)
+    elif isinstance(item, pdfminer.layout.LTFigure):
+        # render image
+        images = item._objs[:]  # pylint:disable=W0212
+        for image in images:
+            render(image, offset, scale, renderer, rawbuffer)
+    elif isinstance(item, pdfminer.layout.LTImage):
+        raw = rawmaker.miner.images.image_fromlt(item)
+        size = (int(item.width), int(item.height))
+        location = (int(item.x0), int(item.y0))
+        resized = raw.resize(size, resample=PIL.Image.ANTIALIAS)
+        rawbuffer.paste(resized, location)
     else:
         # TODO: LOG NOT SUPPORTED
         pass

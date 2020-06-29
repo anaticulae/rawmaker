@@ -71,3 +71,14 @@ def test_render_master116_page18(monkeypatch, testdir):
     # 2 png and 2 yaml files
     expected = 4
     assert len(written) == expected, str(written)
+
+
+def test_render_master116_page2_figure_image(monkeypatch, testdir):
+    source = tests.resources.MASTER116
+    cmd = f'-i {source} --pages=2 --figures'
+    tests.run(cmd, monkeypatch=monkeypatch)
+
+    written = utila.file_list('rawmaker__figures_figures')
+    # 2 png and 2 yaml files
+    expected = 2
+    assert len(written) == expected, str(written)

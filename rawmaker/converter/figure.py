@@ -75,6 +75,7 @@ def extract_figures(
 def extract_figure(figure) -> rawmaker.figure.data.Figure:
     content = figure._objs  #  pylint:disable=W0212
     if len(content) == 1 and isinstance(content[0], pdfminer.layout.LTImage):
+        # TODO: CHECK THIS
         # no figure, just an image container
         return None
     scalex, scaley = 1 / figure.matrix[0], 1 / figure.matrix[3]

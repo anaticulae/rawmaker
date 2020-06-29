@@ -8,11 +8,11 @@
 # =============================================================================
 
 import pytest
+import serializeraw
 import utila
 import utilatest
 
 import rawmaker.features.figures
-import rawmaker.figure.data
 import tests
 import tests.resources
 
@@ -37,9 +37,9 @@ def test_figures_dump_and_load(testdir):
     extracted = extract_figures()
     # 3 figures and 3 information
     with utilatest.increased_filecount(outpath, mindiff=6, maxdiff=6):
-        rawmaker.figure.data.dump_figures(extracted, outpath)
+        serializeraw.dump_figures(extracted, outpath)
 
-    loaded = rawmaker.figure.data.load_figures(outpath)
+    loaded = serializeraw.load_figures(outpath)
     assert len(loaded) == 3
 
 
@@ -48,7 +48,7 @@ def test_figures_extract_master116_page19(testdir):
     extracted = extract_figures((19, 38))
     # 3 figures and 3 information
     with utilatest.increased_filecount(outpath, mindiff=6, maxdiff=6):
-        rawmaker.figure.data.dump_figures(extracted, outpath)
+        serializeraw.dump_figures(extracted, outpath)
 
 
 @pytest.mark.usefixtures('testdir')

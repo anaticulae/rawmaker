@@ -22,7 +22,6 @@ import utila
 
 import rawmaker.converter.basic
 import rawmaker.converter.figure
-import rawmaker.figure.data
 import rawmaker.figure.utils
 import rawmaker.reader
 

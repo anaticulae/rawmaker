@@ -9,13 +9,13 @@
 
 import math
 
+import iamraw
 import pdfminer
 import pdfminer.layout
 import pdfminer.utils
 import PIL.Image
 import utila
 
-import rawmaker.figure.data
 import rawmaker.miner.images
 
 
@@ -43,14 +43,14 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         rendered.page = pageid
         self.content.append(rendered)
 
-    def figures(self) -> rawmaker.figure.data.Figures:
+    def figures(self) -> iamraw.Figures:
         return self.content
 
 
 def extract_figures(
         document: str,
         pages: tuple = None,
-) -> rawmaker.figure.data.Figures:
+) -> iamraw.Figures:
     with rawmaker.reader.read(document) as pdf:
         # Processing layout
         content = pdfminer.pdfpage.PDFPage.create_pages(pdf)
@@ -72,7 +72,7 @@ def extract_figures(
     return figures
 
 
-def extract_figure(figure) -> rawmaker.figure.data.Figure:
+def extract_figure(figure) -> iamraw.Figure:
     content = figure._objs  #  pylint:disable=W0212
     if len(content) == 1 and isinstance(content[0], pdfminer.layout.LTImage):
         # TODO: CHECK THIS
@@ -122,7 +122,7 @@ def extract_figure(figure) -> rawmaker.figure.data.Figure:
     # scale bounding information to pdf size
     bounding = scale_bounding(bounding, (1.0 / scalex, 1.0 / scaley))
 
-    result = rawmaker.figure.data.Figure(data=raw, bounding=bounding)
+    result = iamraw.Figure(data=raw, bounding=bounding)
     return result
 
 

@@ -78,18 +78,18 @@ def extract_figure(figure) -> rawmaker.figure.data.Figure:
         # TODO: CHECK THIS
         # no figure, just an image container
         return None
-    scalex, scaley = 1 / figure.matrix[0], 1 / figure.matrix[3]
+    # TODO: Investigate about correct scaling.
+    scalex, scaley = 4, 4
+    # scalex, scaley = 1 / figure.matrix[0], 1 / figure.matrix[3]
     if scalex < 0 or scaley < 0:
         # TODO: DONT KNOW WHY THIS CAN HAPPEN?
         # TODO: INDICATE THIS FOR SOME USER DEFINED LAYOUT ERROR?
         utila.error(f'negative scaling: {scalex} {scaley}')
         scalex, scaley = math.fabs(scalex), math.fabs(scaley)
 
-    bounding = (
-        figure.x0 * scalex,
-        figure.y0 * scaley,
-        figure.x1 * scalex,
-        figure.y1 * scaley,
+    bounding = scale_bounding(
+        (figure.x0, figure.y0, figure.x1, figure.y1),
+        (scalex, scaley),
     )
 
     # render figure
@@ -119,12 +119,15 @@ def extract_figure(figure) -> rawmaker.figure.data.Figure:
     for item in figure:
         render(item, offset, scale, renderer, raw)
 
+    # scale bounding information to pdf size
+    bounding = scale_bounding(bounding, (1.0 / scalex, 1.0 / scaley))
+
     result = rawmaker.figure.data.Figure(data=raw, bounding=bounding)
     return result
 
 
-def render(item, offset, scale, renderer, rawbuffer):
-    size = rawbuffer._size  # pylint:disable=W0212
+def render(item, offset, scale, renderer, rawbuffer):  # pylint:disable=R0914
+    scalex, scaley = scale
     bounding = list(item.bbox)
     bounding[0] *= scale[0]
     bounding[2] *= scale[0]
@@ -164,10 +167,20 @@ def render(item, offset, scale, renderer, rawbuffer):
             render(image, offset, scale, renderer, rawbuffer)
     elif isinstance(item, pdfminer.layout.LTImage):
         raw = rawmaker.miner.images.image_fromlt(item)
-        size = (int(item.width), int(item.height))
-        location = (int(item.x0), int(item.y0))
+        size = (int(item.width * scalex), int(item.height * scaley))
+        location = (int(item.x0 * scalex), int(item.y0 * scaley))
         resized = raw.resize(size, resample=PIL.Image.ANTIALIAS)
         rawbuffer.paste(resized, location)
     else:
         # TODO: LOG NOT SUPPORTED
         pass
+
+
+def scale_bounding(bounding: tuple, scale: tuple) -> tuple:
+    result = (
+        bounding[0] * scale[0],
+        bounding[1] * scale[1],
+        bounding[2] * scale[0],
+        bounding[3] * scale[1],
+    )
+    return result

@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.1.0
+
+### Feature
+
+* use new file hash naming pattern (f366f0028746)
+
 ## v2.0.1
 
 ### Documentation

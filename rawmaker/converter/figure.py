@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import collections
 import math
 
 import iamraw
@@ -18,13 +19,17 @@ import utila
 
 import rawmaker.miner.images
 
+# use layout to group test to avoid handling to much LTChar-data.
+LAYOUT = pdfminer.layout.LAParams()
+
 
 class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
 
     def __init__(self):
-        super().__init__()
+        super().__init__(laparams=LAYOUT)
         self.content = []
         self.page = 0
+        self.nonfigure = collections.defaultdict(list)
 
     def receive_layout(self, ltpage):
         super().receive_layout(ltpage)
@@ -35,6 +40,11 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         """Collect all figures."""
         if isinstance(item, pdfminer.layout.LTFigure):
             self.render_figure(item, pageid=pageid)
+            return
+        if isinstance(item, pdfminer.layout.LTTextBoxHorizontal):
+            # skip character in first render approach
+            return
+        self.nonfigure[pageid].append(item)
 
     def render_figure(self, item: pdfminer.layout.LTFigure, pageid: int):
         rendered = extract_figure(item)
@@ -44,7 +54,18 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         self.content.append(rendered)
 
     def figures(self) -> iamraw.Figures:
+        merged = merge_figures(self.nonfigure)
+        self.nonfigure.clear()
+        if merged:
+            self.content.extend(merged)
         return self.content
+
+
+def merge_figures(items):  # pylint:disable=W0613
+    """Group parts of figures, convert and export as raw image file."""
+    result = []
+    # TODO:
+    return result
 
 
 def extract_figures(
@@ -54,7 +75,6 @@ def extract_figures(
     with rawmaker.reader.read(document) as pdf:
         # Processing layout
         content = pdfminer.pdfpage.PDFPage.create_pages(pdf)
-
         device = FigureConverter()
         interpreter = pdfminer.pdfinterp.PDFPageInterpreter(
             device.resources,

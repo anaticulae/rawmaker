@@ -76,7 +76,7 @@ WORKPLAN = [
         inputs=PDF_INPUT,
         output=[
             ('figures/{FILEHASH_1}', 'yaml'),
-            ('figures/{FILEHASH}', 'png'),
+            ('figures/{FILEHASHS}', 'png'),
         ],
     ),
     utila.create_step(
@@ -97,7 +97,7 @@ WORKPLAN = [
         inputs=PDF_INPUT,
         output=[
             ('images/{FILEHASH_1}', 'yaml'),
-            ('images/{FILEHASH}', '???'),
+            ('images/{FILEHASHS}', '???'),
         ],
     ),
     utila.create_step(

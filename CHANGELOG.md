@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.1.3
+
+### Feature
+
+* add hook to gather additional complex figure data (7a227d3365ed)
+
 ## v2.1.2
 
 ## v2.1.1

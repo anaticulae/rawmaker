@@ -33,7 +33,7 @@ def test_images_export_bachelor56(testdir):
     assert len(extracted) == four_image_pages, str(extracted)
 
 
-@utilatest.skip_longrun
+@utilatest.skip_nightly
 def test_images_export_bachelor63_complete(testdir):
     """Extract seven images out of four pages."""
     source = tests.resources.BACHELOR63

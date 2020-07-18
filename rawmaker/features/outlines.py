@@ -50,6 +50,7 @@ def work(document: str) -> str:
 
         for (level, title, dest, action, _) in outlines:
             page = pagenumber(action, dest, pdf)
+
             if not isinstance(page, int):
                 page = pagelookup[page.objid]
             assert isinstance(page, int), f'require convertion: {type(page)}'

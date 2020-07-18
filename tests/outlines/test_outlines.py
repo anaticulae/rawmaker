@@ -84,11 +84,16 @@ def bachelor111(toc):
     assert len(toc) == 13
 
 
+def diss264(toc):
+    assert len(toc) == 14
+
+
 @pytest.mark.parametrize('source, validate', [
     pytest.param(power.DOCU13_PDF, vim, id='vim'),
     pytest.param(power.BACHELOR037_PDF, bachelor37, id='bachelor37'),
     pytest.param(tests.resources.MASTER116, master116, id='master116'),
     pytest.param(tests.resources.BACHELOR111, bachelor111, id='bachelor111'),
+    pytest.param(power.DISS264_PDF, diss264, id='diss264'),
 ])
 @utilatest.skip_nightly
 def test_outlines_validate(source, validate):

@@ -102,7 +102,7 @@ def parse_fitr(item) -> ExplicitDestination:
     # [0, /'FitR', 0, 625, 440, 309]
     if not isinstance(item, list):
         return None
-    if not item[1].name in ('FitR', 'XYZ'):
+    if not item[1].name in ('Fit', 'FitR', 'XYZ'):
         return None
     pagenumber = item[0]
     return ExplicitDestination(page=pagenumber)

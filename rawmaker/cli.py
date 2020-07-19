@@ -93,6 +93,11 @@ WORKPLAN = [
         ),
     ),
     utila.create_step(
+        'formula',
+        inputs=PDF_INPUT,
+        output=('formula',),
+    ),
+    utila.create_step(
         'images',
         inputs=PDF_INPUT,
         output=[

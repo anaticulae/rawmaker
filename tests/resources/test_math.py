@@ -21,3 +21,23 @@ def test_extract_math():
 
     formula = utila.select_content(extracted, page=8)
     assert len(formula) == 3
+
+
+def test_extract_math_master116_zero_math():
+    source = power.MASTER116_PDF
+    pages = utila.ranged_tuple(0, 22)
+    with rawmaker.reader.read(source) as pdf:
+        extracted = rawmaker.math.extract_content(pdf, pages=pages)
+    assert not extracted
+
+
+def test_extract_math_master116_page22_23():
+    source = power.MASTER116_PDF
+    with rawmaker.reader.read(source) as pdf:
+        extracted = rawmaker.math.extract_content(pdf, pages=(22, 23))
+    assert extracted
+    content = utila.select_content(extracted, page=22)
+    assert len(content) == 4
+
+    content = utila.select_content(extracted, page=23)
+    assert len(content) == 4

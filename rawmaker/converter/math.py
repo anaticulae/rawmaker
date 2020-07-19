@@ -130,4 +130,6 @@ def isformula(text: str) -> bool:
         return True
     if '∆' in text:
         return True
+    if '≤' in text:
+        return True
     return False

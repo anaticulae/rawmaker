@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.2.0
+
+### Feature
+
+* add formula extraction step (52ca713eb5dd)
+* add first draft of formula extractor (9c1fa710c323)
+* extend supported pattern (87e15c782e90)
+
 ## v2.1.3
 
 ### Feature

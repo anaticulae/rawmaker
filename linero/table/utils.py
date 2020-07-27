@@ -25,7 +25,7 @@ def valid_table(bounding, navigator) -> bool:
     top, bottom = bounding[1], bounding[3]
     utila.debug(f'validate table: {bounding} on page {navigator.page}')
 
-    height = bottom - top
+    height = utila.roundme(bottom - top)
     if height < TABLE_MIN_HEIGHT:
         # remove to small tables
         utila.debug(f'table to small: {height}')
@@ -46,7 +46,7 @@ def valid_table(bounding, navigator) -> bool:
         min_elements=1,
     )
     singles = len([item for item in clustered if len(item) == 1])
-    single_quote = singles / len(clustered)
+    single_quote = utila.roundme(singles / len(clustered))
 
     if singles >= 2 and single_quote > MAX_SINGLE_LINE_QUOTE:
         # invalid table content

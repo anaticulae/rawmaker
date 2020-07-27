@@ -23,11 +23,12 @@ TABLE_MERGE_DISTANCE = 20  # TODO: HOLY VALUE
 
 def valid_table(bounding, navigator) -> bool:
     top, bottom = bounding[1], bounding[3]
+    utila.debug(f'validate table: {bounding} on page {navigator.page}')
 
     height = bottom - top
     if height < TABLE_MIN_HEIGHT:
         # remove to small tables
-        utila.log(f'table to small: {height}')
+        utila.debug(f'table to small: {height}')
         return False
 
     table_content = navigator.between(
@@ -36,7 +37,7 @@ def valid_table(bounding, navigator) -> bool:
     )
     if not table_content:
         # no content in table
-        utila.log('no table content')
+        utila.debug('no table content')
         return False
 
     boundings = [item.bounding for item in table_content]
@@ -49,7 +50,7 @@ def valid_table(bounding, navigator) -> bool:
 
     if singles >= 2 and single_quote > MAX_SINGLE_LINE_QUOTE:
         # invalid table content
-        utila.log(f'singe quote: {single_quote}')
+        utila.debug(f'single quote: {single_quote}')
         return False
 
     # table seems to be valid

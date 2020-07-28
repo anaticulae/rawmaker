@@ -20,25 +20,26 @@ PACKAGE = rawmaker.PROCESS_NAME
 
 power.setup(rawmaker.ROOT)
 
+RESOURCES = [
+    (power.MASTER072_PDF, None),
+    (power.BACHELOR056_PDF, '14:34'),
+    (power.BOOK007_PDF, None),
+    (power.DOCU13_PDF, None),
+    (power.BACHELOR090_PDF, '76:81'),
+    (power.DOCU07_PDF, None),
+    (power.MASTER098_PDF, '53:58'),
+]
+
 
 @pytest.mark.usefixtures('session')
 def pytest_sessionstart():
     power.run(tests.resources.REQUIRED_RESOURCES)
 
 
-def extract():
+def extract(resources):
     todo = [
-        (power.MASTER072_PDF, power.link(power.MASTER072_PDF), None),
-        (power.BACHELOR056_PDF, power.link(power.BACHELOR056_PDF), '14:34'),
-        (power.BOOK007_PDF, power.link(power.BOOK007_PDF), None),
-        (power.DOCU13_PDF, power.link(power.DOCU13_PDF), None),
-        (power.BACHELOR090_PDF, power.link(power.BACHELOR090_PDF), '76:81'),
-        (power.DOCU07_PDF, power.link(power.DOCU07_PDF), None),
-        (power.MASTER098_PDF, power.link(power.MASTER098_PDF), '53:58'),
-    ]
-    todo = [
-        f'rawmaker -i {source} -o {dest} -j=8 --pages={strpages(pages)}'
-        for source, dest, pages in todo
+        f'rawmaker -i {source} -o {power.link(source)} -j=8 --pages={strpages(pages)}'
+        for source, pages in resources
     ]
     completed = utila.run_parallel(todo)
     assert completed == utila.SUCCESS

@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.2.1
+
+### Fix
+
+* increase required debugging level (1211a9871333)
+
 ## v2.2.0
 
 ### Feature

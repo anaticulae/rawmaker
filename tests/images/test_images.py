@@ -7,19 +7,19 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
 import pytest
 import utilatest
 
 import rawmaker.miner.images
 import rawmaker.reader
 import tests
-import tests.resources
 
 
 @utilatest.skip_longrun
 def test_images_export_bachelor56(testdir):
     """Extract seven images out of four pages."""
-    source = tests.resources.BACHELOR56
+    source = power.BACHELOR056_PDF
     root = testdir.tmpdir
     pages = None
     with utilatest.increased_filecount(root, mindiff=7, maxdiff=7):
@@ -36,7 +36,7 @@ def test_images_export_bachelor56(testdir):
 @utilatest.skip_nightly
 def test_images_export_bachelor63_complete(testdir):
     """Extract seven images out of four pages."""
-    source = tests.resources.BACHELOR63
+    source = power.BACHELOR063_PDF
     root = testdir.tmpdir
     pages = None
     with utilatest.increased_filecount(root, mindiff=41, maxdiff=41):
@@ -51,7 +51,7 @@ def test_images_export_bachelor63_complete(testdir):
 
 @utilatest.skip_nightly
 def test_images_export_master116(testdir):
-    source = tests.resources.MASTER116
+    source = power.MASTER116_PDF
     root = testdir.tmpdir
     pages = None
     # master116 contains **9** extractable images, but on page 50 the png
@@ -83,7 +83,7 @@ def test_images_export_bachelor63_extract_images(
         expected_bounding_height,
         testdir,
 ):
-    source = tests.resources.BACHELOR63
+    source = power.BACHELOR063_PDF
     root = testdir.tmpdir
     pages = (page,)
     with utilatest.increased_filecount(
@@ -109,14 +109,14 @@ def test_images_export_bachelor63_extract_images(
     'source, expected',
     [
         pytest.param(
-            tests.resources.BACHELOR111,
+            power.BACHELOR111_PDF,
             999,
             id='bachelor111',
             marks=pytest.mark.xfail(reason='not fully supported'),
         ),
-        # pytest.param(tests.resources.TWINE_PDF, 0, id='twine'),
-        pytest.param(tests.resources.TECHNICAL24, 8, id='technical24'),
-        pytest.param(tests.resources.REPORT19, 6, id='report19'),
+        # pytest.param(power.DOCU35_PDF, 0, id='twine'),
+        pytest.param(power.TECHNICAL_024, 8, id='technical24'),
+        # pytest.param(tests.resources.REPORT19, 6, id='report19'),
     ])
 @utilatest.skip_longrun
 def test_images_export_document_complete(

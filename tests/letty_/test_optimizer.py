@@ -11,12 +11,11 @@ import power
 import utilatest
 
 import letty.optimizer
-import tests.resources
 
 
 @utilatest.skip_longrun
 def test_optimizer():
-    path = tests.resources.MASTER72
+    path = power.MASTER072_PDF
     pages = (3,)
     result = letty.optimizer.run(path, pages=pages, chars=10)
     assert result

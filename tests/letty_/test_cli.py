@@ -11,7 +11,6 @@ import power
 import pytest
 
 import tests.letty_
-import tests.resources
 
 
 @pytest.mark.parametrize('command', [

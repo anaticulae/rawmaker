@@ -7,12 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
 import pytest
 import serializeraw
 import texmex
 import utilatest
 
-import tests.resources
+import tests
 
 
 @pytest.mark.parametrize('page, vertical, expected_empty', [
@@ -29,7 +30,7 @@ def test_parse_howtoread_vertically(
         monkeypatch,
 ):
     root = testdir.tmpdir
-    source = tests.resources.HOWTOREAD_PDF
+    source = power.ORDER009_PDF
     flag = '--detect_vertical' if vertical else ''
     config = '--char_margin=2.0 --word_margin=0.1 --line_margin=0.001'
     cmd = f'-i {source} --text --pages={page} {flag} {config}'

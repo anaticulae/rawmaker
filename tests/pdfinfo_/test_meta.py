@@ -7,12 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
+
 import pdfinfo.meta
-import tests.resources
 
 
 def test_pdfinfo_meta():
-    resource = tests.resources.RESTRUCTURED_PDF
+    resource = power.DOCU27_PDF
     meta = pdfinfo.meta.determine(resource)
     assert 'author' in meta
     assert 'title' in meta

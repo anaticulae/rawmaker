@@ -7,9 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
+
 import rawmaker.features
 import rawmaker.parameter
-import tests.resources
 
 
 def test_toc_parameterization():
@@ -18,7 +19,7 @@ def test_toc_parameterization():
     This test is more for finding a good parameter, than for realy testing.
     TODO: Improve this later. Don't know how to, yet.
     """
-    with rawmaker.reader.read(tests.resources.RESTRUCTURED_PDF) as pdf:
+    with rawmaker.reader.read(power.DOCU27_PDF) as pdf:
         # Diff between chars which build a word
         config = rawmaker.parameter.ParsingConfiguration(char_margin=10.0)
         document = rawmaker.features.extract_content(pdf, config=config)

@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
 import pytest
 import utila
 
@@ -17,12 +18,11 @@ from tests.resources import INCREASING_FONT_A3
 from tests.resources import INCREASING_FONT_A4
 from tests.resources import INCREASING_FONT_A5
 from tests.resources import TWINE_PAGES
-from tests.resources import TWINE_PDF
 
 
 @pytest.fixture
 def boxdata_from_pdf():
-    with rawmaker.reader.read(TWINE_PDF) as pdf:
+    with rawmaker.reader.read(power.DOCU35_PDF) as pdf:
         sizeandborders, boxes = rawmaker.features.border.determine_boundingboxes(
             pdf)
     assert sizeandborders
@@ -66,7 +66,7 @@ def test_page_size(increasing_fonts, expected_size_in_mm):
 
 def test_border_pagesize_both():
     pages = (0, 105)
-    with rawmaker.reader.read(tests.resources.MASTER116) as pdf:
+    with rawmaker.reader.read(power.MASTER116_PDF) as pdf:
         sizeandborders, _ = rawmaker.features.border.determine_boundingboxes(
             pdf,
             pages=pages,

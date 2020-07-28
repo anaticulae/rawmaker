@@ -7,14 +7,15 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
+
 import letty.quality.whitespace
 import tests
-import tests.resources
 
 
 def test_whitespaces_count(testdir, monkeypatch):
     root = testdir.tmpdir
-    path = tests.resources.MASTER72
+    path = power.MASTER072_PDF
     pages = (3, 4, 5)
     pages_raw = ','.join([str(item) for item in pages])
     cmd = f'-i {path} --pages={pages_raw} --text'

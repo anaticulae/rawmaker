@@ -8,15 +8,15 @@
 # =============================================================================
 
 import iamraw.path
+import power
 import serializeraw
 
 import tests
-import tests.resources
 
 
 def test_whitespace_extractor_bachelor56_page49(testdir, monkeypatch):
     root = testdir.tmpdir
-    source = tests.resources.BACHELOR56
+    source = power.BACHELOR056_PDF
     # oneline
     config = '--boxes_flow=1.0 --char_margin=100.0 --line_margin=0.0001'
     cmd = f'-i {source} --text --pages=49 --prefix=oneline {config}'

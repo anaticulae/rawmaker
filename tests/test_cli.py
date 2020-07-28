@@ -9,25 +9,22 @@
 
 import os
 
+import power
 import pytest
 import utila
 import utilatest
 
 import tests
-import tests.resources
 from tests import failure
 from tests import run
 from tests.resources import HELLO_WORLD
-from tests.resources import HOW_TO_CPORTING_PDF
-from tests.resources import RESTRUCTURED_PDF
-from tests.resources import TWINE_PDF
 
 
 @pytest.mark.parametrize('command', [
     ['--help'],
     ['-i', HELLO_WORLD, '-o', 'output', '-j', '5'],
-    ['-i', RESTRUCTURED_PDF, '-o', 'output'],
-    ['-i', TWINE_PDF, '-o', 'output'],
+    ['-i', power.DOCU27_PDF, '-o', 'output'],
+    ['-i', power.DOCU35_PDF, '-o', 'output'],
 ])
 @utilatest.skip_longrun
 def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
@@ -58,7 +55,7 @@ def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):  #pylint: disab
     'command',
     [
         # DO NOT REMOVE A SINGLE SOURCE OF THIS TEST
-        ['-i', HOW_TO_CPORTING_PDF, '-o', 'output'],
+        ['-i', power.DOCU09_PDF, '-o', 'output'],
     ])
 @utilatest.skip_longrun
 def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: disable=W0613
@@ -73,7 +70,7 @@ def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: d
 ])
 def test_run_rawmaker_with_pages(testdir, monkeypatch, pages, capsys):  #pylint: disable=W0613
     """Extract special pages"""
-    cmd = ['-i', RESTRUCTURED_PDF, '-o', 'output', '--pages', pages, '-VVV']
+    cmd = ['-i', power.DOCU27_PDF, '-o', 'output', '--pages', pages, '-VVV']
     run(cmd, monkeypatch=monkeypatch)
     out, err = capsys.readouterr()
     print(out)
@@ -103,5 +100,5 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
 @utilatest.skip_longrun
 def test_rawmaker_cli_run_file_without_extention(testdir, monkeypatch):
     source = os.path.join(str(testdir), 'hello')
-    utila.file_copy(tests.resources.RESTRUCTURED_PDF, source)
+    utila.file_copy(power.DOCU27_PDF, source)
     tests.run(f'-i {source}', monkeypatch=monkeypatch)

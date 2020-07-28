@@ -19,11 +19,10 @@ import linero.table.crossed
 import linero.table.word
 import tests
 import tests.linero_
-import tests.resources
 
 
 def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
-    cmd = f'-i {tests.resources.BOOK} --line'
+    cmd = f'-i {power.BOOK007_PDF} --line'
     tests.run(cmd, monkeypatch=monkeypatch)
 
 

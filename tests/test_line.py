@@ -16,12 +16,11 @@ import utilatest
 import rawmaker.features.line
 import rawmaker.reader
 import tests
-import tests.resources
 
 
 def test_line_run_cli(testdir, monkeypatch):  #pylint: disable=W0613
     root = str(testdir)
-    cmd = f'-i {tests.resources.BOOK} --line'
+    cmd = f'-i {power.BOOK007_PDF} --line'
     with utilatest.increased_filecount(root, ext='yaml'):
         tests.run(cmd, monkeypatch=monkeypatch)
 
@@ -46,7 +45,7 @@ def test_line_extract(source, expected):
 
 
 def test_line_dump_load():
-    with rawmaker.reader.read(tests.resources.HOW_TO_CPORTING_PDF) as pdf:
+    with rawmaker.reader.read(power.DOCU09_PDF) as pdf:
         lines = rawmaker.features.line.determine_lines(pdf)
 
     dumped = serializeraw.dump_lines(lines)
@@ -63,7 +62,7 @@ def test_line_dump_load():
 
 def test_line_merge_horizontals_bachelor90(testdir):
     pages = (13, 14)
-    with rawmaker.reader.read(tests.resources.BACHELOR90) as pdf:
+    with rawmaker.reader.read(power.BACHELOR090_PDF) as pdf:
         lines = rawmaker.features.line.determine_lines(pdf, pages=pages)
     lines = utila.flatten([item.content for item in lines])
     assert len(lines) == 2

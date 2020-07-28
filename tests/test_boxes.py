@@ -8,6 +8,7 @@
 # =============================================================================
 
 import iamraw
+import power
 import pytest
 import utila
 
@@ -16,16 +17,14 @@ import rawmaker.features.boxes
 import rawmaker.features.horizontals
 import rawmaker.features.line
 import rawmaker.reader
-import tests.resources
 from tests.resources import HOW_TO_CPORTING_BOX_COUNT as BOX_COUNT
 from tests.resources import HOW_TO_CPORTING_HORIZONTAL_COUNT as LINES_COUNT
-from tests.resources import HOW_TO_CPORTING_PDF as TEST_DOCUMENT
 
 
 @pytest.fixture
 def linecluster():
     result = []
-    with rawmaker.reader.read(TEST_DOCUMENT) as doc:
+    with rawmaker.reader.read(power.DOCU09_PDF) as doc:
         parsed = rawmaker.features.line.lines(doc)
         size = rawmaker.features.border.pagesizes(doc)[0].size
         for pagelines, _ in parsed:
@@ -95,7 +94,7 @@ def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
 
 def test_determine_textboxes():
     boxes = None
-    with rawmaker.reader.read(TEST_DOCUMENT) as doc:
+    with rawmaker.reader.read(power.DOCU09_PDF) as doc:
         boxes = rawmaker.features.boxes.determine_boxes(doc)
     # flatten boxes to compute box count of document
     boxes = [page.content for page in boxes]
@@ -105,7 +104,7 @@ def test_determine_textboxes():
 
 def test_boxes_determine_horizontals_master72pages():
     horizontals = None
-    with rawmaker.reader.read(tests.resources.MASTER72) as doc:
+    with rawmaker.reader.read(power.MASTER072_PDF) as doc:
         horizontals = rawmaker.features.horizontals.determine_horizontal(
             doc,
             tuple(range(10)),
@@ -122,7 +121,7 @@ def test_boxes_determine_horizontals_master72pages():
 
 def test_boxes_determine_boxes_bachelor56_titlepage():
     firstpage = (0,)
-    with rawmaker.reader.read(tests.resources.BACHELOR56) as doc:
+    with rawmaker.reader.read(power.BACHELOR056_PDF) as doc:
         pages = rawmaker.features.boxes.determine_boxes(doc, firstpage)
         boxes = pages[0].content
 

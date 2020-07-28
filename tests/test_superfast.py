@@ -6,18 +6,19 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+
 import os
 
+import power
 import utila
 import utilatest
 
 import tests
-import tests.resources
 
 
 @utilatest.skip_longrun  # requires installed package
 def test_rawmaker_cli_superfast(testdir, monkeypatch):
-    source = tests.resources.RESTRUCTURED_PDF
+    source = power.DOCU27_PDF
     cmd = ['--sf', '-i', source, '--text']
     tests.run(cmd, monkeypatch=monkeypatch)
 
@@ -25,7 +26,7 @@ def test_rawmaker_cli_superfast(testdir, monkeypatch):
 @utilatest.skip_longrun  # requires installed package
 def test_rawmaker_cli_superfast_compare(testdir, monkeypatch):
     """Ensure that --superfast produces the same results as without superfast"""
-    source = tests.resources.RESTRUCTURED_PDF
+    source = power.DOCU27_PDF
 
     workspace = str(testdir)
     first = os.path.join(workspace, 'first')

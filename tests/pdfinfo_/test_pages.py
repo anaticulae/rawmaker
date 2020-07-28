@@ -6,12 +6,14 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+
+import power
+
 import pdfinfo.pages
-import tests.resources
 
 
 def test_pdfinfo_parse_pages():
-    resource = tests.resources.RESTRUCTURED_PDF
+    resource = power.DOCU27_PDF
     pages = pdfinfo.pages.determine(resource)
 
     assert pages == 27, str(pages)

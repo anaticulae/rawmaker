@@ -7,11 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
 import serializeraw
 import utila
 
 import tests
-import tests.resources
 
 
 def test_bachelor63_text_extraction(testdir, monkeypatch):
@@ -19,7 +19,7 @@ def test_bachelor63_text_extraction(testdir, monkeypatch):
     does no occurs again. There was a problem that some text was parsed
     twice and more."""
     root = testdir.tmpdir
-    source = tests.resources.BACHELOR63
+    source = power.BACHELOR063_PDF
     config = ''
     cmd = f'-i {source} --text --pages=0 {config}'
     tests.run(cmd, monkeypatch=monkeypatch)

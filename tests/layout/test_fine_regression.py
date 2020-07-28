@@ -7,12 +7,12 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
 import pytest
 import serializeraw
 import utila
 
 import tests
-import tests.resources
 
 
 def test_layout_fine_master72_page3_horizontal_problem(testdir, monkeypatch):
@@ -20,7 +20,7 @@ def test_layout_fine_master72_page3_horizontal_problem(testdir, monkeypatch):
     line. There was a problem, cause the position of the first line was
     parsed with a to low y0 coordinate."""
     source = testdir.tmpdir
-    cmd = f'-i {tests.resources.MASTER72} --text --horizontals --pages=3'
+    cmd = f'-i {power.MASTER072_PDF} --text --horizontals --pages=3'
     tests.run(cmd, monkeypatch=monkeypatch)
 
     navigators = serializeraw.create_pagetextnavigators_frompath(source)
@@ -36,7 +36,7 @@ def test_layout_fine_master72_page3_horizontal_problem(testdir, monkeypatch):
 @pytest.mark.xfail(reason='improve layout extraction')
 def test_layout_fine_bachelor111_page9_horizontal_problem(testdir, monkeypatch):
     source = testdir.tmpdir
-    cmd = f'-i {tests.resources.BACHELOR111} --text --boxes --pages=9'
+    cmd = f'-i {power.BACHELOR111_PDF} --text --boxes --pages=9'
     tests.run(cmd, monkeypatch=monkeypatch)
     navigators = serializeraw.create_pagetextnavigators_frompath(source)
     horizontal = serializeraw.load_horizontals(source)[0][0][-1]

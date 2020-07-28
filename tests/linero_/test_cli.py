@@ -10,7 +10,6 @@
 import pytest
 
 import tests.linero_
-import tests.resources
 
 
 @pytest.mark.parametrize('command', [

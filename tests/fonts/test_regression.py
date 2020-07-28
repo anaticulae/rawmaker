@@ -15,7 +15,6 @@ import utila
 import utilatest
 
 import tests
-import tests.resources
 
 
 @pytest.mark.xfail(reason='incomplete font detection implementation')
@@ -49,8 +48,7 @@ def test_porting_module_font_index(strip, testdir, monkeypatch):
     striping there can be more than one white space at the end of a
     line."""
     nostrip = '' if strip else '--nostrip'
-    cmd = (f'-i {tests.resources.HOW_TO_CPORTING_PDF}'
-           f' --fonts --text {nostrip}')
+    cmd = (f'-i {power.DOCU09_PDF} --fonts --text {nostrip}')
     tests.run(cmd, monkeypatch=monkeypatch)
     source = iamraw.path.fontcontent(testdir.tmpdir)
     position = serializeraw.load_font_content(source)
@@ -68,8 +66,8 @@ def test_porting_module_font_index(strip, testdir, monkeypatch):
 
 
 @pytest.mark.parametrize('pdf, strip', [
-    pytest.param(tests.resources.MASTER72, True, id='master72_true'),
-    pytest.param(tests.resources.MASTER72, False, id='master72_false'),
+    pytest.param(power.MASTER072_PDF, True, id='master72_true'),
+    pytest.param(power.MASTER072_PDF, False, id='master72_false'),
 ])
 @utilatest.skip_nightly
 def test_regression_extract_text_and_fonts(pdf, strip, testdir, monkeypatch):

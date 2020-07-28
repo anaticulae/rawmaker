@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
 import pytest
 import serializeraw
 import utila
@@ -14,12 +15,11 @@ import utilatest
 
 import rawmaker.features.figures
 import tests
-import tests.resources
 
 
 def extract_figures(pages=None):
     """2 Figures on page 12 and 1 figure and 1 image on page 13."""
-    source = tests.resources.MASTER116
+    source = power.MASTER116_PDF
     if pages is None:
         pages = (12, 13)
     extracted = rawmaker.features.figures.work(source, pages=pages)
@@ -53,7 +53,7 @@ def test_figures_extract_master116_page19(testdir):
 
 @pytest.mark.usefixtures('testdir')
 def test_figures_run_master116(monkeypatch):
-    source = tests.resources.MASTER116
+    source = power.MASTER116_PDF
     cmd = f'-i {source} --pages=17:24 --figures'
     tests.run(cmd, monkeypatch=monkeypatch)
 
@@ -63,7 +63,7 @@ def test_figures_run_master116(monkeypatch):
 
 
 def test_render_master116_page18(monkeypatch, testdir):
-    source = tests.resources.MASTER116
+    source = power.MASTER116_PDF
     cmd = f'-i {source} --pages=18 --figures'
     tests.run(cmd, monkeypatch=monkeypatch)
 
@@ -74,7 +74,7 @@ def test_render_master116_page18(monkeypatch, testdir):
 
 
 def test_render_master116_page2_figure_image(monkeypatch, testdir):
-    source = tests.resources.MASTER116
+    source = power.MASTER116_PDF
     cmd = f'-i {source} --pages=2 --figures'
     tests.run(cmd, monkeypatch=monkeypatch)
 
@@ -86,7 +86,7 @@ def test_render_master116_page2_figure_image(monkeypatch, testdir):
 
 @pytest.mark.xfail(reason='improved figure renderer is not ready yet')
 def test_render_bachelor90_page23_figure(monkeypatch, testdir):
-    source = tests.resources.BACHELOR90
+    source = power.BACHELOR090_PDF
     cmd = f'-i {source} --pages=44 --figures'
     tests.run(cmd, monkeypatch=monkeypatch)
 

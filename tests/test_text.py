@@ -97,20 +97,20 @@ def validate_master116(firstpage):
 
 @pytest.mark.parametrize('source, remove_whitespace, validate', [
     pytest.param(
-        tests.resources.BACHELOR63,
+        power.BACHELOR063_PDF,
         False,
         None,
         id='bachelor63_false',
     ),
-    pytest.param(tests.resources.BACHELOR63, True, None, id='bachelor_true'),
+    pytest.param(power.BACHELOR063_PDF, True, None, id='bachelor_true'),
     pytest.param(
-        tests.resources.MASTER116,
+        power.MASTER116_PDF,
         True,
         validate_master116,
         id='master116_true',
     ),
-    pytest.param(tests.resources.MASTER72, False, None, id='master72_false'),
-    pytest.param(tests.resources.MASTER72, True, None, id='master72_true'),
+    pytest.param(power.MASTER072_PDF, False, None, id='master72_false'),
+    pytest.param(power.MASTER072_PDF, True, None, id='master72_true'),
 ])
 @utilatest.skip_longrun
 def test_text_mine_holy_whitespaces_remove(source, remove_whitespace, validate):
@@ -149,7 +149,7 @@ def mine_holywhitespace(source, remove_whitespace, pages, expected_length):
 
 def test_text_mining_convert_special_chars():
     parsed = rawmaker.features.text.work(
-        tests.resources.BACHELOR90,
+        power.BACHELOR090_PDF,
         boxes_flow=1.0,
         pages=(1,),
     )
@@ -172,7 +172,7 @@ def test_text_mining_convert_special_whitespace_between_special():
     Solution remove small whitespaces before merging.
     """
     parsed = rawmaker.features.text.work(
-        tests.resources.BACHELOR90,
+        power.BACHELOR090_PDF,
         boxes_flow=1.0,
         pages=(5,),
     )

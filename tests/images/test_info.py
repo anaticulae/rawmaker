@@ -9,18 +9,19 @@
 
 import os
 
+import power
+
 import rawmaker.features.images
 import rawmaker.images.info
 import rawmaker.miner.images
 import rawmaker.reader
-import tests.resources
 
 
 def test_image_information(testdir):
     """Extract image information for one image on first page of
     Bachelor56 example."""
     root = testdir.tmpdir
-    source = tests.resources.BACHELOR56
+    source = power.BACHELOR056_PDF
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.miner.images.extract_images(
             pdf,

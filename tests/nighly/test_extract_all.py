@@ -15,6 +15,7 @@ reposity are extractable by rawmaker and exit with exitcode 0.
 
 import glob
 
+import power
 import pytest
 import utila
 import utilatest
@@ -27,6 +28,7 @@ import tests.resources
 
 def pdf():
     located = glob.glob(f'{tests.resources.RESOURCES}/**/*.pdf', recursive=True)
+    located.extend(power.PDF)
     result = []
     for item in located:
         if any((test in str(item) for test in SKIP)):
@@ -37,7 +39,7 @@ def pdf():
 
 def convert_path(path: str) -> str:
     """Convert to relative and forward slashed path, remove leading slash."""
-    relative = utila.make_relative(path, tests.resources.RESOURCES)
+    relative = utila.make_relative(path, power.REPOSITORY)
     result = relative.replace('\\', '_')[1:]
     return result
 

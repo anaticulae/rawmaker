@@ -21,20 +21,12 @@ assert os.path.exists(RESOURCES), RESOURCES
 EXAMPLES = os.path.join(rawmaker.ROOT, 'tests/examples')
 assert os.path.exists(EXAMPLES), EXAMPLES
 
-BACHELOR = os.path.join(RESOURCES, 'bachelor')
-BOOK = os.path.join(RESOURCES, 'book')
-DOCU = os.path.join(RESOURCES, 'docu')
 HELLO_WORLD = os.path.join(RESOURCES, 'helloworld')
-MASTER = os.path.join(RESOURCES, 'master')
 NEGATIVE = os.path.join(RESOURCES, 'negative')
-ORDER = os.path.join(RESOURCES, 'order')
 SINGLE = os.path.join(RESOURCES, 'single')
-TECHNICAL = os.path.join(RESOURCES, 'technical')
 SPEC = os.path.join(RESOURCES, 'spec')
 
 NO_PDF = os.path.join(NEGATIVE, 'no_pdf')
-
-VIM_PDF = os.path.join(DOCU, 'vimguide.pdf')
 
 VIM_PAGE_COUNT = 13
 VIM_OUTLINES = 42
@@ -43,10 +35,7 @@ HELLO_WORLD_PDF = os.path.join(HELLO_WORLD, 'hello_world.pdf')
 HELLO_WORLD_PAGES = 1
 HELLO_WORLD_OUTLINES = 0
 
-TWINE_PDF = os.path.join(DOCU, 'twine.pdf')
 TWINE_PAGES = 35
-
-RESTRUCTURED_PDF = os.path.join(DOCU, 'restructuredtext.pdf')
 
 INCREASING_FONT = os.path.join(RESOURCES, 'increasing_fonts')
 INCREASING_FONT_A3 = os.path.join(INCREASING_FONT, 'increasing_fonts_a3.pdf')
@@ -54,31 +43,10 @@ INCREASING_FONT_A4 = os.path.join(INCREASING_FONT, 'increasing_fonts_a4.pdf')
 INCREASING_FONT_A5 = os.path.join(INCREASING_FONT, 'increasing_fonts_a5.pdf')
 INCREASING_ZZZ = os.path.join(INCREASING_FONT, 'increasing_fonts_a4_10_20_30_40.pdf') # yapf:disable
 
-HOW_TO_CPORTING_PDF = os.path.join(DOCU, 'porting_extension_modules.pdf')
-
 HOW_TO_CPORTING_BOX_COUNT = 10
 HOW_TO_CPORTING_HORIZONTAL_COUNT = 2
 
-MASTER72 = os.path.join(MASTER, 'page_72_noimages_toc.pdf')
-
-HOWTOREAD_PDF = os.path.join(ORDER, 'howtowrite_pages9.pdf')
-
-HOWTO_ARGPARSE = os.path.join(DOCU, 'howto_argparse.pdf')
-
-BACHELOR56 = os.path.join(BACHELOR, 'page_56_hard_to_read.pdf')
-BACHELOR63 = os.path.join(BACHELOR, 'page_63_images_toc.pdf')
-BACHELOR90 = os.path.join(BACHELOR, 'bachelor90.pdf')
-BACHELOR111 = os.path.join(BACHELOR, 'page_111_images_toc.pdf')
-BACHELOR241 = os.path.join(BACHELOR, 'page241.pdf')
-
-TECHNICAL24 = os.path.join(TECHNICAL, 'page_24_color_figures_images.pdf')
-REPORT19 = os.path.join(TECHNICAL, 'report.pdf')
-
 PDF2008 = os.path.join(SPEC, 'PDF32000_2008.pdf')
-
-MASTER116 = os.path.join(MASTER, 'page_116_images_toc_formular.pdf')
-MASTER89 = os.path.join(MASTER, 'page_89_noimages_toc.pdf')
-MASTER98 = os.path.join(MASTER, 'page98.pdf')
 
 GOLDEN = os.path.join(RESOURCES, 'golden')
 GOLDEN_VIM = os.path.join(GOLDEN, 'vim')
@@ -87,33 +55,15 @@ REQUIRED_RESOURCES = [
     power.link(power.BOOK007_PDF),
     power.link(power.DOCU13_PDF),
     power.link(power.BACHELOR090_PDF),
-    BACHELOR,
-    BACHELOR111,
-    BACHELOR241,
-    BACHELOR56,
-    BACHELOR63,
-    BACHELOR90,
     GOLDEN_VIM,
     HELLO_WORLD_PDF,
-    HOWTOREAD_PDF,
-    HOWTO_ARGPARSE,
-    HOW_TO_CPORTING_PDF,
     INCREASING_FONT,
     INCREASING_FONT_A3,
     INCREASING_FONT_A4,
     INCREASING_FONT_A5,
-    MASTER116,
-    MASTER72,
-    MASTER89,
-    MASTER98,
     NEGATIVE,
     NO_PDF,
     PDF2008,
-    REPORT19,
     RESOURCES,
-    RESTRUCTURED_PDF,
-    TECHNICAL,
-    TECHNICAL24,
-    TWINE_PDF,
-    VIM_PDF,
+    power.DOCU13_PDF,
 ]

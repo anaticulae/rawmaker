@@ -11,6 +11,7 @@ import iamraw.path
 import power
 import pytest
 import serializeraw
+import utila
 
 import linero.cluster
 import linero.features.table
@@ -133,3 +134,22 @@ def test_detect_table_bachelor90_page80(testdir, monkeypatch):
     loaded = serializeraw.load_tables(tables)[0].content
 
     assert len(loaded) == 1
+
+
+def test_detect_table_master98_page54_60(testdir, monkeypatch):
+    source = power.link(power.MASTER098_PDF)
+    pages = '54:62'
+    tests.linero_.run(
+        f'-i {source} --pages={pages} --table',
+        monkeypatch=monkeypatch,
+    )
+
+    tables = linero.path.table(testdir.tmpdir)
+
+    loaded = serializeraw.load_tables(tables)
+
+    assert len(utila.select_content(loaded, 54)) == 1
+    assert len(utila.select_content(loaded, 55)) == 1
+
+    assert len(utila.select_content(loaded, 58)) == 1
+    assert len(utila.select_content(loaded, 59)) == 1

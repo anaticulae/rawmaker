@@ -27,7 +27,7 @@ RESOURCES = [
     (power.DOCU13_PDF, None),
     (power.BACHELOR090_PDF, '76:81'),
     (power.DOCU07_PDF, None),
-    (power.MASTER098_PDF, '53:58'),
+    (power.MASTER098_PDF, '53:61'),
 ]
 
 

@@ -125,9 +125,12 @@ def test_images_export_document_complete(
         testdir,
         monkeypatch,
 ):
-    # for every image it is an additonal image info file extracted.
+    # for every image an additonal image info file is extracted.
     root = testdir.tmpdir
     with utilatest.increased_filecount(
-            root, mindiff=expected, maxdiff=expected):
+            root,
+            mindiff=expected,
+            maxdiff=expected,
+    ):
         cmd = f'-i {source} --images'
         tests.run(cmd, monkeypatch=monkeypatch)

@@ -65,6 +65,10 @@ def extract_pages(
         for parsed in images:
             bounding = parsed.bounding
             path = os.path.join(outputfolder, parsed.filename)
+            if not os.path.exists(path):
+                # TODO: FIX IMAGE EXTRACTION
+                utila.error(f'missing image: {path}')
+                continue
             loaded = utila.file_read_binary(path)
             info = rawmaker.images.info.imageinfo(path, page, bounding)
             ext = utila.file_ext(path)

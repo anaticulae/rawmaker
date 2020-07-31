@@ -219,6 +219,7 @@ def render_textline(
     result.chars = ensure_leftright(result.chars)
     result.chars = merge_small_whitespaces(result.chars)
     result.chars = merge_special_char(result.chars)
+    result.chars = fix_fontrise(result.chars)
 
     if not strip:
         return result
@@ -246,6 +247,39 @@ def render_textline(
         result.box.x1 = x1
         assert result.box.x0 < result.box.x1, str(result.box)
     return result
+
+
+def fix_fontrise(items):
+    """Workaround for font rise extraction bug.
+
+    In some cases the layout is extracted with font rises which are not
+    necessary. There is a single char without font rise and the other
+    are layouted with different y1 position and a font rise."""
+    if not items:
+        return items
+    non_virtual = [
+        item for item in items if not isinstance(item, iamraw.VirtualChar)
+    ]
+
+    rises = [item for item in non_virtual if item.rise]
+    if not rises:
+        return items
+
+    zero, non_zero = utila.partition(
+        key=lambda item: utila.near(item.rise, 0.0, diff=0.5),
+        items=non_virtual,
+    )
+
+    if len(zero) != 1:
+        return items
+    if not non_zero:
+        return items
+
+    mode = utila.mode(item.rise for item in non_zero)
+    for item in non_zero:
+        item.rise = item.rise - mode
+        item.box.y1 = item.box.y1 + mode
+    return items
 
 
 def ensure_leftright(items):

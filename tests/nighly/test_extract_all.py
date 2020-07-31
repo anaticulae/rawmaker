@@ -46,6 +46,7 @@ def convert_path(path: str) -> str:
 
 SKIP = {
     'PDF32000_2008.pdf',
+    'diss406.pdf',
 }
 
 # documents which does not pass the current implementation

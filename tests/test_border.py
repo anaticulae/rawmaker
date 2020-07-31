@@ -14,10 +14,6 @@ import utila
 import rawmaker.features.border
 import rawmaker.utils
 import tests.resources
-from tests.resources import INCREASING_FONT_A3
-from tests.resources import INCREASING_FONT_A4
-from tests.resources import INCREASING_FONT_A5
-from tests.resources import TWINE_PAGES
 
 
 @pytest.fixture
@@ -26,7 +22,7 @@ def boxdata_from_pdf():
         sizeandborders, boxes = rawmaker.features.border.determine_boundingboxes(
             pdf)
     assert sizeandborders
-    assert len(sizeandborders) == TWINE_PAGES
+    assert len(sizeandborders) == tests.resources.TWINE_PAGES
 
     return sizeandborders, boxes
 
@@ -39,14 +35,14 @@ def test_maximize_bounding_box(boxdata_from_pdf):  #pylint:disable=W0621
     # TODO: Remove this test?
     pageandborders, _ = boxdata_from_pdf
     assert pageandborders
-    assert len(pageandborders) == TWINE_PAGES
+    assert len(pageandborders) == tests.resources.TWINE_PAGES
 
 
 @pytest.mark.parametrize(
     'increasing_fonts, expected_size_in_mm', [
-        (INCREASING_FONT_A3, (297, 420)),
-        (INCREASING_FONT_A4, (210, 297)),
-        (INCREASING_FONT_A5, (148, 210)),
+        (tests.resources.INCREASING_FONT_A3, (297, 420)),
+        (tests.resources.INCREASING_FONT_A4, (210, 297)),
+        (tests.resources.INCREASING_FONT_A5, (148, 210)),
     ],
     ids=[
         'A3',
@@ -80,7 +76,9 @@ def test_border_bounding_boxes():
     """Test that coordinates are flipped like expected in our format."""
     with rawmaker.reader.read(tests.resources.HELLO_WORLD_PDF) as pdf:
         boxes = rawmaker.features.border.determine_boundingboxes(
-            pdf, pages=(0,))[1]
+            pdf,
+            pages=(0,),
+        )[1]
     assert len(boxes) == 1, boxes
     boundings = boxes[0].boundings
     ymax = max([item[1][2] for item in boundings])

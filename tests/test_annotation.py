@@ -9,21 +9,18 @@
 
 import power
 import pytest
-from pytest import fixture
-from serializeraw import dump_annotations
-from serializeraw import load_annotations
+import serializeraw
 
-from rawmaker.features.annotation import extract_annotations
-from rawmaker.features.annotation import work
-from rawmaker.reader import read
-from tests.resources import VIM_PAGE_COUNT
+import rawmaker.features.annotation
+import rawmaker.reader
+import tests.resources
 
 
 def test_annotation_mining_annotations(capsys):
     extracted = None
-    with read(power.DOCU13_PDF) as pdf:
-        extracted = extract_annotations(pdf)
-    assert len(extracted) == VIM_PAGE_COUNT
+    with rawmaker.reader.read(power.DOCU13_PDF) as pdf:
+        extracted = rawmaker.features.annotation.extract_annotations(pdf)
+    assert len(extracted) == tests.resources.VIM_PAGE_COUNT
 
     # no logging errors from unsupported annotation
     _, err = capsys.readouterr()
@@ -32,15 +29,15 @@ def test_annotation_mining_annotations(capsys):
 
 @pytest.mark.xfail(reason='annotation is disabled right now')
 def test_annotation_work():
-    result = work(power.DOCU13_PDF)
+    result = rawmaker.features.annotation.work(power.DOCU13_PDF)
     assert len(result) > 200
 
 
-@fixture
+@pytest.fixture
 def vim_guide_annotation():
     extracted = None
-    with read(power.DOCU13_PDF) as pdf:
-        extracted = extract_annotations(pdf)
+    with rawmaker.reader.read(power.DOCU13_PDF) as pdf:
+        extracted = rawmaker.features.annotation.extract_annotations(pdf)
     return extracted
 
 
@@ -50,7 +47,7 @@ def test_annotation_dump_and_load(vim_guide_annotation):  #pylint:disable=W0621
         item for item in annotation if item.pagelinks or item.hyperlinks
     ]
 
-    dumped = dump_annotations(annotation)
-    loaded = load_annotations(dumped)
+    dumped = serializeraw.dump_annotations(annotation)
+    loaded = serializeraw.load_annotations(dumped)
 
     assert loaded == without_none

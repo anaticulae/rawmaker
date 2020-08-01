@@ -17,6 +17,7 @@ import pdfminer.utils
 import PIL.Image
 import utila
 
+import rawmaker.figure.utils
 import rawmaker.miner.images
 
 # use layout to group test to avoid handling to much LTChar-data.
@@ -112,29 +113,11 @@ def extract_figure(figure) -> iamraw.Figure:
         (scalex, scaley),
     )
 
-    # render figure
-    mode = 'RGBA'
-
-    width = utila.flatten([[item.bbox[0], item.bbox[2]] for item in figure])
-    height = utila.flatten([[item.bbox[1], item.bbox[3]] for item in figure])
-
-    width = utila.maxs(width)
-    height = utila.maxs(height)
-
-    width = (bounding[2] - bounding[0])
-    height = (bounding[3] - bounding[1])
     offset = bounding[0], bounding[1]
     scale = scalex, scaley
 
-    # ensure positive figure size
-    if width < 0 or height < 0:
-        utila.error(f'negative figure size: {width} {height}')
-    width = utila.maxs(width, 1)
-    height = utila.maxs(height, 1)
-    size = (int(width), int(height))
-
-    raw = PIL.Image.new(mode, size, color=1)
-    renderer = PIL.ImageDraw.Draw(raw, mode=mode)
+    raw = rawmaker.figure.utils.rawfigure_frombounding(bounding)
+    renderer = PIL.ImageDraw.Draw(raw, mode='RGBA')
 
     for item in figure:
         render(item, offset, scale, renderer, raw)

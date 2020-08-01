@@ -17,6 +17,7 @@ import pdfminer.utils
 import PIL.Image
 import utila
 
+import rawmaker.figure.text
 import rawmaker.figure.utils
 import rawmaker.miner.images
 
@@ -62,10 +63,15 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         return self.content
 
 
-def merge_figures(items):  # pylint:disable=W0613
+def merge_figures(pagefigures) -> iamraw.Figures:
     """Group parts of figures, convert and export as raw image file."""
     result = []
-    # TODO:
+    for page, values in pagefigures.items():
+        figures = rawmaker.figure.text.text_figures(values)
+        for index, figure in enumerate(figures):
+            figure.index = index
+            figure.page = page
+        result.extend(figures)
     return result
 
 

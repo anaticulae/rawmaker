@@ -84,13 +84,21 @@ def test_render_master116_page2_figure_image(monkeypatch, testdir):
     assert len(written) == expected, str(written)
 
 
-@pytest.mark.xfail(reason='improved figure renderer is not ready yet')
-def test_render_bachelor90_page23_figure(monkeypatch, testdir):
+@pytest.mark.parametrize('page, expected', [
+    (23, 1),
+    (39, 1),
+    (44, 1),
+    (45, 1),
+    (56, 1),
+    (57, 1),
+    (58, 1),
+])
+def test_render_bachelor90_pagex_figure(page, expected, monkeypatch, testdir):
     source = power.BACHELOR090_PDF
-    cmd = f'-i {source} --pages=44 --figures'
+    cmd = f'-i {source} --pages={page} --figures'
     tests.run(cmd, monkeypatch=monkeypatch)
 
     written = utila.file_list('rawmaker__figures_figures')
-    # 2 png and 2 yaml files
-    expected = 2
+    # png and yaml files
+    expected = expected * 2
     assert len(written) == expected, str(written)

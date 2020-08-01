@@ -62,6 +62,8 @@ def select_formulas(items):
     result = []
     for cluster in clustered:
         content = cluster[:]
+        # sort from left to right
+        content = sorted(content, key=lambda x: x[0][0])
         text = ''.join([item[2] for item in content])
         if not isformula(text):
             continue

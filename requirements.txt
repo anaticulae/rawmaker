@@ -16,5 +16,5 @@ Pillow==6.1.0
 # Internal packages
 utila==2.6.0
 configo==0.7.1
-iamraw==2.2.0
+iamraw==2.3.0
 protocol==1.2.1

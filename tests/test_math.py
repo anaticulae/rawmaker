@@ -7,12 +7,12 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import iamraw.path
 import power
+import serializeraw
 import utila
 
-import rawmaker.features.formula
 import rawmaker.math
-import rawmaker.path
 import rawmaker.reader
 import tests
 
@@ -51,11 +51,11 @@ def test_dump_and_load_formula(testdir, monkeypatch):
 
     tests.run(f'-i {source} --formula --pages=51', monkeypatch=monkeypatch)
 
-    formula = rawmaker.path.formula(testdir.tmpdir)
-    loaded = rawmaker.features.formula.load_rawformulas(formula)
+    formula = iamraw.path.formula(testdir.tmpdir)
+    loaded = serializeraw.load_rawformulas(formula)
     assert loaded
     assert len(loaded[0].content) == 1
-    dumped = rawmaker.features.formula.dump_rawformulas(loaded)
+    dumped = serializeraw.dump_rawformulas(loaded)
 
-    loadafter = rawmaker.features.formula.load_rawformulas(dumped)
+    loadafter = serializeraw.load_rawformulas(dumped)
     assert loadafter == loaded

@@ -10,8 +10,11 @@
 import power
 import utila
 
+import rawmaker.features.formula
 import rawmaker.math
+import rawmaker.path
 import rawmaker.reader
+import tests
 
 
 def test_extract_math():
@@ -41,3 +44,18 @@ def test_extract_math_master116_page22_23():
 
     content = utila.select_content(extracted, page=23)
     assert len(content) == 4
+
+
+def test_dump_and_load_formula(testdir, monkeypatch):
+    source = power.BACHELOR090_PDF
+
+    tests.run(f'-i {source} --formula --pages=51', monkeypatch=monkeypatch)
+
+    formula = rawmaker.path.formula(testdir.tmpdir)
+    loaded = rawmaker.features.formula.load_rawformulas(formula)
+    assert loaded
+    assert len(loaded[0].content) == 1
+    dumped = rawmaker.features.formula.dump_rawformulas(loaded)
+
+    loadafter = rawmaker.features.formula.load_rawformulas(dumped)
+    assert loadafter == loaded

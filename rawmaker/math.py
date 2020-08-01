@@ -27,22 +27,25 @@ def extract_content(
 
     # Processing layout
     with utila.SkipCollector(pages) as collector:
-        pdfpages = enumerate(pdfminer.pdfpage.PDFPage.create_pages(document))
-        for index, page in pdfpages:
+        pdfpages = pdfminer.pdfpage.PDFPage.create_pages(document)
+        for index, page in enumerate(pdfpages):
             if collector.skip(index):
                 continue
             interpreter.process_page(page)
-    collected = device.close_document()
+        # update pdf page numbers for selected pages
+        length = len(list(pdfpages))
+        pages = utila.ranged_tuple(0, length) if pages is None else pages
 
-    pages = pages if pages else utila.ranged_tuple(0, len(collected))
+    closed = device.close_document()
+
     result = []
-    for (page, pagenumber) in zip(collected, pages):
-        for item in page.content:
-            item.page = pagenumber
-        # TODO: REPLACE AFTER UPGRADING IAMRAW/dataclass
+    for pagecontent, page in zip(closed, pages):
+        for item in pagecontent.content:
+            # set page number for every extracted formula
+            item.page = page
         result.append(
             iamraw.PageContentRawFormula(
-                page=pagenumber,
-                content=page.content,
+                content=pagecontent.content,
+                page=page,
             ))
     return result

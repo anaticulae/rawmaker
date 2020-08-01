@@ -12,3 +12,7 @@ import utila
 
 def images(path: str, prefix: str = '') -> str:
     return utila.pathconnector(path, 'rawmaker', 'images_images', prefix)
+
+
+def formula(path: str, prefix: str = '') -> str:
+    return utila.pathconnector(path, 'rawmaker', 'formula_formula', prefix)

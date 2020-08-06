@@ -94,18 +94,12 @@ def test_mining_increasing_fonts():
     assert font_sizes == expected_fontsizes
 
 
-@pytest.fixture
-def restructed_fonts():
-    result = rawmaker.features.fonts.work(power.DOCU27_PDF)
-    header = serializeraw.load_font_header(result[0])
-    content = serializeraw.load_font_content(result[1])
-    return header, content
-
-
-def test_mining_fonts_restruct_page_5(restructed_fonts):  # pylint:disable=W0621
+def test_mining_fonts_restruct_page_5():
     """Mine the fifths page, compare only `Weight` for not beeing to
-    specific"""
-    header, content = restructed_fonts
+    specific."""
+    header, content = rawmaker.features.fonts.work(power.DOCU27_PDF)
+    header = serializeraw.load_font_header(header)
+    content = serializeraw.load_font_content(content)
     fifths_page = content[4]
 
     expected = [

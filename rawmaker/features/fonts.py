@@ -146,7 +146,7 @@ def process_page(  # pylint:disable=R0914
                 # NOTE: This works for POSTSCRIPT_14_DEFAULT's but not for
                 # Calibri.
                 scale = utila.roundme(char.size / 1.34005)
-                assert scale > 0, 'negative font size'
+                assert scale > 0, f'negative font size: {scale}'
                 flags = char.ltchar.flags
                 # No font type or size is selected
                 if current_font is None:

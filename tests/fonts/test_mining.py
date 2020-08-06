@@ -37,7 +37,7 @@ def test_mining_fonts(testdir):
     utila.file_create('content.yaml', content)
 
 
-def test_mining_fonts_cporting(testdir):
+def test_mining_fonts_cporting():
     header, content = rawmaker.features.fonts.work(power.DOCU09_PDF)
     # XXX: Define good numbers
     assert len(header) > 100

@@ -23,6 +23,7 @@ import rawmaker.features
 import rawmaker.features.fonts
 import rawmaker.fonts.parser
 import rawmaker.reader
+import tests
 import tests.resources
 
 
@@ -248,3 +249,12 @@ def test_strip_correct_bounding_box_master116(testdir, monkeypatch):
             bounding[second].y1,
             diff=max_diff,
         ), f'{first}: {bounding[first].y1} {second}: {bounding[second].y1}'
+
+
+def test_mining_fonts_bachelor37(testdir, monkeypatch):
+    source = power.BACHELOR037_PDF
+    tests.run(f'-i {source} --pages=5 --text --font', monkeypatch=monkeypatch)
+    navigators = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)
+    page5 = navigators[0]
+    firstline = page5[1]
+    assert firstline.style.content[0].size == 11.04

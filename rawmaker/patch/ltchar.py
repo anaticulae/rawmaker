@@ -23,7 +23,12 @@ class PatchedLTChar(pdfminer.layout.LTChar):
         if fontsize == 1:
             # HACK: CLARIFY WHAT IS CORRECT, we need more generated pdf
             # examples
-            self.fontsize = self.size
+            # HQEOGA+Arial in bachelor37
+            # self.fontsize = self.size
+            # matrix[0] normal char
+            # matrix[1] rotated char
+            self.fontsize = matrix[0] if matrix[0] else matrix[1]
+            assert self.fontsize, matrix
         else:
             self.fontsize = fontsize
         self.rise = rise

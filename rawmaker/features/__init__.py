@@ -6,38 +6,41 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
+
+import collections
 import dataclasses
-from collections import namedtuple
-from typing import Tuple
+import typing
 
 import iamraw
-from pdfminer.converter import PDFPageAggregator
-from pdfminer.layout import LAParams
-from pdfminer.layout import LTPage
-from pdfminer.pdfdocument import PDFDocument
-from pdfminer.pdfinterp import PDFPageInterpreter
-from pdfminer.pdfinterp import PDFResourceManager
-from pdfminer.pdfpage import PDFPage
-from utila import SkipCollector
-from utila import call
-from utila import debug
+import pdfminer.converter
+import pdfminer.layout
+import pdfminer.pdfdocument
+import pdfminer.pdfinterp
+import pdfminer.pdfpage
+import utila
 
 import rawmaker.converter.basic
 import rawmaker.miner.text
 import rawmaker.parameter
 
-PageContent = namedtuple('PageContent', 'content, page')
+PageContent = collections.namedtuple('PageContent', 'content, page')
 
 
-def create_interpreter(layout=None) -> PDFPageInterpreter:
+def create_interpreter(layout=None) -> pdfminer.pdfinterp.PDFPageInterpreter:
     if not layout:
         layout = rawmaker.parameter.ParsingConfiguration().laparams()
     device = rawmaker.converter.basic.PageAggregator(laparams=layout)
-    interpreter = PDFPageInterpreter(device.resources, device)
+    interpreter = pdfminer.pdfinterp.PDFPageInterpreter(
+        device.resources,
+        device,
+    )
     return interpreter, device
 
 
-def process_pdfpages(document: PDFDocument, pages: tuple = None) -> PDFPage:
+def process_pdfpages(
+        document: pdfminer.pdfdocument.PDFDocument,
+        pages: tuple = None,
+) -> pdfminer.pdfpage.PDFPage:
     """Contextmanager to yield `PDFPage` of every selected page of
     `PDFDocument`.
 
@@ -47,19 +50,28 @@ def process_pdfpages(document: PDFDocument, pages: tuple = None) -> PDFPage:
     Yields:
         PDFPage: tuple of page content and pdf page number
     """
-    call('process_pdfpages')
-    assert isinstance(document, PDFDocument), type(document)
-
-    with SkipCollector(pages) as collector:
-        for number, page in enumerate(PDFPage.create_pages(document), start=0):
+    utila.call('process_pdfpages')
+    assert isinstance(
+        document,
+        pdfminer.pdfdocument.PDFDocument,
+    ), type(document)
+    with utila.SkipCollector(pages) as collector:
+        for number, page in enumerate(
+                pdfminer.pdfpage.PDFPage.create_pages(document), start=0):
             if collector.skip(number):
                 continue
             yield (page, number)
 
 
-def process_document(document: PDFDocument, pages=None) -> Tuple[int, LTPage]:
+def process_document(
+        document: pdfminer.pdfdocument.PDFDocument,
+        pages=None,
+) -> typing.Tuple[int, pdfminer.layout.LTPage]:
     """Yield (pagenumber, LTPage) for every selected page of `PDFDocument`"""
-    assert isinstance(document, PDFDocument), type(document)
+    assert isinstance(
+        document,
+        pdfminer.pdfdocument.PDFDocument,
+    ), type(document)
     interpreter, device = create_interpreter()
     for content, number in process_pdfpages(document, pages=pages):
         interpreter.process_page(content)
@@ -67,8 +79,14 @@ def process_document(document: PDFDocument, pages=None) -> Tuple[int, LTPage]:
         yield (content, pagecontent)
 
 
-def process_pagecontent(document: PDFDocument, pages=None) -> LTPage:
-    assert isinstance(document, PDFDocument), type(document)
+def process_pagecontent(
+        document: pdfminer.pdfdocument.PDFDocument,
+        pages=None,
+) -> pdfminer.layout.LTPage:
+    assert isinstance(
+        document,
+        pdfminer.pdfdocument.PDFDocument,
+    ), type(document)
     for _, content in process_document(document, pages=pages):
         yield content
 
@@ -83,7 +101,7 @@ def page_selection(document: iamraw.Document, pages: tuple):
 
 
 def extract_content(
-        document: PDFDocument,
+        document: pdfminer.pdfdocument.PDFDocument,
         config: rawmaker.parameter.ParsingConfiguration = None,
         strip: bool = False,
         pages: tuple = None,
@@ -111,11 +129,11 @@ def extract_content(
         strip=strip,
     )
     device.new_document()
-    interpreter = PDFPageInterpreter(device.rsrcmgr, device)
+    interpreter = pdfminer.pdfinterp.PDFPageInterpreter(device.rsrcmgr, device)
 
     # Processing layout
-    with SkipCollector(pages) as collector:
-        for index, page in enumerate(PDFPage.create_pages(document)):
+    with utila.SkipCollector(pages) as collector:
+        for index, page in enumerate(pdfminer.pdfpage.PDFPage.create_pages(document)): # yapf:disable
             if collector.skip(index):
                 continue
             interpreter.process_page(page)

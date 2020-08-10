@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v2.3.0
+
+### Feature
+
+* clarify error message (d505c33d3758)
+* make dumping format more readable (ac73cde505ba)
+* add first draft of text figure renderer (a1b357238ffc)
+
+### Fix
+
+* group text bounding box correctly (dccdeced6e2a)
+* fix bachelor37 font extraction (21717111cdf3)
+* fix interface documentation (932dbcb4c1fd)
+* sort formula character from left to right (f9ae962e87f7)
+* solve font rise extraction bug (8e1d7d2f801a)
+* handle failing tiff extraction (b257bd287bd7)
+
 ## v2.2.2
 
 ## v2.2.1

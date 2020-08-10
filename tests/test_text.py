@@ -177,7 +177,8 @@ def test_text_mining_convert_special_whitespace_between_special():
         pages=(5,),
     )
     document = serializeraw.load_document(parsed[0])
-    text = document[0][1].text
+    # page, line
+    text = document[0][9].text
     expected = '3.4.3. Vollständige Automatisierung . .'
     assert expected in text
     expected = 'Automatisierung, manuelle Verknüpfung . . . .'

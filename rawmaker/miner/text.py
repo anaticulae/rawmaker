@@ -223,7 +223,6 @@ def render_textline(
 
     if not strip:
         return result
-
     # remove left
     lstrip = len(result.text) - len(result.text.lstrip())
     result.chars = result.chars[lstrip:]
@@ -343,7 +342,6 @@ def merge_special_char(items):
             result.append(item)
             continue
         result[-1].value = replaced
-
     return result
 
 
@@ -462,7 +460,11 @@ def render(item, strip: bool = False):
             rendered = render(child, strip=strip)
             if rendered is None:
                 continue
-            page.children.append(rendered)
+            if isinstance(rendered, list):
+                for single in rendered:
+                    page.append(single)
+            else:
+                page.append(rendered)
         return page
     if isinstance(item, pdfminer.layout.LTTextBox):
         textcontainer = render_textcontainer(item, strip=strip)
@@ -473,5 +475,39 @@ def render(item, strip: bool = False):
             if not textcontainer.lines:
                 # ignore stripped line
                 return None
+        textcontainer = ensure_bounding(textcontainer)
         return textcontainer
     return None
+
+
+def ensure_bounding(textcontainer: iamraw.TextContainer):
+    if len(textcontainer) == 1:
+        return textcontainer
+    if isinstance(textcontainer, iamraw.VerticalTextContainer):
+        # TODO: NOT SUPPORTED YET
+        return textcontainer
+    # check if splitting bounding container is required or container fits
+    # already.
+    indexed = [[0]]
+    for index, item in enumerate(textcontainer[1:], start=1):
+        before = textcontainer[indexed[-1][0]].box
+        current = item.box
+
+        if (utila.near(before[0], current[0]) and
+                utila.near(before[2], current[2])):
+            indexed[-1].append(index)
+        else:
+            indexed.append([index])
+    if len(indexed) == 1:
+        # splitting is not required, container fits already
+        return textcontainer
+    result = []
+    for block in indexed:
+        # split container into smaller, better fitting containers
+        collected = [textcontainer[index] for index in block]
+        current = iamraw.TextContainer()
+        for item in collected:
+            current.append(item)
+        current.box = iamraw.common_box([item.box for item in collected])
+        result.append(current)
+    return result

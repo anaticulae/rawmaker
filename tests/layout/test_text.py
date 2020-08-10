@@ -28,3 +28,22 @@ def test_bachelor63_text_extraction(testdir, monkeypatch):
     text = [str(item).strip() for item in navigator]
     unique = utila.make_unique(text)
     assert len(unique) == len(text), str(text)
+
+
+def test_bachelor37_text_extraction_position_page4(testdir, monkeypatch):
+    """Ensure that first and second line are splitted correctly. Before
+    this test/patch there where merged together, but this is not the
+    correct behavior.
+    """
+    root = testdir.tmpdir
+    source = power.BACHELOR037_PDF
+    cmd = f'-i {source} --text --pages=4'
+    tests.run(cmd, monkeypatch=monkeypatch)
+
+    navigator = serializeraw.create_pagetextnavigators_frompath(root)[0]
+
+    first = navigator[0].bounding
+    second = navigator[1].bounding
+
+    assert utila.near(70.92, first.x0), first.x0
+    assert utila.near(371.04, second.x0), second.x0

@@ -38,6 +38,7 @@ class DocumentItemHasher:
             current = self.data[hashid]
             return current
         except KeyError:
+            # TODO: CHANGE TO KEY ERROR
             raise ItemNotFound('Item is not stored: %s %d' % (item, hashid))
 
     def __eq__(self, value):

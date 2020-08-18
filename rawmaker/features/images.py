@@ -71,6 +71,9 @@ def extract_pages(
                 continue
             loaded = utila.file_read_binary(path)
             info = rawmaker.images.info.imageinfo(path, page, bounding)
+            if info is None:
+                utila.error(f'could not extract {path}, {page}, {bounding}')
+                continue
             ext = utila.file_ext(path)
             pagecontent.append((info, (loaded, ext)))
         if pagecontent:

@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import iamraw
 import power
 import serializeraw
 import utila
@@ -58,3 +59,17 @@ def test_diss264_text_extraction_position_page17(testdir, monkeypatch, capsys):
 
     _, err = capsys.readouterr()
     assert err.count('[ERROR] could not convert:') >= 6, err
+
+
+def test_diss264_text_extraction_vertical_text_page21(testdir, monkeypatch):
+    source = power.DISS264_PDF
+    cmd = f'-i {source} --text --pages=21'
+    tests.run(cmd, monkeypatch=monkeypatch)
+
+    document = serializeraw.load_document(iamraw.path.text(testdir.tmpdir))
+
+    vertical_container = [
+        item for item in document[0]
+        if isinstance(item, iamraw.VerticalTextContainer)
+    ]
+    assert len(vertical_container) == 5

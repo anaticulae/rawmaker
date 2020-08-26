@@ -412,21 +412,51 @@ def split_characters(char) -> list:
     return result
 
 
+def split_container(
+        item: pdfminer.layout.LTTextBox,
+        strip: bool = False,
+) -> list:
+    grouped = [[]]
+    for line in item:
+        split = not line.get_text().strip() and strip
+        vertical_change = vertical(grouped[-1]) != vertical(line) if grouped[-1] else False # yapf:disable
+        if split or vertical_change:
+            grouped.append([])
+        else:
+            grouped[-1].append(line)
+    grouped = [item for item in grouped if item]
+
+    # add bounding
+    result = []
+    for index, group in enumerate(grouped):
+        item = pdfminer.layout.LTTextBoxHorizontal()
+        if vertical(group):
+            item = pdfminer.layout.LTTextBoxVertical()  # pylint:disable=R0204
+        for line in group:
+            item.add(line)
+        item.index = index
+        item.bbox = iamraw.BoundingBox(*item.bbox)
+        result.append(item)
+    return result
+
+
 def render_textcontainer(
         item: pdfminer.layout.LTTextBox,
         strip: bool = False,
 ) -> iamraw.TextContainer:
-    if vertical(item):
-        container = iamraw.VerticalTextContainer(box=item.bbox)
-    else:
-        container = render_horizontal_textcontainer(item, strip=strip)
-    return container
+    splitted = split_container(item, strip=strip)
+
+    result = [
+        render_vertical_textcontainer(item, strip=strip) if vertical(item) else
+        render_horizontal_textcontainer(item, strip=strip) for item in splitted
+    ]
+    return result
 
 
 def render_horizontal_textcontainer(
         item: pdfminer.layout.LTTextBox,
         strip: bool = False,
-):
+) -> iamraw.TextContainer:
     container = iamraw.TextContainer(box=item.bbox)
     for line in item:
         rendered = render_textline(line, strip=strip)
@@ -447,8 +477,24 @@ def render_horizontal_textcontainer(
     return container
 
 
+def render_vertical_textcontainer(
+        item: pdfminer.layout.LTTextBox,
+        strip: bool = False,
+) -> iamraw.VerticalTextContainer:
+    container = iamraw.VerticalTextContainer(box=item.bbox)
+    for line in item:
+        rendered = render_textline(line, strip=strip)
+        if not rendered:
+            continue
+        container.append(rendered)
+    return container
+
+
 def vertical(item: pdfminer.layout.LTTextBox):
     """Check LTChar.upright flag."""
+    if isinstance(item, (pdfminer.layout.LTTextLine)):
+        # enable checking single lines
+        item = [item]
     for line in item:
         for char in line._objs:  # pylint: disable=protected-access
             with contextlib.suppress(AttributeError):
@@ -457,8 +503,8 @@ def vertical(item: pdfminer.layout.LTTextBox):
     return False
 
 
-def render(item, strip: bool = False):
-    if isinstance(item, pdfminer.layout.LTPage):
+def render(item, strip: bool = False):  # pylint:disable=R1260,too-many-branches
+    if isinstance(item, pdfminer.layout.LTPage):  # pylint:disable=too-many-nested-blocks
         pagenumber = item.pageid
         page = iamraw.Page(pagenumber, iamraw.BoundingBox(*item.bbox))
         # TODO: ENSURE ROTATED PAGES?
@@ -469,21 +515,28 @@ def render(item, strip: bool = False):
                 continue
             if isinstance(rendered, list):
                 for single in rendered:
-                    page.append(single)
+                    if isinstance(single, list):
+                        for pageitem in single:
+                            page.append(pageitem)
+                    else:
+                        page.append(single)
             else:
                 page.append(rendered)
         return page
     if isinstance(item, pdfminer.layout.LTTextBox):
-        textcontainer = render_textcontainer(item, strip=strip)
-        if strip:
-            textcontainer.lines = [
-                line for line in textcontainer.lines if line.text.strip()
-            ]
-            if not textcontainer.lines:
-                # ignore stripped line
-                return None
-        textcontainer = ensure_bounding(textcontainer)
-        return textcontainer
+        textcontainers = render_textcontainer(item, strip=strip)
+        result = []
+        for container in textcontainers:
+            if strip:
+                container.lines = [
+                    line for line in container.lines if line.text.strip()
+                ]
+                if not container.lines:
+                    # ignore stripped line
+                    continue
+            container = ensure_bounding(container)
+            result.append(container)
+        return result
     return None
 
 

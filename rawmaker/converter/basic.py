@@ -28,6 +28,12 @@ class FlippedLayoutAnalyzer(pdfminer.converter.PDFLayoutAnalyzer):
         for item in ltpage:
             flip_object(item, ltpage)
 
+    def handle_undefined_char(self, font, cid) -> str:
+        # TODO: CHECK AFTER UPGRADING PDFMINER
+        char = chr(cid)
+        utila.error(f'could not convert: {font!r}, {cid!r}, {char}')
+        return char
+
     @property
     def resources(self):
         return self.rsrcmgr

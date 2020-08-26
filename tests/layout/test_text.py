@@ -47,3 +47,14 @@ def test_bachelor37_text_extraction_position_page4(testdir, monkeypatch):
 
     assert utila.near(70.92, first.x0), first.x0
     assert utila.near(371.04, second.x0), second.x0
+
+
+def test_diss264_text_extraction_position_page17(testdir, monkeypatch, capsys):
+    """Log non correct char conversion as an error."""
+    # TODO: CHECK THIS TEST AFTER UPGRADING PDFMINER
+    source = power.DISS264_PDF
+    cmd = f'-i {source} --text --fonts --pages=17'
+    tests.run(cmd, monkeypatch=monkeypatch)
+
+    _, err = capsys.readouterr()
+    assert err.count('[ERROR] could not convert:') >= 6, err

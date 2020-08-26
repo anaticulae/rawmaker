@@ -416,16 +416,15 @@ def render_textcontainer(
         item: pdfminer.layout.LTTextBox,
         strip: bool = False,
 ) -> iamraw.TextContainer:
-    bounding = item.bbox
     if vertical(item):
-        container = iamraw.VerticalTextContainer(box=bounding)
+        container = iamraw.VerticalTextContainer(box=item.bbox)
     else:
-        container = iamraw.TextContainer(box=bounding)
+        container = iamraw.TextContainer(box=item.bbox)
     for line in item:
         rendered = render_textline(line, strip=strip)
         if not rendered:
             continue
-        container.lines.append(rendered)
+        container.append(rendered)
     if len(container.lines) == 1:
         # update parent box
         # TODO: ENSURE TO UPDATE MULTILINE BOXES CORRECTLY

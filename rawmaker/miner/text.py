@@ -419,7 +419,15 @@ def render_textcontainer(
     if vertical(item):
         container = iamraw.VerticalTextContainer(box=item.bbox)
     else:
-        container = iamraw.TextContainer(box=item.bbox)
+        container = render_horizontal_textcontainer(item, strip=strip)
+    return container
+
+
+def render_horizontal_textcontainer(
+        item: pdfminer.layout.LTTextBox,
+        strip: bool = False,
+):
+    container = iamraw.TextContainer(box=item.bbox)
     for line in item:
         rendered = render_textline(line, strip=strip)
         if not rendered:

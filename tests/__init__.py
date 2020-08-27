@@ -12,10 +12,10 @@ import functools
 import pytest
 import utilatest
 
+import tests.resources
 from rawmaker import PROCESS_NAME
 from rawmaker import ROOT
 from rawmaker.cli import main
-from tests.resources import RESOURCES
 
 #pylint: disable=invalid-name
 run = functools.partial(
@@ -38,10 +38,11 @@ skip_virtual = pytest.mark.skipif(
 )
 
 # TODO: CONVERT TO PYTEST PLUGIN
+# TODO: OUTDATED?
 SETUP_LONGRUN = f"""
 uninstall rawmaker
 
 install {ROOT}
 
-run power --all {RESOURCES}
+run power --all {tests.resources.RESOURCES}
 """

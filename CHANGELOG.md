@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.4.0
+
+### Feature
+
+* split mixed horizontal/vertical text container (ef15e67d6030)
+* return raw char value for pdf font parsing error (8b03f3d3715a)
+
+### Fix
+
+* skip and log invalid image (c7cd4bf67809)
+
 ## v2.3.0
 
 ### Feature

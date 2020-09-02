@@ -72,7 +72,7 @@ def sources():
 @pytest.mark.usefixtures('testdir')
 @pytest.mark.parametrize('source', sources())
 def test_rawmaker_linero(source, monkeypatch):
-    # use first 10 pages for normal testing and extract complete document
+    # use first 5 pages for normal testing and extract complete document
     # only in nighly tests.
     layout = '--char_margin 5.0 --boxes_flow 1.0 --line_margin 0.3'
     pages = '' if utilatest.NIGHTLY else '--page=0:5'

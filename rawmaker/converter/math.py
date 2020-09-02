@@ -73,6 +73,8 @@ def select_formulas(items):
             continue
         formula = create_formula(content)
         result.append(formula)
+    # sort formula top down by y1
+    result.sort(key=lambda x: x.bounding[3])
     return result
 
 

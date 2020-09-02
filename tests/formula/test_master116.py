@@ -15,20 +15,24 @@ import rawmaker.math
 import rawmaker.reader
 
 
-def test_extract_math_master116_page22():
+@pytest.mark.parametrize('page, expected', [
+    (
+        22,
+        [
+            '𝑇𝑇,𝑚𝑎𝑥=𝐹𝑍,𝑚𝑎𝑥·𝑟𝑅𝑎𝑑.(2.3)',
+            '𝑇𝑇,𝑚𝑎𝑥≤𝑚𝑣𝑔𝜇𝑟𝑠·𝑟𝑅𝑎𝑑.(2.4)',
+            '𝐹𝑍,𝑚𝑎𝑥=𝐹𝐺·𝜇𝑟𝑠.(2.2)',
+            '𝐹𝐺=𝑚𝑣·𝑔,(2.1)',
+        ],
+    ),
+])
+def test_extract_math_master116_page22(page, expected):
     source = power.MASTER116_PDF
     with rawmaker.reader.read(source) as pdf:
-        extracted = rawmaker.math.extract_content(pdf, pages=(22,))
+        extracted = rawmaker.math.extract_content(pdf, pages=(page,))
     assert extracted
-    content = utila.select_content(extracted, page=22)
+    content = utila.select_content(extracted, page=page)
     raw = raw_formula(content)
-    # TODO: REMOVE (2.3) later
-    expected = [
-        '𝑇𝑇,𝑚𝑎𝑥=𝐹𝑍,𝑚𝑎𝑥·𝑟𝑅𝑎𝑑.(2.3)',
-        '𝑇𝑇,𝑚𝑎𝑥≤𝑚𝑣𝑔𝜇𝑟𝑠·𝑟𝑅𝑎𝑑.(2.4)',
-        '𝐹𝑍,𝑚𝑎𝑥=𝐹𝐺·𝜇𝑟𝑠.(2.2)',
-        '𝐹𝐺=𝑚𝑣·𝑔,(2.1)',
-    ]
     assert raw == expected
 
 

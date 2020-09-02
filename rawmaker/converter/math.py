@@ -8,6 +8,7 @@
 # =============================================================================
 
 import math
+import re
 
 import iamraw
 import pdfminer.layout
@@ -119,11 +120,19 @@ def same_line_cluster(
     return utila.determine_cluster(todo, classifier, min_elements=min_elements)
 
 
-def isformula(text: str) -> bool:
+NO_FORMULA = r'\([ ]{0,2}\d{1,2}[ ]{0,2}\.[ ]{0,2}\d{1,2}[ ]{0,2}\)'
+
+
+def isformula(text: str) -> bool:  # pylint:disable=too-many-return-statements
     """\
     >>> isformula('A^2+B^2 = C^')
     True
+    >>> isformula('(3 .5 )')
+    False
     """
+    text = text.strip()
+    if re.match(NO_FORMULA, text):
+        return False
     if '=' in text:
         return True
     if '(' in text and ')' in text:

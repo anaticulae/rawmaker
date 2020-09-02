@@ -63,7 +63,7 @@ def sources():
         ) if convert_path(item) in UNSUPPORTED_DOCUMENTS else pytest.param(
             item,
             id=convert_path(item),
-        ) for item in pdf()
+        ) for item in (pdf() if utilatest.NIGHTLY else pdf()[0:10])
     ]
     return result
 

@@ -119,7 +119,7 @@ def test_images_export_bachelor63_extract_images(
         # pytest.param(tests.resources.REPORT19, 6, id='report19'),
         pytest.param(power.PAPER18_PDF, 10, id='paper18'),
     ])
-@utilatest.skip_longrun
+@utilatest.skip_nightly
 def test_images_export_document_complete(
         source,
         expected,

@@ -129,6 +129,8 @@ NO_FORMULA = r'\([ ]{0,2}\d{1,2}[ ]{0,2}\.[ ]{0,2}\d{1,2}[ ]{0,2}\)'
 
 def isformula(text: str) -> bool:
     """\
+    >>> isformula('Samples sind und ∆t die Samplingperiode')
+    False
     >>> isformula('A^2+B^2 = C^')
     True
     >>> isformula('(3 .5 )')
@@ -137,7 +139,21 @@ def isformula(text: str) -> bool:
     text = text.strip()
     if no_formula(text):
         return False
+    if special_rate(text):
+        return False
     if math_character(text):
+        return True
+    return False
+
+
+ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+
+def special_rate(text: str) -> bool:
+    if len(text) < 20:  # TODO: HOLY VALUE
+        return False
+    alpharate = len([item for item in text if item in ALPHA]) / len(text)
+    if alpharate > 0.8:  # TODO: HOLY VALUE
         return True
     return False
 

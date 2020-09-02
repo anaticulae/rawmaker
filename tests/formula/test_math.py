@@ -17,7 +17,7 @@ import rawmaker.reader
 import tests
 
 
-def test_extract_math():
+def test_extract_math_homework50_page8():
     source = power.HOMEWORK050_PDF
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.math.extract_content(pdf, pages=(8,))

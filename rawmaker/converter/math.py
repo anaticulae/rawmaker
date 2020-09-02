@@ -127,7 +127,7 @@ def same_line_cluster(
 NO_FORMULA = r'\([ ]{0,2}\d{1,2}[ ]{0,2}\.[ ]{0,2}\d{1,2}[ ]{0,2}\)'
 
 
-def isformula(text: str) -> bool:  # pylint:disable=too-many-return-statements
+def isformula(text: str) -> bool:
     """\
     >>> isformula('A^2+B^2 = C^')
     True
@@ -135,8 +135,20 @@ def isformula(text: str) -> bool:  # pylint:disable=too-many-return-statements
     False
     """
     text = text.strip()
-    if re.match(NO_FORMULA, text):
+    if no_formula(text):
         return False
+    if math_character(text):
+        return True
+    return False
+
+
+def no_formula(text: str) -> bool:
+    if re.match(NO_FORMULA, text):
+        return True
+    return False
+
+
+def math_character(text: str) -> bool:
     if '=' in text:
         return True
     if '(' in text and ')' in text:

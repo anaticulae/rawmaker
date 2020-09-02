@@ -59,7 +59,10 @@ LAYOUT = pdfminer.layout.LAParams(
 
 
 def select_formulas(items):
-    clustered = same_line_cluster(items)
+    clustered = same_line_cluster(
+        items,
+        max_difference=10,  # TODO: HOLY VALUE
+    )
     result = []
     for cluster in clustered:
         content = cluster[:]
@@ -89,7 +92,8 @@ def render_pagecontent(item):
         # multiline could not be a formular
         return None
     content = lines[0]
-    if len(content) >= 20:
+    if len(content) >= 35:
+        # TODO: REPLACE THIS BAD SELECTOR
         return None
     # text = content.get_text().strip()
     # whitequote = len([item for item in text if item == ' ']) / len(text)

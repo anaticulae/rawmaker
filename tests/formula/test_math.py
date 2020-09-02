@@ -34,18 +34,6 @@ def test_extract_math_master116_zero_math():
     assert not extracted
 
 
-def test_extract_math_master116_page22_23():
-    source = power.MASTER116_PDF
-    with rawmaker.reader.read(source) as pdf:
-        extracted = rawmaker.math.extract_content(pdf, pages=(22, 23))
-    assert extracted
-    content = utila.select_content(extracted, page=22)
-    assert len(content) == 4
-
-    content = utila.select_content(extracted, page=23)
-    assert len(content) == 4
-
-
 def test_dump_and_load_formula(testdir, monkeypatch):
     source = power.BACHELOR090_PDF
 

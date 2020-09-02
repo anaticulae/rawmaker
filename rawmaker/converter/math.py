@@ -92,7 +92,7 @@ def render_pagecontent(item):
         # multiline could not be a formular
         return None
     content = lines[0]
-    if len(content) >= 35:
+    if len(content) >= 50:
         # TODO: REPLACE THIS BAD SELECTOR
         return None
     # text = content.get_text().strip()

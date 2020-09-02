@@ -25,8 +25,17 @@ import rawmaker.reader
             '𝐹𝐺=𝑚𝑣·𝑔,(2.1)',
         ],
     ),
+    (
+        24,
+        [
+            '𝐹𝑅=(𝑚𝑣+𝑚𝑧)·𝑔·𝑓𝑅·cos𝛼𝑆𝑡.(2.9)',
+            '𝐹𝐴=𝐹𝐴,𝑡𝑟𝑎𝑛𝑠+𝐹𝐴,𝑟𝑜𝑡.(2.12)',
+            '𝐹𝑆𝑡=𝐹𝐺·sin𝛼𝑆𝑡.(2.11)',
+            '𝐹𝐺=(𝑚𝑣+𝑚𝑧)·𝑔,(2.10)',
+        ],
+    ),
 ])
-def test_extract_math_master116_page22(page, expected):
+def test_extract_math_master116_page_x(page, expected):
     source = power.MASTER116_PDF
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.math.extract_content(pdf, pages=(page,))

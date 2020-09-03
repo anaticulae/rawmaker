@@ -108,6 +108,12 @@ def test_table_extract_negative():
         [],
         id='notable_howto_pyporting',
     ),
+    pytest.param(
+        power.link(power.BACHELOR063_PDF),
+        '25',
+        [1],
+        id='bachelor63_singletable',
+    ),
 ])
 def test_detect_table(source, pages, expected, testdir, monkeypatch):
     tests.linero_.run(

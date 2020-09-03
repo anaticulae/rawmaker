@@ -8,7 +8,6 @@ General
   :maxdepth: 1
 
   bugs
-  profiling
 
 Progress
 --------
@@ -26,7 +25,8 @@ Developer
 .. toctree::
   :maxdepth: 1
 
-  todo
+  profiling
+  tests
 
 Modules
 --------------------

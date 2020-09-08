@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v2.5.0
+
+### Feature
+
+* add pdfminer independent layout merger (61ab3477daf6)
+* sort formula from top to down (9d7aae39e92e)
+* add alpha char counter to exclude sentences from formula (905a0a25e717)
+* improve formula parser (a09cd11c4b83)
+* add non formula black list (84031fcd475f)
+
+### Documentation
+
+* document different test coverage of current release (5ae1a6214ac2)
+
 ## v2.4.1
 
 ## v2.4.0

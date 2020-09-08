@@ -522,6 +522,7 @@ def render(item, strip: bool = False):  # pylint:disable=R1260,too-many-branches
                         page.append(single)
             else:
                 page.append(rendered)
+        page = mylayout(page)
         return page
     if isinstance(item, pdfminer.layout.LTTextBox):
         textcontainers = render_textcontainer(item, strip=strip)
@@ -571,3 +572,29 @@ def ensure_bounding(textcontainer: iamraw.TextContainer):
         current.box = iamraw.common_box([item.box for item in collected])
         result.append(current)
     return result
+
+
+def mylayout(page: iamraw.Page) -> iamraw.Page:
+    children = page.children
+    if not children:
+        return page
+    result = [children[0]]
+    for item in children[1:]:
+        before = result[-1]
+        # TODO: MAKE THIS SIZE DEPENDENT
+        # TODO: HOLY VALUE
+        ynear = utila.near(item.box[3], before.box[3], diff=5.0)
+        xnear = utila.near(item.box[0], before.box[2], diff=10.0)
+        if ynear and xnear:
+            # merge before
+            # remove last char/newline
+            before.lines[-1].chars[-1].value = ' '
+            before.lines[-1].chars.extend(item.lines[0].chars)
+            if len(item.lines) >= 2:
+                before.lines.extend(item.lines[1:])
+            # adjust bounding
+            before.box[2] = item.box[2]
+        else:
+            result.append(item)
+    page.children = result
+    return page

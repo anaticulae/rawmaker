@@ -9,7 +9,6 @@
 
 import collections
 import concurrent
-import contextlib
 import itertools
 import math
 import os
@@ -69,18 +68,16 @@ def run_single(path: str, pages: tuple, config: dict):
     config = ' '.join([f'--{key}={value}' for key, value in config.items()])
     pages_raw = ','.join([str(item) for item in pages])
     pages_raw = f'--pages={pages_raw}' if pages is not None else ''
-    cmd = f'rawmaker -i {path}  {pages_raw} --text {config}'
-    # TODO: REPLACE AFTER UPGRADING UTILA
-    with make_tmpfolder(configo.tmp()) as cwd:
-        with utila.chdir(cwd):
-            config_outpath = os.path.join(cwd, 'layout.ini')
-            utila.file_create(config_outpath, config)
-            completed = utila.run(cmd, cwd=cwd)
-            if completed.returncode:
-                utila.error(f'could not run: {cmd}')
-                utila.error(completed.stdout)
-                utila.error(completed.stderr)
-                exit(utila.FAILURE)
+    with utila.make_tmpdir(root=configo.tmp()) as cwd:
+        cmd = f'rawmaker -i {path} -o {cwd} {pages_raw} --text {config}'
+        config_outpath = os.path.join(cwd, 'layout.ini')
+        utila.file_create(config_outpath, config)
+        completed = utila.run(cmd, cwd=cwd)
+        if completed.returncode:
+            utila.error(f'could not run: {cmd}')
+            utila.error(completed.stdout)
+            utila.error(completed.stderr)
+            exit(utila.FAILURE)
     quality = letty.quality.whitespace.determine(cwd, pages=pages)
     return OptimizerResult(quality, config)
 
@@ -137,10 +134,3 @@ def ranges(mini: float, maxi: float, steps: int = 15):
         value = utila.roundme(value, digits=5)  # pylint:disable=R0204
         result.append(value)
     return result
-
-
-@contextlib.contextmanager
-def make_tmpfolder(root: str = None, remove: bool = False):  # pylint:disable=W0613
-    path = utila.tmpfile(root)
-    os.makedirs(path)
-    yield path

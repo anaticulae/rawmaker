@@ -9,6 +9,7 @@
 
 # test data provider
 power==0.15.0
+hardcore==0.1.1
 
 jam==0.2.18
 

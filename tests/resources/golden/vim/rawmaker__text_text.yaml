@@ -12,15 +12,15 @@ pages:
           '
         - - 0 18 9.96 0.00
   - - TextContainer
+    - - - 'i
+
+          '
+        - - 0 2 9.96 0.00
+  - - TextContainer
     - - - '1 Vim Commands
 
           '
         - - 0 15 9.96 0.00
-  - - TextContainer
-    - - - 'Insert
-
-          '
-        - - 0 7 9.96 0.00
   - - TextContainer
     - - - '1.1 Starting Vim . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
@@ -36,10 +36,10 @@ pages:
           '
         - - 0 4 9.96 0.00
   - - TextContainer
-    - - - '. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+    - - - 'Insert . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
           '
-        - - 0 104 9.96 0.00
+        - - 0 111 9.96 0.00
   - - TextContainer
     - - - '1.4 Copy/Paste/Delete . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
@@ -158,66 +158,6 @@ pages:
 
           '
         - - 0 111 9.96 0.00
-  - - TextContainer
-    - - - '1.26 Block Visual Mode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-          '
-        - - 0 113 9.96 0.00
-      - - '1.27 Zoom Screen . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-          '
-        - - 0 113 9.96 0.00
-      - - '1.28 Save session . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-          '
-        - - 0 116 9.96 0.00
-      - - '1.29 Folding . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-          '
-        - - 0 115 9.96 0.00
-  - - TextContainer
-    - - - '1.30 Plugins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-          '
-        - - 0 115 9.96 0.00
-  - - TextContainer
-    - - - '1.30.1 NERDTree . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-          '
-        - - 0 106 9.96 0.00
-      - - '1.30.2 Surround . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-          '
-        - - 0 108 9.96 0.00
-  - - TextContainer
-    - - - '1.30.3 NerdCommenter . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-          '
-        - - 0 105 9.96 0.00
-  - - TextContainer
-    - - - '1.30.4 vim-table-mode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-          '
-        - - 0 108 9.96 0.00
-      - - '1.30.5 vim-extline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-          '
-        - - 0 109 9.96 0.00
-  - - TextContainer
-    - - - '1.30.6 ConqureShell . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-          '
-        - - 0 108 9.96 0.00
-  - - TextContainer
-    - - - '1.30.7 Airline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-          '
-        - - 0 111 9.96 0.00
-  - - TextContainer
-    - - - 'i
-
-          '
-        - - 0 2 9.96 0.00
   - - TextContainer
     - - - '1
 
@@ -348,6 +288,61 @@ pages:
           '
         - - 0 2 9.96 0.00
   - - TextContainer
+    - - - '1.26 Block Visual Mode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+          '
+        - - 0 113 9.96 0.00
+      - - '1.27 Zoom Screen . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+          '
+        - - 0 113 9.96 0.00
+      - - '1.28 Save session . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+          '
+        - - 0 116 9.96 0.00
+      - - '1.29 Folding . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+          '
+        - - 0 115 9.96 0.00
+  - - TextContainer
+    - - - '1.30 Plugins . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+          '
+        - - 0 115 9.96 0.00
+  - - TextContainer
+    - - - '1.30.1 NERDTree . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+          '
+        - - 0 106 9.96 0.00
+      - - '1.30.2 Surround . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+          '
+        - - 0 108 9.96 0.00
+  - - TextContainer
+    - - - '1.30.3 NerdCommenter . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+          '
+        - - 0 105 9.96 0.00
+  - - TextContainer
+    - - - '1.30.4 vim-table-mode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+          '
+        - - 0 108 9.96 0.00
+      - - '1.30.5 vim-extline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+          '
+        - - 0 109 9.96 0.00
+  - - TextContainer
+    - - - '1.30.6 ConqureShell . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+          '
+        - - 0 108 9.96 0.00
+  - - TextContainer
+    - - - '1.30.7 Airline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+          '
+        - - 0 111 9.96 0.00
+  - - TextContainer
     - - - '10
 
           '
@@ -468,32 +463,72 @@ pages:
           '
         - - 0 9 9.96 0.00
   - - TextContainer
+    - - - 'Descriptions
+
+          '
+        - - 0 13 9.96 0.00
+  - - TextContainer
     - - - ':w
 
           '
         - - 0 3 9.96 0.00
+  - - TextContainer
+    - - - 'save file
+
+          '
+        - - 0 10 9.96 0.00
   - - TextContainer
     - - - ':w <filename>
 
           '
         - - 0 14 9.96 0.00
   - - TextContainer
+    - - - 'save file as <filename> and keep the current file open
+
+          '
+        - - 0 55 9.96 0.00
+  - - TextContainer
     - - - ':sav <filename>
 
           '
         - - 0 16 9.96 0.00
+  - - TextContainer
+    - - - 'save file as <filename> and open <filename>
+
+          '
+        - - 0 44 9.96 0.00
   - - TextContainer
     - - - ':q
 
           '
         - - 0 3 9.96 0.00
   - - TextContainer
+    - - - 'quit (if already saved)
+
+          '
+        - - 0 24 9.96 0.00
+  - - TextContainer
     - - - ':q!
 
           '
         - - 0 4 9.96 0.00
   - - TextContainer
+    - - - 'quit without saving
+
+          '
+        - - 0 20 9.96 0.00
+  - - TextContainer
     - - - ':e <filename>
+
+          '
+        - - 0 14 9.96 0.00
+  - - TextContainer
+    - - - 'open new/existing <filename> in new buffer
+
+          '
+        - - 0 43 9.96 0.00
+  - - TextContainer
+    - - - 'save and quit
 
           '
         - - 0 14 9.96 0.00
@@ -507,143 +542,103 @@ pages:
           '
         - - 0 4 9.96 0.00
   - - TextContainer
-    - - - ':b <filename>
-
-          '
-        - - 0 14 9.96 0.00
-  - - TextContainer
-    - - - ':bd
-
-          '
-        - - 0 4 9.96 0.00
-  - - TextContainer
-    - - - ':bd!
-
-          '
-        - - 0 5 9.96 0.00
-  - - TextContainer
-    - - - ':vim *
-
-          '
-        - - 0 7 9.96 0.00
-  - - TextContainer
-    - - - ':vim file1 file2 file3
-
-          '
-        - - 0 23 9.96 0.00
-  - - TextContainer
-    - - - ':n
-
-          '
-        - - 0 3 9.96 0.00
-  - - TextContainer
-    - - - ':n <filename>
-
-          '
-        - - 0 14 9.96 0.00
-  - - TextContainer
-    - - - ':prev
-
-          '
-        - - 0 6 9.96 0.00
-  - - TextContainer
-    - - - 'ctrl-Z
-
-          '
-        - - 0 7 9.96 0.00
-  - - TextContainer
-    - - - 'fg
-
-          '
-        - - 0 3 9.96 0.00
-  - - TextContainer
-    - - - 'Descriptions
-
-          '
-        - - 0 13 9.96 0.00
-  - - TextContainer
-    - - - 'save file
-
-          '
-        - - 0 10 9.96 0.00
-  - - TextContainer
-    - - - 'save file as <filename> and keep the current file open
-
-          '
-        - - 0 55 9.96 0.00
-  - - TextContainer
-    - - - 'save file as <filename> and open <filename>
-
-          '
-        - - 0 44 9.96 0.00
-  - - TextContainer
-    - - - 'quit (if already saved)
-
-          '
-        - - 0 24 9.96 0.00
-  - - TextContainer
-    - - - 'quit without saving
-
-          '
-        - - 0 20 9.96 0.00
-  - - TextContainer
-    - - - 'open new/existing <filename> in new buffer
-
-          '
-        - - 0 43 9.96 0.00
-  - - TextContainer
-    - - - 'save and quit
-
-          '
-        - - 0 14 9.96 0.00
-  - - TextContainer
     - - - 'go to next buffer i.e. file
 
           '
         - - 0 28 9.96 0.00
+  - - TextContainer
+    - - - ':b <filename>
+
+          '
+        - - 0 14 9.96 0.00
   - - TextContainer
     - - - 'go to buffer with <filename>
 
           '
         - - 0 29 9.96 0.00
   - - TextContainer
+    - - - ':bd
+
+          '
+        - - 0 4 9.96 0.00
+  - - TextContainer
     - - - 'close current file without exiting vim
 
           '
         - - 0 39 9.96 0.00
   - - TextContainer
+    - - - ':bd!
+
+          '
+        - - 0 5 9.96 0.00
+  - - TextContainer
     - - - "close current file without exiting vim and \u2018no modification\u2019\n"
         - - 0 61 9.96 0.00
+  - - TextContainer
+    - - - ':vim *
+
+          '
+        - - 0 7 9.96 0.00
   - - TextContainer
     - - - 'open all files in the directory (all in same buffer)
 
           '
         - - 0 53 9.96 0.00
   - - TextContainer
+    - - - ':vim file1 file2 file3
+
+          '
+        - - 0 23 9.96 0.00
+  - - TextContainer
     - - - 'open file1, file2 and file3 in vim
 
           '
         - - 0 35 9.96 0.00
+  - - TextContainer
+    - - - ':n
+
+          '
+        - - 0 3 9.96 0.00
   - - TextContainer
     - - - 'go to next file
 
           '
         - - 0 16 9.96 0.00
   - - TextContainer
+    - - - ':n <filename>
+
+          '
+        - - 0 14 9.96 0.00
+  - - TextContainer
     - - - 'go to file name
 
           '
         - - 0 16 9.96 0.00
+  - - TextContainer
+    - - - ':prev
+
+          '
+        - - 0 6 9.96 0.00
   - - TextContainer
     - - - 'go to previous file
 
           '
         - - 0 20 9.96 0.00
   - - TextContainer
+    - - - 'ctrl-Z
+
+          '
+        - - 0 7 9.96 0.00
+  - - TextContainer
     - - - 'suspend vim
 
           '
         - - 0 12 9.96 0.00
+  - - TextContainer
+    - - - 'fg
+
+          '
+        - - 0 3 9.96 0.00
   - - TextContainer
     - - - 'bring forground vim
 
@@ -667,11 +662,6 @@ pages:
           '
         - - 0 14 14.35 0.00
   - - TextContainer
-    - - - '1.3 Insert
-
-          '
-        - - 0 11 14.35 0.00
-  - - TextContainer
     - - - 'Commands Descriptions
 
           '
@@ -682,25 +672,40 @@ pages:
           '
         - - 0 2 9.96 0.00
   - - TextContainer
-    - - - 'crtl-r
-
-          '
-        - - 0 7 9.96 0.00
-  - - TextContainer
     - - - 'undo
 
           '
         - - 0 5 9.96 0.00
+  - - TextContainer
+    - - - 'crtl-r
+
+          '
+        - - 0 7 9.96 0.00
   - - TextContainer
     - - - 'redo
 
           '
         - - 0 5 9.96 0.00
   - - TextContainer
+    - - - '1.3 Insert
+
+          '
+        - - 0 11 14.35 0.00
+  - - TextContainer
     - - - 'Commands Descriptions
 
           '
         - - 0 22 9.96 0.00
+  - - TextContainer
+    - - - 'insert mode at cursor
+
+          '
+        - - 0 22 9.96 0.00
+  - - TextContainer
+    - - - 'insert mode at beginning of the line (i.e. first character of line)
+
+          '
+        - - 0 68 9.96 0.00
   - - TextContainer
     - - - 'i
 
@@ -714,52 +719,6 @@ pages:
 
           '
         - - 0 2 9.96 0.00
-  - - TextContainer
-    - - - 'S
-
-          '
-        - - 0 2 9.96 0.00
-      - - 'a
-
-          '
-        - - 0 2 9.96 0.00
-      - - 'A
-
-          '
-        - - 0 2 9.96 0.00
-      - - 'o
-
-          '
-        - - 0 2 9.96 0.00
-  - - TextContainer
-    - - - 'O
-
-          '
-        - - 0 2 9.96 0.00
-      - - 'C
-
-          '
-        - - 0 2 9.96 0.00
-  - - TextContainer
-    - - - 'r
-
-          '
-        - - 0 2 9.96 0.00
-  - - TextContainer
-    - - - 'R
-
-          '
-        - - 0 2 9.96 0.00
-  - - TextContainer
-    - - - 'insert mode at cursor
-
-          '
-        - - 0 22 9.96 0.00
-  - - TextContainer
-    - - - 'insert mode at beginning of the line (i.e. first character of line)
-
-          '
-        - - 0 68 9.96 0.00
   - - TextContainer
     - - - 'delete character under the cursor and enter into insert mode
 
@@ -781,6 +740,23 @@ pages:
           '
         - - 0 31 9.96 0.00
   - - TextContainer
+    - - - 'S
+
+          '
+        - - 0 2 9.96 0.00
+      - - 'a
+
+          '
+        - - 0 2 9.96 0.00
+      - - 'A
+
+          '
+        - - 0 2 9.96 0.00
+      - - 'o
+
+          '
+        - - 0 2 9.96 0.00
+  - - TextContainer
     - - - 'insert mode on below line
 
           '
@@ -791,15 +767,34 @@ pages:
           '
         - - 0 27 9.96 0.00
   - - TextContainer
+    - - - 'O
+
+          '
+        - - 0 2 9.96 0.00
+      - - 'C
+
+          '
+        - - 0 2 9.96 0.00
+  - - TextContainer
     - - - 'delete from cursor to end of line and go to insert mode
 
           '
         - - 0 56 9.96 0.00
   - - TextContainer
+    - - - 'r
+
+          '
+        - - 0 2 9.96 0.00
+  - - TextContainer
     - - - 'replace current character
 
           '
         - - 0 26 9.96 0.00
+  - - TextContainer
+    - - - 'R
+
+          '
+        - - 0 2 9.96 0.00
   - - TextContainer
     - - - 'replace characters until Esc is pressed (i.e. same as insert button in keyboard)
 
@@ -811,6 +806,16 @@ pages:
           '
         - - 0 22 14.35 0.00
   - - TextContainer
+    - - - 'Commands
+
+          '
+        - - 0 9 9.96 0.00
+  - - TextContainer
+    - - - 'y
+
+          '
+        - - 0 2 9.96 0.00
+  - - TextContainer
     - - - 'Descriptions
 
           '
@@ -820,25 +825,48 @@ pages:
           '
         - - 0 12 9.96 0.00
   - - TextContainer
+    - - - 'yiw
+
+          '
+        - - 0 4 9.96 0.00
+  - - TextContainer
     - - - 'copy the word
 
           '
         - - 0 14 9.96 0.00
+  - - TextContainer
+    - - - 'yw
+
+          '
+        - - 0 3 9.96 0.00
   - - TextContainer
     - - - 'copy the word after the cursor
 
           '
         - - 0 31 9.96 0.00
   - - TextContainer
+    - - - 'yy or Y
+
+          '
+        - - 0 8 9.96 0.00
+  - - TextContainer
     - - - 'copy the line
 
           '
         - - 0 14 9.96 0.00
   - - TextContainer
+    - - - 'y$
+
+          '
+        - - 0 3 9.96 0.00
+  - - TextContainer
     - - - 'copy till end of the line from current location of cursor
 
           '
         - - 0 58 9.96 0.00
+  - - TextContainer
+    - - - "\u201C+y\n"
+        - - 0 4 9.96 0.00
   - - TextContainer
     - - - "copy to clipboard e.g. \u201C+yiw will copy the word in clipboard\n"
         - - 0 61 9.96 0.00
@@ -848,10 +876,24 @@ pages:
           '
         - - 0 59 9.96 0.00
   - - TextContainer
+    - - - '<F3>y
+
+          '
+        - - 0 6 9.96 0.00
+      - - '<F3>p
+
+          '
+        - - 0 6 9.96 0.00
+  - - TextContainer
     - - - 'paste from clipboard (see above line as well)
 
           '
         - - 0 46 9.96 0.00
+  - - TextContainer
+    - - - 'p
+
+          '
+        - - 0 2 9.96 0.00
   - - TextContainer
     - - - 'paste after cursor (remapped as ]p in .vimrc )
 
@@ -863,67 +905,6 @@ pages:
           '
         - - 0 23 9.96 0.00
   - - TextContainer
-    - - - 'paste before cursor
-
-          '
-        - - 0 20 9.96 0.00
-  - - TextContainer
-    - - - 'paste from clipboard (remapped in .vimrc)
-
-          '
-        - - 0 42 9.96 0.00
-      - - 'paste from clipboard (remapped in .vimrc)
-
-          '
-        - - 0 42 9.96 0.00
-  - - TextContainer
-    - - - 'Commands
-
-          '
-        - - 0 9 9.96 0.00
-  - - TextContainer
-    - - - 'y
-
-          '
-        - - 0 2 9.96 0.00
-  - - TextContainer
-    - - - 'yiw
-
-          '
-        - - 0 4 9.96 0.00
-  - - TextContainer
-    - - - 'yw
-
-          '
-        - - 0 3 9.96 0.00
-  - - TextContainer
-    - - - 'yy or Y
-
-          '
-        - - 0 8 9.96 0.00
-  - - TextContainer
-    - - - 'y$
-
-          '
-        - - 0 3 9.96 0.00
-  - - TextContainer
-    - - - "\u201C+y\n"
-        - - 0 4 9.96 0.00
-  - - TextContainer
-    - - - '<F3>y
-
-          '
-        - - 0 6 9.96 0.00
-      - - '<F3>p
-
-          '
-        - - 0 6 9.96 0.00
-  - - TextContainer
-    - - - 'p
-
-          '
-        - - 0 2 9.96 0.00
-  - - TextContainer
     - - - ']p
 
           '
@@ -932,6 +913,11 @@ pages:
 
           '
         - - 0 2 9.96 0.00
+  - - TextContainer
+    - - - 'paste before cursor
+
+          '
+        - - 0 20 9.96 0.00
   - - TextContainer
     - - - 'ctrl-P
 
@@ -943,10 +929,24 @@ pages:
           '
         - - 0 13 9.96 0.00
   - - TextContainer
+    - - - 'paste from clipboard (remapped in .vimrc)
+
+          '
+        - - 0 42 9.96 0.00
+      - - 'paste from clipboard (remapped in .vimrc)
+
+          '
+        - - 0 42 9.96 0.00
+  - - TextContainer
     - - - 'd<command> delete<command>
 
           '
         - - 0 27 9.96 0.00
+  - - TextContainer
+    - - - 'delete word (and stay at normal mode)
+
+          '
+        - - 0 38 9.96 0.00
   - - TextContainer
     - - - 'diw
 
@@ -957,70 +957,65 @@ pages:
           '
         - - 0 4 9.96 0.00
   - - TextContainer
-    - - - 'dw or cw
-
-          '
-        - - 0 9 9.96 0.00
-  - - TextContainer
-    - - - 'dd or cc
-
-          '
-        - - 0 9 9.96 0.00
-  - - TextContainer
-    - - - 'D or C
-
-          '
-        - - 0 7 9.96 0.00
-  - - TextContainer
-    - - - 'x
-
-          '
-        - - 0 2 9.96 0.00
-  - - TextContainer
-    - - - 'X
-
-          '
-        - - 0 2 9.96 0.00
-  - - TextContainer
-    - - - '.
-
-          '
-        - - 0 2 9.96 0.00
-  - - TextContainer
-    - - - 'delete word (and stay at normal mode)
-
-          '
-        - - 0 38 9.96 0.00
-  - - TextContainer
     - - - 'delete word (and go to insert mode)
 
           '
         - - 0 36 9.96 0.00
+  - - TextContainer
+    - - - 'dw or cw
+
+          '
+        - - 0 9 9.96 0.00
   - - TextContainer
     - - - 'delete word after the cursor
 
           '
         - - 0 29 9.96 0.00
   - - TextContainer
+    - - - 'dd or cc
+
+          '
+        - - 0 9 9.96 0.00
+  - - TextContainer
     - - - 'delete line
 
           '
         - - 0 12 9.96 0.00
+  - - TextContainer
+    - - - 'D or C
+
+          '
+        - - 0 7 9.96 0.00
   - - TextContainer
     - - - 'delete till end of line
 
           '
         - - 0 24 9.96 0.00
   - - TextContainer
+    - - - 'x
+
+          '
+        - - 0 2 9.96 0.00
+  - - TextContainer
     - - - 'delete character (delete)
 
           '
         - - 0 26 9.96 0.00
   - - TextContainer
+    - - - 'X
+
+          '
+        - - 0 2 9.96 0.00
+  - - TextContainer
     - - - 'delete character (backspace)
 
           '
         - - 0 29 9.96 0.00
+  - - TextContainer
+    - - - '.
+
+          '
+        - - 0 2 9.96 0.00
   - - TextContainer
     - - - 'repeat previous operation
 

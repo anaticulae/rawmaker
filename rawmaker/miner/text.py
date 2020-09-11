@@ -578,6 +578,12 @@ def mylayout(page: iamraw.Page) -> iamraw.Page:
     children = page.children
     if not children:
         return page
+    # ensure to sort items top to bottom and left to right. It is
+    # important to connect only neighbored items to avoid conflicts in
+    # bounding computation. See: test_mylayout_bounding_extraction_bug
+    # Use y1 as lower text line.
+    children = sorted(children, key=lambda x: x.box.x0)  # leftright
+    children = sorted(children, key=lambda x: x.box.y1)  # topdown
     result = [children[0]]
     for item in children[1:]:
         before = result[-1]

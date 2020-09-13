@@ -21,7 +21,6 @@ PACKAGE = rawmaker.PROCESS_NAME
 power.setup(rawmaker.ROOT)
 
 RESOURCES = [
-    (power.MASTER072_PDF, None),
     (power.BACHELOR056_PDF, '14:34'),
     (power.BOOK007_PDF, None),
     (power.DOCU13_PDF, None),

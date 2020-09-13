@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.5.1
+
+### Fix
+
+* skip white spaces only object in border detection (8575f214be92)
+* sort boundings before merging them (12435970fe32)
+
 ## v2.5.0
 
 ### Feature

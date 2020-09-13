@@ -83,3 +83,16 @@ def test_border_bounding_boxes():
     boundings = boxes[0].boundings
     ymax = max([item[1][2] for item in boundings])
     assert ymax < 450.0, f'{ymax} was not flipped'
+
+
+def test_border_pagesize_bachelor76_top_regression():
+    """The pdf printer produces a white space in every header. Therefore
+    the border is to near to the top. This test ensures, that
+    whitespaces are not part of bounding detecting."""
+    with rawmaker.reader.read(power.BACHELOR076_PDF) as pdf:
+        sizeandborders, _ = rawmaker.features.border.determine_boundingboxes(
+            pdf,
+            pages=(1,),
+        )
+    first = sizeandborders[0].border
+    assert first.top > 70.0

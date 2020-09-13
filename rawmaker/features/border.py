@@ -14,7 +14,9 @@ Features:
  * content size
 
 """
+
 import collections
+import contextlib
 import typing
 
 import iamraw
@@ -135,8 +137,23 @@ def pagesize_from_page(page: pdfminer.pdfdocument.PDFDocument,
 
 
 def cropborder_from_page(content) -> iamraw.Border:
+    """Determine bounding box which includes all page items except of
+    white space only text."""
+
+    def no_whitespace(items):
+        result = []
+        for item in items:
+            with contextlib.suppress(AttributeError):
+                if not item.get_text().strip():
+                    # skip white spaces
+                    continue
+            result.append(item)
+        return result
+
+    content = no_whitespace(content)
     if not content:
         return iamraw.Border(None, None, None, None)
+
     # left, top, right, bottom
     x0 = min([item.bbox[0] for item in content])
     y0 = min([item.bbox[1] for item in content])

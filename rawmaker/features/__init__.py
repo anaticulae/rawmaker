@@ -103,6 +103,7 @@ def page_selection(document: iamraw.Document, pages: tuple):
 def extract_content(
         document: pdfminer.pdfdocument.PDFDocument,
         config: rawmaker.parameter.ParsingConfiguration = None,
+        converter=rawmaker.miner.text.PrecisePDFConverter,
         strip: bool = False,
         pages: tuple = None,
 ) -> iamraw.Document:
@@ -114,6 +115,8 @@ def extract_content(
                                       parameter defines how chars are
                                       matched together in words and sentences.
                                       See pdf reference documentation.
+        converter(pdfminer.converter.PDFLayoutAnalyzer): how to handle
+                                                         the layout extraction
         strip: removes white spaces at beginning and ending of text line
         pages: tuple of selected pages
     Returns:
@@ -124,7 +127,7 @@ def extract_content(
     assert isinstance(config, rawmaker.parameter.ParsingConfiguration), type(config) # yapf:disable
 
     # prepare parser
-    device = rawmaker.miner.text.PrecisePDFConverter(
+    device = converter(
         config=config,
         strip=strip,
     )

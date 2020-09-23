@@ -19,18 +19,12 @@ backlog
 
 * Imagero (planned)
 
-* support rotated pages, see master116
-
 * add black and white analysis, move to image analysis package? Make this
   optional in GUI to let the user check if paper is black and white
   printable.
 
 Math detector
 -------------
-
-* detect areas of math formulars
-
-* run char-based analysis on math area
 
 * add feature to merge different layout analysis: normal and char based
   for example
@@ -62,5 +56,5 @@ pdfinfo
 linero
 ------
 
-* box matching is very slow, split into multiple corese? Replace with
+* box matching is very slow, split into multiple core? Replace with
   better algo approach.

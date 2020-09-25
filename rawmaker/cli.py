@@ -27,7 +27,6 @@ import utila.feature
 import rawmaker
 import rawmaker.error
 import rawmaker.features
-import rawmaker.utils
 
 PDF = utila.Pattern('*', 'pdf')
 

@@ -12,7 +12,6 @@ import pytest
 import utila
 
 import rawmaker.features.border
-import rawmaker.utils
 import tests.resources
 
 

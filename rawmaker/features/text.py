@@ -21,7 +21,6 @@ import rawmaker.features
 import rawmaker.miner.position
 import rawmaker.parameter
 import rawmaker.reader
-import rawmaker.utils
 
 
 def work(  # pylint:disable=W9015
@@ -78,7 +77,7 @@ def superfast(
     pagecount = pdfinfo.pages.determine(document)
     if pages is None:
         pages = tuple(range(pagecount))
-    chunks = rawmaker.utils.chunks(pages, chunk_size=10)
+    chunks = utila.chunks(pages, size=10)
 
     parameter = config.cmdline()
     todo = []

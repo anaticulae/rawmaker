@@ -7,10 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import math
 import operator
-
-import utila
 
 
 def sort_leftright_topdown(items):

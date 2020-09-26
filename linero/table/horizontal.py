@@ -120,6 +120,6 @@ def extract_potential_table(boundings, horizontals, min_elements=2):
         topline = horizontals[group[0] - 1]
         # double content below table?
         bottomline = horizontals[min((group[-1], len(horizontals) - 1))]
-        table = linero.table.utils.table_bounding((topline, bottomline))
+        table = utila.rectangle_max((topline, bottomline))
         tables.append(table)
     return tables

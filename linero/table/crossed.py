@@ -90,7 +90,7 @@ def extract_potential_table(verticals, horizontals):
         # double content below table?
         bottomline = horizontals[min((group[-1], len(horizontals) - 1))]
 
-        table = linero.table.utils.table_bounding((topline, bottomline))
+        table = utila.rectangle_max((topline, bottomline))
         tables.append(table)
     tables = linero.table.utils.merge_tables(tables)
     return tables

@@ -65,21 +65,10 @@ def merge_tables(boundings):
         tabledistance = utila.roundme(math.fabs(result[-1][3] - bounding[1]))
         utila.debug(tabledistance)
         if tabledistance < TABLE_MERGE_DISTANCE:
-            result[-1] = table_bounding((result[-1], bounding))
+            result[-1] = utila.rectangle_max((result[-1], bounding))
         else:
             result.append(bounding)
     return result
-
-
-def table_bounding(items):
-    """Maxmize bounding"""
-    x0, y0, x1, y1 = utila.INF, utila.INF, -utila.INF, -utila.INF
-    for xx0, yy0, xx1, yy1 in items:
-        x0 = min((x0, xx0))
-        y0 = min((y0, yy0))
-        x1 = max((x1, xx1))
-        y1 = max((y1, yy1))
-    return x0, y0, x1, y1
 
 
 def group_horizontals(items, xdiff: float = 30.0):  # TODO: HOLY VALUE

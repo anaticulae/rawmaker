@@ -11,10 +11,10 @@ import math
 
 import configo
 import iamraw
+import utila
 
 import linero.cluster
 import linero.table
-import linero.table.utils
 
 # a table must have at least this amout of lines
 TABLE_MIN_LINE_COUNT = configo.HV_INT_PLUS(10)
@@ -58,7 +58,7 @@ def judge_tables(grouped):
             avg = linero.lines.length_avg(item)
             if avg < linero.table.TABLE_MIN_AVG_LINE_LENGTH:
                 continue
-            bounding = linero.table.utils.table_bounding(item)
+            bounding = utila.rectangle_max(item)
             pageresult.append(
                 iamraw.TableBounding(
                     bounding=bounding,

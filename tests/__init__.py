@@ -13,7 +13,7 @@ import pytest
 import utilatest
 
 import tests.resources
-from rawmaker import PROCESS_NAME
+from rawmaker import PROCESS
 from rawmaker import ROOT
 from rawmaker.cli import main
 
@@ -21,14 +21,14 @@ from rawmaker.cli import main
 run = functools.partial(
     utilatest.run_command,
     main=main,
-    process=PROCESS_NAME,
+    process=PROCESS,
     success=True,
 )
 
 failure = functools.partial(
     utilatest.run_command,
     main=main,
-    process=PROCESS_NAME,
+    process=PROCESS,
     success=False,
 )
 

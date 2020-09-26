@@ -16,7 +16,7 @@ import tests.resources
 
 pytest_plugins = ['pytester', 'xdist']  # pylint: disable=invalid-name
 
-PACKAGE = rawmaker.PROCESS_NAME
+PACKAGE = rawmaker.PROCESS
 
 power.setup(rawmaker.ROOT)
 

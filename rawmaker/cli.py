@@ -144,7 +144,7 @@ def main():
         errorhook=errorhook,
         flags=flags,
         multiprocessed=True,
-        name=rawmaker.PROCESS_NAME,
+        name=rawmaker.PROCESS,
         pages=True,
         profileflag=True,
         singleinput=True,

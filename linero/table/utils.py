@@ -103,15 +103,6 @@ def group_horizontals(items, xdiff: float = 30.0):  # TODO: HOLY VALUE
     return result
 
 
-def ranges(start, stop, step):
-    assert start <= stop
-    assert step > 0
-
-    while start < stop:
-        yield start
-        start += step
-
-
 def between(lines, bounding):
     result = [
         item for item in lines

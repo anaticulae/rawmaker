@@ -78,7 +78,7 @@ def extract_potential_table(verticals, horizontals):
     )
     for vertical in verticals:
         x0, top, x1, bottom = vertical
-        for item in linero.table.utils.ranges(top, bottom, 10):
+        for item in utila.ranges(top, bottom, 10):
             buckets.add((x0, item, x1, item))
 
     merged = [index if item else None for index, item in enumerate(buckets)]

@@ -38,6 +38,10 @@ class PatchedLTChar(pdfminer.layout.LTChar):
         """Access bounding component."""
         return self.bbox[index]
 
+    @property
+    def text(self):
+        return self.get_text()
+
 
 def vertical(item: pdfminer.layout.LTChar) -> bool:
     """Check LTChar.upright flag."""

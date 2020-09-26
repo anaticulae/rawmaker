@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import power
+
 import rawmaker.text.chars
 import rawmaker.text.wordbox
 import tests.resources
@@ -29,3 +31,12 @@ def test_wordbox_extract_pagelines_helloworld():
     assert len(pagelines) == 4
     assert len(pagelines[0]) == 2
     assert len(pagelines[1]) == 2
+
+
+def test_wordbox_bachelor90_page12():
+    page = rawmaker.text.chars.extract_chars(
+        power.BACHELOR090_PDF,
+        pages=(12,),
+    )
+    pagelines = rawmaker.text.wordbox.extract_page(page[0])
+    assert len(pagelines) == 27

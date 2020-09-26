@@ -569,7 +569,7 @@ def ensure_bounding(textcontainer: iamraw.TextContainer):
         current = iamraw.TextContainer()
         for item in collected:
             current.append(item)
-        current.box = iamraw.common_box([item.box for item in collected])
+        current.box = utila.rectangle_max([item.box for item in collected])
         result.append(current)
     return result
 
@@ -582,8 +582,8 @@ def mylayout(page: iamraw.Page) -> iamraw.Page:
     # important to connect only neighbored items to avoid conflicts in
     # bounding computation. See: test_mylayout_bounding_extraction_bug
     # Use y1 as lower text line.
-    children = sorted(children, key=lambda x: x.box.x0)  # leftright
-    children = sorted(children, key=lambda x: x.box.y1)  # topdown
+    children = sorted(children, key=lambda x: x.box[0])  # leftright
+    children = sorted(children, key=lambda x: x.box[3])  # topdown
     result = [children[0]]
     for item in children[1:]:
         before = result[-1]
@@ -599,8 +599,16 @@ def mylayout(page: iamraw.Page) -> iamraw.Page:
             if len(item.lines) >= 2:
                 before.lines.extend(item.lines[1:])
             # adjust bounding
-            before.box[2] = item.box[2]
+            before.box = update_tuple(
+                before.box, index=2, value=item.box[2])  # TODO: UGLY
         else:
             result.append(item)
     page.children = result
     return page
+
+
+def update_tuple(data, index, value) -> tuple:
+    # TODO: REPLACE WITH UTILA CODE
+    data = list(data)
+    data[index] = value
+    return tuple(data)

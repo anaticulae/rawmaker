@@ -14,6 +14,8 @@ Hint: Pay attention to the public API on this file!
 
 import os
 
+import rawmaker.__patch__
+
 __version__ = '2.5.1'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))

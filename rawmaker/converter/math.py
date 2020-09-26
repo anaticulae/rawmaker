@@ -7,7 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import math
 import re
 
 import iamraw
@@ -59,9 +58,11 @@ LAYOUT = pdfminer.layout.LAParams(
 
 
 def select_formulas(items):
-    clustered = same_line_cluster(
+    clustered = utila.same_line_cluster(  # pylint:disable=unexpected-keyword-arg
         items,
-        max_difference=10,  # TODO: HOLY VALUE
+        max_diff=10,  # TODO: HOLY VALUE
+        min_elements=4,
+        matcher=lambda x: x[0][3],
     )
     result = []
     for cluster in clustered:
@@ -107,23 +108,6 @@ def render_pagecontent(item):
         size = utila.roundme(char.size)
         result.append((location, size, text))
     return result
-
-
-def same_line_cluster(
-        todo,
-        max_difference: float = 45.0,
-        min_elements: int = 4,
-):
-
-    def classifier(candidat, clusteritem, max_difference=max_difference):
-
-        def matcher(candidat, clusteritem):
-            diff = math.fabs(candidat[0][3] - clusteritem[0][3])
-            return diff <= max_difference
-
-        return matcher(candidat, clusteritem)
-
-    return utila.determine_cluster(todo, classifier, min_elements=min_elements)
 
 
 NO_FORMULA = r'\([ ]{0,2}\d{1,2}[ ]{0,2}\.[ ]{0,2}\d{1,2}[ ]{0,2}\)'

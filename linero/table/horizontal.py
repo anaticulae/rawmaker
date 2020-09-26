@@ -87,7 +87,7 @@ def cluster_page(navigator, lines) -> iamraw.TableBoundings:
 
 
 def extract_potential_table(boundings, horizontals, min_elements=2):
-    clustered = linero.utils.same_line_cluster(
+    clustered = utila.same_line_cluster(
         boundings,
         min_elements=min_elements,
     )

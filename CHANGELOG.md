@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v2.6.0
+
+### Feature
+
+* add wordbox parser (580309f26585)
+* ease accessing text data (71f9b7ab24f9)
+* add field access to bounding information (1794d65c8a25)
+* add miner to parse single char layout (eafa2897f64b)
+
 ## v2.5.1
 
 ### Fix

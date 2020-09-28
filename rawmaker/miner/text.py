@@ -65,11 +65,12 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
 
         # TODO: Remove after upgrading pdfminer
         PrecisePDFConverter.render_char = rawmaker.patch.ltchar.render_char
-        self.done = set()
+        self.done = utila.Single()
 
     def new_document(self):
         """Clear the current `Document` and initialze a new one"""
         self.document = iamraw.Document()
+        self.done = utila.Single()
 
     def finish_document(self) -> iamraw.Document:
         """Return the current `Document` and clear the current one"""
@@ -87,12 +88,9 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         # HACK: PDFMINER READS SOME PDF WITH IMAGES ON PAGE WRONG
         # THE BUG PRODUCES DUPLICATED OR TRIPPLED STRINGS. THE EXTRACTION
         # DOES NOT FAIL BUT THE RESULT IS USELESS.
-        hashed = hash(
-            str(self.pageno) + str(textstate) + str(seq) + str(ncs) +
-            str(graphicstate))
-        if hashed in self.done:
+        hashed = hash(f'{self.pageno}{textstate}{seq}{ncs}{graphicstate}')
+        if self.done.contains(hashed):
             return
-        self.done.add(hashed)
         super().render_string(textstate, seq, ncs, graphicstate)
 
 

@@ -183,3 +183,15 @@ def test_text_mining_convert_special_whitespace_between_special():
     assert expected in text
     expected = 'Automatisierung, manuelle Verknüpfung . . . .'
     assert expected in text
+
+
+def test_text_no_char_horizontals_in_text():
+    """Ensure that horizontals which are build out of '-' are not parsed
+    as text, cause this will complicate further text processing."""
+    parsed = rawmaker.features.text.work(
+        power.BACHELOR128_PDF,
+        pages=(7,),
+    )
+    document = serializeraw.load_document(parsed[0])
+    counted = document.text.count('_')
+    assert not counted

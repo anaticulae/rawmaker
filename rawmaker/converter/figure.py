@@ -49,7 +49,7 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         self.nonfigure[pageid].append(item)
 
     def render_figure(self, item: pdfminer.layout.LTFigure, pageid: int):
-        rendered = extract_figure(item)
+        rendered = extract_figure(item, pageid)
         if rendered is None:
             return
         rendered.page = pageid
@@ -99,7 +99,7 @@ def extract_figures(
     return figures
 
 
-def extract_figure(figure) -> iamraw.Figure:
+def extract_figure(figure, pageid: int = None) -> iamraw.Figure:
     content = figure._objs  #  pylint:disable=W0212
     if len(content) == 1 and isinstance(content[0], pdfminer.layout.LTImage):
         # TODO: CHECK THIS
@@ -122,7 +122,11 @@ def extract_figure(figure) -> iamraw.Figure:
     offset = bounding[0], bounding[1]
     scale = scalex, scaley
 
-    raw = rawmaker.figure.utils.rawfigure_frombounding(bounding)
+    try:
+        raw = rawmaker.figure.utils.rawfigure_frombounding(bounding)
+    except MemoryError:
+        utila.error(f'could not render figure on page {pageid}: {bounding}')
+        return None
     renderer = PIL.ImageDraw.Draw(raw, mode='RGBA')
 
     for item in figure:

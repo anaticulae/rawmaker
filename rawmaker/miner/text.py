@@ -15,6 +15,7 @@ Parses pdf document and extracts layouted text components.
 import contextlib
 import copy
 import math
+import re
 
 import configo
 import iamraw
@@ -188,6 +189,7 @@ def render_char(
 def render_textline(
         item: pdfminer.layout.LTTextBox,
         strip: bool = False,
+        remove_horizontals: bool = True,
 ) -> iamraw.Line:
     """Determine character Bounding and split character if required
     cause layout parser puts two character together.
@@ -195,6 +197,8 @@ def render_textline(
     Args:
         item: LTTextBox with list of containg LTChar's
         strip: remove white spaces at begin and end of text line
+        remove_horizontals: if True remove horizontal lines build out of
+                            characters
     Returns:
         iamraw.Line with converted iamraw.Character
     """
@@ -218,6 +222,9 @@ def render_textline(
     result.chars = merge_small_whitespaces(result.chars)
     result.chars = merge_special_char(result.chars)
     result.chars = fix_fontrise(result.chars)
+
+    if remove_horizontals and ishorizontal(result.text):
+        return None
 
     if not strip:
         return result
@@ -244,6 +251,25 @@ def render_textline(
         result.box.x1 = x1
         assert result.box.x0 < result.box.x1, str(result.box)
     return result
+
+
+def ishorizontal(text: str, mincount=10) -> bool:
+    """Check if text line is a char based horizontal line.
+
+    >>> ishorizontal('--------------')
+    True
+    >>> ishorizontal('_______________________')
+    True
+    >>> ishorizontal('this is a text')
+    False
+    """
+    shorten = text.replace('_', '').replace('-', '').replace('=', '').strip()
+    if shorten:
+        return False
+    counted = text.count('_') + text.count('-') + text.count('=')
+    if counted < mincount:
+        return False
+    return True
 
 
 def fix_fontrise(items):

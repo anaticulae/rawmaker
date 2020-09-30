@@ -15,7 +15,6 @@ Parses pdf document and extracts layouted text components.
 import contextlib
 import copy
 import math
-import re
 
 import configo
 import iamraw

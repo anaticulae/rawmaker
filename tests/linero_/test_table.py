@@ -12,6 +12,7 @@ import power
 import pytest
 import serializeraw
 import utila
+import utilatest
 
 import linero.cluster
 import linero.features.table
@@ -115,6 +116,7 @@ def test_table_extract_negative():
         id='bachelor63_singletable',
     ),
 ])
+@utilatest.skip_longrun
 def test_detect_table(source, pages, expected, testdir, monkeypatch):
     tests.linero_.run(
         f'-i {source} --pages={pages} --table',

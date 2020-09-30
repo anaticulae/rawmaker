@@ -11,6 +11,7 @@ import iamraw.path
 import power
 import pytest
 import serializeraw
+import utilatest
 
 import tests
 
@@ -33,6 +34,7 @@ def test_linero_figure_extract():
     # assert 0
 
 
+@utilatest.skip_longrun
 def test_extract_figures_memory_error(testdir, monkeypatch, capsys):
     # TODO: VALIDATE THIS UNIT TEST. THE MEMORY ERROR LOOKS QUITE
     # CONFUSING, PAY ATENTION TO THE PAGE NUMBERS

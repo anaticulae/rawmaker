@@ -70,8 +70,11 @@ def extract_images(
     # Processing layout
     content = pdfminer.pdfpage.PDFPage.create_pages(document)
 
+    firstpage = pages[0] if pages else 0
     interpreter = rawmaker.converter.images.create_fastimageextractor(
-        collect.imagereciver)
+        collect.imagereciver,
+        firstpage=firstpage,
+    )
 
     with utila.SkipCollector(pages) as collector:
         for number, page in enumerate(content):

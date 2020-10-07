@@ -20,8 +20,8 @@ import rawmaker.converter.basic
 
 class ImageConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
 
-    def __init__(self, imagewriter):
-        super().__init__()
+    def __init__(self, imagewriter, firstpage: int):
+        super().__init__(pageno=firstpage)
         assert callable(imagewriter), imagewriter
         self.imagewriter = imagewriter
         # TODO avoid duplicated parsed, check if we require this?
@@ -130,8 +130,11 @@ class FastImageInterpreter(pdfminer.pdfinterp.PDFPageInterpreter):
                 self.push(obj)
 
 
-def create_fastimageextractor(imagelistener):
-    device = ImageConverter(imagewriter=imagelistener)
+def create_fastimageextractor(imagelistener, firstpage: int):
+    device = ImageConverter(
+        imagewriter=imagelistener,
+        firstpage=firstpage,
+    )
     interpreter = pdfminer.pdfinterp.PDFPageInterpreter(
         device.resources,
         device,

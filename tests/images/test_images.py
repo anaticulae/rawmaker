@@ -99,7 +99,7 @@ def test_images_export_bachelor63_extract_images(
                 pages=pages,
             )
     assert extracted
-    image = extracted[0][0]
+    image = extracted[page][0]
     bounding = image.bounding
     height = bounding[3] - bounding[1]
     assert height >= expected_bounding_height, str(bounding)

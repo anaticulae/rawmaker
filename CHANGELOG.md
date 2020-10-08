@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.7.0
+
+### Feature
+
+* add option to remove char based horizontal lines (f5f1b105187b)
+
+### Fix
+
+* fix page number of first extract images page (0611e110da1e)
+* skip big figures instead raising MemoryError (115a6bf5456a)
+
 ## v2.6.0
 
 ### Feature

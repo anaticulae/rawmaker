@@ -22,6 +22,7 @@ power.setup(rawmaker.ROOT)
 
 RESOURCES = [
     (power.BACHELOR056_PDF, '14:34'),
+    (power.BACHELOR051_PDF, '25:35'),
     (power.BOOK007_PDF, None),
     (power.DOCU13_PDF, None),
     (power.BACHELOR090_PDF, '76:81'),

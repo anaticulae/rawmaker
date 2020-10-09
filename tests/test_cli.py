@@ -26,8 +26,9 @@ from tests.resources import HELLO_WORLD
     ['-i', power.DOCU27_PDF, '-o', 'output'],
     ['-i', power.DOCU35_PDF, '-o', 'output'],
 ])
+@pytest.mark.usefixtures('testdir')
 @utilatest.skip_longrun
-def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
+def test_run_rawmaker(command, monkeypatch):
     """Run help and version and format command to reach basic test coverage"""
     run(command, monkeypatch=monkeypatch)
 
@@ -36,12 +37,13 @@ def test_run_rawmaker(command, testdir, monkeypatch):  #pylint: disable=W0613
     [],
     ['-i', '.', '-o', 'output'],
 ])
-def test_run_rawmaker_failed_empty_folder(command, testdir, monkeypatch):  #pylint: disable=W0613
+@pytest.mark.usefixtures('testdir')
+def test_run_rawmaker_failed_empty_folder(command, monkeypatch):
     """Run help and version and format command to reach basic test coverage"""
     failure(command, monkeypatch=monkeypatch)
 
 
-def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):  #pylint: disable=W0613
+def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):
     """Run help and version and format command to reach basic test coverage"""
     testdir.mkdir('empty')
     command = ['-i', 'empty', '-o', 'output']  # no pdf input
@@ -57,8 +59,9 @@ def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):  #pylint: disab
         # DO NOT REMOVE A SINGLE SOURCE OF THIS TEST
         ['-i', power.DOCU09_PDF, '-o', 'output'],
     ])
+@pytest.mark.usefixtures('testdir')
 @utilatest.skip_longrun
-def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: disable=W0613
+def test_run_rawmaker_for_regression(command, monkeypatch):
     """This test run the rawmaker with problematic resources which led to an
     error on parsing/converting the document in the past."""
     run(command, monkeypatch=monkeypatch)
@@ -68,20 +71,18 @@ def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: d
     '5:10',
     '0',
 ])
+@pytest.mark.usefixtures('testdir')
 @utilatest.skip_longrun
-def test_run_rawmaker_with_pages(testdir, monkeypatch, pages, capsys):  #pylint: disable=W0613
+def test_run_rawmaker_with_pages(monkeypatch, pages):
     """Extract special pages"""
     cmd = ['-i', power.DOCU27_PDF, '-o', 'output', '--pages', pages, '-VVV']
     run(cmd, monkeypatch=monkeypatch)
-    out, err = capsys.readouterr()
-    print(out)
-    print(err)
 
 
 def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
     """Create broken pdf resource, run reader and check that error is
     handled correctly."""
-    root = str(testdir)
+    root = testdir.tmpdir
     brokenpath = os.path.join(root, 'broken.pdf')
     utila.file_create(brokenpath, 'content = non valid pdf document')
 
@@ -100,6 +101,6 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
 
 @utilatest.skip_longrun
 def test_rawmaker_cli_run_file_without_extention(testdir, monkeypatch):
-    source = os.path.join(str(testdir), 'hello')
+    source = os.path.join(testdir.tmpdir, 'hello')
     utila.file_copy(power.DOCU27_PDF, source)
     tests.run(f'-i {source}', monkeypatch=monkeypatch)

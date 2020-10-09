@@ -11,6 +11,7 @@ import iamraw.path
 import power
 import serializeraw
 import utila
+import utilatest
 
 import rawmaker.math
 import rawmaker.reader
@@ -26,6 +27,7 @@ def test_extract_math_homework50_page8():
     assert len(formula) == 3
 
 
+@utilatest.skip_longrun
 def test_extract_math_master116_zero_math():
     source = power.MASTER116_PDF
     pages = utila.ranged_tuple(0, 22)

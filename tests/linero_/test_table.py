@@ -58,6 +58,7 @@ def test_table_dump_and_load():
     assert loaded == tables
 
 
+@utilatest.skip_longrun
 def test_table_extract_negative():
     source = power.link(power.BOOK007_PDF)
     text = iamraw.path.text(source)

@@ -51,6 +51,7 @@ def test_figures_extract_master116_page19(testdir):
         serializeraw.dump_figures(extracted, outpath)
 
 
+@utilatest.skip_longrun
 @pytest.mark.usefixtures('testdir')
 def test_figures_run_master116(monkeypatch):
     source = power.MASTER116_PDF

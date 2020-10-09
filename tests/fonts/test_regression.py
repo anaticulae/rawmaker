@@ -42,6 +42,7 @@ def test_leftright_book_font_size(testdir, monkeypatch):
     assert first_char.size >= 8.0, first_char
 
 
+@utilatest.skip_longrun
 @pytest.mark.parametrize('strip', [True, False])
 def test_porting_module_font_index(strip, testdir, monkeypatch):
     """Hint: One white space is always at the end of a line. Without

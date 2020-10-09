@@ -68,6 +68,7 @@ def test_run_rawmaker_for_regression(command, testdir, monkeypatch):  #pylint: d
     '5:10',
     '0',
 ])
+@utilatest.skip_longrun
 def test_run_rawmaker_with_pages(testdir, monkeypatch, pages, capsys):  #pylint: disable=W0613
     """Extract special pages"""
     cmd = ['-i', power.DOCU27_PDF, '-o', 'output', '--pages', pages, '-VVV']

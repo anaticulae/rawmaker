@@ -76,6 +76,7 @@ def test_images_export_master116(testdir):
     (56, 1, 'png', 600),
     (57, 1, 'png', 600),
 ])
+@utilatest.skip_longrun
 def test_images_export_bachelor63_extract_images(
         page,
         expected,

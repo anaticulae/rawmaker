@@ -78,21 +78,21 @@ def determine_clusteritem(
 
 
 def determine_pageboxes(
-        cluster: typing.List[pdfminer.layout.LTLine],
+        clusters: typing.List[pdfminer.layout.LTLine],
         page: int,
 ) -> iamraw.PageContentBoxes:
     result = []
-    for item in cluster:
-        count = len(item)
+    for cluster in clusters:
+        count = len(cluster)
         if count != 4:
             continue
 
-        x0 = min([min(line[0], line[2]) for line in item])
-        y0 = min([min(line[1], line[3]) for line in item])
-        x1 = max([max(line[0], line[2]) for line in item])
-        y1 = max([max(line[1], line[3]) for line in item])
+        x0 = min([line[0] for line in cluster] + [line[2] for line in cluster])
+        x1 = max([line[0] for line in cluster] + [line[2] for line in cluster])
+        y0 = min([line[1] for line in cluster] + [line[3] for line in cluster])
+        y1 = max([line[1] for line in cluster] + [line[3] for line in cluster])
 
-        box = iamraw.Box(box=iamraw.BoundingBox.from_list([x0, y0, x1, y1]))
+        box = iamraw.Box(box=iamraw.BoundingBox(x0, y0, x1, y1))
         result.append(box)
         # ensure to sort items top to bottom and left to right
         result = sorted(result, key=operator.attrgetter('box.y0', 'box.x0'))

@@ -22,7 +22,6 @@ import sys
 
 import protocol
 import utila
-import utila.feature
 
 import rawmaker
 import rawmaker.error
@@ -72,7 +71,10 @@ WORKPLAN = [
     ),
     utila.create_step(
         'figures',
-        inputs=PDF_INPUT,
+        inputs=PDF_INPUT + [
+            utila.ResultFile(producer='rawmaker', name='boxes_boxes'),
+            utila.Pattern('rawmaker__images_images/*', 'yaml'),
+        ],
         output=[
             ('figures/{FILEHASH_1}', 'yaml'),
             ('figures/{FILEHASHS}', 'png'),

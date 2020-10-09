@@ -28,7 +28,12 @@ import rawmaker.reader
 DumpedFigureInformation = typing.List[typing.Tuple[str, bytes]]
 
 
-def work(path: str, pages: tuple = None) -> DumpedFigureInformation:
+def work(
+        path: str,
+        boxes: str = None,
+        *images: list,
+        pages: tuple = None,
+) -> DumpedFigureInformation:
     pages = sorted(pages) if pages else pages
 
     figures = rawmaker.converter.figure.extract_figures(path, pages=pages)

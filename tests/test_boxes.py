@@ -17,8 +17,7 @@ import rawmaker.features.boxes
 import rawmaker.features.horizontals
 import rawmaker.features.line
 import rawmaker.reader
-from tests.resources import HOW_TO_CPORTING_BOX_COUNT as BOX_COUNT
-from tests.resources import HOW_TO_CPORTING_HORIZONTAL_COUNT as LINES_COUNT
+import tests.resources
 
 
 @pytest.fixture
@@ -41,7 +40,7 @@ def test_determine_boxes(linecluster):  # pylint:disable=W0621
         boxes = rawmaker.features.boxes.determine_pageboxes(page, index)
         result.extend(boxes.content)
     # single raw box in document, the rest is rect
-    assert len(result) == BOX_COUNT
+    assert len(result) == tests.resources.HOW_TO_CPORTING_BOX_COUNT
 
 
 def test_determine_cluster_per_pages(linecluster):  # pylint:disable=W0621
@@ -81,15 +80,15 @@ def test_determine_single_cluster():
 def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
     linecluster, size = linecluster
     pagewidth = size.width
-    document_lines = []
+    lines = []
     for index, page in enumerate(linecluster):
         horizontal = rawmaker.features.horizontals.determine_pagehorizontals(
             cluster=page,
             page=index,
             page_width=pagewidth,
         )
-        document_lines.extend(horizontal.content)
-    assert len(document_lines) == LINES_COUNT
+        lines.extend(horizontal.content)
+    assert len(lines) == tests.resources.HOW_TO_CPORTING_HORIZONTAL_COUNT
 
 
 def test_determine_textboxes():
@@ -99,7 +98,7 @@ def test_determine_textboxes():
     # flatten boxes to compute box count of document
     boxes = [page.content for page in boxes]
     count = sum([len(item) for item in boxes])
-    assert count == BOX_COUNT
+    assert count == tests.resources.HOW_TO_CPORTING_BOX_COUNT
 
 
 def test_boxes_determine_horizontals_master72pages():
@@ -109,7 +108,6 @@ def test_boxes_determine_horizontals_master72pages():
             doc,
             tuple(range(10)),
         )
-
     # flatten boxes to compute horizontal count of document
     horizontals = [item.content for item in horizontals if item.content]
     horizontals = utila.flatten(horizontals)
@@ -124,5 +122,4 @@ def test_boxes_determine_boxes_bachelor56_titlepage():
     with rawmaker.reader.read(power.BACHELOR056_PDF) as doc:
         pages = rawmaker.features.boxes.determine_boxes(doc, firstpage)
         boxes = pages[0].content
-
     assert len(boxes) == 1, str(boxes)

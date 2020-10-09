@@ -25,6 +25,8 @@ import rawmaker.reader
 # rawmaker
 LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]
 
+MAX_ENDING_DISTANCE = 3
+
 
 def work(document: str, pages: tuple) -> str:
     """Extract content boxes from given `document`.
@@ -109,7 +111,11 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
         for clusterindex, cluster in enumerate(result):
             for clusteritem in cluster:
                 for test in current:
-                    if intersecting_endings(clusteritem, test):
+                    if utila.intersecting_ending(  # pylint:disable=E1101
+                            clusteritem,
+                            test,
+                            tol=MAX_ENDING_DISTANCE,
+                    ):
                         return clusterindex
         return None
 
@@ -135,39 +141,3 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
         if single.contains(result):
             break
     return result
-
-
-MIN_DISTANCE = 3
-
-
-def intersecting_endings(
-        first: iamraw.BoundingBox,
-        second: iamraw.BoundingBox,
-) -> bool:
-    """Check if start or end point of two line match.
-
-    Args:
-        first(BoundingBox): line to cross
-        second(BoundingBox): line to cross
-    Returns:
-        True if least one elements matches, else False
-    """
-    # Check only if points intersects
-    x0, y0, x2, y2 = first
-    x1, y1, x3, y3 = second
-
-    first_distance = min(
-        utila.length(x0, y0, x1, y1), utila.length(x0, y0, x3, y3))
-    second_distance = min(
-        utila.length(x2, y2, x3, y3), utila.length(x2, y2, x1, y1))
-    if first_distance < 0.00001 and second_distance < 0.00001:
-        # intersecting with themself
-        return None
-
-    if first_distance < MIN_DISTANCE:
-        return True
-
-    if second_distance < MIN_DISTANCE:
-        return True
-
-    return False

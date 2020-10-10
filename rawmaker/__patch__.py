@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import iamraw
 import utila
 
 
@@ -50,3 +51,11 @@ def intersecting_ending(first: tuple, second: tuple, tol: float = 3.0) -> bool:
 
 
 utila.intersecting_ending = intersecting_ending
+
+
+def __str__(self) -> str:
+    raw = ''.join([item.value.strip() for item in self.content])
+    return f'FormulaRaw({raw})'
+
+
+iamraw.FormulaRaw.__str__ = __str__

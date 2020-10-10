@@ -103,3 +103,19 @@ def test_render_bachelor90_pagex_figure(page, expected, monkeypatch, testdir):
     # png and yaml files
     expected = expected * 2
     assert len(written) == expected, str(written)
+
+
+def test_render_bachelor51_page30_33_figure_image(monkeypatch, testdir):
+    """The figure name is determined dues hashing the figure content. If
+    both figures are equal(empty and same size for example) the figures
+    have the same name and one image information is lost. Therefore we
+    include the pageid id into a central pixel in the middle of the
+    figure. As a result of this, we do not lose bounding information."""
+    source = power.BACHELOR051_PDF
+    cmd = f'-i {source} --pages=30,33 --figures'
+    tests.run(cmd, monkeypatch=monkeypatch)
+
+    written = utila.file_list('rawmaker__figures_figures')
+    # 4 png and 4 yaml files
+    expected = 8
+    assert len(written) == expected, str(written)

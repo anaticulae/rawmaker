@@ -56,11 +56,23 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         self.content.append(rendered)
 
     def figures(self) -> iamraw.Figures:
+        """Create `text` figures after extraction complete pages. This
+        method is only runned once."""
         merged = merge_figures(self.nonfigure)
         self.nonfigure.clear()
         if merged:
             self.content.extend(merged)
         return self.content
+
+
+def leftupper_dot(raw, unique: int):
+    # The figure name is determined due hashing the figure content. If
+    # both figures are equal(empty and same size for example) the figures
+    # have the same name and one image information is lost. Therefore we
+    # include the pageid id into a central pixel in the middle of the
+    # figure. As a result of this, we do not lose bounding information.
+    renderer = PIL.ImageDraw.Draw(raw, mode='RGBA')
+    renderer.point([0, 0, 1, 1], fill=(255, 255, 255, unique))
 
 
 def merge_figures(pagefigures) -> iamraw.Figures:
@@ -71,6 +83,7 @@ def merge_figures(pagefigures) -> iamraw.Figures:
         for index, figure in enumerate(figures):
             figure.index = index
             figure.page = page
+            leftupper_dot(figure.data, unique=page)
         result.extend(figures)
     return result
 

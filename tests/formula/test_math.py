@@ -9,6 +9,7 @@
 
 import iamraw.path
 import power
+import pytest
 import serializeraw
 import utila
 import utilatest
@@ -49,3 +50,15 @@ def test_dump_and_load_formula(testdir, monkeypatch):
 
     loadafter = serializeraw.load_rawformulas(dumped)
     assert loadafter == loaded
+
+
+@pytest.mark.xfail(reason='extend supported character of font parser')
+def test_extract_math_master110():
+    source = power.MASTER110_PDF
+    with rawmaker.reader.read(source) as pdf:
+        extracted = rawmaker.math.extract_content(pdf, pages=(28, 48))
+
+    page28 = utila.select_content(extracted, page=28)
+    assert len(page28) == 1
+    page48 = utila.select_content(extracted, page=48)
+    assert len(page48) == 3

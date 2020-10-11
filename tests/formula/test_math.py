@@ -62,3 +62,12 @@ def test_extract_math_master110():
     assert len(page28) == 1
     page48 = utila.select_content(extracted, page=48)
     assert len(page48) == 3
+
+
+def test_extract_math_master110_page29():
+    source = power.MASTER110_PDF
+    with rawmaker.reader.read(source) as pdf:
+        extracted = rawmaker.math.extract_content(pdf, pages=(29,))
+
+    page29 = utila.select_content(extracted, page=29)
+    assert len(page29) == 2

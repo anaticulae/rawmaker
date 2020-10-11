@@ -141,6 +141,8 @@ def isformula(text: str) -> bool:
     False
     >>> isformula('(a)')
     False
+    >>> isformula('d=1maximalzeDistanz')
+    True
     """
     text = text.strip()
     if no_formula(text):
@@ -156,7 +158,7 @@ ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 
 def special_rate(text: str) -> bool:
-    if len(text) < 20:  # TODO: HOLY VALUE
+    if len(text) < 22:  # TODO: HOLY VALUE
         return False
     alpharate = len([item for item in text if item in ALPHA]) / len(text)
     if alpharate > 0.8:  # TODO: HOLY VALUE

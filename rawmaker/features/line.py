@@ -80,17 +80,18 @@ def lines(
     possible_lines = type_in_document(
         pdf,
         datatype=(
+            pdfminer.layout.LTTextBoxHorizontal,
             pdfminer.layout.LTLine,
             pdfminer.layout.LTRect,
-            pdfminer.layout.LTTextBoxHorizontal,
+            pdfminer.layout.LTFigure,
         ),
         pages=pages,
     )
-
     strategy = {
         pdfminer.layout.LTLine: accept_ltline,
         pdfminer.layout.LTRect: accept_ltrect,
         pdfminer.layout.LTTextBoxHorizontal: accept_text_as_line,
+        pdfminer.layout.LTFigure: accept_figure_as_line,
     }
     result = []
     for content, pagenumber in possible_lines:
@@ -154,6 +155,16 @@ def accept_ltline(item: pdfminer.layout.LTLine):
     if horizontal_error and vertical_error:
         return False
     return True
+
+
+def accept_figure_as_line(figure: pdfminer.layout.LTFigure) -> bool:
+    """Some pdf renderer converts lines into images."""
+    content = figure._objs  # pylint:disable=W0212
+    if len(content) != 1:
+        return False
+    # Do we need a min width? I don't think so because thats the job of
+    # later running methods.
+    return accept_ltline(content[0])
 
 
 def merge_lines(items, diff: float = 3.0):  # TODO: HOLY VALUE

@@ -70,13 +70,30 @@ def select_formulas(items):
         content = cluster[:]
         # sort from left to right
         content = sorted(content, key=lambda x: x[0][0])
-        text = ''.join([item[2] for item in content])
-        if not isformula(text):
-            continue
-        formula = create_formula(content)
-        result.append(formula)
+        for group in groupby_xdiff(content):
+            text = ''.join([item[2] for item in group])
+            if not isformula(text):
+                continue
+            formula = create_formula(group)
+            result.append(formula)
     # sort formula top down by y1
     result.sort(key=lambda x: x.bounding[3])
+    return result
+
+
+def groupby_xdiff(items):
+    """Split chars in a row which are too wide that there can build a
+    formula group."""
+    if not items:
+        return []
+    result = [[items[0]]]
+    for char in items[1:]:
+        before = result[-1][-1][0][2]  #x1
+        current = char[0][0]  # x0
+        if utila.near(before, current, diff=35.0):  # TODO: HOLY VALUE
+            result[-1].append(char)
+        else:
+            result.append([char])
     return result
 
 

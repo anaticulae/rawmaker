@@ -59,7 +59,7 @@ def determine_lines(
     return result
 
 
-def lines(  # pylint:disable=R1260
+def lines(
         pdf: pdfminer.pdfdocument.PDFDocument,
         pages: tuple = None,
 ) -> list:
@@ -86,37 +86,6 @@ def lines(  # pylint:disable=R1260
         ),
         pages=pages,
     )
-
-    def accept_text_as_line(item: pdfminer.layout.LTTextBoxHorizontal):
-        symbols = ['_', '-', '=']
-        for symbol in symbols:
-            if item.get_text().count(symbol) >= REQUIRED_MINUS_SIGNS:
-                # update bounding to pass vertical error test.
-                # use vertical centric position
-                # TODO: CHECK THIS: Make it symbol dependend?
-                middle = utila.roundme((item.bbox[1] + item.bbox[3]) / 2)
-                item.bbox = (item.bbox[0], middle, item.bbox[2], middle)
-                return True
-        return False
-
-    def accept_ltrect(item: pdfminer.layout.LTRect):
-        return accept_ltline(item)
-
-    def accept_ltline(item: pdfminer.layout.LTLine):
-        """Accept horizontal or vertical lines
-
-        The lines must vary only little. A crossing line has vertical
-        and horizontal error. We want | or - not / or \\.
-        """
-        assert item.bbox[3] >= item.bbox[1], str(item.bbox)
-        assert item.bbox[0] <= item.bbox[2], str(item.bbox)
-
-        horizontal_error = item.bbox[3] - item.bbox[1] >= HORIZONTAL_MAX_DIFF
-        vertical_error = item.bbox[2] - item.bbox[0] >= VERTICAL_MAX_DIFF
-
-        if horizontal_error and vertical_error:
-            return False
-        return True
 
     strategy = {
         pdfminer.layout.LTLine: accept_ltline,
@@ -151,6 +120,40 @@ def lines(  # pylint:disable=R1260
 
         result.append((page, pagenumber))
     return result
+
+
+def accept_text_as_line(item: pdfminer.layout.LTTextBoxHorizontal):
+    symbols = ['_', '-', '=']
+    for symbol in symbols:
+        if item.get_text().count(symbol) >= REQUIRED_MINUS_SIGNS:
+            # update bounding to pass vertical error test.
+            # use vertical centric position
+            # TODO: CHECK THIS: Make it symbol dependend?
+            middle = utila.roundme((item.bbox[1] + item.bbox[3]) / 2)
+            item.bbox = (item.bbox[0], middle, item.bbox[2], middle)
+            return True
+    return False
+
+
+def accept_ltrect(item: pdfminer.layout.LTRect):
+    return accept_ltline(item)
+
+
+def accept_ltline(item: pdfminer.layout.LTLine):
+    """Accept horizontal or vertical lines
+
+    The lines must vary only little. A crossing line has vertical
+    and horizontal error. We want | or - not / or \\.
+    """
+    assert item.bbox[3] >= item.bbox[1], str(item.bbox)
+    assert item.bbox[0] <= item.bbox[2], str(item.bbox)
+
+    horizontal_error = item.bbox[3] - item.bbox[1] >= HORIZONTAL_MAX_DIFF
+    vertical_error = item.bbox[2] - item.bbox[0] >= VERTICAL_MAX_DIFF
+
+    if horizontal_error and vertical_error:
+        return False
+    return True
 
 
 def merge_lines(items, diff: float = 3.0):  # TODO: HOLY VALUE

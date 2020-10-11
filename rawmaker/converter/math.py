@@ -122,6 +122,8 @@ def isformula(text: str) -> bool:
     True
     >>> isformula('(3 .5 )')
     False
+    >>> isformula('(a)')
+    False
     """
     text = text.strip()
     if no_formula(text):
@@ -147,6 +149,9 @@ def special_rate(text: str) -> bool:
 
 def no_formula(text: str) -> bool:
     if re.match(NO_FORMULA, text):
+        return True
+    if re.match(r'\([a-zA-Z]\)', text):
+        # (a) (b)
         return True
     return False
 

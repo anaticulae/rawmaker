@@ -13,6 +13,7 @@ import iamraw
 import pdfminer.layout
 import utila
 
+import rawmaker.converter.basic
 import rawmaker.parameter
 
 

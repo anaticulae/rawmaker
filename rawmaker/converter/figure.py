@@ -17,6 +17,7 @@ import pdfminer.utils
 import PIL.Image
 import utila
 
+import rawmaker.converter.basic
 import rawmaker.figure.text
 import rawmaker.figure.utils
 import rawmaker.miner.images

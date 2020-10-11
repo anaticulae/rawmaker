@@ -68,7 +68,7 @@ def select_formulas(items):
     result = []
     for cluster in clustered:
         content = cluster[:]
-        # sort from left to right
+        # sort from left to right by x0
         content = sorted(content, key=lambda x: x[0][0])
         for group in groupby_xdiff(content):
             text = ''.join([item[2] for item in group])

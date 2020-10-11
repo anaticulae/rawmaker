@@ -57,7 +57,7 @@ def extract_page(
     # remove white space
     page = [item for item in page if item.get_text().strip()]
 
-    lines = utila.same_line_cluster(  # pylint:disable=unexpected-keyword-arg
+    lines = utila.same_line_cluster(
         page,
         min_elements=word_length_min,  # support single chars
         matcher=lambda x: x.bbox[3],

@@ -59,7 +59,7 @@ LAYOUT = pdfminer.layout.LAParams(
 
 
 def select_formulas(items):
-    clustered = utila.same_line_cluster(  # pylint:disable=unexpected-keyword-arg
+    clustered = utila.same_line_cluster(
         items,
         max_diff=10,  # TODO: HOLY VALUE
         min_elements=4,

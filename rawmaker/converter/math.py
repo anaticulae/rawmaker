@@ -33,9 +33,10 @@ class MathConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
                 continue
             content.extend(rendered)
 
-        formulas = select_formulas(content)
+        formulas = select_formulas(content, self.pageno)
         if not formulas:
             return
+
         pageformulas = iamraw.PageContentRawFormula(
             content=formulas,
             page=ltpage.pageid,
@@ -59,7 +60,7 @@ LAYOUT = pdfminer.layout.LAParams(
 )
 
 
-def select_formulas(items):
+def select_formulas(items, pagenumber: int):
     clustered = utila.same_line_cluster(
         items,
         max_diff=10,  # TODO: HOLY VALUE
@@ -75,7 +76,7 @@ def select_formulas(items):
             text = ''.join([item[2] for item in group])
             if not isformula(text):
                 continue
-            formula = create_formula(group)
+            formula = create_formula(group, page=pagenumber)
             result.append(formula)
     # sort formula top down by y1
     result.sort(key=lambda x: x.bounding[3])

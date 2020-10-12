@@ -27,7 +27,7 @@ from tests.resources import HELLO_WORLD
     ['-i', power.DOCU35_PDF, '-o', 'output'],
 ])
 @pytest.mark.usefixtures('testdir')
-@utilatest.skip_longrun
+@utilatest.skip_nightly
 def test_run_rawmaker(command, monkeypatch):
     """Run help and version and format command to reach basic test coverage"""
     run(command, monkeypatch=monkeypatch)

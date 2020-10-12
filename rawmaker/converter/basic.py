@@ -30,15 +30,32 @@ class FlippedLayoutAnalyzer(pdfminer.converter.PDFLayoutAnalyzer):
 
     def handle_undefined_char(self, font, cid) -> str:
         # TODO: CHECK AFTER UPGRADING PDFMINER
-        char = chr(cid)
         # TODO:  FIX PAGE NUMBER
-        utila.error(f'could not convert: {font!r}, {cid!r} '
-                    f'on page: {self.pageno}')
+        try:
+            char = MAPPING[cid]
+            utila.debug(f'could not convert: {font!r}, {cid!r} use backup: '
+                        f'{char} on page: {self.pageno}')
+        except KeyError:
+            utila.debug(f'could not convert: {font!r}, {cid!r} '
+                        f'on page: {self.pageno}')
+            char = chr(cid)
         return char
 
     @property
     def resources(self):
         return self.rsrcmgr
+
+
+# REMOVE HACK LATER
+# UAZWCW+CMR10
+MAPPING = {
+    0: '−',
+    1: '·',
+    12: 'fi',
+    20: '≤',
+    25: 'ß',
+    127: '',  # Umlaute, oe, ae, ue
+}
 
 
 def flip_object(item, page):

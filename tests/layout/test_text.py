@@ -54,11 +54,11 @@ def test_diss264_text_extraction_position_page17(testdir, monkeypatch, capsys):
     """Log non correct char conversion as an error."""
     # TODO: CHECK THIS TEST AFTER UPGRADING PDFMINER
     source = power.DISS264_PDF
-    cmd = f'-i {source} --text --fonts --pages=17'
+    cmd = f'-i {source} --text --fonts --pages=17 -VVV'
     tests.run(cmd, monkeypatch=monkeypatch)
 
-    _, err = capsys.readouterr()
-    assert err.count('[ERROR] could not convert:') >= 6, err
+    std, _ = capsys.readouterr()
+    assert std.count('could not convert:') >= 6, std
 
 
 def test_diss264_text_extraction_vertical_text_page21(testdir, monkeypatch):

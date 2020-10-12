@@ -43,6 +43,7 @@ class MathConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         self.result.append(pageformulas)
 
     def close_document(self) -> iamraw.PageContentRawFormulas:
+        # TODO: RENAME THIS METHOD
         result = list(self.result)
         self.result.clear()
         return result

@@ -2,6 +2,25 @@
 
 Every noteable change is logged here.
 
+## v2.8.0
+
+### Feature
+
+* extend formula detector (9238198ea95f)
+* improve formula detector (12c0dd45504a)
+* extend formula bad list (df83af60ee66)
+* accept lines printed in figures (d9542e3b747c)
+* improve debug ability of FormulaRaw (a763a3a83557)
+* adjust error message (183c3771d021)
+* ensure that content equal images does not have the same hash (606320da74e5)
+* add boxes and images as input for figure extractor (70f3c203c60d)
+
+### Fix
+
+* fix formula page numerator (77e522dc7dca)
+* add backup table for char converter (0c584de8855e)
+* add missing imports (5f95e68dac0d)
+
 ## v2.7.0
 
 ### Feature

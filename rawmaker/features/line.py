@@ -140,7 +140,11 @@ def accept_ltrect(item: pdfminer.layout.LTRect):
     return accept_ltline(item)
 
 
-def accept_ltline(item: pdfminer.layout.LTLine):
+def accept_ltline(
+        item: pdfminer.layout.LTLine,
+        vertical_max_diff=VERTICAL_MAX_DIFF,
+        horizontal_max_diff=HORIZONTAL_MAX_DIFF,
+) -> bool:
     """Accept horizontal or vertical lines
 
     The lines must vary only little. A crossing line has vertical
@@ -149,8 +153,8 @@ def accept_ltline(item: pdfminer.layout.LTLine):
     assert item.bbox[3] >= item.bbox[1], str(item.bbox)
     assert item.bbox[0] <= item.bbox[2], str(item.bbox)
 
-    horizontal_error = item.bbox[3] - item.bbox[1] >= HORIZONTAL_MAX_DIFF
-    vertical_error = item.bbox[2] - item.bbox[0] >= VERTICAL_MAX_DIFF
+    horizontal_error = item.bbox[3] - item.bbox[1] >= horizontal_max_diff
+    vertical_error = item.bbox[2] - item.bbox[0] >= vertical_max_diff
 
     if horizontal_error and vertical_error:
         return False

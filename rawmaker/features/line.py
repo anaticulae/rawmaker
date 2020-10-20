@@ -168,7 +168,31 @@ def accept_figure_as_line(figure: pdfminer.layout.LTFigure) -> bool:
         return False
     # Do we need a min width? I don't think so because thats the job of
     # later running methods.
-    return accept_ltline(content[0])
+    if accept_ltline(content[0]):
+        return True
+    if figure_special_line(figure):
+        return True
+    return False
+
+
+def figure_special_line(figure: pdfminer.layout.LTFigure) -> bool:
+    """Detect special line and update figure box if figure is special line."""
+    # EXAMPLE: MASTER155
+    #  'width': 413.96, 'height': 8.54
+    # TODO: ANALYZE IMAGE
+    image = figure._objs[0]  # pylint:disable=W0212
+    height = image.bbox[3] - image.bbox[1]
+    width = image.bbox[2] - image.bbox[0]
+    ratio = width / height
+    if width <= 350:  # TODO: HOLY VALUE
+        return False
+    if ratio <= 45.0:  # TODO: HOLY VALUE
+        return False
+    # adjust bounding of figure to middle line
+    # TODO: USE IMAGE INFORMATION
+    middle = utila.roundme((figure.bbox[1] + figure.bbox[3]) / 2)
+    figure.bbox = (figure.bbox[0], middle, figure.bbox[2], middle)
+    return True
 
 
 def merge_lines(items, diff: float = 3.0):  # TODO: HOLY VALUE

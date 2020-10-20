@@ -22,3 +22,11 @@ def test_horizontals_master110_page19(testdir, monkeypatch):
     horizontals = serializeraw.load_horizontals(testdir.tmpdir)
     horizontals = utila.select_content(horizontals, page=19)
     assert len(horizontals) == 2, str(horizontals)
+
+
+def test_horizontals_master155_page1(testdir, monkeypatch):
+    cmd = f'-i {power.MASTER155_PDF} --pages=1 --horizontals'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    horizontals = serializeraw.load_horizontals(testdir.tmpdir)
+    horizontals = utila.select_content(horizontals, page=1)
+    assert len(horizontals) == 1, str(horizontals)

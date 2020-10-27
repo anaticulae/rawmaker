@@ -20,7 +20,7 @@ import tests
 
 
 def test_extract_math_homework50_page8():
-    source = power.HOMEWORK050_PDF
+    source = power.HOME050_PDF
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.math.extract_content(pdf, pages=(8,))
 
@@ -39,7 +39,6 @@ def test_extract_math_master116_zero_math():
 
 def test_dump_and_load_formula(testdir, monkeypatch):
     source = power.BACHELOR090_PDF
-
     tests.run(f'-i {source} --formula --pages=51', monkeypatch=monkeypatch)
 
     formula = iamraw.path.formula(testdir.tmpdir)

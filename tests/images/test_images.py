@@ -116,7 +116,7 @@ def test_images_export_bachelor63_extract_images(
             marks=pytest.mark.xfail(reason='not fully supported'),
         ),
         # pytest.param(power.DOCU35_PDF, 0, id='twine'),
-        pytest.param(power.TECHNICAL_024, 8, id='technical24'),
+        pytest.param(power.TECH024_PDF, 8, id='technical24'),
         # pytest.param(tests.resources.REPORT19, 6, id='report19'),
         pytest.param(power.PAPER18_PDF, 10, id='paper18'),
     ])

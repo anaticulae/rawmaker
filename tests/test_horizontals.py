@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import iamraw.path
 import power
 import serializeraw
 import utila
@@ -30,3 +31,11 @@ def test_horizontals_master155_page1(testdir, monkeypatch):
     horizontals = serializeraw.load_horizontals(testdir.tmpdir)
     horizontals = utila.select_content(horizontals, page=1)
     assert len(horizontals) == 1, str(horizontals)
+
+
+def test_lines_bachelor63_page10(testdir, monkeypatch):
+    cmd = f'-i {power.BACHELOR063_PDF} --pages=10 --line'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    lines = serializeraw.load_lines(iamraw.path.line(testdir.tmpdir))
+    lines = utila.select_content(lines, page=10)
+    assert len(lines) == 46

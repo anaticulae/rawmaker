@@ -118,7 +118,10 @@ def lines(
         page = sorted(page, key=operator.itemgetter(1, 0))
         # merges divided lines
         page = merge_lines(page)
-
+        # remove duplicated lines which mainly produces out of bad figure
+        # extraction
+        # TODO: ADD LINE DENSITY CHECK?
+        page = utila.unique_lines(page, max_diff=3.0)
         result.append((page, pagenumber))
     return result
 

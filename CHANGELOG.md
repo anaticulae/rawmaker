@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.8.1
+
+### Feature
+
+* add special image line detector (c6e72734ff86)
+
 ## v2.8.0
 
 ### Feature

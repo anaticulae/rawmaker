@@ -25,7 +25,6 @@ class MathConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
 
     def receive_layout(self, ltpage):
         super().receive_layout(ltpage)
-
         content = []
         for item in ltpage:
             rendered = render_pagecontent(item)
@@ -33,7 +32,7 @@ class MathConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
                 continue
             content.extend(rendered)
 
-        formulas = select_formulas(content, self.pageno)
+        formulas = select_formulas(content, ltpage.pageid)
         if not formulas:
             return
 

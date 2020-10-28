@@ -70,3 +70,5 @@ def test_extract_math_master110_page29():
 
     page29 = utila.select_content(extracted, page=29)
     assert len(page29) == 2
+    assert page29[0].page == 29
+    assert page29[1].page == 29

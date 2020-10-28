@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.8.2
+
+### Feature
+
+* remove duplicated lines which are produced by figure (bdc1d0236a8b)
+
 ## v2.8.1
 
 ### Feature

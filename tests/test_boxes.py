@@ -10,6 +10,7 @@
 import iamraw
 import power
 import pytest
+import serializeraw
 import utila
 import utilatest
 
@@ -96,9 +97,9 @@ def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
 
 
 def test_determine_textboxes():
-    boxes = None
-    with rawmaker.reader.read(power.DOCU09_PDF) as doc:
-        boxes = rawmaker.features.boxes.determine_boxes(doc)
+    lines = iamraw.path.line(power.link(power.DOCU09_PDF))
+    lines = serializeraw.load_lines(lines)
+    boxes = rawmaker.features.boxes.determine_boxes(lines)
     # flatten boxes to compute box count of document
     boxes = [page.content for page in boxes]
     count = sum([len(item) for item in boxes])
@@ -107,11 +108,9 @@ def test_determine_textboxes():
 
 def test_boxes_determine_horizontals_master72pages():
     horizontals = None
-    with rawmaker.reader.read(power.MASTER072_PDF) as doc:
-        horizontals = rawmaker.features.horizontals.determine_horizontal(
-            doc,
-            tuple(range(10)),
-        )
+    lines = iamraw.path.line(power.link(power.MASTER072_PDF))
+    lines = serializeraw.load_lines(lines, pages=utila.ranged_tuple(0, 10))
+    horizontals = rawmaker.features.horizontals.determine_horizontal(lines)
     # flatten boxes to compute horizontal count of document
     horizontals = [item.content for item in horizontals if item.content]
     horizontals = utila.flatten(horizontals)
@@ -122,8 +121,8 @@ def test_boxes_determine_horizontals_master72pages():
 
 
 def test_boxes_determine_boxes_bachelor56_titlepage():
-    firstpage = (0,)
-    with rawmaker.reader.read(power.BACHELOR056_PDF) as doc:
-        pages = rawmaker.features.boxes.determine_boxes(doc, firstpage)
-        boxes = pages[0].content
+    lines = iamraw.path.line(power.link(power.BACHELOR056_PDF))
+    lines = serializeraw.load_lines(lines, pages=(0,))
+    pages = rawmaker.features.boxes.determine_boxes(lines)
+    boxes = pages[0].content
     assert len(boxes) == 1, str(boxes)

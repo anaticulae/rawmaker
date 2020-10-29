@@ -18,9 +18,6 @@ import pdfminer.layout
 import serializeraw
 import utila
 
-import rawmaker.features.line
-import rawmaker.reader
-
 # TODO: LTLine - replace with own data structure to reduce dependencies to
 # rawmaker
 LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]
@@ -28,43 +25,34 @@ LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]
 MAX_ENDING_DISTANCE = 3
 
 
-def work(document: str, pages: tuple) -> str:
+def work(lines: str, pages: tuple) -> str:
     """Extract content boxes from given `document`.
 
     Args:
-        document(str): path to document
+        lines(str): path to lines
         pages(tuple): pages to analyze
     Returns:
         dumped parsed boxes, dumped parsed horizontals
     """
-    assert isinstance(document, str), str(document)
-    with rawmaker.reader.read(document) as pdf:
-        boxes = determine_boxes(pdf, pages=pages)
+    assert isinstance(lines, str), type(lines)
+    lines = serializeraw.load_lines(lines, pages=pages)
+    boxes = determine_clusteritem(lines, determine_pageboxes)
     dumped_boxes = serializeraw.dump_boxes(boxes)
     return dumped_boxes
 
 
-def determine_boxes(
-        document: pdfminer.pdfdocument.PDFDocument,
-        pages: tuple = None,
-):
-    result = determine_clusteritem(
-        document,
-        determine_pageboxes,
-        pages=pages,
-    )
-    return result
+def determine_boxes(lines):
+    boxes = determine_clusteritem(lines, determine_pageboxes)
+    return boxes
 
 
 def determine_clusteritem(
-        document: pdfminer.pdfdocument.PDFDocument,
+        lines: iamraw.PageContentLines,
         collector: callable,
-        pages: tuple = None,
 ):
     result = []
-    document_lines = rawmaker.features.line.lines(document, pages=pages)
-
-    for lines_in_page, page in document_lines:
+    for paged in lines:
+        lines_in_page, page = paged.content, paged.page
         # remove lines which are to short and represent a dot
         lines_in_page = [
             item for item in lines_in_page if not utila.isdot(item)

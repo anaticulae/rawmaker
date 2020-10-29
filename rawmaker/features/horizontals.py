@@ -42,36 +42,28 @@ HORIZONTAL_MIN_WIDTH = configo.HV_FLOAT(default=0.2).value
 HORIZONTAL_VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=2.0).value
 
 
-def work(document: str, pages: tuple) -> str:
+def work(lines: str, pages: tuple) -> str:
     """Extract content horizontal lines from given `document`
 
     Args:
-        document(str): path to document
+        lines(str): path to document
         pages(tuple): pages to analyze
     Returns:
         dumped parsed boxes, dumped parsed horizontals
     """
-    assert isinstance(document, str), str(document)
-    with rawmaker.reader.read(document) as pdf:
-        horizontal = determine_horizontal(pdf, pages=pages)
+    assert isinstance(lines, str), type(lines)
+    lines = serializeraw.load_lines(lines, pages=pages)
+    horizontal = determine_horizontal(lines)
     dumped = serializeraw.dump_horizontals(horizontal)
     return dumped
 
 
-def determine_horizontal(
-        document: pdfminer.pdfdocument.PDFDocument,
-        pages: tuple = None,
-):
-    # prepare worker
-    # TODO: IS PAGE ZERO ENOUGH?
-    pagewidth = rawmaker.features.border.pagesizes(document, pages=(0,))
-    pagewidth = pagewidth[0].size.width
+def determine_horizontal(lines, pagewidth=500):
     worker = functools.partial(determine_pagehorizontals, page_width=pagewidth)
     # run worker
     result = rawmaker.features.boxes.determine_clusteritem(
-        document,
+        lines,
         worker,
-        pages=pages,
     )
     return result
 

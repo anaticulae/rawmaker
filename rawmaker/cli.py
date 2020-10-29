@@ -66,7 +66,9 @@ WORKPLAN = [
     ),
     utila.create_step(
         'boxes',
-        inputs=PDF_INPUT,
+        inputs=[
+            utila.ResultFile(producer='rawmaker', name='line_line'),
+        ],
         output=('boxes',),
     ),
     utila.create_step(
@@ -82,7 +84,9 @@ WORKPLAN = [
     ),
     utila.create_step(
         'horizontals',
-        inputs=PDF_INPUT,
+        inputs=[
+            utila.ResultFile(producer='rawmaker', name='line_line'),
+        ],
         output=('horizontals',),
     ),
     utila.create_step(

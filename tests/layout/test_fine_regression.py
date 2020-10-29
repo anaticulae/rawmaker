@@ -20,7 +20,7 @@ def test_layout_fine_master72_page3_horizontal_problem(testdir, monkeypatch):
     line. There was a problem, cause the position of the first line was
     parsed with a to low y0 coordinate."""
     source = testdir.tmpdir
-    cmd = f'-i {power.MASTER072_PDF} --text --horizontals --pages=3'
+    cmd = f'-i {power.MASTER072_PDF} --text --line --horizontals --pages=3'
     tests.run(cmd, monkeypatch=monkeypatch)
 
     navigators = serializeraw.create_pagetextnavigators_frompath(source)

@@ -66,6 +66,21 @@ def select_formulas(items, pagenumber: int):
         min_elements=4,
         matcher=lambda x: x[0][3],
     )
+
+    def bounding(cluster):
+        bounds = utila.rectangle_max([item[0] for item in cluster])
+        return bounds
+
+    # merge single cluster to group them to bigger formula
+    merged = utila.intersecting_rectangle_cluster(  # pylint:disable=E1101
+        clustered,
+        bounding=bounding,
+    )
+
+    clustered = [
+        item[0] if len(item) == 1 else utila.flatten(item) for item in merged
+    ]
+
     result = []
     for cluster in clustered:
         content = cluster[:]

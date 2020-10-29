@@ -21,12 +21,14 @@ PACKAGE = rawmaker.PROCESS
 power.setup(rawmaker.ROOT)
 
 RESOURCES = [
-    (power.BACHELOR056_PDF, '14:34'),
+    (power.BACHELOR056_PDF, '0:34'),
     (power.BACHELOR051_PDF, '25:35'),
     (power.BOOK007_PDF, None),
     (power.DOCU13_PDF, None),
     (power.BACHELOR090_PDF, '76:81'),
     (power.DOCU07_PDF, None),
+    (power.DOCU09_PDF, None),
+    (power.MASTER072_PDF, '0:10'),
     (power.MASTER098_PDF, '53:61'),
     (power.BACHELOR063_PDF, '24:28'),
 ]

@@ -39,14 +39,13 @@ import rawmaker.reader
         [
             '𝐽𝑇𝑟𝑎𝑛𝑠=𝑟𝑅2𝑎𝑑·(𝑚𝑣+𝑚𝑧).',
             '𝐽𝐺𝑒𝑠=𝐽𝑇𝑟𝑎𝑛𝑠+𝐽𝑅𝑜𝑡.',
-            '𝐹𝐴,𝑟𝑜𝑡=1/𝑟𝑅𝑎𝑑𝐽𝑅𝑜𝑡𝜔˙W,',
-            '𝐹𝐴,𝑡𝑟𝑎𝑛𝑠=1/𝑟𝑅𝑎𝑑𝐽𝑇𝑟𝑎𝑛𝑠𝜔˙W.',
+            '((22..1156))',
+            '𝐹𝐴𝐹,𝑡𝐴𝑟,𝑎𝑟𝑛𝑜𝑠𝑡==11//𝑟𝑟𝑅𝑅𝑎𝑎𝑑𝑑𝐽𝐽𝑅𝑇𝑟𝑜𝑎𝑡𝑛𝜔˙𝑠W𝜔˙W,.',
             '𝐹𝐴=1/𝑟𝑅𝑎𝑑(𝐽𝑅𝑜𝑡+𝐽𝑇𝑟𝑎𝑛𝑠).',
             '𝐸𝑊=𝑥𝐹𝑊(𝑠)·𝑑𝑠',
             '𝐸𝑊,𝑘𝑜𝑛𝑠=[𝐹𝑆𝑡(𝑠)+𝐹𝐴(𝑠)]·𝑑𝑠,',
             '𝐸𝑊,𝑑𝑖𝑠𝑠=[𝐹𝐿(𝑠)+𝐹𝑅(𝑠)]·𝑑𝑠.',
-            '𝑃𝑊=𝐹𝑊(𝑣𝑥)𝑣𝑥,',
-            '=0.5𝜌𝐿𝑐𝑤𝐴𝑣𝑣𝑥3+𝑣𝑥[︂(𝑚𝑣+𝑚𝑧)𝑔𝑓𝑅cos𝛼𝑆𝑡+1]︂.(2.22)',
+            '𝑃𝑊==𝐹0.𝑊5𝜌(𝐿𝑣𝑐𝑥𝑤)𝑣𝐴𝑥𝑣,𝑣𝑥3+𝑣𝑥[︂(𝑚𝑣+𝑚𝑧)𝑔𝑓𝑅cos𝛼𝑆𝑡+𝑟𝑅1𝑎𝑑𝐽𝐺𝑒𝑠]︂.((22..2212))',
         ],
     ),
 ])
@@ -60,7 +59,6 @@ def test_extract_math_master116_page_x(page, expected):
     assert raw == expected
 
 
-@pytest.mark.xfail(reason='support multiple formulas')
 def test_extract_math_master116_page23_multiple_lines():
     source = power.MASTER116_PDF
     with rawmaker.reader.read(source) as pdf:

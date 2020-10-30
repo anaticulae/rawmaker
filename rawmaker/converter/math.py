@@ -143,7 +143,13 @@ def render_pagecontent(item, pagenumber):
         if not text:
             utila.debug(f'empty char: {pagenumber} {location} {size}')
             continue
-        result.append((location, size, text))
+        if len(text) == 1:
+            result.append((location, size, text))
+        else:
+            # support multiple chars like `fi`
+            for single in text:
+                # TODO: ADJUST BOUNDING
+                result.append((location, size, single))
     return result
 
 

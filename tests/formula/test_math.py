@@ -86,3 +86,12 @@ def test_extract_math_master110_page62_83():
     loaded = serializeraw.load_rawformulas(dumped)
 
     assert loaded == extracted
+
+
+def test_extract_math_master110_page67():
+    source = power.MASTER110_PDF
+    with rawmaker.reader.read(source) as pdf:
+        extracted = rawmaker.math.extract_content(pdf, pages=(67,))
+
+    formulas = extracted[0].content
+    assert len(formulas) == 3

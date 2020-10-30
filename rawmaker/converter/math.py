@@ -62,8 +62,8 @@ LAYOUT = pdfminer.layout.LAParams(
 def select_formulas(items, pagenumber: int):
     clustered = utila.same_line_cluster(
         items,
-        max_diff=10,  # TODO: HOLY VALUE
-        min_elements=4,
+        max_diff=15,  # TODO: HOLY VALUE
+        min_elements=1,
         matcher=lambda x: x[0][3],
     )
 
@@ -168,6 +168,8 @@ def isformula(text: str) -> bool:
     False
     >>> isformula('d=1maximalzeDistanz')
     True
+    >>> isformula('d=1−rmaximalzeDistanz.')
+    True
     """
     text = text.strip()
     if no_formula(text):
@@ -183,7 +185,13 @@ ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 
 def special_rate(text: str) -> bool:
+    """\
+    >>> special_rate('d=1−rmaximalzeDistanz.')
+    False
+    """
     if len(text) < 22:  # TODO: HOLY VALUE
+        return False
+    if '=' in text and '−' and numbers(text):
         return False
     alpharate = len([item for item in text if item in ALPHA]) / len(text)
     if alpharate > 0.8:  # TODO: HOLY VALUE
@@ -192,6 +200,10 @@ def special_rate(text: str) -> bool:
 
 
 def no_formula(text: str) -> bool:
+    """\
+    >>> no_formula('d=1−rmaximalzeDistanz.')
+    False
+    """
     if re.match(NO_FORMULA, text):
         return True
     if re.match(r'\([a-zA-Z]\)', text):
@@ -212,3 +224,17 @@ def math_character(text: str) -> bool:
     if '≤' in text:
         return True
     return False
+
+
+def numbers(text):
+    """\
+    >>> numbers('Helmut')
+    []
+    >>> numbers('This is 1 number an 50 apple')
+    [1, 50]
+    """
+    # TODO: MOVE METHOD
+    result = []
+    for number in re.findall(r'\d+', text):
+        result.append(int(number))
+    return result

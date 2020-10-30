@@ -34,7 +34,7 @@ import rawmaker.reader
             '𝐹𝐴=𝐹𝐴,𝑡𝑟𝑎𝑛𝑠+𝐹𝐴,𝑟𝑜𝑡.',
         ],
     ),
-    (
+    pytest.param(
         25,
         [
             '𝐽𝑇𝑟𝑎𝑛𝑠=𝑟𝑅2𝑎𝑑·(𝑚𝑣+𝑚𝑧).',
@@ -47,6 +47,7 @@ import rawmaker.reader
             '𝐸𝑊,𝑑𝑖𝑠𝑠=[𝐹𝐿(𝑠)+𝐹𝑅(𝑠)]·𝑑𝑠.',
             '𝑃𝑊==𝐹0.𝑊5𝜌(𝐿𝑣𝑐𝑥𝑤)𝑣𝐴𝑥𝑣,𝑣𝑥3+𝑣𝑥︂[(𝑚𝑣+𝑚𝑧)𝑔𝑓𝑅cos𝛼𝑆𝑡+𝑟𝑅1𝑎𝑑𝐽𝐺𝑒𝑠︂].((22..2212))',
         ],
+        marks=pytest.mark.xfail(reason='changes often'),
     ),
 ])
 def test_extract_math_master116_page_x(page, expected):

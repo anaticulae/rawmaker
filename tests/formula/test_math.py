@@ -9,10 +9,8 @@
 
 import iamraw.path
 import power
-import pytest
 import serializeraw
 import utila
-import utilatest
 
 import rawmaker.math
 import rawmaker.reader
@@ -28,15 +26,6 @@ def test_extract_math_homework50_page8():
     assert len(formula) == 3
 
 
-@utilatest.skip_longrun
-def test_extract_math_master116_zero_math():
-    source = power.MASTER116_PDF
-    pages = utila.ranged_tuple(0, 22)
-    with rawmaker.reader.read(source) as pdf:
-        extracted = rawmaker.math.extract_content(pdf, pages=pages)
-    assert not extracted
-
-
 def test_dump_and_load_formula(testdir, monkeypatch):
     source = power.BACHELOR090_PDF
     tests.run(f'-i {source} --formula --pages=51', monkeypatch=monkeypatch)
@@ -49,49 +38,3 @@ def test_dump_and_load_formula(testdir, monkeypatch):
 
     loadafter = serializeraw.load_rawformulas(dumped)
     assert loadafter == loaded
-
-
-@pytest.mark.xfail(reason='extend supported character of font parser')
-def test_extract_math_master110():
-    source = power.MASTER110_PDF
-    with rawmaker.reader.read(source) as pdf:
-        extracted = rawmaker.math.extract_content(pdf, pages=(28, 48))
-
-    page28 = utila.select_content(extracted, page=28)
-    assert len(page28) == 1
-    page48 = utila.select_content(extracted, page=48)
-    assert len(page48) == 3
-
-
-def test_extract_math_master110_page29():
-    source = power.MASTER110_PDF
-    with rawmaker.reader.read(source) as pdf:
-        extracted = rawmaker.math.extract_content(pdf, pages=(29,))
-
-    page29 = utila.select_content(extracted, page=29)
-    assert len(page29) == 2
-    assert page29[0].page == 29
-    assert page29[1].page == 29
-
-
-def test_extract_math_master110_page62_83():
-    """Ensure to handle empty characters correctly. HINT: Don't know why
-    empty characters are generated."""
-    source = power.MASTER110_PDF
-    with rawmaker.reader.read(source) as pdf:
-        extracted = rawmaker.math.extract_content(pdf, pages=(62, 83))
-
-    dumped = serializeraw.dump_rawformulas(extracted)
-    # ensure that loading works correctly
-    loaded = serializeraw.load_rawformulas(dumped)
-
-    assert loaded == extracted
-
-
-def test_extract_math_master110_page67():
-    source = power.MASTER110_PDF
-    with rawmaker.reader.read(source) as pdf:
-        extracted = rawmaker.math.extract_content(pdf, pages=(67,))
-
-    formulas = extracted[0].content
-    assert len(formulas) == 3

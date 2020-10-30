@@ -27,7 +27,7 @@ class MathConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         super().receive_layout(ltpage)
         content = []
         for item in ltpage:
-            rendered = render_pagecontent(item)
+            rendered = render_pagecontent(item, pagenumber=ltpage.pageid)
             if not rendered:
                 continue
             content.extend(rendered)
@@ -118,7 +118,7 @@ def create_formula(items, page: int = None) -> iamraw.FormulaRaw:
     return iamraw.FormulaRaw(content=chars, page=page)
 
 
-def render_pagecontent(item):
+def render_pagecontent(item, pagenumber):
     """Collect all figures."""
     if not isinstance(item, pdfminer.layout.LTTextContainer):
         # Figure, line, etc.
@@ -140,6 +140,9 @@ def render_pagecontent(item):
         location = utila.roundme(tuple(char.bbox))
         text = char._text  # pylint:disable=W0212
         size = utila.roundme(char.size)
+        if not text:
+            utila.debug(f'empty char: {pagenumber} {location} {size}')
+            continue
         result.append((location, size, text))
     return result
 

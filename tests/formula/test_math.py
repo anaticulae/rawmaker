@@ -72,3 +72,17 @@ def test_extract_math_master110_page29():
     assert len(page29) == 2
     assert page29[0].page == 29
     assert page29[1].page == 29
+
+
+def test_extract_math_master110_page62():
+    """Ensure to handle empty characters correctly. HINT: Don't know why
+    empty characters are generated."""
+    source = power.MASTER110_PDF
+    with rawmaker.reader.read(source) as pdf:
+        extracted = rawmaker.math.extract_content(pdf, pages=(62,))
+
+    dumped = serializeraw.dump_rawformulas(extracted)
+    # ensure that loading works correctly
+    loaded = serializeraw.load_rawformulas(dumped)
+
+    assert loaded == extracted

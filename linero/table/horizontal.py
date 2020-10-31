@@ -18,6 +18,7 @@ import linero.table.utils
 import linero.utils
 
 
+@utila.profile('strategy:horizontal')
 def run(lines, navigators):
     result = []
     for navigator in navigators:

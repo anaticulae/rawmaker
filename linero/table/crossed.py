@@ -30,6 +30,7 @@ import linero.table.word
 import linero.utils
 
 
+@utila.profile('strategy:crossed')
 def run(lines):
     result = []
     for page in lines:

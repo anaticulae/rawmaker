@@ -25,6 +25,7 @@ TABLE_MIN_LINE_COUNT = configo.HV_INT_PLUS(10)
 TABLE_MIN_HORIZONTAL_VERTICAL_LINE = configo.HV_PERCENT_PLUS(0.9)
 
 
+@utila.profile('strategy:word')
 def run(lines):
     grouped = locate_tables(lines)
     result = judge_tables(grouped)

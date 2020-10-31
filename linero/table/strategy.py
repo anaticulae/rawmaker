@@ -13,16 +13,21 @@ TODO: Add optimal table extraction selector for every single page, cause
 table style can change in document.
 """
 
+import functools
+
+import utila
+
 import linero.table.crossed
 import linero.table.horizontal
 import linero.table.word
 
 
 def run(lines, navigators):
-    crossed = linero.table.crossed.run(lines)
+    crossed = functools.partial(linero.table.crossed.run, lines)
+    latex = functools.partial(linero.table.horizontal.run, lines, navigators)
+    word = functools.partial(linero.table.word.run, lines)
 
-    latex = linero.table.horizontal.run(lines, navigators)
-    word = linero.table.word.run(lines)
+    crossed, latex, word = utila.fork(crossed, latex, word, process=True)
 
     latex_detected = sum([len(item.content) for item in latex])
     word_detected = sum([len(item.content) for item in word])

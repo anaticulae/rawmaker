@@ -14,6 +14,7 @@ import utila
 
 import linero.lines
 import linero.table
+import linero.table.utils
 import linero.utils
 
 

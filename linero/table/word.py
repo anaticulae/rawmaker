@@ -14,6 +14,7 @@ import iamraw
 import utila
 
 import linero.cluster
+import linero.lines
 import linero.table
 
 # a table must have at least this amout of lines

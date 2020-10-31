@@ -9,6 +9,7 @@
 
 import os
 
+import linero.__patch__
 import rawmaker
 
 __version__ = rawmaker.__version__

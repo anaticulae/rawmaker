@@ -8,7 +8,6 @@
 # =============================================================================
 
 import power
-import pytest
 import serializeraw
 import utila
 
@@ -16,8 +15,7 @@ import rawmaker.math
 import rawmaker.reader
 
 
-@pytest.mark.xfail(reason='extend supported character of font parser')
-def test_extract_math_master110():
+def test_extract_math_master110_page28_48():
     source = power.MASTER110_PDF
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.math.extract_content(pdf, pages=(28, 48))
@@ -60,3 +58,12 @@ def test_extract_math_master110_page67():
 
     formulas = extracted[0].content
     assert len(formulas) == 3
+
+
+def test_extract_math_master110_page59():
+    source = power.MASTER110_PDF
+    with rawmaker.reader.read(source) as pdf:
+        extracted = rawmaker.math.extract_content(pdf, pages=(59,))
+
+    formulas = extracted[0].content
+    assert len(formulas) == 7  # may change later

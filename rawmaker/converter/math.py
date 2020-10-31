@@ -131,7 +131,11 @@ def render_pagecontent(item, pagenumber):
     content = lines[0]
     if len(content) >= 50:
         # TODO: REPLACE THIS BAD SELECTOR
-        return None
+        raw = ''.join([char._text for char in content._objs])  # pylint:disable=W0212
+        alpharate = token_alpha_rate(raw)
+        if alpharate and alpharate > 0.5:  # TODO: HOLY VALUE
+            # may a list of words
+            return None
     # text = content.get_text().strip()
     # whitequote = len([item for item in text if item == ' ']) / len(text)
     for char in content._objs:  # pylint:disable=W0212
@@ -169,6 +173,8 @@ def isformula(text: str) -> bool:
     >>> isformula('d=1maximalzeDistanz')
     True
     >>> isformula('d=1−rmaximalzeDistanz.')
+    True
+    >>> isformula('+41;1[3;0+1;2][0;3+2;1')
     True
     """
     text = text.strip()
@@ -212,7 +218,7 @@ def no_formula(text: str) -> bool:
     return False
 
 
-def math_character(text: str) -> bool:
+def math_character(text: str) -> bool:  # pylint:disable=too-many-return-statements
     if '=' in text:
         return True
     if '(' in text and ')' in text:
@@ -222,6 +228,9 @@ def math_character(text: str) -> bool:
     if '∆' in text:
         return True
     if '≤' in text:
+        return True
+    if text.count('+') >= 2:
+        # do not detect + list as formula
         return True
     return False
 
@@ -238,3 +247,11 @@ def numbers(text):
     for number in re.findall(r'\d+', text):
         result.append(int(number))
     return result
+
+
+def token_alpha_rate(text: str) -> float:
+    if not text or not text.strip():
+        return None
+    splitted = text.split()
+    alpha = [item for item in splitted if item.isalpha()]
+    return len(alpha) / len(splitted)

@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import functools
 import operator
 
 import iamraw
@@ -20,19 +21,30 @@ import linero.utils
 
 @utila.profile('strategy:horizontal')
 def run(lines, navigators):
-    result = []
+    todo = []
     for navigator in navigators:
         pagelines = utila.select_page(lines, page=navigator.page)
         if pagelines:
-            extracted = cluster_page(navigator, pagelines.content)
+            todo.append(
+                functools.partial(
+                    cluster_page,
+                    navigator,
+                    pagelines.content,
+                ))
         else:
-            extracted = []
-        result.append(
-            iamraw.PageContentTableBounding(
-                page=navigator.page,
-                content=extracted,
-            ))
+            todo.append(functools.partial(done))
+    extracted = utila.fork(*todo, worker=10, process=True)
+    result = [
+        iamraw.PageContentTableBounding(
+            page=navigator.page,
+            content=content,
+        ) for content, navigator in zip(extracted, navigators)
+    ]
     return result
+
+
+def done():
+    return []
 
 
 def cluster_page(navigator, lines) -> iamraw.TableBoundings:

@@ -2,6 +2,24 @@
 
 Every noteable change is logged here.
 
+## v2.9.0
+
+### Feature
+
+* parallelize horizontal step to improve performance (18e5d3252a74)
+* add profiling information to table strategy steps (c36fe04f9879)
+* fork strategy to reduce required runtime (151338e9bad1)
+* improve long line formula decider (7fd0e314b758)
+* improve formula extractor (c16365a84cf0)
+* create bigger cluster to include more chars into formula (36250b1caf2b)
+
+### Fix
+
+* add missing imports (8ceca10e1ce9)
+* support multiple characters in formula extraction (e6889e59c087)
+* skip empty character to ensure dumper/loader works correctly (88cac3eebdc1)
+* fix page number (2e1e103d5313)
+
 ## v2.8.2
 
 ### Feature

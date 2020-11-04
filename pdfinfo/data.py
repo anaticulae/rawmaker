@@ -26,6 +26,9 @@ class PdfInfo:
     meta: dict = None
 
 
+# TODO: MOVE TO SERIALIZERAW
+
+
 def dump(info: PdfInfo, ext: str = 'json') -> str:
     assert ext in ('yaml', 'json'), ext
     simple = raw(info)

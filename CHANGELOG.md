@@ -2,6 +2,8 @@
 
 Every noteable change is logged here.
 
+## v2.9.1
+
 ## v2.9.0
 
 ### Feature

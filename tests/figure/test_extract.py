@@ -75,11 +75,7 @@ def test_render_master116_page18(monkeypatch, testdir):
 
 
 def test_render_master116_page2_figure_image(monkeypatch, testdir):
-    source = power.MASTER116_PDF
-    cmd = f'-i {source} --pages=2 --figures'
-    tests.run(cmd, monkeypatch=monkeypatch)
-
-    written = utila.file_list('rawmaker__figures_figures')
+    written = extract(power.MASTER116_PDF, 2, monkeypatch)
     # 2 png and 2 yaml files
     expected = 2
     assert len(written) == expected, str(written)
@@ -95,11 +91,7 @@ def test_render_master116_page2_figure_image(monkeypatch, testdir):
     (58, 1),
 ])
 def test_render_bachelor90_pagex_figure(page, expected, monkeypatch, testdir):
-    source = power.BACHELOR090_PDF
-    cmd = f'-i {source} --pages={page} --figures'
-    tests.run(cmd, monkeypatch=monkeypatch)
-
-    written = utila.file_list('rawmaker__figures_figures')
+    written = extract(power.BACHELOR090_PDF, page, monkeypatch)
     # png and yaml files
     expected = expected * 2
     assert len(written) == expected, str(written)
@@ -111,11 +103,14 @@ def test_render_bachelor51_page30_33_figure_image(monkeypatch, testdir):
     have the same name and one image information is lost. Therefore we
     include the pageid id into a central pixel in the middle of the
     figure. As a result of this, we do not lose bounding information."""
-    source = power.BACHELOR051_PDF
-    cmd = f'-i {source} --pages=30,33 --figures'
-    tests.run(cmd, monkeypatch=monkeypatch)
-
-    written = utila.file_list('rawmaker__figures_figures')
+    written = extract(power.BACHELOR051_PDF, '30,33', monkeypatch)
     # 4 png and 4 yaml files
     expected = 8
     assert len(written) == expected, str(written)
+
+
+def extract(source, pages, monkeypatch) -> list:
+    cmd = f'-i {source} --pages={pages} --figures'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    written = utila.file_list('rawmaker__figures_figures')
+    return written

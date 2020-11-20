@@ -101,7 +101,6 @@ def extract_figures(
             device.resources,
             device,
         )
-
         with utila.SkipCollector(pages) as collector:
             for number, page in enumerate(content):
                 if collector.skip(number):

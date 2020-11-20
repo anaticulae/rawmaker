@@ -14,6 +14,7 @@ import pdfminer.pdfdocument
 import pdfminer.pdfinterp
 import pdfminer.pdftypes
 import pdfminer.psparser
+import utila
 
 import rawmaker.converter.basic
 
@@ -25,7 +26,7 @@ class ImageConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         assert callable(imagewriter), imagewriter
         self.imagewriter = imagewriter
         # TODO avoid duplicated parsed, check if we require this?
-        self.parsed = set()
+        self.parsed = utila.Single()
 
     def receive_layout(self, ltpage):
         super().receive_layout(ltpage)
@@ -44,9 +45,11 @@ class ImageConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
             image: pdfminer.layout.LTImage,
             pageid: int,
     ):
-        if image.name in self.parsed:
+        # add pageid to ensure that equal image names from different pages
+        # are not handled as same same.
+        imagename = f'{pageid}_{image.name}'
+        if self.parsed.contains(imagename):
             return
-        self.parsed.add(image.name)
         self.imagewriter(pageid, image)
 
     def render_figure(

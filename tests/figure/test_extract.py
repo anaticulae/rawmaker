@@ -110,7 +110,7 @@ def test_render_bachelor51_page30_33_figure_image(monkeypatch, testdir):
 
 
 def extract(source, pages, monkeypatch) -> list:
-    cmd = f'-i {source} --pages={pages} --figures'
+    cmd = f'-i {source} --pages={pages} --figures --images'
     tests.run(cmd, monkeypatch=monkeypatch)
     written = utila.file_list('rawmaker__figures_figures')
     return written

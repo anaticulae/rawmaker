@@ -26,13 +26,19 @@ def test_image_extract_with_pages_offset(testdir, monkeypatch):
     assert pages == {16, 17}, pages
 
 
-def test_render_master75_page0_10(monkeypatch, testdir):
+def test_render_master75_page0_10_28(monkeypatch, testdir):
     """This document contains images on different pages with the same
     name. Before this fix, these images where ignored cause of the same
     name. After adding the page number to image name, these images are
     extracted correctly."""
-    cmd = f'-i {power.MASTER075_PDF} --pages=0:10 --images'
+    cmd = f'-i {power.MASTER075_PDF} --pages=0:10,28 --images'
     tests.run(cmd, monkeypatch=monkeypatch)
     written = utila.file_list('rawmaker__images_images')
-    expected = 4
+    expected = 8
     assert len(written) == expected, str(written)
+
+    # ensure to define pages correctly
+    images = serializeraw.images.load_image_informations_frompath('.')
+    content = [[item.page for item in page.content] for page in images]
+    pages = utila.flatten(content)
+    assert pages == [0, 8, 28, 28]

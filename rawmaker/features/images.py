@@ -61,6 +61,8 @@ def extract_pages(
         )
     result = []
     for page, images in extracted.items():
+        # convert selected pages to global pages
+        page = convert_pages(page, pages)
         pagecontent = []
         for parsed in images:
             bounding = parsed.bounding
@@ -79,3 +81,14 @@ def extract_pages(
         if pagecontent:
             result.append(PageContentImages(page=page, content=pagecontent))
     return result
+
+
+def convert_pages(page: int, pages: tuple) -> int:
+    """Pdfminer produces directly ascending pages. If we select
+    pages=('0:5,28') pdfminer produces 0, 1, 2, 3, 4, 5. This method
+    convert this to 0, 1, 2, 3, 4, 28."""
+    if pages is None:
+        return page
+    # starting with starting offset
+    offset = min(pages, default=0)
+    return pages[page - offset]

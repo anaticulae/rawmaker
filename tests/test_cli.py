@@ -104,3 +104,12 @@ def test_rawmaker_cli_run_file_without_extention(testdir, monkeypatch):
     source = os.path.join(testdir.tmpdir, 'hello')
     utila.file_copy(power.DOCU27_PDF, source)
     tests.run(f'-i {source}', monkeypatch=monkeypatch)
+
+
+@utilatest.nightly
+def test_rawmaker_with_prefix(testdir, monkeypatch):
+    """Regression test to ensure that horizontal step loads the correct
+    lines when using prefix."""
+    source = power.BACHELOR037_PDF
+    cmd = f'-i {source} --pages=0:5 --prefix=oneline --line --horizontals'
+    tests.run(cmd, monkeypatch=monkeypatch)

@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.9.2
+
+### Fix
+
+* add regression test to ensure prefix work step order (6c78dbea0777)
+* adjust generated pages numbers (336a787a5402)
+* fix skipping wrong images (53e0395b6b11)
+
 ## v2.9.1
 
 ## v2.9.0

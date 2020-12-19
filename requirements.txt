@@ -17,4 +17,4 @@ Pillow==6.1.0
 utila==2.16.1
 configo==0.8.6
 iamraw==4.6.0
-protocol==3.1.6
+protocol==3.2.1

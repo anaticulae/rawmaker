@@ -74,9 +74,9 @@ def superfast(
         result: str,
         pages: list = None,
 ) -> iamraw.Document:
-    pagecount = pdfinfo.pages.determine(document)
     if pages is None:
-        pages = tuple(range(pagecount))
+        pagecount = pdfinfo.pages.determine(document)
+        pages = utila.make_tuple(pagecount)
     chunks = utila.chunks(pages, size=10)
 
     parameter = config.cmdline()

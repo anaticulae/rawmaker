@@ -311,7 +311,15 @@ def ensure_leftright(items):
     # map bounding cause virtual chars has no bounding
     if not items:
         return items
-    current = items[0].box[2]  # x1
+
+    def first_box(items):
+        with contextlib.suppress(AttributeError):
+            return items[0].box[2]  # x1
+        # TODO: WHY X1 AND NOT X0?
+        # TODO: CATCH OUT OF BOUNDS
+        return first_box(items[1:])
+
+    current = first_box(items)
     boundings = []
     for item in items:
         try:

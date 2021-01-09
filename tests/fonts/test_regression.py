@@ -95,3 +95,11 @@ def test_regression_extract_text_and_fonts(pdf, strip, testdir, monkeypatch):
     for index, page in enumerate([page.content for page in position]):
         items = [item[0:3] for item in page]
         assert all(item != (0, 0, 0) for item in items), f'{index} | {items}'
+
+
+def test_arabic_fonts(testdir, monkeypatch):
+    """Line starts with a VirtualChar which crashed bounding box
+    computation."""
+    # TODO: CHECK INFLUENCE OF RIGHT TO LEFT WRITING
+    cmd = f'-i {power.DISS272_PDF} --fonts --pages=246:251'
+    tests.run(cmd, monkeypatch=monkeypatch)

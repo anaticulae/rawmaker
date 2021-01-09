@@ -216,7 +216,7 @@ def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImag
         if ext != 'png':
             # no merge required
             return MergedImage(images[0], ext, bounding)
-        utila.error(f'extraction not supported: {images[0]}')
+        utila.debug(f'extraction not supported: {images[0]}')
 
     image_height = sum(item.srcsize[1] for item in images)
     image_width = images[0].srcsize[0]
@@ -319,7 +319,7 @@ def rgb256_decoder(data, dataspace, bits=8):
                 dataspace[index + 2],
             ])
         except IndexError:
-            utila.error('rgb256 decoder out of bounds')
+            utila.debug('rgb256 decoder out of bounds')
             return data
     result = []
     for item in data:
@@ -334,7 +334,7 @@ def rgb256_decoder(data, dataspace, bits=8):
             else:
                 raise ValueError(f'{bits} bits not supported')
         except IndexError:
-            utila.error('rgb256 decoder out of bounds')
+            utila.debug('rgb256 decoder out of bounds')
             return data
     try:
         data = array.array("B", result).tobytes()

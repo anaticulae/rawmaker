@@ -118,6 +118,7 @@ def strategy(
     return result
 
 
+# TODO: REPLACE WITH UTILA CODE
 def ranges(mini: float, maxi: float, steps: int = 15):
     """Compute parameter.
 

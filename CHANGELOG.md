@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v2.9.5
+
+### Feature
+
+* increase required logging level (68f1cac3a6e2)
+
+### Fix
+
+* fix error in single formula loader (f69b10876f96)
+* fix starting virtual char bounding computation (e7dc0983ecaa)
+* extend outlines to support FitH (ea883179d00c)
+
+### Documentation
+
+* Happy New Year! (c5999fa0b599)
+
 ## v2.9.4
 
 ## v2.9.3

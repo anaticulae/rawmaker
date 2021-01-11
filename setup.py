@@ -64,6 +64,7 @@ if __name__ == "__main__":
                 'linero = linero.cli:main',
                 'pdfinfo = pdfinfo.cli:main',
                 'rawmaker = rawmaker.cli:main',
+                'spacestation = spacestation.cli:main',
             ],
         },
         packages=[
@@ -82,5 +83,7 @@ if __name__ == "__main__":
             'rawmaker.miner',
             'rawmaker.patch',
             'rawmaker.text',
+            'spacestation',
+            'spacestation.features',
         ],
     )

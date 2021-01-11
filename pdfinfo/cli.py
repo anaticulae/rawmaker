@@ -58,8 +58,8 @@ def main():
     )
     args = utila.parse(parser)
     inpath, outpath = utila.sources(args, singleinput=True)
-    # we support only a single path, just run the program more than one if
-    # you want more.
+    # It is only single path supported. Run program multiple times if more
+    # than one analysis is required.
     inpath = inpath[0]
     if args['status']:
         return status(inpath)

@@ -7,6 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import spacestation.serialize
+import spacestation.wspace
 
-def work(source: str) -> str:
-    return ''
+
+def work(source: str, pages: tuple = None) -> str:
+    extracted = spacestation.wspace.extract(source, pages=pages)
+    dumped = spacestation.serialize.dump_wspaces(extracted)
+    return dumped

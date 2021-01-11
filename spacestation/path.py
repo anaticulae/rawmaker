@@ -7,15 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
+import utila
 
-import rawmaker
-import spacestation.path
+import spacestation
 
-__version__ = rawmaker.__version__
 
-ROOT = rawmaker.ROOT
-
-PROCESS = 'spacestation'
-DESCRIPTION = """\
-"""
+def wspace(path: str, prefix: str = '') -> str:
+    return utila.pathconnector(path, spacestation.PROCESS, 'wspace_wspace', prefix) # yapf:disable

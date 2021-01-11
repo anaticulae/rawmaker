@@ -18,11 +18,7 @@ import pdfminer.layout
 import serializeraw
 import utila
 
-# TODO: LTLine - replace with own data structure to reduce dependencies to
-# rawmaker
-LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]
-
-MAX_ENDING_DISTANCE = 3
+MAX_ENDING_DISTANCE = 3  # TODO: HOLY VALUE
 
 
 def work(lines: str, pages: tuple) -> str:

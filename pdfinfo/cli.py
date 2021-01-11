@@ -6,6 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
+
 import os
 
 import utila
@@ -24,36 +25,39 @@ Verify given -i input file that file is a valid pdf file. Extract:
 If no output is given, print validation result to stdout.
 """
 
+COMMANDS = [
+    utila.cli.Flag(
+        '--status',
+        message=('evaluate pdfinfo.json. '
+                 'return 0 if info is valid, 4 if pdfinfo is invalid, '
+                 '2 if pdfinfo does not exists')),
+    utila.cli.Command(
+        longcut='--format',
+        message='choose output format, json is default',
+        args={
+            'nargs': '?',
+            'const': 'auto',
+            'choices': [
+                'json',
+                'yaml',
+            ],
+        })
+]
+
+CONFIG = utila.ParserConfiguration(
+    inputparameter=True,
+    outputparameter=True,
+    prefix=False,
+    verboseflag=True,
+)
+
 
 @utila.saveme
 def main():
-    commands = [
-        utila.cli.Flag(
-            '--status',
-            message=('evaluate pdfinfo.json. '
-                     'return 0 if info is valid, 4 if pdfinfo is invalid, '
-                     '2 if pdfinfo does not exists')),
-        utila.cli.Command(
-            longcut='--format',
-            message='choose output format, json is default',
-            args={
-                'nargs': '?',
-                'const': 'auto',
-                'choices': [
-                    'json',
-                    'yaml',
-                ],
-            })
-    ]
     parser = utila.cli.create_parser(
-        config=utila.ParserConfiguration(
-            inputparameter=True,
-            outputparameter=True,
-            prefix=False,
-            verboseflag=True,
-        ),
+        config=CONFIG,
         description=DESCRIPTION,
-        todo=commands,
+        todo=COMMANDS,
         version=pdfinfo.__version__,
     )
     args = utila.parse(parser)
@@ -63,7 +67,6 @@ def main():
     inpath = inpath[0]
     if args['status']:
         return status(inpath)
-
     # TODO: REPLACE AFTER UPGRADING UTILA
     if args['output'] is None:
         outpath = None
@@ -79,17 +82,14 @@ def validate(inpath, outpath, ext='json') -> int:
         utila.error(f'require valid file resource: {inpath}')
         return utila.INVALID_COMMAND
     assert os.path.exists(inpath), f'invalid inpath: {inpath}'
-
     try:
         parsed = pdfinfo.data.parse(inpath)
     except rawmaker.error.InvalidPDF:
         # not a valid pdf file
         parsed = None
-
     raw = '{}'
     if parsed is not None:
         raw = pdfinfo.data.dump(parsed, ext)
-
     if outpath is None:
         # print to stdout
         utila.log(raw)
@@ -107,7 +107,7 @@ def status(path: str) -> int:
     if not os.path.exists(source):
         utila.error(f'path: {source} does not exists')
         return utila.INVALID_COMMAND
-
+    # load status
     parsed = utila.file_read(source)
     if parsed == '{}':
         return pdfinfo.INVALID_PDF

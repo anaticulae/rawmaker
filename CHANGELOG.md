@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.10.0
+
+### Feature
+
+* add wspace step to extract spaces between words (db4ae12eeadc)
+* add basic skeleton of spacestation application (d239793a9ba5)
+
 ## v2.9.5
 
 ### Feature

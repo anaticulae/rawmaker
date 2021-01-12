@@ -26,6 +26,8 @@ def extract(document: str, pages: tuple = None):
         )
     result = []
     for page in document:
+        if utila.should_skip(page.page, pages):
+            continue
         extracted = extract_page(page)
         result.append(iamraw.PageContent(page=page.page, content=extracted))
     return result

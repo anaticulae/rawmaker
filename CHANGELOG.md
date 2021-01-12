@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.10.2
+
+### Fix
+
+* do not extract not selected pages (f96d039122a1)
+
 ## v2.10.1
 
 ### Fix

@@ -11,6 +11,7 @@ import configo
 import iamraw
 import utila
 
+import rawmaker.features
 import rawmaker.miner.char
 import rawmaker.reader
 

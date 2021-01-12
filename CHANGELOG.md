@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.10.1
+
+### Fix
+
+* add missing import (3b9b0e151111)
+
 ## v2.10.0
 
 ### Feature

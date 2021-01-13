@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.10.3
+
+### Fix
+
+* shrink detected area to bounding box between chars (cd53825a1bff)
+
 ## v2.10.2
 
 ### Fix

@@ -77,9 +77,9 @@ def extract_page(chars: list, maxdiff: callable = diffme) -> list:
             # new word
             # x0, y0, x1, y1
             bounding = iamraw.BoundingBox(
-                min(last[0], bbox[0]),
+                min(last[2], bbox[0]),
                 min(last[1], bbox[1]),
-                max(last[2], bbox[2]),
+                max(last[2], bbox[0]),
                 max(last[3], bbox[3]),
             )
             result.append(bounding)

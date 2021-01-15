@@ -30,12 +30,13 @@ def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
 
 @pytest.mark.parametrize('source, expected', [
     pytest.param(
-        power.link(power.DOCU13_PDF),
+        power.DOCU13_PDF,
         [0, 0, 1, 3, 3, 5, 2, 5, 6, 4, 5, 3, 1],
         id='vim',
     ),
 ])
 def test_table_extract(source, expected):
+    source = power.link(source)
     source = iamraw.path.line(source)
     loaded = serializeraw.load_lines(source)
     # add empty lines, cause pages without lines will be ignored, we
@@ -74,44 +75,44 @@ def test_table_extract_negative():
 
 @pytest.mark.parametrize('source, pages, expected', [
     pytest.param(
-        power.link(power.BACHELOR090_PDF),
+        power.BACHELOR090_PDF,
         '75:80',
         [1, 3, 3, 3],
         id='bachelor90',
         marks=pytest.mark.xfail(reason='improve horizontal check'),
     ),
     pytest.param(
-        power.link(power.DOCU13_PDF),
+        power.DOCU13_PDF,
         '2:7',
         [1, 3, 3, 5, 2],
         id='vimguide',
     ),
     pytest.param(
-        power.link(power.DOCU13_PDF),
+        power.DOCU13_PDF,
         '5',
         [5],
         id='vimguide_page5',
     ),
     pytest.param(
-        power.link(power.BACHELOR056_PDF),
+        power.BACHELOR056_PDF,
         '15,18',
         [1, 1],
         id='bachelor56_page15',
     ),
     pytest.param(
-        power.link(power.BACHELOR056_PDF),
+        power.BACHELOR056_PDF,
         '31',
         [2],
         id='bachelor56_page31',
     ),
     pytest.param(
-        power.link(power.DOCU07_PDF),
+        power.DOCU07_PDF,
         '0,1,2',
         [],
         id='notable_howto_pyporting',
     ),
     pytest.param(
-        power.link(power.BACHELOR063_PDF),
+        power.BACHELOR063_PDF,
         '25',
         [1],
         id='bachelor63_singletable',
@@ -119,6 +120,7 @@ def test_table_extract_negative():
 ])
 @utilatest.skip_longrun
 def test_detect_table(source, pages, expected, testdir, monkeypatch):
+    source = power.link(source)
     tests.linero_.run(
         f'-i {source} --pages={pages} --table',
         monkeypatch=monkeypatch,

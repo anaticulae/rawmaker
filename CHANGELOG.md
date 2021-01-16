@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.11.0
+
+### Feature
+
+* merge different table extractor strategies (c90331db3483)
+* skip empty pages (bdfae4886ed4)
+* add first optimizer to verify good rawmaker config (fcdba0935d9e)
+
 ## v2.10.3
 
 ### Fix

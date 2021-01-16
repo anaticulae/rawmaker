@@ -40,6 +40,8 @@ def run(lines, navigators):
             content=content,
         ) for content, navigator in zip(extracted, navigators)
     ]
+    # remove empty pages
+    result = [item for item in result if item.content]
     return result
 
 

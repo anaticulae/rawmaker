@@ -67,6 +67,8 @@ def judge_tables(grouped):
                     lines=item,
                 ))
         result.append(pageresult)
+    # remove empty pages
+    result = [item for item in result if item.content]
     return result
 
 

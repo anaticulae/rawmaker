@@ -31,7 +31,7 @@ def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
 @pytest.mark.parametrize('source, expected', [
     pytest.param(
         power.DOCU13_PDF,
-        [0, 0, 1, 3, 3, 5, 2, 5, 6, 4, 5, 3, 1],
+        [1, 3, 3, 5, 2, 5, 6, 4, 5, 3, 1],
         id='vim',
     ),
 ])

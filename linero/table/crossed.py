@@ -40,6 +40,8 @@ def run(lines):
                 page=page.page,
                 content=extracted,
             ))
+    # remove empty pages
+    result = [item for item in result if item.content]
     return result
 
 

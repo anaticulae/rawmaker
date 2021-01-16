@@ -7,8 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import math
-
 import configo
 import iamraw
 import utila
@@ -72,16 +70,9 @@ def judge_tables(grouped):
     return result
 
 
-def chunks(items, size: int = 1):
-    result = []
-    for index in range(math.ceil(len(items) / size)):
-        result.append(items[index * size:(index + 1) * size])
-    return result
-
-
 def devide(items):
     chunk_size = 50
-    splitted = chunks(items, chunk_size)
+    splitted = utila.chunks(items, chunk_size)
     pre = []
     for chunk in splitted:
         clustered = linero.cluster.run(chunk)

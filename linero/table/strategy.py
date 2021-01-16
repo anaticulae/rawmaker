@@ -15,6 +15,7 @@ table style can change in document.
 
 import functools
 
+import iamraw
 import utila
 
 import linero.table.crossed
@@ -32,6 +33,32 @@ def run(lines, navigators):
     latex_detected = sum([len(item.content) for item in latex])
     word_detected = sum([len(item.content) for item in word])
     crossed_detected = sum([len(item.content) for item in crossed])
+
+    utila.log(f'latex:   {latex_detected}')
+    utila.log(f'word:    {word_detected}')
+    utila.log(f'crossed: {crossed_detected}')
+
+    result = select_best(latex, word, crossed)
+    return result
+
+
+def select_best(latexs, words, crosseds) -> iamraw.PageContentTableBoundings:
+    result = []
+    synced = utila.sync_pages([latexs, words, crosseds], numbers=False)
+    for latex, word, crossed in synced:
+        selected = select_page(latex, word, crossed)
+        result.append(selected)
+    return result
+
+
+def select_page(latex, word, crossed):
+    latex = latex or []
+    word = word or []
+    crossed = crossed or []
+
+    latex_detected = len(latex)
+    word_detected = len(word)
+    crossed_detected = len(crossed)
 
     result = crossed
     if word_detected > crossed_detected:

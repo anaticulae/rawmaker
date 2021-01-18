@@ -97,6 +97,7 @@ def test_regression_extract_text_and_fonts(pdf, strip, testdir, monkeypatch):
         assert all(item != (0, 0, 0) for item in items), f'{index} | {items}'
 
 
+@utilatest.nightly
 def test_arabic_fonts(testdir, monkeypatch):
     """Line starts with a VirtualChar which crashed bounding box
     computation."""

@@ -9,6 +9,7 @@
 
 import power
 import pytest
+import utilatest
 
 import spacestation
 import spacestation.serialize
@@ -34,6 +35,7 @@ def test_wspace_extract_diss266_pagex(page, expected):
     assert len(extracted) == expected  # VALIDATED!
 
 
+@utilatest.longrun
 def test_wspace_cli_bachelor56(testdir, monkeypatch):
     source = power.BACHELOR056_PDF
     cmd = f'-i {source}'

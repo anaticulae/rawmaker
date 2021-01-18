@@ -69,8 +69,9 @@ def merge_neighbours(items) -> list:
         if item:
             collected.extend(item)
         else:
-            result.append(collected)
-            collected = []
+            if collected:
+                result.append(collected)
+                collected = []
     if collected:
         result.append(collected)
     return result

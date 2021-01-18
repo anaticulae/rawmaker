@@ -60,6 +60,7 @@ def cluster(items):
 
 
 def merge_neighbours(items) -> list:
+    # TODO: REPLACE WITH UTILA.GROUPBY_NEIGHBORS
     if not items:
         return items
     result = []

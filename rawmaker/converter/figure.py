@@ -198,8 +198,7 @@ def render(item, offset, scale, renderer, rawbuffer):  # pylint:disable=R0914
         resized = raw.resize(size, resample=PIL.Image.ANTIALIAS)
         rawbuffer.paste(resized, location)
     else:
-        # TODO: LOG NOT SUPPORTED
-        pass
+        utila.error(f'not supported: could not render {item}')
 
 
 def scale_bounding(bounding: tuple, scale: tuple) -> tuple:

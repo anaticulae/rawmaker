@@ -30,5 +30,10 @@ EXAMPLE = [
 
 
 def test_create_textfigures():
-    result = rawmaker.figure.text.text_figures(EXAMPLE)
+    result = rawmaker.figure.text.text_figures(
+        EXAMPLE,
+        width_min=50,
+        height_min=50,
+        area_min=50 * 50,
+    )
     assert len(result) == 1

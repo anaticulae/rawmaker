@@ -36,17 +36,23 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
 
     def receive_layout(self, ltpage):
         super().receive_layout(ltpage)
+        pagesize = (ltpage.width, ltpage.height)
         for item in ltpage:
-            self.render_pagecontent(self.page, item)
+            self.render_pagecontent(self.page, item, pagesize)
 
-    def render_pagecontent(self, pageid, item):
+    def render_pagecontent(self, pageid, item, pagesize=None):
         """Collect all figures."""
         if isinstance(item, pdfminer.layout.LTFigure):
             self.render_figure(item, pageid=pageid)
             return
-        if isinstance(item, pdfminer.layout.LTTextBoxHorizontal):
-            # skip character in first render approach
+        if not valid_area(item.bbox, pagesize):
+            # check after figure to avoid skipping figure
             return
+        if isinstance(item, pdfminer.layout.LTTextBoxHorizontal):
+            # skip content lines
+            text = item.get_text().strip()
+            if not text or len(text) > 10:  # TODO: IMRPOVE SELECTOR
+                return
         self.nonfigure[pageid].append(item)
 
     def render_figure(self, item: pdfminer.layout.LTFigure, pageid: int):
@@ -64,6 +70,18 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         if merged:
             self.content.extend(merged)
         return self.content
+
+
+def valid_area(bbox: utila.Rectangle, pagesize: tuple, borderwidth=65) -> bool:
+    inside = (
+        borderwidth,
+        borderwidth,
+        pagesize[0] - borderwidth,
+        pagesize[1] - borderwidth,
+    )
+    if utila.rectangle_inside(inside, bbox):
+        return True
+    return False
 
 
 def leftupper_dot(raw, unique: int):

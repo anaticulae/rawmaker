@@ -8,6 +8,7 @@
 # =============================================================================
 
 import iamraw
+import pdfminer.layout
 import utila
 
 import rawmaker.figure.utils
@@ -28,14 +29,26 @@ def text_figures(
         raw = rawmaker.figure.utils.rawfigure_frombounding(bounding)
         figure = iamraw.Figure(data=raw, bounding=bounding)
         result.append(figure)
-    # remove to small figures
+    # remove too small figures, disable for cluster which contains
+    # rectangle, lines, curve etc.
     result = [
-        item for item in result
-        if rectangle_width(item.bounding) >= width_min and
-        rectangle_height(item.bounding) >= height_min and
+        item for item in result if not textonly(item.bounding, items) or
+        (rectangle_width(item.bounding) >= width_min or
+         rectangle_height(item.bounding) >= height_min) and
         utila.rectangle_size(item.bounding) >= area_min
     ]
     return result
+
+
+def textonly(bounding, items: list) -> bool:
+    notext = [
+        item for item in items
+        if not isinstance(item, pdfminer.layout.LTTextBoxHorizontal)
+    ]
+    for item in notext:
+        if utila.rectangle_inside(bounding, item.bbox, diff=10):
+            return False
+    return True
 
 
 def rectangle_width(rectangle):  # TODO: MOVE TO UTILA

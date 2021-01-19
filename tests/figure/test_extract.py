@@ -77,7 +77,7 @@ def test_render_master116_page18(monkeypatch, testdir):
 
 def test_render_master116_page2_figure_image(monkeypatch, testdir):
     written = extract(power.MASTER116_PDF, 2, monkeypatch)
-    # 2 png and 2 yaml files
+    # 1 png and 1 yaml files
     expected = 2
     assert len(written) == expected, str(written)
 

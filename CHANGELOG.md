@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.12.0
+
+### Feature
+
+* disable figure check for figures with more than text (647b2a8967a1)
+* make figure detector more optimistic (4164c4b57a18)
+
+### Fix
+
+* do not merge empty collected (1ecb584e5da5)
+
 ## v2.11.0
 
 ### Feature

@@ -46,3 +46,6 @@ install {ROOT}
 
 run power --all {tests.resources.RESOURCES}
 """
+
+security = utilatest.register_marker('security')
+font = utilatest.register_marker('font')

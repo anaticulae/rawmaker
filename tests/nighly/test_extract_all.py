@@ -37,10 +37,13 @@ def pdf():
     return result
 
 
-def convert_path(path: str) -> str:
+def convert_path(path: str, name_length_max: int = 35) -> str:
     """Convert to relative and forward slashed path, remove leading slash."""
     relative = utila.make_relative(path, power.REPOSITORY)
     result = relative.replace('\\', '_')[1:]
+    result = result.replace('/', '_')
+    result = result.replace('.', '_')
+    result = result[-name_length_max:]
     return result
 
 

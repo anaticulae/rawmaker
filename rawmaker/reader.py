@@ -28,7 +28,7 @@ def read(path: str, password: str = None) -> PDFDocument:
         path(str): path to pdf-file
         password(str): optional password to extract encrypted data
     Raises:
-        TextExtractNotAllowed: if not extraction is allowed - currently disabled
+        TextExtractNotAllowed: if no extraction is allowed - currently disabled
         FileNotFoundError: `path` does not exists
         ValueError: `path` is not a file
     Yields:

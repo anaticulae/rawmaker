@@ -97,7 +97,7 @@ def select_formulas(items, pagenumber: int):
     return result
 
 
-def groupby_xdiff(items):
+def groupby_xdiff(items, xdiff_max: float = 35.0):  # TODO: HOLY VALUE
     """Split chars in a row which are too wide that there can build a
     formula group."""
     if not items:
@@ -106,7 +106,7 @@ def groupby_xdiff(items):
     for char in items[1:]:
         before = result[-1][-1][0][2]  #x1
         current = char[0][0]  # x0
-        if utila.near(before, current, diff=35.0):  # TODO: HOLY VALUE
+        if utila.near(before, current, diff=xdiff_max):
             result[-1].append(char)
         else:
             result.append([char])

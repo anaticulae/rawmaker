@@ -24,10 +24,17 @@ def image_tobytes(image) -> bytes:
 WHITE = 1
 RGBA = 'RGBA'
 
+IMAGE_WIDTH_MAX = 1024
+IMAGE_HEIGHT_MAX = 768
+
 
 def rawfigure_frombounding(bbox, mode=RGBA, background=WHITE) -> PIL.Image:
     width = (bbox[2] - bbox[0])
     height = (bbox[3] - bbox[1])
+
+    # limit max figure size to avoid too much memory consumption
+    width = utila.mins(width, IMAGE_WIDTH_MAX)
+    height = utila.mins(height, IMAGE_HEIGHT_MAX)
 
     # ensure positive figure size
     if width < 0 or height < 0:

@@ -80,7 +80,7 @@ def test_rawmaker_linero(source, monkeypatch):
     # only in nighly tests.
     layout = '--char_margin 5.0 --boxes_flow 1.0 --line_margin 0.3'
     pages = '' if utilatest.NIGHTLY else '--page=0:5'
-    cmd = f'-i {source} {layout} -j=8 {pages} -VVV'
+    cmd = f'-i {source} {layout} -j=8 {pages}'
     tests.run(cmd, monkeypatch=monkeypatch)
 
     tests.linero_.run('', monkeypatch=monkeypatch)

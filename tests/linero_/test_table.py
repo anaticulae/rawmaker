@@ -177,3 +177,10 @@ def test_detect_table_bachelor56(testdir, monkeypatch):
 
     tables = utila.flatten([item.content for item in loaded])
     assert len(tables) == 7  # TODO: NOT VALIDATED
+
+
+@pytest.mark.timeout(30)
+def test_master112_bachelor_timeout(testdir, monkeypatch):
+    source = power.link(power.MASTER112_PDF)
+    cmd = f'-i {source} --table --pages=110'
+    tests.linero_.run(cmd, monkeypatch=monkeypatch)

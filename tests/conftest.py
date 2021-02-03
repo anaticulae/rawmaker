@@ -17,6 +17,7 @@ import tests.resources
 pytest_plugins = ['pytester', 'xdist']  # pylint: disable=invalid-name
 
 PACKAGE = rawmaker.PROCESS
+WORKER = 6
 
 power.setup(rawmaker.ROOT)
 
@@ -44,7 +45,7 @@ def extract(resources):
         f'rawmaker -i {source} -o {power.link(source)} -j=8 --pages={strpages(pages)}'
         for source, pages in resources
     ]
-    completed = utila.run_parallel(todo)
+    completed = utila.run_parallel(todo, worker=WORKER)
     assert completed == utila.SUCCESS
 
 

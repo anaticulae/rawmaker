@@ -609,32 +609,49 @@ def mylayout(page: iamraw.Page) -> iamraw.Page:
     children = page.children
     if not children:
         return page
-    vertical, horizontal = utila.partition(
+    verticals, horizontal = utila.partition(
         lambda x: isinstance(x, iamraw.VerticalTextContainer),
         children,
     )
-    vertical = merge_neighbors(vertical)
+    verticals = merge_neighbors(
+        verticals,
+        horizontal=False,
+        ydiff=15.0,
+        xdiff=15.0,
+    )
     horizontal = merge_neighbors(horizontal)
-    page.children = horizontal + vertical
+    page.children = horizontal + verticals
     return page
 
 
-def merge_neighbors(children) -> list:
+def merge_neighbors(
+        children: list,
+        xdiff: float = 10.0,
+        ydiff: float = 5.0,
+        horizontal: bool = True,
+) -> list:
+    # TODO: IMPROVE VERTICAL MERGER
     if not children:
         return []
     # ensure to sort items top to bottom and left to right. It is
     # important to connect only neighbored items to avoid conflicts in
     # bounding computation. See: test_mylayout_bounding_extraction_bug
     # Use y1 as lower text line.
-    children = sorted(children, key=lambda x: x.box[0])  # leftright
-    children = sorted(children, key=lambda x: x.box[3])  # topdown
+    if horizontal:
+        children = sorted(children, key=lambda x: x.box[0])  # leftright
+        children = sorted(children, key=lambda x: x.box[3])  # topdown
+    else:
+        # vertical
+        # bottom up
+        children = sorted(children, key=lambda x: x.box[1], reverse=True)
+        children = sorted(children, key=lambda x: x.box[0])  # leftright
     result = [children[0]]
     for item in children[1:]:
         before = result[-1]
         # TODO: MAKE THIS SIZE DEPENDENT
         # TODO: HOLY VALUE
-        ynear = utila.near(item.box[3], before.box[3], diff=5.0)
-        xnear = utila.near(item.box[0], before.box[2], diff=10.0)
+        ynear = utila.near(item.box[3], before.box[3], diff=ydiff)
+        xnear = utila.near(item.box[0], before.box[2], diff=xdiff)
         if ynear and xnear:
             # merge before
             # remove last char/newline

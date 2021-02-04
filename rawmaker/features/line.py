@@ -84,6 +84,7 @@ def lines(
             pdfminer.layout.LTLine,
             pdfminer.layout.LTRect,
             pdfminer.layout.LTFigure,
+            pdfminer.layout.LTCurve,
         ),
         pages=pages,
     )
@@ -91,6 +92,7 @@ def lines(
         pdfminer.layout.LTLine: accept_ltline,
         pdfminer.layout.LTRect: accept_ltrect,
         pdfminer.layout.LTTextBoxHorizontal: accept_text_as_line,
+        pdfminer.layout.LTCurve: accept_curve_as_line,
         pdfminer.layout.LTFigure: accept_figure_as_line,
     }
     result = []
@@ -174,6 +176,21 @@ def accept_figure_as_line(figure: pdfminer.layout.LTFigure) -> bool:
     if accept_ltline(content[0]):
         return True
     if figure_special_line(figure):
+        return True
+    return False
+
+
+def accept_curve_as_line(curve: pdfminer.layout.LTCurve) -> bool:
+    points = curve.pts
+    if len(points) == 2:
+        # start and end point
+        return True
+    # more than two points in a row, check if point are on a line
+    # [(437.04645, 259.38056), (437.04645, 293.26655), (437.04645, 269.60483999999997)]
+    items = [(*first, *second) for first, second in zip(points[:-1], points[1:])] # yapf:disable
+    merged = merge_lines(items)
+    if len(merged) == 1:
+        # all lines in a row
         return True
     return False
 

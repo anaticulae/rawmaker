@@ -21,9 +21,12 @@ Example:
 
 """
 
+import iamraw
 import serializeraw
 
 import linero.table.strategy
+
+LINES_PER_PAGE_MAX = 100
 
 
 def work(
@@ -33,6 +36,7 @@ def work(
         pages: tuple = None,
 ) -> str:
     lines = serializeraw.load_lines(lines, pages=pages)
+    lines = limit_lines(lines)
 
     navigators = serializeraw.create_pagetextnavigators_fromfile(
         text,
@@ -47,3 +51,12 @@ def work(
 
     dumped = serializeraw.dump_tables(result)
     return dumped
+
+
+def limit_lines(lines):
+    # TODO: DISABLE AFTER HAVING BETTER CLUSTER STRATEGY
+    result = []
+    for page in lines:
+        content = [] if len(page.content) > LINES_PER_PAGE_MAX else page.content
+        result.append(iamraw.PageContentLine(page=page.page, content=content))
+    return result

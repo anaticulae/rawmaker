@@ -122,10 +122,13 @@ def test_table_extract_negative():
 @utilatest.skip_longrun
 def test_detect_table(source, pages, expected, testdir, monkeypatch):
     source = power.link(source)
-    tests.linero_.run(
-        f'-i {source} --pages={pages} --table',
-        monkeypatch=monkeypatch,
-    )
+    with monkeypatch.context() as context:
+        # TODO: REMOVE AFTER UPGRADING CLUSTER STRATEGY
+        context.setattr(linero.features.table, 'LINES_PER_PAGE_MAX', 180)
+        tests.linero_.run(
+            f'-i {source} --pages={pages} --table',
+            monkeypatch=monkeypatch,
+        )
     tables = linero.path.table(testdir.tmpdir)
     loaded = serializeraw.load_tables(tables)
 

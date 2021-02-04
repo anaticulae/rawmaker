@@ -33,8 +33,8 @@ def text_figures(
     # rectangle, lines, curve etc.
     result = [
         item for item in result if not textonly(item.bounding, items) or
-        (rectangle_width(item.bounding) >= width_min or
-         rectangle_height(item.bounding) >= height_min) and
+        (utila.rectangle_width(item.bounding) >= width_min or
+         utila.rectangle_height(item.bounding) >= height_min) and
         utila.rectangle_size(item.bounding) >= area_min
     ]
     return result
@@ -49,14 +49,6 @@ def textonly(bounding, items: list) -> bool:
         if utila.rectangle_inside(bounding, item.bbox, diff=10):
             return False
     return True
-
-
-def rectangle_width(rectangle):  # TODO: MOVE TO UTILA
-    return rectangle[2] - rectangle[0]
-
-
-def rectangle_height(rectangle):
-    return rectangle[3] - rectangle[1]
 
 
 MIN_CLUSTER_SIZE = 25
@@ -75,9 +67,10 @@ def cluster(  # pylint:disable=R0914
         for coordinate in utila.ranges(start, end, step=5):
             bucket.add(utila.roundme(coordinate))
 
-    content = list(bucket)
-    content = merge_neighbours(content)
+    content = list(bucket)  # TODO: REMOVE after upgrading UTILA
+    content = utila.groupby_neighbors(content)
 
+    # TODO: CHECK MIN_CLUSTER_SIZE CAUSE SET REMOVES ITEMS OUT OF CONTENT
     selected = [set(item) for item in content if len(item) >= min_cluster_size]
 
     result = []
@@ -93,22 +86,4 @@ def cluster(  # pylint:disable=R0914
         x1 = max(item[2] for item in incluster)
         bounding = (x0, y0, x1, y1)
         result.append(bounding)
-    return result
-
-
-def merge_neighbours(items) -> list:
-    # TODO: REPLACE WITH UTILA.GROUPBY_NEIGHBORS
-    if not items:
-        return items
-    result = []
-    collected = []
-    for item in items:
-        if item:
-            collected.extend(item)
-        else:
-            if collected:
-                result.append(collected)
-                collected = []
-    if collected:
-        result.append(collected)
     return result

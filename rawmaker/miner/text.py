@@ -630,16 +630,12 @@ def mylayout(page: iamraw.Page) -> iamraw.Page:
             if len(item.lines) >= 2:
                 before.lines.extend(item.lines[1:])
             # adjust bounding
-            before.box = update_tuple(
-                before.box, index=2, value=item.box[2])  # TODO: UGLY
+            before.box = utila.update_tuple(
+                data=tuple(before.box),  # REMOVE TUPLE LATER
+                value=item.box[2],
+                index=2,
+            )
         else:
             result.append(item)
     page.children = result
     return page
-
-
-def update_tuple(data, index, value) -> tuple:
-    # TODO: REPLACE WITH UTILA CODE
-    data = list(data)
-    data[index] = value
-    return tuple(data)

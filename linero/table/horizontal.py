@@ -67,8 +67,8 @@ def cluster_page(navigator, lines) -> iamraw.TableBoundings:
     result = []
     grouped_horizontals = linero.table.utils.group_horizontals(horizontals)
     for group in grouped_horizontals:
-        # if len(group) <= 2:
-        #     continue
+        if len(group) <= 1:
+            continue
         double_table = extract_potential_table(
             boundings,
             group,
@@ -133,7 +133,7 @@ def extract_potential_table(boundings, horizontals, min_elements=2):
         if len(group) < 2:
             # TODO: MULTIPLE ITEMS IN ONLY ONE GROUP BETWEEN HORIZONTAL LINES
             continue
-        topline = horizontals[group[0] - 1]
+        topline = horizontals[group[0]]
         # double content below table?
         bottomline = horizontals[min((group[-1], len(horizontals) - 1))]
         table = utila.rectangle_max((topline, bottomline))

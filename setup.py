@@ -8,65 +8,37 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-from os.path import dirname
-from os.path import join
-from re import search
+import os
+import re
 
-from setuptools import setup
+import setuptools
 
-ROOT = dirname(__file__)
-with open(join(ROOT, 'README.md'), 'rt', encoding='utf8') as fp:
+ROOT = os.path.abspath(os.path.dirname(__file__))
+
+with open(os.path.join(ROOT, 'README.md'), encoding='utf8') as fp:
     README = fp.read()
 
-with open(join(ROOT, 'rawmaker/__init__.py'), 'rt', encoding='utf8') as fp:
-    VERSION = search(r'__version__ = \'(.*?)\'', fp.read()).group(1)
+with open(os.path.join(ROOT, 'rawmaker/__init__.py'), encoding='utf8') as fp:
+    VERSION = re.search(r'__version__ = \'(.*?)\'', fp.read()).group(1)
 
-with open(join(ROOT, "requirements.txt"), mode='rt', encoding='utf8') as fp:
-    INSTALL_REQUIRES = [
-        line for line in fp.readlines() if line and '#' not in line
-    ]
-
-with open(join(ROOT, "requirements.dev"), mode='rt', encoding='utf8') as fp:
-    TEST_REQUIRES = [
-        line for line in fp.readlines() if line and '#' not in line
-    ]
-
-
-def datafiles():
-    return [('.', [
-        'CHANGELOG.md',
-        'README.md',
-        'requirements.txt',
-    ])]
-
+with open(os.path.join(ROOT, "requirements.txt"), encoding='utf8') as fp:
+    REQUIRES = [line for line in fp.readlines() if line and '#' not in line]
 
 if __name__ == "__main__":
-    setup(
+    setuptools.setup(
         author='Helmut Konrad Fahrendholz',
         author_email='kiwi@derspanier.de',
-        data_files=datafiles(),
         description='Covert PDF to raw data',
-        include_package_data=True,
-        install_requires=INSTALL_REQUIRES,
-        tests_require=TEST_REQUIRES,
+        install_requires=REQUIRES,
         long_description=README,
         name='rawmaker',
         platforms='any',
-        url='https://dev.packages/checkitweg.de/rawmaker',
+        url='https://rawmaker.dev.packages/checkitweg.de',
         version=VERSION,
         zip_safe=False,  # create 'zip'-file if True. Don't do it!
         classifiers=[
             'Programming Language :: Python :: 3.8',
         ],
-        entry_points={
-            'console_scripts': [
-                'letty = letty.cli:main',
-                'linero = linero.cli:main',
-                'pdfinfo = pdfinfo.cli:main',
-                'rawmaker = rawmaker.cli:main',
-                'spacestation = spacestation.cli:main',
-            ],
-        },
         packages=[
             'letty',
             'letty.quality',
@@ -86,4 +58,13 @@ if __name__ == "__main__":
             'spacestation',
             'spacestation.features',
         ],
+        entry_points={
+            'console_scripts': [
+                'letty = letty.cli:main',
+                'linero = linero.cli:main',
+                'pdfinfo = pdfinfo.cli:main',
+                'rawmaker = rawmaker.cli:main',
+                'spacestation = spacestation.cli:main',
+            ],
+        },
     )

@@ -116,8 +116,9 @@ def test_boxes_determine_horizontals_master72pages():
     horizontals = utila.flatten(horizontals)
     assert len(horizontals) == 6, horizontals
     yvalue = [item.box.y0 for item in horizontals]
-    expected = [405, 690, 714, 740, 720, 760]
-    assert all((item >= exp for item, exp in zip(yvalue, expected))), yvalue
+    expects = [398, 690, 714, 745, 725, 760]
+    for curr, exp in zip(yvalue, expects):
+        assert utila.near(curr, exp, diff=5.0), (f'{curr}; {exp}')
 
 
 def test_boxes_determine_boxes_bachelor56_titlepage():

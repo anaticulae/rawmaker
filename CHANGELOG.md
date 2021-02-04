@@ -2,6 +2,19 @@
 
 Every noteable change is logged here.
 
+## v2.13.0
+
+### Feature
+
+* limit max lines per content page (0eb3036a818c)
+* limit max figure size to save memory consumption (4897d4c16660)
+* accept curves as lines (12a28dff3115)
+* make merging orientation depended (2e7f2ac4c80e)
+
+### Fix
+
+* add workaround to pass tests, rework later (c8cf85a9de38)
+
 ## v2.12.1
 
 ## v2.12.0

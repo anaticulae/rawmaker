@@ -609,6 +609,19 @@ def mylayout(page: iamraw.Page) -> iamraw.Page:
     children = page.children
     if not children:
         return page
+    vertical, horizontal = utila.partition(
+        lambda x: isinstance(x, iamraw.VerticalTextContainer),
+        children,
+    )
+    vertical = merge_neighbors(vertical)
+    horizontal = merge_neighbors(horizontal)
+    page.children = horizontal + vertical
+    return page
+
+
+def merge_neighbors(children) -> list:
+    if not children:
+        return []
     # ensure to sort items top to bottom and left to right. It is
     # important to connect only neighbored items to avoid conflicts in
     # bounding computation. See: test_mylayout_bounding_extraction_bug
@@ -637,5 +650,4 @@ def mylayout(page: iamraw.Page) -> iamraw.Page:
             )
         else:
             result.append(item)
-    page.children = result
-    return page
+    return result

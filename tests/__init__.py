@@ -32,20 +32,5 @@ failure = functools.partial(
     success=False,
 )
 
-skip_virtual = pytest.mark.skipif(
-    not utilatest.NONVIRTUAL,
-    reason="require non virtual environment",
-)
-
-# TODO: CONVERT TO PYTEST PLUGIN
-# TODO: OUTDATED?
-SETUP_LONGRUN = f"""
-uninstall rawmaker
-
-install {ROOT}
-
-run power --all {tests.resources.RESOURCES}
-"""
-
 security = utilatest.register_marker('security')
 font = utilatest.register_marker('font')

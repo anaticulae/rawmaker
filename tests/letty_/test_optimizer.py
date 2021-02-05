@@ -13,7 +13,7 @@ import utilatest
 import letty.optimizer
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_optimizer():
     path = power.MASTER072_PDF
     pages = (3,)

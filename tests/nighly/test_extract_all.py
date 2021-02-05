@@ -76,7 +76,7 @@ def sources():
     return result
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 @pytest.mark.parametrize('source', sources())
 def test_rawmaker_linero(source, testdir, monkeypatch):
     # use first 5 pages for normal testing and extract complete document
@@ -88,7 +88,7 @@ def test_rawmaker_linero(source, testdir, monkeypatch):
     tests.linero_.run(f'-i {testdir.tmpdir}', monkeypatch=monkeypatch)
 
 
-@utilatest.skip_nightly
+@utilatest.nightly
 @pytest.mark.usefixtures('testdir')
 @pytest.mark.parametrize('source', sources())
 def test_pdfinfo(source, monkeypatch):

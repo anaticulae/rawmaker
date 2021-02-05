@@ -27,7 +27,7 @@ import tests
 import tests.resources
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_mining_fonts(testdir):
     header, content = rawmaker.features.fonts.work(power.DOCU35_PDF)
 

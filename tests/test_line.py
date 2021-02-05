@@ -25,7 +25,7 @@ def test_line_run_cli(testdir, monkeypatch):  #pylint: disable=W0613
         tests.run(cmd, monkeypatch=monkeypatch)
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 @pytest.mark.parametrize('source, expected', [
     pytest.param(
         power.DOCU13_PDF,

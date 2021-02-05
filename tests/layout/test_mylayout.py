@@ -28,7 +28,7 @@ def test_mylayout_bachelor90_page53(testdir, monkeypatch):
     assert page53_second_line == '4.3. Übersicht der praktischen Entwicklung'
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_mylayout_bounding_extraction_bug(testdir, monkeypatch):
     """Without sorting the boundings before connecting them by mylayout,
     the result is that the left x0 is greather than right x1. This is a

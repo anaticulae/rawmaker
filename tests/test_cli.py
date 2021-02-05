@@ -27,7 +27,7 @@ from tests.resources import HELLO_WORLD
     ['-i', power.DOCU35_PDF, '-o', 'output'],
 ])
 @pytest.mark.usefixtures('testdir')
-@utilatest.skip_nightly
+@utilatest.nightly
 def test_run_rawmaker(command, monkeypatch):
     """Run help and version and format command to reach basic test coverage"""
     run(command, monkeypatch=monkeypatch)
@@ -72,7 +72,7 @@ def test_run_rawmaker_for_regression(command, monkeypatch):
     '0',
 ])
 @pytest.mark.usefixtures('testdir')
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_run_rawmaker_with_pages(monkeypatch, pages):
     """Extract special pages"""
     cmd = ['-i', power.DOCU27_PDF, '-o', 'output', '--pages', pages, '-VVV']
@@ -99,7 +99,7 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
     assert len(files_written) == expected, str(files_written)
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_rawmaker_cli_run_file_without_extention(testdir, monkeypatch):
     source = os.path.join(testdir.tmpdir, 'hello')
     utila.file_copy(power.DOCU27_PDF, source)

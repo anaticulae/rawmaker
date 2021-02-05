@@ -57,7 +57,7 @@ def document() -> Document:
     return extracted
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_hash_document(document: Document):  # pylint:disable=W0621
     hashed = hash_positions(document)
     assert len(hashed) == len(document)

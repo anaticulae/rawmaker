@@ -81,7 +81,7 @@ def raw_formula(formulas) -> list:
     return [''.join([char.value for char in formula]) for formula in formulas]
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_extract_math_master116_zero_math():
     source = power.MASTER116_PDF
     pages = utila.ranged_tuple(0, 22)

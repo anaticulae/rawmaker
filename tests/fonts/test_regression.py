@@ -27,7 +27,7 @@ def test_leftright_book_font_name(testdir, monkeypatch, capsys):
     assert 'ERROR' not in err
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_leftright_book_font_size(testdir, monkeypatch):
     tests.run(
         f'-i {power.BOOK007_PDF} --text',
@@ -42,7 +42,7 @@ def test_leftright_book_font_size(testdir, monkeypatch):
     assert first_char.size >= 8.0, first_char
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 @pytest.mark.parametrize('strip', [True, False])
 def test_porting_module_font_index(strip, testdir, monkeypatch):
     """Hint: One white space is always at the end of a line. Without
@@ -70,7 +70,7 @@ def test_porting_module_font_index(strip, testdir, monkeypatch):
     pytest.param(power.MASTER072_PDF, True, id='master72_true'),
     pytest.param(power.MASTER072_PDF, False, id='master72_false'),
 ])
-@utilatest.skip_nightly
+@utilatest.nightly
 def test_regression_extract_text_and_fonts(pdf, strip, testdir, monkeypatch):
     """Hint: One white space is always at the end of a line. Without
     striping there can be more than one white space at the end of a

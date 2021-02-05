@@ -27,12 +27,12 @@ def boxdata_from_pdf():
     return sizeandborders, boxes
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_border_work(boxdata_from_pdf):  #pylint:disable=W0621
     assert len(boxdata_from_pdf) == 2
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_maximize_bounding_box(boxdata_from_pdf):  #pylint:disable=W0621
     # TODO: Remove this test?
     pageandborders, _ = boxdata_from_pdf

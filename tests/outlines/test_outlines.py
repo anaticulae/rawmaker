@@ -94,7 +94,7 @@ def diss264(toc):
     pytest.param(power.BACHELOR111_PDF, bachelor111, id='bachelor111'),
     pytest.param(power.DISS264_PDF, diss264, id='diss264'),
 ])
-@utilatest.skip_nightly
+@utilatest.nightly
 def test_outlines_validate(source, validate):
     extracted = rawmaker.features.outlines.work(source)
     toc = serializeraw.load_toc(extracted)

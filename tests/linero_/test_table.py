@@ -59,7 +59,7 @@ def test_table_dump_and_load():
     assert loaded == tables
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_table_extract_negative():
     source = power.link(power.BOOK007_PDF)
     text = iamraw.path.text(source)
@@ -119,7 +119,7 @@ def test_table_extract_negative():
         id='bachelor63_singletable',
     ),
 ])
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_detect_table(source, pages, expected, testdir, monkeypatch):
     source = power.link(source)
     with monkeypatch.context() as context:

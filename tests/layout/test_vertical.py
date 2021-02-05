@@ -21,7 +21,7 @@ import tests
     (8, False, False),
     (7, True, True),
 ])
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_parse_howtoread_vertically(
         page,
         vertical,

@@ -33,7 +33,7 @@ def test_images_export_bachelor56(testdir):
     assert len(extracted) == four_image_pages, str(extracted)
 
 
-@utilatest.skip_nightly
+@utilatest.nightly
 def test_images_export_bachelor63_complete(testdir):
     """Extract seven images out of four pages."""
     source = power.BACHELOR063_PDF
@@ -49,7 +49,7 @@ def test_images_export_bachelor63_complete(testdir):
     assert extracted
 
 
-@utilatest.skip_nightly
+@utilatest.nightly
 def test_images_export_master116(testdir):
     source = power.MASTER116_PDF
     root = testdir.tmpdir
@@ -76,7 +76,7 @@ def test_images_export_master116(testdir):
     (56, 1, 'png', 600),
     (57, 1, 'png', 600),
 ])
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_images_export_bachelor63_extract_images(
         page,
         expected,
@@ -120,7 +120,7 @@ def test_images_export_bachelor63_extract_images(
         # pytest.param(tests.resources.REPORT19, 6, id='report19'),
         pytest.param(power.PAPER18_PDF, 10, id='paper18'),
     ])
-@utilatest.skip_nightly
+@utilatest.nightly
 def test_images_export_document_complete(
         source,
         expected,

@@ -15,7 +15,7 @@ import tests
 import tests.resources
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_master_compare_vim(testdir, monkeypatch):
     """Update test data with `cmd` below. Copy from generated test."""
     cmd = f'-i {power.DOCU13_PDF} --images! --figures! -j8 --pages=1:4'

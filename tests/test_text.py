@@ -18,7 +18,7 @@ import rawmaker.features.text
 import tests.resources
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_miner_pdf():
     parsed_file = rawmaker.features.text.work(power.DOCU13_PDF)
     assert parsed_file
@@ -43,7 +43,7 @@ def test_mine_hello_world_pdf():
         'vimguide.pdf',
     ],
 )
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_dump_and_load_pdf(pdf_path):
     """Parse text from pdf file and write the result. Load the result after
     and compare with item to save"""
@@ -112,7 +112,7 @@ def validate_master116(firstpage):
     pytest.param(power.MASTER072_PDF, False, None, id='master72_false'),
     pytest.param(power.MASTER072_PDF, True, None, id='master72_true'),
 ])
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_text_mine_holy_whitespaces_remove(source, remove_whitespace, validate):
     # TODO: ADD MORE SINGLE PAGE VALIDATION
     pages = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)

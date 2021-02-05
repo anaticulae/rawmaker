@@ -52,7 +52,7 @@ def test_figures_extract_master116_page19(testdir):
 
 
 @pytest.mark.xfail(reason='table on page 20 is detected is figure')
-@utilatest.skip_longrun
+@utilatest.longrun
 @pytest.mark.usefixtures('testdir')
 def test_figures_run_master116(monkeypatch):
     source = power.MASTER116_PDF

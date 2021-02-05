@@ -35,7 +35,7 @@ def linecluster():
     return result, size
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_determine_boxes(linecluster):  # pylint:disable=W0621
     linecluster, _ = linecluster
     result = []
@@ -46,7 +46,7 @@ def test_determine_boxes(linecluster):  # pylint:disable=W0621
     assert len(result) == tests.resources.HOW_TO_CPORTING_BOX_COUNT
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_determine_cluster_per_pages(linecluster):  # pylint:disable=W0621
     linecluster, _ = linecluster
     expected = [4, 2, 2, 1, 1, 1, 1, 1, 0]
@@ -81,7 +81,7 @@ def test_determine_single_cluster():
     assert len(result[0]) == 1
 
 
-@utilatest.skip_longrun
+@utilatest.longrun
 def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
     linecluster, size = linecluster
     pagewidth = size.width

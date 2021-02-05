@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.13.1
+
+### Fix
+
+* ensure that bounding box is merged correctly (c906ecf91942)
+
 ## v2.13.0
 
 ### Feature

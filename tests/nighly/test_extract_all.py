@@ -59,15 +59,19 @@ UNSUPPORTED_DOCUMENTS = {}
 
 
 def sources():
+    pdfs = pdf()
+    skip = pdfs[10:] if not utilatest.NIGHTLY else []
     result = [
         pytest.param(
             item,
             id=convert_path(item),
-            marks=pytest.mark.xfail(reason="unsupported implementation"),
+            marks=pytest.mark.xfail(reason="unsupported implementation") +
+            pytest.mark.skipif(item in skip, reason='nightly only'),
         ) if convert_path(item) in UNSUPPORTED_DOCUMENTS else pytest.param(
             item,
             id=convert_path(item),
-        ) for item in (pdf() if utilatest.NIGHTLY else pdf()[0:10])
+            marks=pytest.mark.skipif(item in skip, reason='nightly only'),
+        ) for item in pdfs
     ]
     return result
 

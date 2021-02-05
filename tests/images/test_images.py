@@ -16,7 +16,7 @@ import rawmaker.reader
 import tests
 
 
-@utilatest.skip_longrun
+@utilatest.nightly
 def test_images_export_bachelor56(testdir):
     """Extract seven images out of four pages."""
     source = power.BACHELOR056_PDF

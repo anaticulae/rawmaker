@@ -60,7 +60,7 @@ def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):
         ['-i', power.DOCU09_PDF, '-o', 'output'],
     ])
 @pytest.mark.usefixtures('testdir')
-@utilatest.skip_longrun
+@utilatest.nightly
 def test_run_rawmaker_for_regression(command, monkeypatch):
     """This test run the rawmaker with problematic resources which led to an
     error on parsing/converting the document in the past."""

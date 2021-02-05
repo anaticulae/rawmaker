@@ -21,7 +21,7 @@ def test_optimizer():
     assert result
 
 
-@utilatest.skip_longrun
+@utilatest.nightly
 def test_optimizer_hardtoread():
     path = power.BACHELOR037_PDF
     pages = (6,)

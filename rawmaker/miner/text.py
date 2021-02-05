@@ -660,11 +660,18 @@ def merge_neighbors(
             if len(item.lines) >= 2:
                 before.lines.extend(item.lines[1:])
             # adjust bounding
-            before.box = utila.update_tuple(
-                data=tuple(before.box),  # REMOVE TUPLE LATER
-                value=item.box[2],
-                index=2,
-            )
+            if item.box[2] > before.box[2]:
+                # ensure that right border is more right than left border.
+                # In some cases, formulas for example, it can happen that
+                # this contraint is not given.
+                before.box = utila.update_tuple(
+                    data=tuple(before.box),  # REMOVE TUPLE LATER
+                    value=item.box[2],
+                    index=2,
+                )
+            else:
+                utila.debug('HINT: no bounding box update required')
+            before.box = iamraw.BoundingBox(*before.box)
         else:
             result.append(item)
     return result

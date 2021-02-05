@@ -23,3 +23,15 @@ def test_text_master110_bounding_x0_x1(testdir, monkeypatch):
     tests.run(cmd, monkeypatch=monkeypatch)
     loaded = serializeraw.load_textpositions(testdir.tmpdir)
     assert loaded
+
+
+def test_text_diss274_negative_bounding(testdir, monkeypatch):
+    # layout is required to invoke error
+    layout = '--char_margin=3.1 --boxes_flow=1.0 --line_margin=0.25'
+    cmd = f'-i {power.DISS274_PDF} --text --pages=0 {layout}'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    navigators = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)
+    navigator = navigators[0]
+    # TODO: CHANGES AFTER INVESTIGATING PROBLEM WITH NEGATIVE TEXT CONTENT
+    # ON LEFT BORDER.
+    assert len(navigator) == 28

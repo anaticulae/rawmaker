@@ -211,6 +211,9 @@ def render(item, offset, scale, renderer, rawbuffer):  # pylint:disable=R0914
             render(image, offset, scale, renderer, rawbuffer)
     elif isinstance(item, pdfminer.layout.LTImage):
         raw = rawmaker.miner.images.image_fromlt(item)
+        if not raw:
+            utila.error('could not render `image_fromlt`')
+            return
         size = (int(item.width * scalex), int(item.height * scaley))
         location = (int(item.x0 * scalex), int(item.y0 * scaley))
         resized = raw.resize(size, resample=PIL.Image.ANTIALIAS)

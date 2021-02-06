@@ -211,6 +211,10 @@ def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImag
     """Merge list of images to one image."""
     ext = extention(images[0])
     bounding = tuple(images[0].bbox)
+    if ext == 'jbig2':
+        images = [jbig2(images[0])]
+        ext = 'jpg'
+
     if len(images) == 1:
         # TODO: png is not supported by pdfimage exporter properly
         if ext != 'png':
@@ -224,6 +228,7 @@ def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImag
     line_height = max(images[0].srcsize[1], 1)
 
     mode = 'RGB'
+
     result = PIL.Image.new(mode, size, color=0)
     renderer = PIL.ImageDraw.Draw(result, mode=mode)
 
@@ -238,6 +243,24 @@ def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImag
     last = images[-1].bbox
     multi_bounding = (bounding[0], bounding[1], last[2], last[3])
     return MergedImage(result, ext, multi_bounding)
+
+
+def jbig2(image):
+    size = (image.width, image.height)
+
+    monochrom = '1'
+    result = PIL.Image.new(mode=monochrom, size=size, color=1)
+    renderer = PIL.ImageDraw.Draw(result, mode=monochrom)
+
+    data = image.stream.get_data()
+    width = image.width
+    for cursor, item in enumerate(data):
+        cursor = cursor * 8
+        x, y = cursor % width, cursor // (width / 8)
+        for pos in range(8):
+            datum = item << pos & 0b00000001
+            renderer.point((x + pos, y), datum)
+    return result
 
 
 def image_fromlt(image) -> PIL.Image:
@@ -344,12 +367,16 @@ def rgb256_decoder(data, dataspace, bits=8):
 
 
 def extention(image) -> str:
+    """\
+    #JBIG2Decode: monochrom 1bit per pixel data
+    """
     decoder = {
         'DCTDecode': 'jpg',
         'JPXDecode': 'jp2',
         'CCITTFaxDecode': 'tiff',
         'Default': 'png',
         'FlateDecode': 'png',
+        'JBIG2Decode': 'jbig2',
     }
     try:
         filter_ = image.stream['Filter']

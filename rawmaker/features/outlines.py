@@ -62,7 +62,6 @@ def work(document: str) -> str:
                 raw_location=-1,
             )
             data.append(raw_section)
-
     toc = iamraw.create_toc(data)
     try:
         # toc to yaml
@@ -91,4 +90,6 @@ def pagenumber(action, dest, pdf) -> rawmaker.destination.ExplicitDestination:
             resolved = pdf.get_dest(destname).resolve()
         parsed = rawmaker.destination.parse(resolved)
     assert parsed
+    if isinstance(parsed, rawmaker.destination.ExternalLinkDestination):
+        return -1
     return parsed.page

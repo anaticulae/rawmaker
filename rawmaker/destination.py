@@ -41,6 +41,15 @@ class ExplicitDestination(DestinationMixin):
 
 
 @dataclasses.dataclass
+class ExternalLinkDestination(DestinationMixin):
+    """Hyperlink to external web resource.
+
+    See: 12.6.4.7 URI Actions; PDF 2008
+    """
+    hyperlink: str = None
+
+
+@dataclasses.dataclass
 class NamedDestination(DestinationMixin):
     reference: str = None
 
@@ -54,7 +63,11 @@ class NamedDestination(DestinationMixin):
         return self.reference.encode('ascii')
 
 
-def parse(item) -> ExplicitDestination:  # pylint:disable=R1260
+def parse(item) -> DestinationMixin:  # pylint:disable=R1260
+    hyperlink = parse_hyperlink(item)
+    if hyperlink:
+        return hyperlink
+
     fitr = parse_fitr(item)
     if fitr:
         return fitr
@@ -68,6 +81,19 @@ def parse(item) -> ExplicitDestination:  # pylint:disable=R1260
         if explicit:
             return explicit
     return None
+
+
+def parse_hyperlink(item) -> ExternalLinkDestination:
+    """\
+    >>> parse_hyperlink("{'S': /'URI', 'URI': b'http://www.helm.org/jst.pdf'}")
+    """
+    if not isinstance(item, dict):
+        return None
+    try:
+        hyperlink = item['URI']
+    except KeyError:
+        return None
+    return ExternalLinkDestination(hyperlink=hyperlink)
 
 
 def parse_simple(item) -> NamedDestination:

@@ -246,7 +246,8 @@ def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImag
 
 
 def jbig2(image):
-    size = (image.width, image.height)
+    # convert size, cause later fill method requests int
+    size = (int(image.width), int(image.height))
 
     monochrom = '1'
     result = PIL.Image.new(mode=monochrom, size=size, color=1)

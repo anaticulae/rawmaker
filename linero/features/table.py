@@ -26,7 +26,7 @@ import serializeraw
 
 import linero.table.strategy
 
-LINES_PER_PAGE_MAX = 100
+LINES_PER_PAGE_MAX = 1000
 
 
 def work(

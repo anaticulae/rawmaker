@@ -66,4 +66,4 @@ def test_extract_math_master110_page59():
         extracted = rawmaker.math.extract_content(pdf, pages=(59,))
 
     formulas = extracted[0].content
-    assert len(formulas) == 9  # may change later
+    assert len(formulas) == 6  # may change later

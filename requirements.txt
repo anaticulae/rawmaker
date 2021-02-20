@@ -13,7 +13,7 @@ pdfminer.six==20200517
 Pillow==8.0.1
 
 # Internal packages
-utila>=2.20.0<3.0.0
+utila>=2.22.0<3.0.0
 configo>=0.9.0<1.0.0
-iamraw>=4.11.2<5.0.0
-protocol>=3.5.0<4.0.0
+iamraw>=4.12.1<5.0.0
+protocol>=3.6.2<4.0.0

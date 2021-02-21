@@ -139,6 +139,8 @@ def write_image(extracted, write_to, page, index) -> WrittenImage:
                 writer = pdfminer.image.ImageWriter(write_to)
                 extracted.image.name = f'{page}_{index}'
                 writer.export_image(extracted.image)
+            except pdfminer.pdftypes.PDFNotImplementedError as error:
+                utila.error(f'could not export: {error}')
             except TypeError:
                 utila.error(f'empty export {extracted.image.name}')
         else:

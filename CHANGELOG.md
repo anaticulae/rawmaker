@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v2.13.2
+
+### Feature
+
+* increase number of lines to merge (c67216d7997a)
+* add first draft of jbig2 image format (e88537c843f8)
+* add support for external link outline (79443f23912f)
+
+### Fix
+
+* do not fail on negative font size (489afc921c1c)
+* catch not supported export error (29c970be2879)
+* ensure correct data type (cdaaf4790f06)
+* skip invalid image renderer (41f34a441033)
+* adjust broken unit test (d0c3c73038a4)
+
 ## v2.13.1
 
 ### Fix

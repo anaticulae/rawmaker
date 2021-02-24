@@ -47,7 +47,7 @@ MAXDIFF = configo.HolyTable(
 
 
 def diffme(fontsize: float) -> tuple:
-    assert 4.0 <= fontsize <= 100, str(fontsize)
+    # assert 4.0 <= fontsize <= 100, str(fontsize)
     # xdiff, ydiff
     xdiff = MAXDIFF(fontsize)
     return (xdiff, 10.0)

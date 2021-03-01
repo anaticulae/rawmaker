@@ -64,6 +64,7 @@ if __name__ == "__main__":
                 'linero = linero.cli:main',
                 'pdfinfo = pdfinfo.cli:main',
                 'rawmaker = rawmaker.cli:main',
+                'rawmaker_automate = rawmaker.cli_automate:main',
                 'spacestation = spacestation.cli:main',
             ],
         },

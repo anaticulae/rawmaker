@@ -272,7 +272,11 @@ def image_fromlt(image) -> PIL.Image:
     size = image.srcsize
     bits = image.bits
 
-    data = image.stream.get_data()
+    try:
+        data = image.stream.get_data()
+    except ValueError as error:
+        utila.error(error)
+        return None
 
     if colorspace == 'DeviceGray':
         mode = BITMAP

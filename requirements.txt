@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-pdfminer.six==20200517
+pdfminer.six==20210301
 
 # Image extractor
 Pillow==8.0.1

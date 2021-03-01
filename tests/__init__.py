@@ -9,26 +9,23 @@
 
 import functools
 
-import pytest
 import utilatest
 
-import tests.resources
-from rawmaker import PROCESS
-from rawmaker import ROOT
-from rawmaker.cli import main
+import rawmaker
+import rawmaker.cli
 
 #pylint: disable=invalid-name
 run = functools.partial(
     utilatest.run_command,
-    main=main,
-    process=PROCESS,
+    main=rawmaker.cli.main,
+    process=rawmaker.PROCESS,
     success=True,
 )
 
 failure = functools.partial(
     utilatest.run_command,
-    main=main,
-    process=PROCESS,
+    main=rawmaker.cli.main,
+    process=rawmaker.PROCESS,
     success=False,
 )
 

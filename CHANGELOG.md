@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.14.0
+
+### Feature
+
+* add automation tool to run rawmaker over multiple pdfs (238f4bc9172b)
+
+### Fix
+
+* catch rawmaker png decoder error (e3a83df9586d)
+* disable not required assertion (f4161ca32769)
+
 ## v2.13.2
 
 ### Feature

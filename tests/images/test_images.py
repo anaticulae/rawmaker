@@ -57,7 +57,7 @@ def test_images_export_master116(testdir):
     # master116 contains **9** extractable images, but on page 50 the png
     # extraction is broken. After fix this issue we have to increase
     # number of extracted images.
-    with utilatest.increased_filecount(root, mindiff=8, maxdiff=8):
+    with utilatest.increased_filecount(root, mindiff=9, maxdiff=9):
         with rawmaker.reader.read(source) as pdf:
             extracted = rawmaker.miner.images.extract_images(
                 pdf,

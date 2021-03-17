@@ -53,7 +53,7 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
             text = item.get_text().strip()
             if not text or len(text) > 10:  # TODO: IMRPOVE SELECTOR
                 return
-        if item.linewidth == 0:
+        if isinstance(item, pdfminer.layout.LTRect) and item.linewidth == 0:
             # skip hidden Rectangle
             return
         self.nonfigure[pageid].append(item)
@@ -128,7 +128,6 @@ def extract_figures(
                     continue
                 device.page = number
                 interpreter.process_page(page)
-
     figures = device.figures()
     return figures
 

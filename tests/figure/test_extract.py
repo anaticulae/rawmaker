@@ -105,8 +105,9 @@ def test_render_bachelor51_page30_33_figure_image(monkeypatch, testdir):
     include the pageid id into a central pixel in the middle of the
     figure. As a result of this, we do not lose bounding information."""
     written = extract(power.BACHELOR051_PDF, '30,33', monkeypatch)
-    # 4 png and 4 yaml files
-    expected = 8
+    # 3 png and 3 yaml files
+    # correct is 2 because 1 table is detected as figure
+    expected = 6
     assert len(written) == expected, str(written)
 
 

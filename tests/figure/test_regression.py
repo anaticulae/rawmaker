@@ -32,3 +32,10 @@ def test_nofigure_diss266_pagex(testdir, monkeypatch):
     tests.run(f'-i {source} --figures --pages={pages}', monkeypatch=monkeypatch)
     # do not detect any figures on page 27, 28, 61
     assert not os.path.exists('rawmaker__figures_figures')
+
+
+def test_nofigure_diss266_small_text_elements(testdir, monkeypatch):
+    source = power.DISS266_PDF
+    pages = '156,168,204'
+    tests.run(f'-i {source} --figures --pages={pages}', monkeypatch=monkeypatch)
+    assert not os.path.exists('rawmaker__figures_figures')

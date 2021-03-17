@@ -87,7 +87,12 @@ def pagenumber(action, dest, pdf) -> rawmaker.destination.ExplicitDestination:
             resolved = dest
         else:
             destname = dest if isinstance(dest, bytes) else dest.name
-            resolved = pdf.get_dest(destname).resolve()
+            resolved = pdf.get_dest(destname)
+            if isinstance(resolved, list):
+                # pdf 1.4: [<PDFObjRef:4>, /'XYZ', 134.031754, 373.949829, None]
+                pass
+            else:
+                resolved = resolved.resolve()
         parsed = rawmaker.destination.parse(resolved)
     assert parsed
     if isinstance(parsed, rawmaker.destination.ExternalLinkDestination):

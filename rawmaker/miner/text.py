@@ -501,7 +501,7 @@ def render_horizontal_textcontainer(
         container.box = container[0].box
     if container:
         # fix start of container
-        # pdfminer extracts the TextContainer bigger than the chars realy
+        # pdfminer extracts the TextContainer bigger than the chars really
         # are. In top(y0) direction, therefore we replace the top boundary
         # with first line boundary.
         container.box.y0 = container[0].box.y0

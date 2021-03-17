@@ -103,7 +103,7 @@ def test_outlines_validate(source, validate):
 
 
 def test_outlines_howto_argparse():
-    """Some NamedDestinations are store as hexdecimal numbers. This test
+    """Some NamedDestinations are store as hexadecimal numbers. This test
     ensures, that parsing, lookup in pdf dest dict and converting the
     page number works correctly."""
     source = power.DOCU14_PDF

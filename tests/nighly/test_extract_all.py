@@ -6,11 +6,11 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-"""Nighly: Extract All PDF Files
+"""Nightly: Extract All PDF Files
 =============================
 
 This long running nightly test must ensure that all pdf files in
-reposity are extractable by rawmaker and exit with exitcode 0.
+repository are extractable by rawmaker and exit with exit code 0.
 """
 
 import glob
@@ -80,7 +80,7 @@ def sources():
 @pytest.mark.parametrize('source', sources())
 def test_rawmaker_linero(source, testdir, monkeypatch):
     # use first 5 pages for normal testing and extract complete document
-    # only in nighly tests.
+    # only in nightly tests.
     layout = '--char_margin 5.0 --boxes_flow 1.0 --line_margin 0.3'
     pages = '' if utilatest.NIGHTLY else '--page=0:5'
     cmd = f'-i {source} {layout} -j=8 {pages}'

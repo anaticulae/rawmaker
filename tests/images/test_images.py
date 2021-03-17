@@ -127,7 +127,7 @@ def test_images_export_document_complete(
         testdir,
         monkeypatch,
 ):
-    # for every image an additonal image info file is extracted.
+    # for every image an additional image info file is extracted.
     root = testdir.tmpdir
     with utilatest.increased_filecount(
             root,

@@ -141,7 +141,7 @@ def mine_holywhitespace(source, remove_whitespace, pages, expected_length):
         if remove_whitespace:
             assert all(len(line) for line in text), text
         else:
-            # contains some holy whitespaces
+            # contains some holy white spaces
             holywhitespaces = [len(line) for line in text]
             assert not all(holywhitespaces), text
     return extracted
@@ -161,15 +161,15 @@ def test_text_mining_convert_special_chars():
 
 
 def test_text_mining_convert_special_whitespace_between_special():
-    """A whitespace between expected vowel and '¨' requires to remove
-    small whitespace before merging both chars.
+    """A white space between expected vowel and '¨' requires to remove
+    small white space before merging both chars.
 
     Normal:
     text u¨ hello -> textü hello
     Here:
     textu ¨ hello -> textü hello
 
-    Solution remove small whitespaces before merging.
+    Solution remove small white spaces before merging.
     """
     parsed = rawmaker.features.text.work(
         power.BACHELOR090_PDF,

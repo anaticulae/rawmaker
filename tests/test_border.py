@@ -90,7 +90,7 @@ def test_border_bounding_boxes():
 def test_border_pagesize_bachelor76_top_regression():
     """The pdf printer produces a white space in every header. Therefore
     the border is to near to the top. This test ensures, that
-    whitespaces are not part of bounding detecting."""
+    white spaces are not part of bounding detecting."""
     with rawmaker.reader.read(power.BACHELOR076_PDF) as pdf:
         sizeandborders, _ = rawmaker.features.border.determine_boundingboxes(
             pdf,

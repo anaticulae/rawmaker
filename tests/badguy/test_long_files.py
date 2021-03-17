@@ -30,7 +30,7 @@ def test_badguy_longpdf_rawmaker(testdir, monkeypatch):
 @pytest.mark.security
 def test_badguy_longpdf_pdfinfo(testdir, monkeypatch):
     """Test that program success on very long, empty pdf file. Long
-    files with content are catched by file size limit."""
+    files with content are excluded by file size limit."""
     very_long = os.path.join(testdir.tmpdir, 'mejabalong.pdf')
     jam.write_blank_pdf(100000, very_long)
 

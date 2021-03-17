@@ -39,8 +39,8 @@ def main() -> int:
         pages = None
         if args['pages'] is not None:
             pages = utila.parse_pages(','.join(args['pages']))
-        whitespaces = letty.quality.whitespace.determine(inpath, pages=pages)
-        utila.log(whitespaces)
+        white_spaces = letty.quality.whitespace.determine(inpath, pages=pages)
+        utila.log(white_spaces)
         return utila.SUCCESS
     parser.print_help()
     return utila.FAILURE

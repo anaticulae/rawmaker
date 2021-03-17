@@ -22,5 +22,5 @@ def test_whitespaces_count(testdir, monkeypatch):
     tests.run(cmd, monkeypatch=monkeypatch)
     determined = letty.quality.whitespace.determine(root, pages)
     assert determined
-    # more than hundret double white spaces
+    # more than hundred double white spaces
     assert determined > 100, determined

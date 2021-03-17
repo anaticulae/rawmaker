@@ -24,7 +24,7 @@ Font types
 
 9.6.2.2 Standard Type 1 Fonts
 
-    uses compact encoding for glyph description and additonal hints to print
+    uses compact encoding for glyph description and additional hints to print
     on small sizes and solutions well.
 
     PostScript 14 standard types:
@@ -103,8 +103,8 @@ def font_fromraw(font: str, scale: float, flags: int = 0) -> iamraw.Font:
     utila.call('rawmaker.fonts.parser.font_fromraw')
     utila.debug('%s %.2f' % (str(font), scale))
     flags = serializeraw.load_flags(flags)
-    # remove whitespaces to avoid missing PostScript 14 language cause of
-    # containg whitespaces, for example `Times - Roman` instead of
+    # remove white spaces to avoid missing PostScript 14 language cause of
+    # containg white spaces, for example `Times - Roman` instead of
     # `Times-Roman`.
     font = font.replace(' ', '')
 

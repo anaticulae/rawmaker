@@ -31,7 +31,7 @@ Math detector
 
 * Tabelero (planned)
 
-* add step hidden_whitespace to extract list of hidden whitespaces
+* add step hidden_whitespace to extract list of hidden white spaces
 
 * add method to handle undefined character/ pdfminer. This is a source of
   characters which are longer than one!

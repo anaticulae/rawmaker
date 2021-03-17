@@ -6,7 +6,7 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
-"""Ensure that basic functunality of pdfminer-six works.
+"""Ensure that basic functionality of pdfminer-six works.
 
 The functionality is encapsulated by `rawmaker` api.
 """

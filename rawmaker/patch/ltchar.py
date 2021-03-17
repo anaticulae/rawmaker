@@ -55,11 +55,11 @@ def vertical(item: pdfminer.layout.LTChar) -> bool:
 def render_char(  # pylint:disable=W9015,W9016
         self, matrix, font, fontsize, scaling, rise, cid, ncs,
         graphicstate) -> PatchedLTChar:
-    """Patch LTChar to introduce fontsize hack.
+    """Patch LTChar to introduce font size hack.
 
     Args:
-        cid(int): character number id - ascii
-        ncs(PDFColorSpace): colorspace of document
+        cid(int): character number id - ASCII
+        ncs(PDFColorSpace): color space of document
     Returns:
         Patched char object.
     """

@@ -1006,9 +1006,9 @@ Every noteable change is logged here.
 
 * add parameter `char_margin` to `text` module (3f27eb52124e)
 * add optional parameter to parameterize functions from outside (6ec7d3d6761a)
-* support parameterization of single features (c199d821b0bb)
+* support parametrization of single features (c199d821b0bb)
 * improve grouping of sentences. Extend tolerance of failure (e73b500a19cc)
-* add parameterization to text parsing (0cb048ae3b13)
+* add parametrization to text parsing (0cb048ae3b13)
 * print usage of rawmaker when passing no arguments (74bedb3f05e6)
 
 ### Fix

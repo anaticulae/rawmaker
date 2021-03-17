@@ -77,7 +77,7 @@ def test_minining_fonts_rise():
 
 
 def test_mining_increasing_fonts():
-    """The example contains the same sentences in fontsizes(8pt - 20pt)"""
+    """The example contains the same sentences in font sizes(8pt - 20pt)."""
     result = rawmaker.features.fonts.work(tests.resources.INCREASING_FONT_A4)
     header, _ = result
 
@@ -96,7 +96,7 @@ def test_mining_increasing_fonts():
 
 
 def test_mining_fonts_restruct_page_5():
-    """Mine the fifths page, compare only `Weight` for not beeing to
+    """Mine the fifths page, compare only `Weight` for not being to
     specific."""
     header, content = rawmaker.features.fonts.work(power.DOCU27_PDF)
     header = serializeraw.load_font_header(header)

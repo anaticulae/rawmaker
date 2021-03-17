@@ -31,7 +31,7 @@ def test_mylayout_bachelor90_page53(testdir, monkeypatch):
 @utilatest.longrun
 def test_mylayout_bounding_extraction_bug(testdir, monkeypatch):
     """Without sorting the boundings before connecting them by mylayout,
-    the result is that the left x0 is greather than right x1. This is a
+    the result is that the left x0 is greater than right x1. This is a
     result of merging non neighbored boundings."""
     source = testdir.tmpdir
     cmd = f'-i {hardcore.H300_SPHINX_397_PDF} --text --pages=2'

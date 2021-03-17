@@ -13,10 +13,10 @@ import rawmaker.features
 import rawmaker.parameter
 
 
-def test_toc_parameterization():
-    """Test parameterization to get good result when parsing table of content
+def test_toc_parametrization():
+    """Test parametrization to get good result when parsing table of content
 
-    This test is more for finding a good parameter, than for realy testing.
+    This test is more for finding a good parameter, than for really testing.
     TODO: Improve this later. Don't know how to, yet.
     """
     with rawmaker.reader.read(power.DOCU27_PDF) as pdf:

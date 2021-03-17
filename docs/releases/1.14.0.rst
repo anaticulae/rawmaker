@@ -3,12 +3,12 @@
 RP 1.14.0
 =========
 
-As a result of this increment we want to have a massive nighly testing
+As a result of this increment we want to have a massive nightly testing
 strategy. The purpose is to monitor how the current rawmaker
 implementation with all features selected handles our current pdf files.
-The nighly musst handle all pdf(working/broken) correctly.
+The nightly musst handle all pdf(working/broken) correctly.
 
-nighly
+nightly
 ----------------
 
 * [x] do not run these test in release/longrun mode

@@ -15,7 +15,7 @@ import linero.cluster
 import linero.lines
 import linero.table
 
-# a table must have at least this amout of lines
+# a table must have at least this amount of lines
 TABLE_MIN_LINE_COUNT = configo.HV_INT_PLUS(10)
 
 # tables are build out of vertical and horizontal lines, but only a few
@@ -36,15 +36,15 @@ def locate_tables(lines):
         content = page.content
         # TODO: profile only on --profile
         # with utila.profile():
-        # #  clustered = devide(content)
-        clustered = devide(content)
+        # #  clustered = divide(content)
+        clustered = divide(content)
         result.append((page.page, clustered))
     return result
 
 
 def judge_tables(grouped):
     """This approach handles only very simple word tables, beautiful
-    "latex" tables are not supported becase there are build out of
+    "latex" tables are not supported because there are build out of
     single horizontal lines."""
     result = []
     for page, clusters in grouped:
@@ -70,7 +70,7 @@ def judge_tables(grouped):
     return result
 
 
-def devide(items):
+def divide(items):
     chunk_size = 50
     splitted = utila.chunks(items, chunk_size)
     pre = []

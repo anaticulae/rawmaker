@@ -111,7 +111,7 @@ def extract_content(
 
     Args:
         document(PDFDocument): PDF file to process
-        config(ParsingConfiguration): Parameterization for layout analysis.
+        config(ParsingConfiguration): parametrization for layout analysis.
                                       This parameter defines how chars are
                                       matched together in words and sentences.
                                       See pdf reference documentation.

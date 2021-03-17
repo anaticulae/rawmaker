@@ -11,9 +11,6 @@ import iamraw.path
 import power
 import pytest
 import serializeraw
-import utilatest
-
-import tests
 
 
 def test_linero_figure_extract():
@@ -32,13 +29,3 @@ def test_linero_figure_extract():
     # figures = linero.features.figure.analyse_page(lines, textpositions)
     # assert figures
     # assert 0
-
-
-@utilatest.nightly
-def test_extract_figures_memory_error(testdir, monkeypatch, capsys):
-    # TODO: VALIDATE THIS UNIT TEST. THE MEMORY ERROR LOOKS QUITE
-    # CONFUSING, PAY ATENTION TO THE PAGE NUMBERS
-    source = power.BACHELOR085_PDF
-    tests.run(f'-i {source}  --figures --pages=75:', monkeypatch=monkeypatch)
-    stderr = capsys.readouterr().err
-    assert 'could not render' in stderr, str(stderr)

@@ -16,6 +16,11 @@ import rawmaker.figure.utils
 # TODO: REMOVE HORIZONTAL AND VERTICAL LINES TO AVOID DETECTING TABLES AS
 # FIGURE?
 
+TEXT_ONLY = (
+    pdfminer.layout.LTTextBoxHorizontal,
+    pdfminer.layout.LTTextBoxVertical,
+)
+
 
 def text_figures(
         items,
@@ -23,6 +28,11 @@ def text_figures(
         height_min=100,
         area_min=150 * 150,
 ) -> iamraw.Figure:
+    alltext = all((isinstance(item, TEXT_ONLY) for item in items))
+    if alltext:
+        # do not detect figures which consist out of text elements. The
+        # false positive rate is too high.
+        return []
     clustered = cluster(items)
     result = []
     for bounding in clustered:
@@ -41,6 +51,7 @@ def text_figures(
 
 
 def textonly(bounding, items: list) -> bool:
+    # TODO: VERIFY THIS
     notext = [
         item for item in items
         if not isinstance(item, pdfminer.layout.LTTextBoxHorizontal)

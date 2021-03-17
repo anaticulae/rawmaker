@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.14.1
+
+### Fix
+
+* skip text only figures (0310e3fb0532)
+* skip hidden rectangle (87067578a89c)
+* skip hidden boxes with zero width lines (501bdf28e996)
+
 ## v2.14.0
 
 ### Feature

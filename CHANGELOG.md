@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.15.0
+
+### Feature
+
+* add strict flag to fail pdfinfo on error (f0b47cd29e02)
+
+### Fix
+
+* disable unused cli parameter (ea43d9d1495d)
+* extend outlines parser (d86642eb4458)
+
 ## v2.14.1
 
 ### Fix

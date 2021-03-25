@@ -32,7 +32,6 @@ import tests.resources
     pytest.param(f'-i {power.MASTER098_PDF}', id='master98'),
 ])
 def test_pdfinfo_run(command, testdir, monkeypatch):  #pylint: disable=W0613
-    """Run help and version and format command to reach basic test coverage"""
     tests.pdfinfo_.run(command, monkeypatch=monkeypatch)
 
 
@@ -40,10 +39,10 @@ def test_pdfinfo_run(command, testdir, monkeypatch):  #pylint: disable=W0613
     'command',
     [
         pytest.param(f'-i {pdfinfo.ROOT}', id='input_directory'),
+        pytest.param(f'-i {__file__} --strict', id='no_pdf_file'),
     ],
 )
 def test_pdfinfo_run_invalid(command, testdir, monkeypatch):  #pylint: disable=W0613
-    """Run help and version and format command to reach basic test coverage"""
     tests.pdfinfo_.failure(command, monkeypatch=monkeypatch)
 
 

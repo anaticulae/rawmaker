@@ -41,7 +41,9 @@ COMMANDS = [
                 'json',
                 'yaml',
             ],
-        })
+        },
+    ),
+    utila.cli.Flag('--strict', message='fail on invalid pdf file'),
 ]
 
 CONFIG = utila.ParserConfiguration(
@@ -76,11 +78,12 @@ def main():
     ext = args['format']
     if ext is None:
         ext = 'json'
-    validated = validate(inpath, outpath, ext)
+    strict = args.get('strict', False)
+    validated = validate(inpath, outpath, ext, strict)
     return validated
 
 
-def validate(inpath, outpath, ext='json') -> int:
+def validate(inpath, outpath, ext='json', strict: bool = False) -> int:
     if not os.path.isfile(inpath):
         utila.error(f'require valid pdf file: {inpath}')
         return utila.INVALID_COMMAND
@@ -90,6 +93,9 @@ def validate(inpath, outpath, ext='json') -> int:
     except rawmaker.error.InvalidPDF:
         # not a valid pdf file
         parsed = None
+    if parsed is None and strict:
+        utila.error(f'invalid pdf file: {inpath}')
+        return pdfinfo.INVALID_PDF
     raw = '{}'
     if parsed is not None:
         raw = pdfinfo.data.dump(parsed, ext)

@@ -49,6 +49,9 @@ CONFIG = utila.ParserConfiguration(
     outputparameter=True,
     prefix=False,
     verboseflag=True,
+    multiprocessed=False,
+    pages=False,
+    cacheflag=False,
 )
 
 
@@ -79,7 +82,7 @@ def main():
 
 def validate(inpath, outpath, ext='json') -> int:
     if not os.path.isfile(inpath):
-        utila.error(f'require valid file resource: {inpath}')
+        utila.error(f'require valid pdf file: {inpath}')
         return utila.INVALID_COMMAND
     assert os.path.exists(inpath), f'invalid inpath: {inpath}'
     try:

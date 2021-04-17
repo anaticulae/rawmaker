@@ -386,12 +386,14 @@ def extention(image) -> str:
         'JBIG2Decode': 'jbig2',
     }
     try:
-        filter_ = image.stream['Filter']
-        if isinstance(filter_, list):
+        filters = image.stream['Filter']
+        if isinstance(filters, list):
             # TODO: SUPPORT MULTIPLE FILTER
-            assert len(filter_) == 1, str(filter_)
-            filter_ = filter_[0]
-        imagefilter = filter_.name
+            if len(filters) > 1:
+                utila.error(f'more than one filter: {filters}')
+            # assert len(filter_) == 1, str(filter_)
+            filters = filters[0]
+        imagefilter = filters.name
     except KeyError:
         imagefilter = 'Default'
     ext = decoder[imagefilter]

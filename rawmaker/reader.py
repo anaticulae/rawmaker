@@ -13,6 +13,7 @@ from os.path import isfile
 
 import utila
 from pdfminer.pdfdocument import PDFDocument
+from pdfminer.pdfdocument import PDFEncryptionError
 from pdfminer.pdfdocument import PDFSyntaxError
 from pdfminer.pdfparser import PDFParser
 
@@ -64,6 +65,10 @@ def open_document(parser: PDFParser, path: str, password: str) -> PDFDocument:
         document = PDFDocument(parser, password, fallback=False)
     except PDFSyntaxError:
         pass  # try with fallback again
+    except PDFEncryptionError as encryption:
+        utila.error('encryption not supported')
+        utila.debug(encryption)
+        exit(1)
     except Exception as exc:
         raise PDFParserImplementationError(path) from exc
     else:

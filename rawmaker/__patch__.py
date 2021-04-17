@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import pdfminer.pdfpage
 import utila
 
 
@@ -31,3 +32,17 @@ def parse_tuple(raw: str, length: int = 4, typ=float) -> tuple:
 
 
 utila.parse_tuple = parse_tuple
+
+before = pdfminer.pdfpage.PDFPage.create_pages  # pylint:disable=C0103
+
+
+def create_pages(document):
+    try:
+        yield from before(document)
+    except IndexError:
+        utila.error('pdfminer parsing error')
+        exit(1)
+        yield from []
+
+
+pdfminer.pdfpage.PDFPage.create_pages = create_pages

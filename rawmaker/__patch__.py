@@ -40,9 +40,11 @@ def create_pages(document):
     try:
         yield from before(document)
     except IndexError:
-        utila.error('pdfminer parsing error')
+        utila.error('pdfminer parsing error: IndexError')
         exit(1)
-        yield from []
+    except RecursionError:
+        utila.error('pdfminer parsing error: RecursionError')
+        exit(1)
 
 
 pdfminer.pdfpage.PDFPage.create_pages = create_pages

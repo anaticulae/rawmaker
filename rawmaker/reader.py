@@ -22,12 +22,13 @@ from rawmaker.error import PDFParserImplementationError
 
 
 @contextmanager
-def read(path: str, password: str = None) -> PDFDocument:
+def read(path: str, password: str = None, verify: bool = True) -> PDFDocument:
     """Open pdf from `path`.
 
     Args:
         path(str): path to pdf-file
         password(str): optional password to extract encrypted data
+        verify(bool): ensure that file starts with `%PDF-`
     Raises:
         TextExtractNotAllowed: if no extraction is allowed - currently disabled
         FileNotFoundError: `path` does not exists
@@ -40,11 +41,12 @@ def read(path: str, password: str = None) -> PDFDocument:
     if not isfile(path):
         raise ValueError('Read requires an pdf document, not %s' % path)
 
-    header = open(path, 'rb').read(5)
-    if header != b'%PDF-':
-        # TODO: MOVE TO def before() method after upgrading utila
-        utila.error('invalid pdf header')
-        exit(1)
+    if verify:
+        header = open(path, 'rb').read(5)
+        if header != b'%PDF-':
+            # TODO: MOVE TO def before() method after upgrading utila
+            utila.error('invalid pdf header')
+            exit(1)
 
     with open(path, 'rb') as fp:
         # Create a PDF parser object associated with the file object.

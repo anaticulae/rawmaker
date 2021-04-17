@@ -138,7 +138,15 @@ def pagesize_from_page(page: pdfminer.pdfdocument.PDFDocument,
 
 def cropborder_from_page(content) -> iamraw.Border:
     """Determine bounding box which includes all page items except of
-    white space only text."""
+    white space only text.
+
+
+    >>> cropborder_from_page([
+    ...     pdfminer.layout.LTLine(linewidth=1.0, p0=(50.520,78.540) , p1=(106.200,78.540)),
+    ...     pdfminer.layout.LTLine(linewidth=1.0, p0=(107.160,78.540), p1=(122.220,78.540)),
+    ... ])
+    Border(left=50.52, right=122.22, top=78.54, bottom=78.54)
+    """
 
     def no_whitespace(items):
         result = []
@@ -161,6 +169,6 @@ def cropborder_from_page(content) -> iamraw.Border:
     y1 = max([item.bbox[3] for item in content])
     # left, right, top, bottom
     x0, y0, x1, y1 = utila.roundme((x0, y0, x1, y1))
-    assert x0 < x1
-    assert y0 < y1
+    assert x0 <= x1, f'{x0} <= {x1}'
+    assert y0 <= y1, f'{y0} <= {y1}'
     return iamraw.Border(left=x0, right=x1, top=y0, bottom=y1)

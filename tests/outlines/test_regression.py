@@ -10,16 +10,23 @@
 import os
 
 import hardcore
+import pytest
 import serializeraw
 
 import tests
 
 
-def test_imagetext_outlines(testdir, monkeypatch):
+@pytest.mark.parametrize(
+    'source, expected',
+    [
+        pytest.param(hardcore.H000_IMAGETEXT_6_PDF, 6, id='figuretext'),
+    ],
+)
+def test_imagetext_outlines(source, expected, testdir, monkeypatch):
     """Regression test to load outlines `FitH` correctly."""
-    cmd = f'-i {hardcore.H000_IMAGETEXT_6_PDF} --outlines'
+    cmd = f'-i {source} --outlines'
     tests.run(cmd, monkeypatch=monkeypatch)
     source = os.path.join(testdir.tmpdir, 'rawmaker__outlines_outlines.yaml')
     assert os.path.exists(source)
     loaded = serializeraw.load_toc(source)
-    assert len(loaded) == 6
+    assert len(loaded) == expected or expected is None

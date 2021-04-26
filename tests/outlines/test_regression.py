@@ -15,11 +15,20 @@ import serializeraw
 
 import tests
 
+P50_SPD = """\
+Sammelmappe2.pdf
+    Europa
+    Respekt
+    Titel
+    Zukunft\
+"""
+
 
 @pytest.mark.parametrize(
     'source, expected',
     [
         pytest.param(hardcore.H000_IMAGETEXT_6_PDF, 6, id='figuretext'),
+        pytest.param(hardcore.P50_SPD, P50_SPD, id='spdfile'),
     ],
 )
 def test_imagetext_outlines(source, expected, testdir, monkeypatch):
@@ -29,4 +38,6 @@ def test_imagetext_outlines(source, expected, testdir, monkeypatch):
     source = os.path.join(testdir.tmpdir, 'rawmaker__outlines_outlines.yaml')
     assert os.path.exists(source)
     loaded = serializeraw.load_toc(source)
-    assert len(loaded) == expected or expected is None
+    assert len(loaded) == expected or\
+           str(loaded) == expected or\
+           expected is None

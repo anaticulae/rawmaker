@@ -79,7 +79,9 @@ def pagenumber(action, dest, pdf) -> rawmaker.destination.ExplicitDestination:
     if action:
         parsed = rawmaker.destination.parse(action)
         if isinstance(parsed, rawmaker.destination.NamedDestination):
-            resolved = pdf.get_dest(parsed.pdf_reference).resolve()
+            resolved = pdf.get_dest(parsed.pdf_reference)
+            if isinstance(resolved, pdfminer.pdftypes.PDFObjRef):
+                resolved = resolved.resolve()
             parsed = rawmaker.destination.parse(resolved)
     elif dest:
         if isinstance(dest, list):

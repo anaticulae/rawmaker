@@ -147,7 +147,7 @@ def parse_fitr(item) -> ExplicitDestination:
     if not item[1] in fit and not item[1].name in fit:
         return None
     pagenumber = item[0]
-    top = item[2]
+    top = item[2] if len(item) >= 3 else None
     if pagenumber is None:
         # TODO: CHANGE TO UNCHANGED/NONE
         pagenumber = 0

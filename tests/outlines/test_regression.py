@@ -29,6 +29,7 @@ Sammelmappe2.pdf
     [
         pytest.param(hardcore.H000_IMAGETEXT_6_PDF, 6, id='figuretext'),
         pytest.param(hardcore.P50_SPD, P50_SPD, id='spdfile'),
+        pytest.param(hardcore.P100_GRUENE, None, id='gruene'),
     ],
 )
 def test_imagetext_outlines(source, expected, testdir, monkeypatch):

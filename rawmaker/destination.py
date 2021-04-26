@@ -26,6 +26,7 @@ import contextlib
 import dataclasses
 
 import pdfminer.pdfpage
+import pdfminer.pdftypes
 
 
 class DestinationMixin:
@@ -64,6 +65,15 @@ class NamedDestination(DestinationMixin):
 
 
 def parse(item) -> DestinationMixin:  # pylint:disable=R1260
+    """\
+    A `null` value means that parameter shall be unchanged.
+
+    # TODO: Change null later
+    >>> parse([b'/null', 0.0, 0.0, 1.0]).page
+    0
+    """
+    if isinstance(item, pdfminer.pdftypes.PDFObjRef):
+        item = item.resolve()
     hyperlink = parse_hyperlink(item)
     if hyperlink:
         return hyperlink
@@ -119,6 +129,8 @@ def parse_fitr(item) -> ExplicitDestination:
     >>> from pdfminer.psparser import PSLiteral as PS
     >>> parse_fitr({'S': 'GoTo', 'D': [5, PS('FitR'), 0, 625, 440, 309]}).page
     5
+    >>> parse_fitr({'D': [None, 'FitH', 3512], 'S': 'GoTo'})
+    ExplicitDestination(page=0, left=None, top=3512, zoom=None)
     """
     with contextlib.suppress(AttributeError):
         item = item.resolve()
@@ -128,10 +140,18 @@ def parse_fitr(item) -> ExplicitDestination:
     # [0, /'FitR', 0, 625, 440, 309]
     if not isinstance(item, list):
         return None
-    if not item[1].name in ('Fit', 'FitH', 'FitR', 'XYZ'):
+    if isinstance(item[1], float):
+        # [/b'null', 0.0, 0.0, 1.0]
+        return ExplicitDestination(page=int(item[1]))  # TODO: HACK?
+    fit = ('Fit', 'FitH', 'FitR', 'XYZ')
+    if not item[1] in fit and not item[1].name in fit:
         return None
     pagenumber = item[0]
-    return ExplicitDestination(page=pagenumber)
+    top = item[2]
+    if pagenumber is None:
+        # TODO: CHANGE TO UNCHANGED/NONE
+        pagenumber = 0
+    return ExplicitDestination(page=pagenumber, top=top)
 
 
 def parse_explict(item) -> ExplicitDestination:
@@ -153,6 +173,7 @@ def parse_explict(item) -> ExplicitDestination:
         return None
     with contextlib.suppress(AttributeError):
         # skip when zoom is already a float
+        # null means: do not change current zoom
         if zoom.name == b'null':
             zoom = 0.0
 

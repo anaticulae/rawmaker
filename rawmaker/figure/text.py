@@ -39,14 +39,23 @@ def text_figures(
         raw = rawmaker.figure.utils.rawfigure_frombounding(bounding)
         figure = iamraw.Figure(data=raw, bounding=bounding)
         result.append(figure)
+
+    def valid(bounding: tuple) -> bool:
+        """Ensure that text figure is big enougth to avoid many false
+        positive renderings."""
+        if not textonly(bounding, items):
+            return True
+        if utila.rectangle_size(bounding) < area_min:
+            return False
+        if utila.rectangle_width(bounding) >= width_min:
+            return True
+        if utila.rectangle_height(bounding) >= height_min:
+            return True
+        return False
+
     # remove too small figures, disable for cluster which contains
-    # rectangle, lines, curve etc.
-    result = [
-        item for item in result if not textonly(item.bounding, items) or
-        (utila.rectangle_width(item.bounding) >= width_min or
-         utila.rectangle_height(item.bounding) >= height_min) and
-        utila.rectangle_size(item.bounding) >= area_min
-    ]
+    # rectangle, lines, curve etc. and accept them all.
+    result = [item for item in result if valid(item.bounding)]
     return result
 
 

@@ -10,6 +10,7 @@
 import os
 
 import power
+import serializeraw.images
 import utilatest
 
 import tests
@@ -39,3 +40,11 @@ def test_nofigure_diss266_small_text_elements(testdir, monkeypatch):
     pages = '156,168,204'
     tests.run(f'-i {source} --figures --pages={pages}', monkeypatch=monkeypatch)
     assert not os.path.exists('rawmaker__figures_figures')
+
+
+def test_figure_master155_page15(testdir, monkeypatch):
+    source = power.MASTER155_PDF
+    tests.run(f'-i {source} --figures --pages=15', monkeypatch=monkeypatch)
+    imageinformation = serializeraw.images.load_image_informations_frompath(
+        os.path.join(testdir.tmpdir, 'rawmaker__figures_figures'))
+    assert len(imageinformation) == 1

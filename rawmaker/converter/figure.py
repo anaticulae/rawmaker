@@ -42,9 +42,9 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
 
     def render_pagecontent(self, pageid, item, pagesize=None):
         """Collect all figures."""
-        if isinstance(item, pdfminer.layout.LTFigure):
-            self.render_figure(item, pageid=pageid)
-            return
+        # if isinstance(item, pdfminer.layout.LTFigure):
+        #     self.render_figure(item, pageid=pageid)
+        #     return
         if not valid_area(item.bbox, pagesize):
             # check after figure to avoid skipping figure
             return
@@ -53,9 +53,9 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
             text = item.get_text().strip()
             if not text or len(text) > 10:  # TODO: IMRPOVE SELECTOR
                 return
-        if isinstance(item, pdfminer.layout.LTRect) and item.linewidth == 0:
-            # skip hidden Rectangle
-            return
+        # if isinstance(item, pdfminer.layout.LTRect) and item.linewidth == 0:
+        #     # skip hidden Rectangle
+        #     return
         self.nonfigure[pageid].append(item)
 
     def render_figure(self, item: pdfminer.layout.LTFigure, pageid: int):
@@ -69,6 +69,7 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         """Create `text` figures after extraction complete pages. This
         method is only runned once."""
         merged = merge_figures(self.nonfigure)
+        # TODO: RENDER INTO MERGED FIGURES
         self.nonfigure.clear()
         if merged:
             self.content.extend(merged)

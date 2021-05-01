@@ -42,9 +42,11 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
 
     def render_pagecontent(self, pageid, item, pagesize=None):
         """Collect all figures."""
-        # if isinstance(item, pdfminer.layout.LTFigure):
-        #     self.render_figure(item, pageid=pageid)
-        #     return
+        if imageonly(item):
+            utila.error('duplicated image')
+            # return
+            # handled by --images, refactor later
+            # return
         if not valid_area(item.bbox, pagesize):
             # check after figure to avoid skipping figure
             return
@@ -53,9 +55,10 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
             text = item.get_text().strip()
             if not text or len(text) > 10:  # TODO: IMRPOVE SELECTOR
                 return
-        # if isinstance(item, pdfminer.layout.LTRect) and item.linewidth == 0:
-        #     # skip hidden Rectangle
-        #     return
+        if isinstance(item, pdfminer.layout.LTRect) and item.linewidth == 0:
+            # skip hidden Rectangle
+            return
+
         self.nonfigure[pageid].append(item)
 
     def render_figure(self, item: pdfminer.layout.LTFigure, pageid: int):
@@ -76,7 +79,23 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         return self.content
 
 
-def valid_area(bbox: utila.Rectangle, pagesize: tuple, borderwidth=65) -> bool:
+def imageonly(figure) -> bool:
+    if not isinstance(figure, pdfminer.layout.LTFigure):
+        return False
+    images = figure._objs
+    if len(images) != 1:
+        return False
+    if isinstance(images[0], pdfminer.layout.LTImage):
+        return True
+    if isinstance(images[0], pdfminer.layout.LTFigure):
+        if len(images[0]._objs) == 1:
+            return True
+    return False
+
+
+def valid_area(bbox: utila.Rectangle, pagesize: tuple, borderwidth=-5) -> bool:
+    # borderwith: minus means a little bit outside of the page. This often
+    # happens when having full page images.
     inside = (
         borderwidth,
         borderwidth,

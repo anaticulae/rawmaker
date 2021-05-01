@@ -176,6 +176,7 @@ def extract_figure(figure, pageid: int = None) -> iamraw.Figure:
     scale = scalex, scaley
 
     try:
+        # TODO: USE NEW PROCES?
         raw = rawmaker.figure.utils.rawfigure_frombounding(bounding)
     except MemoryError:
         utila.error(f'could not render figure on page {pageid}: {bounding}')

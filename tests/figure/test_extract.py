@@ -108,7 +108,7 @@ def test_render_bachelor51_page30_33_figure_image(monkeypatch, testdir):
     written = extract(power.BACHELOR051_PDF, '30,33', monkeypatch)
     # 3 png and 3 yaml files
     # correct is 2 because 1 table is detected as figure
-    expected = 6
+    expected = 8
     assert len(written) == expected, str(written)
 
 

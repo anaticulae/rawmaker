@@ -50,11 +50,8 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         if not valid_area(item.bbox, pagesize):
             # check after figure to avoid skipping figure
             return
-        if isinstance(item, pdfminer.layout.LTTextBoxHorizontal):
-            # skip content lines
-            text = item.get_text().strip()
-            if not text or len(text) > 10:  # TODO: IMRPOVE SELECTOR
-                return
+        if too_long(item):
+            return
         if isinstance(item, pdfminer.layout.LTRect) and item.linewidth == 0:
             # skip hidden Rectangle
             return
@@ -90,6 +87,22 @@ def imageonly(figure) -> bool:
     if isinstance(images[0], pdfminer.layout.LTFigure):
         if len(images[0]._objs) == 1:
             return True
+    return False
+
+
+def too_long(item) -> bool:
+    if not isinstance(item, pdfminer.layout.LTTextBoxHorizontal):
+        return False
+    # skip content lines
+    text = item.get_text().strip()
+    if not text:
+        return False
+    if item.x0 > 200 and item.x1 < 450:
+        # do not ignore centered text
+        return False
+    maxs = utila.maxs([len(item) for item in text.splitlines()])
+    if maxs > 10:
+        return True
     return False
 
 

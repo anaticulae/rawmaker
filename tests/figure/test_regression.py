@@ -11,6 +11,7 @@ import os
 
 import power
 import serializeraw.images
+import utila
 import utilatest
 
 import tests
@@ -48,3 +49,15 @@ def test_figure_master155_page15(testdir, monkeypatch):
     imageinformation = serializeraw.images.load_image_informations_frompath(
         os.path.join(testdir.tmpdir, 'rawmaker__figures_figures'))
     assert len(imageinformation) == 1
+
+
+def test_figure_master155_page17(testdir, monkeypatch, capsys):
+    """Include lower 0, 5, 10 base."""
+    source = power.MASTER155_PDF
+    tests.run(f'-i {source} --figures --pages=17', monkeypatch=monkeypatch)
+    imageinformation = serializeraw.images.load_image_informations_frompath(
+        os.path.join(testdir.tmpdir, 'rawmaker__figures_figures'))
+    assert len(imageinformation) == 1
+    bounding = imageinformation[0].content[0].bounding
+    expected = (155.76, 182.04, 528.05, 408.15)
+    assert utila.nears(bounding, expected)

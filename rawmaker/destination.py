@@ -113,7 +113,6 @@ def parse_simple(item) -> NamedDestination:
     >>> from pdfminer.psparser import PSLiteral as PS
     >>> parse_simple({'S': PS('GoTo'), 'D': b'FF'}).reference
     'FF'
-
     """
     if not isinstance(item, dict):
         return None

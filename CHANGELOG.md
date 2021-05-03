@@ -2,6 +2,27 @@
 
 Every noteable change is logged here.
 
+## v2.16.0
+
+### Feature
+
+* add more special characters (24472345a67b)
+* improve text part skipper (10580a1a9c0b)
+* do not render any figure, just create figure border (4f1873549d9b)
+* verify pdf binary header (a7c44a61ef8c)
+
+### Fix
+
+* adjust hidden figure skipper (36ea6a359ccf)
+* add complex outlines parser (aafe67e5107b)
+* extend outlines pattern (a3414ea1df77)
+* catch invalid pdf header (6e7315589242)
+* catch invalid encryption method (e2a5151468c2)
+* handle pdfminer recursion error (dbee1a9f74dd)
+* catch pdfminer pdf parsing error (c888dfa16ea1)
+* log error instead of failing (b394a3afec47)
+* fix crop box detector (4928d285d107)
+
 ## v2.15.0
 
 ### Feature

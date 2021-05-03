@@ -51,7 +51,7 @@ def test_figure_master155_page15(testdir, monkeypatch):
     assert len(imageinformation) == 1
 
 
-def test_figure_master155_page17(testdir, monkeypatch, capsys):
+def test_figure_master155_page17(testdir, monkeypatch):
     """Include lower 0, 5, 10 base."""
     source = power.MASTER155_PDF
     tests.run(f'-i {source} --figures --pages=17', monkeypatch=monkeypatch)

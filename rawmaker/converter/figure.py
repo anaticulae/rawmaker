@@ -79,13 +79,13 @@ class FigureConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
 def imageonly(figure) -> bool:
     if not isinstance(figure, pdfminer.layout.LTFigure):
         return False
-    images = figure._objs
+    images = figure._objs  # pylint:disable=W0212
     if len(images) != 1:
         return False
     if isinstance(images[0], pdfminer.layout.LTImage):
         return True
     if isinstance(images[0], pdfminer.layout.LTFigure):
-        if len(images[0]._objs) == 1:
+        if len(images[0]._objs) == 1:  # pylint:disable=W0212
             return True
     return False
 

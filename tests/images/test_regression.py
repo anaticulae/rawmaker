@@ -42,3 +42,12 @@ def test_render_master75_page0_10_28(monkeypatch, testdir):
     content = [[item.page for item in page.content] for page in images]
     pages = utila.flatten(content)
     assert pages == [0, 8, 28, 28]
+
+
+def test_render_master127page32(monkeypatch, testdir):
+    """Ensure that multi-line-image is merged correctly."""
+    cmd = f'-i {power.MASTER127_PDF} --pages=32 --images'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    written = utila.file_list('rawmaker__images_images')
+    expected = 2
+    assert len(written) == expected, str(written)

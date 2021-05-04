@@ -187,22 +187,21 @@ def merge_page(images: typing.List[pdfminer.layout.LTImage], page: int):
 
 def group_rectangles(rectangles):
     """Split potential images by distance in y-coordiante."""
-    grouped = itertools.groupby(rectangles, key=lambda x: x[0])
-    result = []
-    for _, group in grouped:
-        ytopdown = sorted(group, key=lambda x: x[1])
-        # split by distance
-        splitted = [[ytopdown[0]]]
-        for item in ytopdown[1:]:
-            # maximal distance between two `pixel lines`
-            vertical_distance = abs(item[1] - splitted[-1][-1][3])
-            if vertical_distance < 5.0:
-                splitted[-1].append(item)
-            else:
-                # start of new image
-                splitted.append([item])
-        result.extend(splitted)
-    result = [item for item in result if len(item)]
+    border = range(0, 1000, 10)
+    bucket = utila.Buckets(border, sorting=True)
+    bucket.selector = lambda x: x[1]  # TODO: REMOVE THIS HACK
+    for item in rectangles:
+        bucket.add(item)
+    grouped = utila.groupby_empty(bucket)
+    if not grouped:
+        return []
+    # merge neighbors which are huger than bucket size
+    result = [list(grouped[0])]
+    for item in grouped[1:]:
+        if utila.near(result[-1][-1][3], item[0][1], diff=5.0):
+            result[-1].extend(item)
+        else:
+            result.append(list(item))
     return result
 
 
@@ -225,23 +224,26 @@ def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImag
             return MergedImage(images[0], ext, bounding)
         utila.debug(f'extraction not supported: {images[0]}')
 
-    image_height = sum(item.srcsize[1] for item in images)
-    image_width = images[0].srcsize[0]
-    size = (image_width, image_height)
-    line_height = max(images[0].srcsize[1], 1)
+    x00 = min(item.x0 for item in images)
+    x11 = max(item.x1 for item in images)
+    y00 = min(item.y0 for item in images)
+    y11 = max(item.y1 for item in images)
+
+    image_width = x11 - x00
+    image_height = y11 - y00
+    size = (int(image_width), int(image_height))
 
     mode = 'RGB'
-
     result = PIL.Image.new(mode, size, color=0)
     renderer = PIL.ImageDraw.Draw(result, mode=mode)
 
-    for ypos, image in enumerate(images):
+    for image in images:
         ext = extention(image)
         current = image_fromlt(image)
         if not current:
             continue
         # render to common image
-        renderer.bitmap((0, ypos * line_height), bitmap=current)
+        renderer.bitmap((image.x0 - x00, image.y0 - y00), bitmap=current)
     # update bottom bounding of merged rectangle
     last = images[-1].bbox
     multi_bounding = (bounding[0], bounding[1], last[2], last[3])

@@ -118,7 +118,8 @@ SPECIAL_CHAR_TABLE = {
     '\xE4': 'ä',
     '\xF6': 'ö',
     '\xFC': 'ü',
-    '\u0161': 's',  #š
+    '\u0161': 's',  # š
+    '\xE9': 'e',  # é
 }
 
 FAST_KEY = set(SPECIAL_CHAR_TABLE.keys())

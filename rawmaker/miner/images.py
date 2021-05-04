@@ -40,6 +40,7 @@ import PIL.ImageDraw2
 import utila
 
 import rawmaker.converter.images
+import rawmaker.miner.colorspace
 
 MergedImage = collections.namedtuple('MergedImage', 'image, ext, bounding')
 WrittenImage = collections.namedtuple('WrittenImage', 'filename, bounding')
@@ -267,8 +268,8 @@ def jbig2(image):
 
 
 def image_fromlt(image) -> PIL.Image:
-    colorspace = get_colorspace(image)
-    mode = 'RGB'
+    colorspace = rawmaker.miner.colorspace.parse(image)
+    mode = '1'  # default mode
     size = image.srcsize
     bits = image.bits
 
@@ -300,39 +301,17 @@ def image_fromlt(image) -> PIL.Image:
     else:
         try:
             current = PIL.Image.frombytes(mode, size, data)
-        except ValueError:
+        except ValueError as error:
             utila.error(f'could not decode: {image}')
             return None
-
     # convert to bitmap
-    current = current.convert(mode=BITMAP, colors=1024, palette='1')
-    loaded = io.BytesIO(current.tobitmap())
-    current = PIL.Image.open(loaded)
+    try:
+        current = current.convert(mode=BITMAP, colors=1024, palette='1')
+        loaded = io.BytesIO(current.tobitmap())
+        current = PIL.Image.open(loaded)
+    except OSError:
+        current = PIL.Image.new(mode, size, color=0)
     return current
-
-
-def get_colorspace(image):
-    colorspace = image.colorspace[0]
-    if isinstance(colorspace, pdfminer.pdftypes.PDFObjRef):
-        colorspace = colorspace.resolve()
-    elif isinstance(colorspace, list):
-        colorspace = colorspace[0]
-    # test list again!
-    if isinstance(colorspace, list):
-        # DEVICERGB
-        if len(colorspace) == 2:
-            if isinstance(colorspace[1], pdfminer.pdftypes.PDFObjRef):
-                colorspace = colorspace[1].resolve()
-            else:
-                colorspace = colorspace[1]
-        else:
-            if isinstance(colorspace[3], pdfminer.pdftypes.PDFObjRef):
-                colorspace = colorspace[3].resolve()
-            else:
-                colorspace = colorspace[3]
-    elif colorspace:
-        colorspace = colorspace.name
-    return colorspace
 
 
 def rgb256_decoder(data, dataspace, bits=8):

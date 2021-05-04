@@ -160,28 +160,22 @@ def merge_document_images(items):
 
 
 def merge_page(images: typing.List[pdfminer.layout.LTImage], page: int):
-    todo = [(
-        utila.roundme(image.x0),
-        utila.roundme(image.y0),
-        utila.roundme(image.x1),
-        utila.roundme(image.y1),
-    ) for image in images]
-
+    todo = [
+        utila.roundme((image.x0, image.y0, image.x1, image.y1))
+        for image in images
+    ]
+    # cluster image parts into mergable image
     lookup = {str(item): line for item, line in zip(todo, images)}
     # assert len(lookup) == len(todo), f'{len(lookup)} != {len(todo)}'
-
     grouped = group_rectangles(todo)
-
     # convert back
     lines = [[lookup[str(item)] for item in group] for group in grouped]
-
     result = []
     try:
         result = [raw_images_merge(item) for item in lines]
     except ValueError as error:
         utila.error(f'could not parse images on page: {page}')
         utila.error(error)
-
     return result
 
 

@@ -16,9 +16,13 @@ def parse(image) -> str:
         # TODO: VERIFY THIS
         return 'DeviceGray'
     colorspace = name(colorspace)
-    if colorspace in ('DeviceRGB', 'RGB'):
+    # TODO: VERIFY R212!
+    if colorspace in ('DeviceRGB', 'RGB', 'R213'):
         # RGB is an abbreviation of DeviceRGB
         return 'DeviceRGB'
+    if colorspace in ('DeviceGray', 'G'):
+        # G is an abbreviation of DeviceGray
+        return 'DeviceGray'
     typ = colorspace[0].name
     if typ == 'Indexed':
         return indexed_space(*colorspace[1:])

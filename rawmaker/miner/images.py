@@ -132,7 +132,10 @@ def write_image(extracted, write_to, page, index) -> WrittenImage:
         outpath = os.path.join(write_to, filename)
         with open(outpath, mode='wb') as output:
             ext = ext.replace('jpg', 'jpeg')
-            extracted.image.save(output, format=ext)
+            try:
+                extracted.image.save(output, format=ext)
+            except Exception as error:
+                utila.error(f'could not use save method: {filename}')
     else:
         if extracted:  # TODO: THIS MAKES NO SENCE
             try:

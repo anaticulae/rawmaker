@@ -106,25 +106,6 @@ def page_size(document: iamraw.Document) -> iamraw.PageSize:
     return iamraw.PageSize(width, height)
 
 
-# TODO: REQUIRE BETTER APPROACH OF REPLACING `LEGATURES`
-SPECIAL_CHAR_TABLE = {
-    '\uFB00': 'ff',
-    '\uFB01': 'fi',
-    '\uFB02': 'fl',
-    '\uFB03': 'ffi',
-    '\xA8': '¨',
-    '\xC4': 'Ä',
-    '\xDC': 'Ü',
-    '\xE4': 'ä',
-    '\xF6': 'ö',
-    '\xFC': 'ü',
-    '\u0161': 's',  # š
-    '\xE9': 'e',  # é
-}
-
-FAST_KEY = set(SPECIAL_CHAR_TABLE.keys())
-
-
 def render_char(
         item: pdfminer.layout.LTChar,
         baseline: float,
@@ -163,9 +144,9 @@ def render_char(
         # add threshold to avoid noise in char-fontrise
         fontrise = 0.0  # pylint:disable=R0204
     char = None
-    if value in FAST_KEY:
+    replaced = rawmaker.miner.rawchar.special_char(value)
+    if replaced is not None:
         # Unicode character
-        replaced = SPECIAL_CHAR_TABLE[value]
         char = rawmaker.miner.rawchar.RawUnicodeChar(
             ltchar=item,
             box=bounding,

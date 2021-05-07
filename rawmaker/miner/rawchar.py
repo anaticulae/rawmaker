@@ -35,25 +35,40 @@ class RawUnicodeChar(iamraw.UnicodeChar):
 
 
 def special_char(item: str):
+    """\
+    >>> special_char('š')
+    's'
+    >>> special_char('é')
+    'e'
+    """
     with contextlib.suppress(KeyError):
         return SPECIAL_CHAR_TABLE[item]
     return None
 
 
 # TODO: REQUIRE BETTER APPROACH OF REPLACING `LEGATURES`
-SPECIAL_CHAR_TABLE = {
-    '\uFB00': 'ff',
-    '\uFB01': 'fi',
-    '\uFB02': 'fl',
-    '\uFB03': 'ffi',
-    '\xA8': '¨',
-    '\xC4': 'Ä',
-    '\xDC': 'Ü',
-    '\xE4': 'ä',
-    '\xF6': 'ö',
-    '\xFC': 'ü',
-    '\u0161': 's',  # š
-    '\xE9': 'e',  # é
-}
+SPECIAL_CHARS = """
+# legiaturen
+\uFB00      ff
+\uFB01      fi
+\uFB02      fl
+\uFB03      ffi
 
-FAST_KEY = set(SPECIAL_CHAR_TABLE.keys())
+\xA8        ¨
+
+# umlaute
+\xC4        Ä
+\xDC        Ü
+\xE4        ä
+\xF6        ö
+\xFC        ü
+
+\u0161      s       š
+\xE9        e       é
+"""
+
+SPECIAL_CHAR_TABLE = {
+    line.split()[0]: line.split()[1]
+    for line in SPECIAL_CHARS.strip().splitlines()
+    if line and not line.strip().startswith('#')
+}

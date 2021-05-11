@@ -65,6 +65,68 @@ SPECIAL_CHARS = """
 
 \u0161      s       š
 \xE9        e       é
+
+\xa1        i       ¡
+\xc0        A       À
+\xc1        A       Á
+\xc2        A       Â
+\xc3        A       Ã
+\xc4        A       Ä
+\xc5        A       Å
+\xc6        A       Æ
+\xc7        C       Ç
+\xc8        E       È
+\xc9        E       É
+\xca        E       Ê
+\xcb        E       Ë
+\xcc        I       Ì
+\xcd        I       Í
+\xce        I       Î
+\xcf        I       Ï
+\xd0        D       Ð
+\xd1        N       Ñ
+\xd2        O       Ò
+\xd3        O       Ó
+\xd4        O       Ô
+\xd5        O       Õ
+\xd6        O       Ö
+\xd8        O       Ø
+\xd9        U       Ù
+\xda        U       Ú
+\xdb        U       Û
+\xdc        U       Ü
+\xdd        Y       Ý
+\xe0        a       à
+\xe1        a       á
+\xe2        a       â
+\xe3        a       ã
+# \xe4        a       ä
+\xe5        a       å
+\xe6        a       æ
+\xe7        c       ç
+\xe8        e       è
+\xe9        e       é
+\xea        e       ê
+\xeb        e       ë
+\xec        l       ì
+\xed        l       í
+\xee        l       î
+\xef        l       ï
+\xf0        o       ð
+\xf1        n       ñ
+\xf2        o       ò
+\xf3        o       ó
+\xf4        o       ô
+\xf5        o       õ
+# \xf6        ö       ö
+\xf8        o       ø
+\xf9        u       ù
+\xfa        u       ú
+\xfb        u       û
+# \xfc        ü       ü
+\xfd        y       ý
+\xff        y       ÿ
+
 """
 
 SPECIAL_CHAR_TABLE = {

@@ -23,7 +23,6 @@ NOTE Currently this feature is experimental.
 import array
 import collections
 import io
-import itertools
 import os
 import typing
 
@@ -134,7 +133,7 @@ def write_image(extracted, write_to, page, index) -> WrittenImage:
             ext = ext.replace('jpg', 'jpeg')
             try:
                 extracted.image.save(output, format=ext)
-            except Exception as error:
+            except Exception as error:  # pylint:disable=broad-except
                 utila.error(f'could not use save method: {filename}')
     else:
         if extracted:  # TODO: THIS MAKES NO SENCE

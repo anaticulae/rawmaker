@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v2.17.0
+
+### Feature
+
+* extend special char converter (6bc5e94b5df5)
+* extend special char table (011dbe1eb7ca)
+* improve color space detector (ea6ba9c708e5)
+
+### Fix
+
+* four items colorspace (e50d762b4d4c)
+* skip broken image writer (469f0dc3659a)
+* add gray color space (324f7cc53ebf)
+
 ## v2.16.0
 
 ### Feature

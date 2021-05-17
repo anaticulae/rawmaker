@@ -10,8 +10,9 @@
 import contextlib
 
 
-def parse(image) -> str:
-    colorspace = image.colorspace[0]
+def parse(colorspace) -> str:
+    if len(colorspace) == 1:
+        colorspace = colorspace[0]
     if not colorspace:
         # TODO: VERIFY THIS
         return 'DeviceGray'
@@ -33,9 +34,10 @@ def parse(image) -> str:
 
 def indexed_space(base, hival, lookup):  # pylint:disable=W0613
     base = name(base)
-    # lookup = lookup.resolve()
     if base[0] == 'ICCBased':
         return iccbased(base[1].resolve())
+    if str(base) == 'DeviceRGB':
+        return 'DeviceRGB'
     return None
 
 

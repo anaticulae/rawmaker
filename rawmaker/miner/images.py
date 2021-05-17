@@ -267,7 +267,7 @@ def jbig2(image):
 
 
 def image_fromlt(image) -> PIL.Image:
-    colorspace = rawmaker.miner.colorspace.parse(image)
+    colorspace = rawmaker.miner.colorspace.parse(image.colorspace)
     mode = '1'  # default mode
     size = image.srcsize
     bits = image.bits

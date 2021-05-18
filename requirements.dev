@@ -8,11 +8,11 @@
 # =============================================================================
 
 # test data provider
-power==1.4.5
-hardcore==0.2.1
+power==1.4.6
+hardcore==0.2.2
 
-jam==0.2.18
+jam==0.2.19
 
-utilatest==0.5.2
+utilatest==0.5.3
 
 optimo==0.3.0

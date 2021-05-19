@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import sys
+
 import pdfminer.pdfpage
 import utila
 
@@ -18,10 +20,10 @@ def create_pages(document):
         yield from before(document)
     except IndexError:
         utila.error('pdfminer parsing error: IndexError')
-        exit(1)
+        sys.exit(1)
     except RecursionError:
         utila.error('pdfminer parsing error: RecursionError')
-        exit(1)
+        sys.exit(1)
 
 
 pdfminer.pdfpage.PDFPage.create_pages = create_pages

@@ -12,6 +12,7 @@ import concurrent
 import itertools
 import math
 import os
+import sys
 
 import configo
 import utila
@@ -77,7 +78,7 @@ def run_single(path: str, pages: tuple, config: dict):
             utila.error(f'could not run: {cmd}')
             utila.error(completed.stdout)
             utila.error(completed.stderr)
-            exit(utila.FAILURE)
+            sys.exit(utila.FAILURE)
     quality = letty.quality.whitespace.determine(cwd, pages=pages)
     return OptimizerResult(quality, config)
 

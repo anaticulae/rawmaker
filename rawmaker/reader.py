@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
+import sys
 from contextlib import contextmanager
 from os.path import exists
 from os.path import isfile
@@ -46,7 +47,7 @@ def read(path: str, password: str = None, verify: bool = True) -> PDFDocument:
         if header != b'%PDF-':
             # TODO: MOVE TO def before() method after upgrading utila
             utila.error('invalid pdf header')
-            exit(1)
+            sys.exit(1)
 
     with open(path, 'rb') as fp:
         # Create a PDF parser object associated with the file object.
@@ -76,7 +77,7 @@ def open_document(parser: PDFParser, path: str, password: str) -> PDFDocument:
     except PDFEncryptionError as encryption:
         utila.error('encryption not supported')
         utila.debug(encryption)
-        exit(1)
+        sys.exit(1)
     except Exception as exc:
         raise PDFParserImplementationError(path) from exc
     else:

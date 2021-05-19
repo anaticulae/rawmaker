@@ -9,6 +9,7 @@
 
 import argparse
 import os
+import sys
 
 import utila
 import utilatest
@@ -22,7 +23,7 @@ Collect pdf files of defined folders and use them to run rawmaker.
 def main():
     parameter = user_input()
     run(*parameter)
-    exit(utila.SUCCESS)
+    sys.exit(utila.SUCCESS)
 
 
 def user_input() -> tuple:

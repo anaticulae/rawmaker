@@ -187,9 +187,6 @@ def isformula(text: str) -> bool:
     return False
 
 
-ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
-
 def special_rate(text: str) -> bool:
     """\
     >>> special_rate('d=1−rmaximalzeDistanz.')
@@ -197,9 +194,9 @@ def special_rate(text: str) -> bool:
     """
     if len(text) < 22:  # TODO: HOLY VALUE
         return False
-    if '=' in text and '−' and numbers(text):
+    if '=' in text and '−' and utila.parse_numbers(text):
         return False
-    alpharate = len([item for item in text if item in ALPHA]) / len(text)
+    alpharate = utila.char_rate(text)
     if alpharate > 0.8:  # TODO: HOLY VALUE
         return True
     return False
@@ -212,7 +209,7 @@ def no_formula(text: str) -> bool:
     """
     if re.match(NO_FORMULA, text):
         return True
-    if re.match(r'\([a-zA-Z]\)', text):
+    if re.match(r'\([A-Z]\)', text, re.IGNORECASE):
         # (a) (b)
         return True
     return False
@@ -233,20 +230,6 @@ def math_character(text: str) -> bool:  # pylint:disable=too-many-return-stateme
         # do not detect + list as formula
         return True
     return False
-
-
-def numbers(text):
-    """\
-    >>> numbers('Helmut')
-    []
-    >>> numbers('This is 1 number an 50 apple')
-    [1, 50]
-    """
-    # TODO: MOVE METHOD
-    result = []
-    for number in re.findall(r'\d+', text):
-        result.append(int(number))
-    return result
 
 
 def token_alpha_rate(text: str) -> float:

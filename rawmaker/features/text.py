@@ -24,15 +24,15 @@ import rawmaker.reader
 
 
 def work(  # pylint:disable=W9015
-        document: str,
-        boxes_flow: float = 0.5,
-        char_margin: float = 2.0,
-        line_margin: float = 0.5,
-        line_overlap: float = 0.5,
-        word_margin: float = 0.1,
-        nostrip: bool = rawmaker.parameter.STRIP is False,
-        detect_vertical: bool = False,
-        pages: tuple = None,
+    document: str,
+    boxes_flow: float = 0.5,
+    char_margin: float = 2.0,
+    line_margin: float = 0.5,
+    line_overlap: float = 0.5,
+    word_margin: float = 0.1,
+    nostrip: bool = rawmaker.parameter.STRIP is False,
+    detect_vertical: bool = False,
+    pages: tuple = None,
 ) -> typing.Tuple[str, str]:
     """Extract structured text out of document
 
@@ -69,10 +69,10 @@ def work(  # pylint:disable=W9015
 
 
 def superfast(
-        document: str,
-        config: rawmaker.parameter.ParsingConfiguration,
-        result: str,
-        pages: list = None,
+    document: str,
+    config: rawmaker.parameter.ParsingConfiguration,
+    result: str,
+    pages: list = None,
 ) -> iamraw.Document:
     if pages is None:
         pagecount = pdfinfo.pages.determine(document)
@@ -144,9 +144,9 @@ def fake_text_mean_height(item, bounding, mean):
 
 
 def extract_document(
-        document: str,
-        config: rawmaker.parameter.ParsingConfiguration = None,
-        pages: tuple = None,
+    document: str,
+    config: rawmaker.parameter.ParsingConfiguration = None,
+    pages: tuple = None,
 ) -> iamraw.Document:
     strip = rawmaker.parameter.STRIP
     if config:

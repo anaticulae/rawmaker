@@ -38,8 +38,8 @@ def create_interpreter(layout=None) -> pdfminer.pdfinterp.PDFPageInterpreter:
 
 
 def process_pdfpages(
-        document: pdfminer.pdfdocument.PDFDocument,
-        pages: tuple = None,
+    document: pdfminer.pdfdocument.PDFDocument,
+    pages: tuple = None,
 ) -> pdfminer.pdfpage.PDFPage:
     """Contextmanager to yield `PDFPage` of every selected page of
     `PDFDocument`.
@@ -64,8 +64,8 @@ def process_pdfpages(
 
 
 def process_document(
-        document: pdfminer.pdfdocument.PDFDocument,
-        pages=None,
+    document: pdfminer.pdfdocument.PDFDocument,
+    pages=None,
 ) -> typing.Tuple[int, pdfminer.layout.LTPage]:
     """Yield (pagenumber, LTPage) for every selected page of `PDFDocument`"""
     assert isinstance(
@@ -80,8 +80,8 @@ def process_document(
 
 
 def process_pagecontent(
-        document: pdfminer.pdfdocument.PDFDocument,
-        pages=None,
+    document: pdfminer.pdfdocument.PDFDocument,
+    pages=None,
 ) -> pdfminer.layout.LTPage:
     assert isinstance(
         document,
@@ -101,11 +101,11 @@ def page_selection(document: iamraw.Document, pages: tuple):
 
 
 def extract_content(
-        document: pdfminer.pdfdocument.PDFDocument,
-        config: rawmaker.parameter.ParsingConfiguration = None,
-        converter=rawmaker.miner.text.PrecisePDFConverter,
-        strip: bool = False,
-        pages: tuple = None,
+    document: pdfminer.pdfdocument.PDFDocument,
+    config: rawmaker.parameter.ParsingConfiguration = None,
+    converter=rawmaker.miner.text.PrecisePDFConverter,
+    strip: bool = False,
+    pages: tuple = None,
 ) -> iamraw.Document:
     """Extract content from PDF file
 

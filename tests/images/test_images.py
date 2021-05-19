@@ -78,11 +78,11 @@ def test_images_export_master116(testdir):
 ])
 @utilatest.longrun
 def test_images_export_bachelor63_extract_images(
-        page,
-        expected,
-        ext,
-        expected_bounding_height,
-        testdir,
+    page,
+    expected,
+    ext,
+    expected_bounding_height,
+    testdir,
 ):
     source = power.BACHELOR063_PDF
     root = testdir.tmpdir
@@ -122,10 +122,10 @@ def test_images_export_bachelor63_extract_images(
     ])
 @utilatest.nightly
 def test_images_export_document_complete(
-        source,
-        expected,
-        testdir,
-        monkeypatch,
+    source,
+    expected,
+    testdir,
+    monkeypatch,
 ):
     # for every image an additional image info file is extracted.
     root = testdir.tmpdir

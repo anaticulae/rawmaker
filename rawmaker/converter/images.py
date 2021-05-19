@@ -41,9 +41,9 @@ class ImageConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
             self.render_figure(item, pageid=pageid)
 
     def render_result_image(
-            self,
-            image: pdfminer.layout.LTImage,
-            pageid: int,
+        self,
+        image: pdfminer.layout.LTImage,
+        pageid: int,
     ):
         # add pageid to ensure that equal image names from different pages
         # are not handled as same same.
@@ -53,9 +53,9 @@ class ImageConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         self.imagewriter(pageid, image)
 
     def render_figure(
-            self,
-            item: pdfminer.layout.LTFigure,
-            pageid: int,
+        self,
+        item: pdfminer.layout.LTFigure,
+        pageid: int,
     ):
         # TODO: RENDER CURVES ETC.
         images = item._objs  # pylint:disable=W0212

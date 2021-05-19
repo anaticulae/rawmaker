@@ -46,9 +46,9 @@ WrittenImage = collections.namedtuple('WrittenImage', 'filename, bounding')
 
 
 def extract_images(
-        document: pdfminer.pdfdocument.PDFDocument,
-        outputfolder,
-        pages: tuple = None,
+    document: pdfminer.pdfdocument.PDFDocument,
+    outputfolder,
+    pages: tuple = None,
 ) -> dict:
     """Extract all images of `document` of selected `pages`.
 

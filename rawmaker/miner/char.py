@@ -18,10 +18,10 @@ import rawmaker.patch.ltchar
 class CharPDFConvert(rawmaker.miner.text.PrecisePDFConverter):
 
     def __init__(
-            self,
-            config: rawmaker.parameter.ParsingConfiguration = None,
-            imagewriter: callable = None,
-            strip: bool = None,
+        self,
+        config: rawmaker.parameter.ParsingConfiguration = None,
+        imagewriter: callable = None,
+        strip: bool = None,
     ):
         super().__init__()
         self.laparams = None  # disable layout analysis

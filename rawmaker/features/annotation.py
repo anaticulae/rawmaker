@@ -31,8 +31,8 @@ def work(document: str, pages=None) -> str:
 
 
 def extract_annotations(
-        document: pdfminer.pdfdocument.PDFDocument,
-        pages=None,
+    document: pdfminer.pdfdocument.PDFDocument,
+    pages=None,
 ) -> iamraw.PageAnnotations:
     result = []
     for page, number in process_pdfpages(document, pages=pages):
@@ -45,8 +45,8 @@ ANNOTATION_LABEL = 'Annot'
 
 
 def parse_page(  # pylint:disable=R1260
-        page: pdfminer.pdfpage.PDFPage,
-        pagenumber: int,
+    page: pdfminer.pdfpage.PDFPage,
+    pagenumber: int,
 ) -> iamraw.PageAnnotation:
     """Parse annoation from `PDFPage`.
 

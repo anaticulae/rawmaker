@@ -30,10 +30,10 @@ LINES_PER_PAGE_MAX = 1000
 
 
 def work(
-        text: str,
-        textposition: str,
-        lines: str,
-        pages: tuple = None,
+    text: str,
+    textposition: str,
+    lines: str,
+    pages: tuple = None,
 ) -> str:
     lines = serializeraw.load_lines(lines, pages=pages)
     lines = limit_lines(lines)

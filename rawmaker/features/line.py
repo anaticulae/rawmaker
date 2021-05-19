@@ -43,8 +43,8 @@ def work(document: str, pages: tuple = None) -> str:
 
 
 def determine_lines(
-        document: pdfminer.pdfdocument.PDFDocument,
-        pages: tuple = None,
+    document: pdfminer.pdfdocument.PDFDocument,
+    pages: tuple = None,
 ) -> iamraw.PageContentLines:
     lines_ = lines(document, pages=pages)
     result = []
@@ -60,8 +60,8 @@ def determine_lines(
 
 
 def lines(
-        pdf: pdfminer.pdfdocument.PDFDocument,
-        pages: tuple = None,
+    pdf: pdfminer.pdfdocument.PDFDocument,
+    pages: tuple = None,
 ) -> list:
     """Extract all `LTLine` out of `PDFDocument` page wise
 
@@ -146,9 +146,9 @@ def accept_ltrect(item: pdfminer.layout.LTRect):
 
 
 def accept_ltline(
-        item: pdfminer.layout.LTLine,
-        vertical_max_diff=VERTICAL_MAX_DIFF,
-        horizontal_max_diff=HORIZONTAL_MAX_DIFF,
+    item: pdfminer.layout.LTLine,
+    vertical_max_diff=VERTICAL_MAX_DIFF,
+    horizontal_max_diff=HORIZONTAL_MAX_DIFF,
 ) -> bool:
     """Accept horizontal or vertical lines
 
@@ -293,9 +293,9 @@ def ensure_position(item: tuple) -> tuple:
 
 
 def type_in_document(
-        document: pdfminer.pdfdocument.PDFDocument,
-        datatype: object,
-        pages: tuple = None,
+    document: pdfminer.pdfdocument.PDFDocument,
+    datatype: object,
+    pages: tuple = None,
 ) -> typing.List[typing.Tuple[pdfminer.layout.LTPage, int]]:
     """Extract defined `datatype` out of `PDFDocument`
 

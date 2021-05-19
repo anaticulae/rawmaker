@@ -144,8 +144,8 @@ def merge_figures(pagefigures) -> iamraw.Figures:
 
 
 def extract_figures(
-        document: str,
-        pages: tuple = None,
+    document: str,
+    pages: tuple = None,
 ) -> iamraw.Figures:
     with rawmaker.reader.read(document) as pdf:
         # Processing layout

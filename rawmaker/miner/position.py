@@ -67,8 +67,8 @@ def load_hasher(content: str) -> DocumentItemHasher:
 
 
 def hash_positions(
-        document: iamraw.Document,
-        pages=None,
+    document: iamraw.Document,
+    pages=None,
 ) -> iamraw.PageContentTextPositions:
     assert isinstance(document, iamraw.Document), type(document)
     collected = []

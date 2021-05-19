@@ -17,8 +17,8 @@ import rawmaker.converter.math
 
 
 def extract_content(
-        document: pdfminer.pdfdocument.PDFDocument,
-        pages: tuple = None,
+    document: pdfminer.pdfdocument.PDFDocument,
+    pages: tuple = None,
 ) -> iamraw.PageContentRawFormulas:
     # use char based approach
     device = rawmaker.converter.math.MathConverter()

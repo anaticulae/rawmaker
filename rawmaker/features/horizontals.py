@@ -69,12 +69,12 @@ def determine_horizontal(lines, pagewidth=500):
 
 
 def determine_pagehorizontals(
-        cluster: LineClusters,
-        page: int,
-        *,
-        page_width: float,
-        vertical_maxerror: float = HORIZONTAL_VERTICAL_MAX_DIFF,
-        horizontal_minwidth: float = HORIZONTAL_MIN_WIDTH,
+    cluster: LineClusters,
+    page: int,
+    *,
+    page_width: float,
+    vertical_maxerror: float = HORIZONTAL_VERTICAL_MAX_DIFF,
+    horizontal_minwidth: float = HORIZONTAL_MIN_WIDTH,
 ) -> iamraw.PageContentHorizontals:
     """Collect single line which are expanded horizontal
 

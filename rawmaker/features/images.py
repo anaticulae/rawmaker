@@ -45,9 +45,9 @@ def work(document: str, pages: tuple = None) -> DumpedImageInformations:
 
 
 def extract_pages(
-        document: str,
-        outputfolder: str = None,
-        pages=None,
+    document: str,
+    outputfolder: str = None,
+    pages=None,
 ) -> PageContentImagesList:
     # TODO: REPLACE AFTER UPGRADING UTILA
     if outputfolder is None:

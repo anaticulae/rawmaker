@@ -23,10 +23,10 @@ TEXT_ONLY = (
 
 
 def text_figures(
-        items,
-        width_min=150,
-        height_min=100,
-        area_min=150 * 150,
+    items,
+    width_min=150,
+    height_min=100,
+    area_min=150 * 150,
 ) -> iamraw.Figure:
     alltext = all((isinstance(item, TEXT_ONLY) for item in items))
     if alltext:

@@ -41,7 +41,8 @@ def test_maximize_bounding_box(boxdata_from_pdf):  #pylint:disable=W0621
 
 
 @pytest.mark.parametrize(
-    'increasing_fonts, expected_size_in_mm', [
+    'increasing_fonts, expected_size_in_mm',
+    [
         (tests.resources.INCREASING_FONT_A3, (297, 420)),
         (tests.resources.INCREASING_FONT_A4, (210, 297)),
         (tests.resources.INCREASING_FONT_A5, (148, 210)),
@@ -50,7 +51,8 @@ def test_maximize_bounding_box(boxdata_from_pdf):  #pylint:disable=W0621
         'A3',
         'A4',
         'A5',
-    ])
+    ],
+)
 def test_page_size(increasing_fonts, expected_size_in_mm):
     with rawmaker.reader.read(increasing_fonts) as pdf:
         sizeandborders = rawmaker.features.border.determine_boundingboxes(pdf)

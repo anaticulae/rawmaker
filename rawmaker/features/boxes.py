@@ -43,8 +43,8 @@ def determine_boxes(lines):
 
 
 def determine_clusteritem(
-        lines: iamraw.PageContentLines,
-        collector: callable,
+    lines: iamraw.PageContentLines,
+    collector: callable,
 ):
     result = []
     for paged in lines:
@@ -62,8 +62,8 @@ def determine_clusteritem(
 
 
 def determine_pageboxes(
-        clusters: typing.List[pdfminer.layout.LTLine],
-        page: int,
+    clusters: typing.List[pdfminer.layout.LTLine],
+    page: int,
 ) -> iamraw.PageContentBoxes:
     result = []
     for cluster in clusters:

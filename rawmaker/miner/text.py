@@ -42,10 +42,10 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
     bottom -> up and we want to use top -> bottom"""
 
     def __init__(
-            self,
-            config: rawmaker.parameter.ParsingConfiguration = None,
-            imagewriter: callable = None,
-            strip: bool = None,
+        self,
+        config: rawmaker.parameter.ParsingConfiguration = None,
+        imagewriter: callable = None,
+        strip: bool = None,
     ):
         """Create converter instance.
 
@@ -107,8 +107,8 @@ def page_size(document: iamraw.Document) -> iamraw.PageSize:
 
 
 def render_char(
-        item: pdfminer.layout.LTChar,
-        baseline: float,
+    item: pdfminer.layout.LTChar,
+    baseline: float,
 ) -> iamraw.Char:
     """Convert character and determine `fontrise` based on parent `baseline`
 
@@ -169,9 +169,9 @@ def render_char(
 
 
 def render_textline(
-        item: pdfminer.layout.LTTextBox,
-        strip: bool = False,
-        remove_horizontals: bool = True,
+    item: pdfminer.layout.LTTextBox,
+    strip: bool = False,
+    remove_horizontals: bool = True,
 ) -> iamraw.Line:
     """Determine character Bounding and split character if required
     cause layout parser puts two character together.
@@ -427,8 +427,8 @@ def split_characters(char) -> list:
 
 
 def split_container(
-        item: pdfminer.layout.LTTextBox,
-        strip: bool = False,
+    item: pdfminer.layout.LTTextBox,
+    strip: bool = False,
 ) -> list:
     grouped = [[]]
     for line in item:
@@ -455,8 +455,8 @@ def split_container(
 
 
 def render_textcontainer(
-        item: pdfminer.layout.LTTextBox,
-        strip: bool = False,
+    item: pdfminer.layout.LTTextBox,
+    strip: bool = False,
 ) -> iamraw.TextContainer:
     splitted = split_container(item, strip=strip)
 
@@ -468,8 +468,8 @@ def render_textcontainer(
 
 
 def render_horizontal_textcontainer(
-        item: pdfminer.layout.LTTextBox,
-        strip: bool = False,
+    item: pdfminer.layout.LTTextBox,
+    strip: bool = False,
 ) -> iamraw.TextContainer:
     container = iamraw.TextContainer(box=item.bbox)
     for line in item:
@@ -492,8 +492,8 @@ def render_horizontal_textcontainer(
 
 
 def render_vertical_textcontainer(
-        item: pdfminer.layout.LTTextBox,
-        strip: bool = False,
+    item: pdfminer.layout.LTTextBox,
+    strip: bool = False,
 ) -> iamraw.VerticalTextContainer:
     container = iamraw.VerticalTextContainer(box=item.bbox)
     for line in item:
@@ -608,10 +608,10 @@ def mylayout(page: iamraw.Page) -> iamraw.Page:
 
 
 def merge_neighbors(
-        children: list,
-        xdiff: float = 10.0,
-        ydiff: float = 5.0,
-        horizontal: bool = True,
+    children: list,
+    xdiff: float = 10.0,
+    ydiff: float = 5.0,
+    horizontal: bool = True,
 ) -> list:
     # TODO: IMPROVE VERTICAL MERGER
     if not children:

@@ -51,8 +51,8 @@ def work(document: str, pages: tuple = None) -> typing.Tuple[str, str]:
 
 
 def determine_boundingboxes(
-        document: pdfminer.pdfdocument.PDFDocument,
-        pages: tuple = None,
+    document: pdfminer.pdfdocument.PDFDocument,
+    pages: tuple = None,
 ) -> iamraw.PageBoundingsList:
     """Extract page size, border and boundingboxes from `PDFDocument`.
 
@@ -89,8 +89,8 @@ def determine_boundingboxes(
 
 
 def pagesizes(
-        pdf: pdfminer.pdfdocument.PDFDocument,
-        pages: tuple = None,
+    pdf: pdfminer.pdfdocument.PDFDocument,
+    pages: tuple = None,
 ) -> typing.List[iamraw.PageSize]:
     """Extract page sizes of `PDFDocument`.
 
@@ -123,8 +123,7 @@ def boundingboxes_from_page(content: list, contentid: int) -> tuple:
     return result
 
 
-def pagesize_from_page(page: pdfminer.pdfdocument.PDFDocument,
-                      ) -> iamraw.PageSize:
+def pagesize_from_page(page: pdfminer.pdfdocument.PDFDocument) -> iamraw.PageSize:  # yapf:disable
     # x, y, width, height
     pagewidth = utila.roundme(page.mediabox[2])
     pageheight = utila.roundme(page.mediabox[3])

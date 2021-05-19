@@ -28,10 +28,10 @@ MAX_DIFF = configo.HolyTable(
 
 
 def parses(
-        source: str,
-        pages: tuple,
-        word_length_min: int = 1,
-        difftable: configo.HolyTable = MAX_DIFF,
+    source: str,
+    pages: tuple,
+    word_length_min: int = 1,
+    difftable: configo.HolyTable = MAX_DIFF,
 ) -> rawmaker.text.data.WordBoxPages:
     extracted = rawmaker.text.chars.extract_chars(source, pages)
     pages = [
@@ -50,9 +50,9 @@ def parses(
 
 
 def extract_page(
-        page,
-        word_length_min: int = 1,
-        difftable: configo.HolyTable = MAX_DIFF,
+    page,
+    word_length_min: int = 1,
+    difftable: configo.HolyTable = MAX_DIFF,
 ) -> rawmaker.text.data.PageLines:
     # remove white space
     page = [item for item in page if item.get_text().strip()]

@@ -29,10 +29,10 @@ DumpedFigureInformation = typing.List[typing.Tuple[str, bytes]]
 
 
 def work(  # pylint:disable=keyword-arg-before-vararg
-        path: str,
-        boxes: str = None,  # pylint:disable=W0613
-        *images: list,
-        pages: tuple = None,
+    path: str,
+    boxes: str = None,  # pylint:disable=W0613
+    *images: list,
+    pages: tuple = None,
 ) -> DumpedFigureInformation:
     pages = sorted(pages) if pages else pages
 

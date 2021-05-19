@@ -42,12 +42,10 @@ def test_rawmaker_cli_superfast_compare(testdir, monkeypatch):
         cmd = ['-i', source, '--text']
         tests.run(cmd, monkeypatch=monkeypatch)
 
-    first_text = utila.file_read(
-        os.path.join(first, 'rawmaker__text_text.yaml'))
-    second_text = utila.file_read(
-        os.path.join(second, 'rawmaker__text_text.yaml'))
+    ftext = utila.file_read(os.path.join(first, 'rawmaker__text_text.yaml'))
+    stext = utila.file_read(os.path.join(second, 'rawmaker__text_text.yaml'))
 
-    assert first_text == second_text
+    assert ftext == stext
 
     first_positions = utila.file_read(
         os.path.join(first, 'rawmaker__text_positions.yaml'))

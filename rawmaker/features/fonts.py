@@ -36,15 +36,15 @@ import rawmaker.reader
 
 
 def work(  # pylint:disable=W9015
-        document: str,
-        boxes_flow: float = 0.5,
-        char_margin: float = 2.0,
-        line_margin: float = 0.5,
-        line_overlap: float = 0.5,
-        word_margin: float = 0.1,
-        nostrip: bool = rawmaker.parameter.STRIP is False,
-        detect_vertical: bool = False,
-        pages: list = None,
+    document: str,
+    boxes_flow: float = 0.5,
+    char_margin: float = 2.0,
+    line_margin: float = 0.5,
+    line_overlap: float = 0.5,
+    word_margin: float = 0.1,
+    nostrip: bool = rawmaker.parameter.STRIP is False,
+    detect_vertical: bool = False,
+    pages: list = None,
 ) -> typing.Tuple[str, str]:
     """Extract structured text out of document
 
@@ -105,8 +105,8 @@ class FontStore:
 
 
 def process_page(  # pylint:disable=R0914
-        page: iamraw.Page,
-        fontstore: FontStore,
+    page: iamraw.Page,
+    fontstore: FontStore,
 ) -> iamraw.PageFontContent:
     """Iterate throw text container and extract the different fonts and
     positions.

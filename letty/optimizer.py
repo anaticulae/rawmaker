@@ -23,14 +23,14 @@ WORKER = 12
 
 
 def run(
-        path: str,
-        pages: tuple = None,
-        boxes: int = 1,
-        chars: int = 10,
-        lines: int = 1,
-        words: int = 1,
-        *,
-        multicore: bool = True,
+    path: str,
+    pages: tuple = None,
+    boxes: int = 1,
+    chars: int = 10,
+    lines: int = 1,
+    words: int = 1,
+    *,
+    multicore: bool = True,
 ) -> OptimizerResult:
     todo = strategy(chars=chars, words=words, lines=lines, boxes=boxes)
     runner = threadpool if multicore else singlecore
@@ -93,10 +93,10 @@ def judge(result):
 
 
 def strategy(
-        chars: int = 10,
-        words: int = 1,
-        lines: int = 1,
-        boxes: int = 1,
+    chars: int = 10,
+    words: int = 1,
+    lines: int = 1,
+    boxes: int = 1,
 ):
     boxes_flow = ranges(0.5, 1.0, boxes)
     char_margin = ranges(0.5, 20.0, chars)

@@ -23,11 +23,11 @@ import tests
 ])
 @utilatest.longrun
 def test_parse_howtoread_vertically(
-        page,
-        vertical,
-        expected_empty,
-        testdir,
-        monkeypatch,
+    page,
+    vertical,
+    expected_empty,
+    testdir,
+    monkeypatch,
 ):
     root = testdir.tmpdir
     source = power.ORDER009_PDF

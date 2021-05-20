@@ -194,7 +194,7 @@ def special_rate(text: str) -> bool:
     """
     if len(text) < 22:  # TODO: HOLY VALUE
         return False
-    if '=' in text and '−' and utila.parse_numbers(text):
+    if '=' in text and '−' in text and utila.parse_numbers(text):
         return False
     alpharate = utila.char_rate(text)
     if alpharate > 0.8:  # TODO: HOLY VALUE

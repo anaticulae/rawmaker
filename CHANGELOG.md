@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.17.1
+
+### Feature
+
+* do not fail on outline extraction error (91fc865faf21)
+
+### Fix
+
+* remove senseless check (b1e0acf6cb44)
+* handle drucksache correctly (337e42521461)
+
 ## v2.17.0
 
 ### Feature

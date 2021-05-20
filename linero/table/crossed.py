@@ -88,7 +88,7 @@ def extract_potential_table(verticals, horizontals):
             buckets.add((x0, item, x1, item))
 
     merged = [index if item else None for index, item in enumerate(buckets)]
-    merged = [item for item in utila.groupby_none(merged)]
+    merged = utila.groupby_none(merged)
 
     tables = []
     for group in merged:

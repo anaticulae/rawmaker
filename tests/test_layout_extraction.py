@@ -40,4 +40,4 @@ def test_layout_extraction_mine_mini_numbers(strip):
     # skip second line of first foot note
     first_rises = [first_rises[0]] + first_rises[2:]
     # ensure to parse rised number of footnotes
-    assert all([item > 5.0 for item in first_rises]), first_rises
+    assert all(item > 5.0 for item in first_rises), first_rises

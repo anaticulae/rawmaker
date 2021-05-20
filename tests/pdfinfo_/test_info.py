@@ -16,4 +16,4 @@ def test_pdfinfo_info_generator():
     resource = power.DOCU27_PDF
     generator = pdfinfo.info.generator(resource)
 
-    assert generator == pdfinfo.info.Generator.Latex, str(generator)
+    assert generator == pdfinfo.info.Generator.LATEX, str(generator)

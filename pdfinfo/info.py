@@ -13,9 +13,9 @@ import rawmaker.reader
 
 
 class Generator(enum.Enum):
-    Undefined = enum.auto()
-    Latex = enum.auto()
-    MSWord = enum.auto()
+    UNDEFINED = enum.auto()
+    LATEX = enum.auto()
+    MSWORD = enum.auto()
 
     def __str__(self):
         return str(self.name).lower()
@@ -27,7 +27,7 @@ def generator(path: str) -> Generator:
             info = document.info[0]
         except IndexError:
             # no editor information provided
-            return Generator.Undefined
+            return Generator.UNDEFINED
     result = parse_generator(info)
     return result
 
@@ -35,7 +35,7 @@ def generator(path: str) -> Generator:
 def parse_generator(info):
     producer = str(info['Producer']).lower()
     if 'latex' in producer or 'tex' in producer:
-        return Generator.Latex
+        return Generator.LATEX
     if 'msword' in producer or 'word' in producer:
-        return Generator.MSWord
-    return Generator.Undefined
+        return Generator.MSWORD
+    return Generator.UNDEFINED

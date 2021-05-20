@@ -66,7 +66,7 @@ def main():
         version=pdfinfo.__version__,
     )
     args = utila.parse(parser)
-    inpath, outpath = utila.sources(args, singleinput=True)
+    inpath, outpath = utila.sources(args, singleinput=True) # pylint:disable=W0632
     # It is only single path supported. Run program multiple times if more
     # than one analysis is required.
     inpath = inpath[0]

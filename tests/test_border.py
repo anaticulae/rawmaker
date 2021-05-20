@@ -59,7 +59,7 @@ def test_page_size(increasing_fonts, expected_size_in_mm):
     size = sizeandborders[0][0].size  # First page
     assert utila.millimeters(*size, digits=0) == expected_size_in_mm
 
-    expected = tuple([round(item) for item in size])
+    expected = utila.roundme(size, digits=0)
     current = utila.points(*utila.millimeters(*size), digits=0)
     assert current == expected
 

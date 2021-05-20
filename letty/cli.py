@@ -33,7 +33,7 @@ def main() -> int:
     )
     args = utila.parse(parser)  # pylint:disable=W0612
 
-    inpath, _ = utila.cli.sources(args, singleinput=True)
+    inpath, _ = utila.cli.sources(args, singleinput=True)  # pylint:disable=W0632
     inpath = inpath[0]
     if args['whitespace']:
         pages = None

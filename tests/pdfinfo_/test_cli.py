@@ -50,7 +50,7 @@ def test_pdfinfo_status_valid(testdir, monkeypatch):
     workspace = str(testdir)
     valid = pdfinfo.data.PdfInfo(
         pages=42,
-        generator=pdfinfo.info.Generator.MSWord,
+        generator=pdfinfo.info.Generator.MSWORD,
         version=pdfinfo.version.Version(1, 5),
     )
     raw = pdfinfo.data.dump(valid)

@@ -200,7 +200,7 @@ def test_strip_correct_bounding_box(testdir, monkeypatch):
     navigators = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)
     navigator = navigators[0]
     parsed = sorted(
-        [item for item in navigator],
+        navigator,
         key=operator.attrgetter('bounding.y0', 'bounding.x0'),
     )
     bounding = {item.text.strip(): item.bounding for item in parsed}
@@ -227,7 +227,7 @@ def test_strip_correct_bounding_box_master116(testdir, monkeypatch):
     navigators = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)
     navigator = navigators[0]
     parsed = sorted(
-        [item for item in navigator],
+        navigator,
         key=operator.attrgetter('bounding.y0', 'bounding.x0'),
     )
     bounding = {item.text.strip(): item.bounding for item in parsed}

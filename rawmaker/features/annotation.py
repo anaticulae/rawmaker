@@ -80,12 +80,12 @@ def parse_page(  # pylint:disable=R1260
     # REFERENCE, DON'T KNOW WHY THIS CAN HAPPEN. TODO: INVESTIGATE LATER
     if not isinstance(pageannotation, list):
         getobj = page.doc.getobj
-        pageannotation = [item for item in getobj(page.annots.objid)]
+        pageannotation = list(getobj(page.annots.objid))
 
     pagelinks, hyperlinks = [], []
     for reference in pageannotation:
         pageobject = page.doc.getobj(reference.objid)
-        coords = [item for item in pageobject['Rect']]
+        coords = list(pageobject['Rect'])
         bounds = iamraw.BoundingBox.from_list(coords)
         try:
             typ = pageobject['Type'].name

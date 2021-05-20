@@ -49,7 +49,13 @@ def work(document: str) -> str:
             utila.error('could not locatate any outlines')
 
         for (level, title, dest, action, _) in outlines:
-            page = pagenumber(action, dest, pdf)
+            try:
+                page = pagenumber(action, dest, pdf)
+            except (AttributeError, ValueError) as error:
+                utila.error('PDF NOT FULLY SUPPORTED')
+                utila.log_stacktrace()
+                utila.error(error)
+                continue
 
             if not isinstance(page, int):
                 page = pagelookup[page.objid]

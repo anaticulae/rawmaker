@@ -10,7 +10,12 @@
 import contextlib
 
 
-def parse(colorspace) -> str:
+def parse(colorspace) -> str:  # pylint:disable=R0911
+    """\
+    >>> import pdfminer.psparser
+    >>> parse([pdfminer.psparser.PSLiteral('CS')]) # verify later
+    'CS'
+    """
     if len(colorspace) == 1:
         colorspace = colorspace[0]
     if not colorspace:
@@ -24,6 +29,8 @@ def parse(colorspace) -> str:
     if colorspace in ('DeviceGray', 'G'):
         # G is an abbreviation of DeviceGray
         return 'DeviceGray'
+    if 'CS' in colorspace:
+        return colorspace
     typ = colorspace[0].name
     if typ == 'Indexed':
         return indexed_space(*colorspace[1:])

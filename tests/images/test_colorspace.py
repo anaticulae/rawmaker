@@ -8,8 +8,11 @@
 # =============================================================================
 
 import power
+import pytest
+import utilatest
 
 import rawmaker.miner.images
+import tests
 
 
 def test_reg_image_colorspace_four_items(testdir):
@@ -24,3 +27,12 @@ def test_reg_image_colorspace_four_items(testdir):
             pages=(0,),
         )
     assert len(extracted) == 1
+
+
+@pytest.mark.parametrize('source', [
+    pytest.param(power.ORDER044_PDF, id='order44'),
+])
+@utilatest.longrun
+def test_reg_images_colorspace(source, testdir, monkeypatch):
+    cmd = f'-i {source} --images'
+    tests.run(cmd, monkeypatch=monkeypatch)

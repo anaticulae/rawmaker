@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.17.3
+
+### Fix
+
+* do not replace umlaute (741808fefad2)
+* add color spaces selector (c715facba0e9)
+
 ## v2.17.2
 
 ## v2.17.1

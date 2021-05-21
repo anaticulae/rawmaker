@@ -40,6 +40,8 @@ def special_char(item: str):
     's'
     >>> special_char('é')
     'e'
+    >>> ''.join([special_char(item) for item in 'öäüÖÄÜ'])
+    'öäüÖÄÜ'
     """
     with contextlib.suppress(KeyError):
         return SPECIAL_CHAR_TABLE[item]
@@ -58,6 +60,7 @@ SPECIAL_CHARS = """
 
 # umlaute
 \xC4        Ä
+\xD6        Ö
 \xDC        Ü
 \xE4        ä
 \xF6        ö
@@ -71,7 +74,7 @@ SPECIAL_CHARS = """
 \xc1        A       Á
 \xc2        A       Â
 \xc3        A       Ã
-\xc4        A       Ä
+# \xc4        A       Ä
 \xc5        A       Å
 \xc6        A       Æ
 \xc7        C       Ç
@@ -89,12 +92,12 @@ SPECIAL_CHARS = """
 \xd3        O       Ó
 \xd4        O       Ô
 \xd5        O       Õ
-\xd6        O       Ö
+# \xd6        O       Ö
 \xd8        O       Ø
 \xd9        U       Ù
 \xda        U       Ú
 \xdb        U       Û
-\xdc        U       Ü
+# \xdc        U       Ü
 \xdd        Y       Ý
 \xe0        a       à
 \xe1        a       á

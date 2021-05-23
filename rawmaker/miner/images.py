@@ -266,7 +266,13 @@ def jbig2(image):
 
 
 def image_fromlt(image) -> PIL.Image:
-    colorspace = rawmaker.miner.colorspace.parse(image.colorspace)
+    try:
+        colorspace = rawmaker.miner.colorspace.parse(image.colorspace)
+    except AttributeError as error:
+        utila.log_stacktrace()
+        utila.error(error)
+        colorspace = 'DeviceRGB'
+
     mode = '1'  # default mode
     size = image.srcsize
     bits = image.bits

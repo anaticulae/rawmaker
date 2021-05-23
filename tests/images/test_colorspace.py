@@ -31,8 +31,13 @@ def test_reg_image_colorspace_four_items(testdir):
 
 @pytest.mark.parametrize('source', [
     pytest.param(power.ORDER044_PDF, id='order44'),
+    pytest.param((power.MASTER083_PDF, '83'), id='master83'),
 ])
 @utilatest.longrun
 def test_reg_images_colorspace(source, testdir, monkeypatch):
-    cmd = f'-i {source} --images'
+    try:
+        source, page = source
+    except ValueError:
+        page = ':'
+    cmd = f'-i {source} --images --pages={page}'
     tests.run(cmd, monkeypatch=monkeypatch)

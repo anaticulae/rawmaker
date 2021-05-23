@@ -31,6 +31,8 @@ def parse(colorspace) -> str:  # pylint:disable=R0911
         return 'DeviceGray'
     if 'CS' in colorspace:
         return colorspace
+    if isinstance(colorspace, str):
+        return colorspace
     typ = colorspace[0].name
     if typ == 'Indexed':
         return indexed_space(*colorspace[1:])

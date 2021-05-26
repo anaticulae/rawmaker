@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.17.5
+
+### Feature
+
+* do not fail on unsupported colorspace (30069ca14bd6)
+
+### Fix
+
+* handle all str colorspace correctly (e3f47026c78f)
+
 ## v2.17.4
 
 ## v2.17.3

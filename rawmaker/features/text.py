@@ -23,7 +23,7 @@ import rawmaker.parameter
 import rawmaker.reader
 
 
-def work(  # pylint:disable=W9015
+def work(  # pylint:disable=W9015,W0613
     document: str,
     boxes_flow: float = 0.5,
     char_margin: float = 2.0,
@@ -44,15 +44,7 @@ def work(  # pylint:disable=W9015
         parsed document as yaml output
         parsed positions of text container
     """
-    config = rawmaker.parameter.ParsingConfiguration(
-        boxes_flow=boxes_flow,
-        char_margin=char_margin,
-        detect_vertical=detect_vertical,
-        line_margin=line_margin,
-        line_overlap=line_overlap,
-        nostrip=nostrip,
-        word_margin=word_margin,
-    )
+    config = rawmaker.parameter.ParsingConfiguration.from_dict(**locals())
 
     if rawmaker.cli.superfast():
         result = os.getcwd()
@@ -148,17 +140,13 @@ def extract_document(
     config: rawmaker.parameter.ParsingConfiguration = None,
     pages: tuple = None,
 ) -> iamraw.Document:
-    strip = rawmaker.parameter.STRIP
     if config:
-        strip = config.nostrip is False
         rawmaker.parameter.print_layout(config)
-
     assert isinstance(document, str), str(document)
     with rawmaker.reader.read(document) as pdf:
         document = rawmaker.features.extract_content(
             pdf,
             config=config,
-            strip=strip,
             pages=pages,
         )
     return document

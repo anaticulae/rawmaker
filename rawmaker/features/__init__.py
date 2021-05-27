@@ -104,7 +104,6 @@ def extract_content(
     document: pdfminer.pdfdocument.PDFDocument,
     config: rawmaker.parameter.ParsingConfiguration = None,
     converter=rawmaker.miner.text.PrecisePDFConverter,
-    strip: bool = False,
     pages: tuple = None,
 ) -> iamraw.Document:
     """Extract content from PDF file
@@ -117,7 +116,6 @@ def extract_content(
                                       See pdf reference documentation.
         converter(pdfminer.converter.PDFLayoutAnalyzer): how to handle
                                                          the layout extraction
-        strip: removes white spaces at beginning and ending of text line
         pages: tuple of selected pages
     Returns:
         Document: parsed and layouted document
@@ -127,10 +125,7 @@ def extract_content(
     assert isinstance(config, rawmaker.parameter.ParsingConfiguration), type(config) # yapf:disable
 
     # prepare parser
-    device = converter(
-        config=config,
-        strip=strip,
-    )
+    device = converter(config=config)
     device.new_document()
     interpreter = pdfminer.pdfinterp.PDFPageInterpreter(device.rsrcmgr, device)
 

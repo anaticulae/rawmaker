@@ -35,7 +35,7 @@ import rawmaker.parameter
 import rawmaker.reader
 
 
-def work(  # pylint:disable=W9015
+def work(  # pylint:disable=W9015,W0613
     document: str,
     boxes_flow: float = 0.5,
     char_margin: float = 2.0,
@@ -56,20 +56,11 @@ def work(  # pylint:disable=W9015
         parsed document as yaml output
     """
     assert isinstance(document, str), str(document)
-    config = rawmaker.parameter.ParsingConfiguration(
-        boxes_flow=boxes_flow,
-        char_margin=char_margin,
-        detect_vertical=detect_vertical,
-        line_margin=line_margin,
-        line_overlap=line_overlap,
-        nostrip=nostrip,
-        word_margin=word_margin,
-    )
+    config = rawmaker.parameter.ParsingConfiguration.from_dict(**locals())
     with rawmaker.reader.read(document) as pdf:
         document = rawmaker.features.extract_content(
             pdf,
             config=config,
-            strip=nostrip is False,
             pages=pages,
         )
 

@@ -45,7 +45,6 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         self,
         config: rawmaker.parameter.ParsingConfiguration = None,
         imagewriter: callable = None,
-        strip: bool = None,
     ):
         """Create converter instance.
 
@@ -54,12 +53,10 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
                                           spacing between chars, words
                                           and lines.
             imagewriter(callable): listener to recive extract images
-            strip(bool): remove holy white spaces which are a result of
-                         bad pdf printer or bad pdf parsing.
         """
         super().__init__(laparams=rawmaker.parameter.from_config(config))
         self.imagewriter = imagewriter
-        self.strip = rawmaker.parameter.STRIP if strip is None else strip
+        self.strip = not config.nostrip if config else rawmaker.parameter.STRIP
         self.page = 0
         self.document = None
 

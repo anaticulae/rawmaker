@@ -21,7 +21,6 @@ class CharPDFConvert(rawmaker.miner.text.PrecisePDFConverter):
         self,
         config: rawmaker.parameter.ParsingConfiguration = None,
         imagewriter: callable = None,
-        strip: bool = None,
     ):
         super().__init__()
         self.laparams = None  # disable layout analysis

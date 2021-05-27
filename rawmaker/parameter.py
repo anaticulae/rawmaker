@@ -47,6 +47,18 @@ class ParsingConfiguration:
         )
         return result
 
+    @classmethod
+    def from_dict(cls, **kwargs):
+        """\
+        >>> ParsingConfiguration.from_dict()
+        ParsingConfiguration(boxes_flow...)
+        """
+        instance = cls()
+        for key, value in kwargs.items():
+            if hasattr(instance, key):
+                setattr(instance, key, value)
+        return instance
+
 
 def from_config(config: ParsingConfiguration) -> pdfminer.layout.LAParams:
     boxes_flow: float = 0.5

@@ -56,7 +56,7 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         """
         super().__init__(laparams=rawmaker.parameter.from_config(config))
         self.imagewriter = imagewriter
-        self.strip = not config.nostrip if config else rawmaker.parameter.STRIP
+        self.strip = config.strip if config else rawmaker.parameter.STRIP
         self.page = 0
         self.document = None
 

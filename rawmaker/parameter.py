@@ -23,13 +23,16 @@ class ParsingConfiguration:
     line_overlap: float = 0.5
     word_margin: float = 0.1
     detect_vertical: bool = False
-    nostrip: bool = STRIP is False
+    strip: bool = STRIP
 
     def cmdline(self) -> str:
         """Convert configuration to `linix` command line parameter syntax."""
         parameter = []
         for item, value in vars(self).items():
-            if isinstance(value, bool):
+            if item == 'strip':
+                if value is False:
+                    parameter.append('--nostrip')
+            elif isinstance(value, bool):
                 if value:
                     parameter.append(f'--{item}')
             else:
@@ -55,6 +58,9 @@ class ParsingConfiguration:
         """
         instance = cls()
         for key, value in kwargs.items():
+            if key == 'nostrip':
+                instance.strip = not value
+                continue
             if hasattr(instance, key):
                 setattr(instance, key, value)
         return instance

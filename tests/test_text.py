@@ -128,7 +128,7 @@ def mine_holywhitespace(source, remove_whitespace, pages, expected_length):
         line_margin=0.15,
         line_overlap=0.1,
         word_margin=0.01,
-        nostrip=remove_whitespace is False,
+        strip=remove_whitespace,
     )
     extracted = rawmaker.features.text.extract_document(
         source,

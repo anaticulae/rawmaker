@@ -21,7 +21,7 @@ def extract(document: str, pages: tuple = None):
         document = rawmaker.features.extract_content(
             pdf,
             converter=rawmaker.miner.char.CharPDFConvert,
-            config=rawmaker.parameter.ParsingConfiguration(nostrip=False),
+            config=rawmaker.parameter.ParsingConfiguration(strip=True),
             pages=pages,
         )
     result = []

@@ -34,18 +34,33 @@ class RawUnicodeChar(iamraw.UnicodeChar):
         self.ltchar = ltchar
 
 
-def special_char(item: str):
+def special_char(item: str) -> str:
     """\
     >>> special_char('š')
     's'
     >>> special_char('é')
     'e'
-    >>> ''.join([special_char(item) for item in 'öäüÖÄÜ'])
-    'öäüÖÄÜ'
     """
     with contextlib.suppress(KeyError):
         return SPECIAL_CHAR_TABLE[item]
     return None
+
+
+def special_chars(text: str) -> str:
+    """\
+    >>> special_chars('Řůř')
+    'Rur'
+    >>> special_chars('öäüÖÄÜ')
+    'öäüÖÄÜ'
+    """
+    collected = []
+    for char in text:
+        converted = special_char(char)
+        if converted is None:
+            continue
+        collected.append(converted)
+    result = ''.join(collected)
+    return result
 
 
 # TODO: REQUIRE BETTER APPROACH OF REPLACING `LEGATURES`
@@ -129,7 +144,10 @@ SPECIAL_CHARS = """
 # \xfc        ü       ü
 \xfd        y       ý
 \xff        y       ÿ
-
+Ř           R
+ř           r
+ů           u
+Ů           U
 """
 
 SPECIAL_CHAR_TABLE = {

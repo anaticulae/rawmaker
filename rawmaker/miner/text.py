@@ -327,16 +327,26 @@ MERGES = {
 }
 
 
-def merge_special_char(items):
+def merge_special_char(items):  # pylint:disable=R1260
     """Convert `A¨` to `Ä` etc.
 
     See bachelor90 example.
     """
     if not items:
         return []
-    # TODO: SPECIAL CHAR AT FIRST?
     result = [items[0]]
     for item in items[1:]:
+        if result[-1].value == '¨':
+            # try merge
+            try:
+                replaced = MERGES[item.value]
+                result.pop()
+                item.value = replaced
+                result.append(item)
+            except KeyError:
+                utila.error(f'could not merge with after {item}')
+                result.append(item)
+            continue
         try:
             special = item.special
         except AttributeError:

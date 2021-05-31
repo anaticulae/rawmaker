@@ -48,3 +48,12 @@ def test_text_mining_convert_special_whitespace_between_special():
     expected = '3.4.3. Vollständige Automatisierung . .'
     assert expected in text
     assert expected in text
+
+
+def test_special_chars_bachelor241():
+    parsed = rawmaker.features.text.work(
+        power.BACHELOR241_PDF,
+        pages=(0,),
+    )
+    document = serializeraw.load_document(parsed[0])
+    assert 'Ludwig-Maximilians-Universität München' in document.text

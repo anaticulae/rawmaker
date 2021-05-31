@@ -47,14 +47,10 @@ def test_mine_hello_world_pdf():
 def test_dump_and_load_pdf(pdf_path):
     """Parse text from pdf file and write the result. Load the result after
     and compare with item to save"""
-
     text = rawmaker.features.text.extract_document(pdf_path)
     assert text
-
     dumped = serializeraw.dump_document(text)
-
     loaded = serializeraw.load_document(dumped)
-
     # Saving document saves only data not the bounding. The bounding is
     # stored in an other class. Therefore we have to ensure that
     # BoudingBox'es are equal before we compare the content.
@@ -145,44 +141,6 @@ def mine_holywhitespace(source, remove_whitespace, pages, expected_length):
             holywhitespaces = [len(line) for line in text]
             assert not all(holywhitespaces), text
     return extracted
-
-
-def test_text_mining_convert_special_chars():
-    parsed = rawmaker.features.text.work(
-        power.BACHELOR090_PDF,
-        boxes_flow=1.0,
-        pages=(1,),
-    )
-    document = serializeraw.load_document(parsed[0])
-    # first page, fourth line
-    text = document[0][3].text
-    expected = 'für die Anwendung auf einem Embedded System\n'
-    assert text == expected
-
-
-def test_text_mining_convert_special_whitespace_between_special():
-    """A white space between expected vowel and '¨' requires to remove
-    small white space before merging both chars.
-
-    Normal:
-    text u¨ hello -> textü hello
-    Here:
-    textu ¨ hello -> textü hello
-
-    Solution remove small white spaces before merging.
-    """
-    parsed = rawmaker.features.text.work(
-        power.BACHELOR090_PDF,
-        boxes_flow=1.0,
-        pages=(5,),
-    )
-    document = serializeraw.load_document(parsed[0])
-    # page, line
-    text = document[0][8].text
-    expected = '3.4.3. Vollständige Automatisierung . .'
-    assert expected in text
-    expected = 'Automatisierung, manuelle Verknüpfung . . . .'
-    assert expected in text
 
 
 def test_text_no_char_horizontals_in_text():

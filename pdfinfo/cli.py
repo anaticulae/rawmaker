@@ -54,6 +54,7 @@ CONFIG = utila.ParserConfiguration(
     multiprocessed=False,
     pages=False,
     cacheflag=False,
+    waitingflag=False,
 )
 
 

@@ -25,12 +25,14 @@ def extract(document: str, pages: tuple = None):
             pages=pages,
         )
     result = []
+    words = []
     for page in document:
         if utila.should_skip(page.page, pages):
             continue
-        extracted = extract_page(page)
+        extracted, chargroups = extract_page(page)
         result.append(iamraw.PageContent(page=page.page, content=extracted))
-    return result
+        words.append(iamraw.PageContent(page=page.page, content=chargroups))
+    return result, words
 
 
 MAXDIFF = configo.HolyTable(
@@ -57,9 +59,11 @@ def extract_page(chars: list, maxdiff: callable = diffme) -> list:
     if not chars:
         return []
     result = []
+    chargroups = [[chars[0]]]
     chars = sameline(chars)
     last = chars[0].bbox
     for char in chars[1:]:
+        chargroups[-1].append(char)
         text = char._text  # pylint:disable=W0212
         bbox = char.bbox
         if text == ' ':
@@ -72,6 +76,7 @@ def extract_page(chars: list, maxdiff: callable = diffme) -> list:
         if abs(ydiff) > ydiff_max:
             # new line
             last = char
+            chargroups.append([chargroups[-1].pop()])
             continue
         if abs(xdiff) > xdiff_max:
             # new word
@@ -84,9 +89,10 @@ def extract_page(chars: list, maxdiff: callable = diffme) -> list:
             )
             result.append(bounding)
             last = char
+            chargroups.append([chargroups[-1].pop()])
             continue
         last = char.bbox
-    return result
+    return result, chargroups
 
 
 def sameline(
@@ -97,7 +103,7 @@ def sameline(
     chars = sorted(chars, key=lambda x: x.bbox[0])
     # sort by y0
     chars = sorted(chars, key=lambda x: x.bbox[3])
-
+    # run cluster
     clusterd = utila.same_line_cluster(
         chars,
         min_elements=1,

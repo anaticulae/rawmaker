@@ -12,6 +12,6 @@ import spacestation.wspace
 
 
 def work(source: str, pages: tuple = None) -> str:
-    extracted = spacestation.wspace.extract(source, pages=pages)
+    extracted, words = spacestation.wspace.extract(source, pages=pages)
     dumped = spacestation.serialize.dump_wspaces(extracted)
     return dumped

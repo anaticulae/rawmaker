@@ -8,23 +8,25 @@
 # =============================================================================
 
 import power
+import pytest
 import utila
 
 import spacestation.serialize
 import tests.spacestation_
 
 
-def test_chardist(testdir, monkeypatch):
-    source = power.BACHELOR051_PDF
-    cmd = f'-i {source} --pages=3'
+@pytest.mark.parametrize('source, pages, expected', [
+    pytest.param(power.BACHELOR051_PDF, '3', (12.0, 0.0), id='bachelor51'),
+    pytest.param(power.BACHELOR056_PDF, '4', (11.25, -0.198), id='bachelor56'),
+    pytest.param(power.MASTER116_PDF, '8', (10.91, -0.022), id='shormaster116'),
+    pytest.param(power.MASTER116_PDF, '20:50', (10.91, -0.022), id='master116'),
+])
+def test_chardist(source, pages, expected, testdir, monkeypatch):
+    cmd = f'-i {source} --pages={pages} --wspace --chardist'
+    # run
     tests.spacestation_.run(cmd, monkeypatch=monkeypatch)
-
-    normal = spacestation.serialize.load_document_chardist(testdir.tmpdir)
-    assert utila.near(normal.mean[12.0], 0.0, diff=0.01)
-
-    source = power.BACHELOR056_PDF
-    cmd = f'-i {source} --pages=4'
-    tests.spacestation_.run(cmd, monkeypatch=monkeypatch)
-
-    tide = spacestation.serialize.load_document_chardist(testdir.tmpdir)
-    assert utila.near(tide.mean[11.25], -0.198, diff=0.01)
+    # load
+    loaded = spacestation.serialize.load_document_chardist(testdir.tmpdir)
+    # verify
+    fontsize, chardist = expected
+    assert utila.near(loaded.mean[fontsize], chardist, diff=0.01), str(loaded)

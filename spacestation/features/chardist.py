@@ -24,6 +24,7 @@ def work(source: str, pages: tuple = None) -> str:
 
 
 def group_chardist(pages):
+    """Determine document char dist(mode, mean, median) for multiple pages."""
     grouped = collections.defaultdict(list)
     for _, content in pages:
         for fontsize, distances in content:
@@ -51,6 +52,7 @@ def group_chardist(pages):
 
 
 def pages_chardist(pages):
+    """Iterate over pages and determine chardist for every single word."""
     result = []
     for page in pages:
         paged = []
@@ -64,6 +66,7 @@ def pages_chardist(pages):
 
 
 def chardist(word):
+    """Deterine char dist`s for a single word."""
     if not word:
         return None
     if word[-1][0] == ' ':

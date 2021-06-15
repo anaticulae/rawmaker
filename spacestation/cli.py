@@ -17,6 +17,13 @@ WORKPLAN = [
         inputs=[utila.Pattern('*', 'pdf')],
         output=('wspace', 'words'),
     ),
+    utila.create_step(
+        name='chardist',
+        inputs=[
+            utila.ResultFile(producer='spacestation', name='wspace_words'),
+        ],
+        output=('chardist',),
+    ),
 ]
 
 

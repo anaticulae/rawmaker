@@ -12,3 +12,7 @@ import utila
 
 def wspace(path: str, prefix: str = '') -> str:
     return utila.pathconnector(path, 'spacestation', 'wspace_wspace', prefix)
+
+
+def chardist(path: str, prefix: str = '') -> str:
+    return utila.pathconnector(path, 'spacestation', 'chardist_chardist', prefix)  # yapf:disable

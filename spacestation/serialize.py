@@ -7,9 +7,19 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import dataclasses
+
 import iamraw
 import serializeraw
 import utila
+import yaml
+
+
+@dataclasses.dataclass
+class DocumentCharDist:
+    mode: dict = dataclasses.field(default_factory=dict)
+    mean: dict = dataclasses.field(default_factory=dict)
+    median: dict = dataclasses.field(default_factory=dict)
 
 
 def dump_wspaces(pages) -> str:
@@ -64,7 +74,9 @@ def load_words(content: str, pages: tuple = None) -> iamraw.PageContents:
 
 
 def rawchar(item) -> str:
-    char = ord(item._text)
+    # ensure to have single char, treat ligature as single char
+    text = item._text[0]  # pylint:disable=W0212
+    char = ord(text)
     raw = f'{char}|{utila.from_tuple(item.bbox)}|{item.fontsize}|{item.fontname}'
     return raw
 
@@ -75,4 +87,20 @@ def fromraw(item: str) -> tuple:
     bounding = utila.parse_tuple(bounding)
     fontsize = float(fontsize)
     result = (text, bounding, fontsize, fontname)
+    return result
+
+
+def dump_document_chardist(item: DocumentCharDist) -> str:
+    raw = vars(item)
+    dumped = yaml.dump(raw)
+    return dumped
+
+
+def load_document_chardist(path: str) -> DocumentCharDist:
+    loaded = utila.yaml_from_raw_or_path(
+        path,
+        fname='spacestation__chardist_chardist',
+        safe=True,
+    )
+    result = DocumentCharDist(**loaded)
     return result

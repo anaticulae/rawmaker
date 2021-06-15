@@ -14,7 +14,7 @@ import spacestation.wspace
 
 
 def work(source: str, pages: tuple = None) -> typing.Tuple[str, str]:
-    extracted, words = spacestation.wspace.extract(source, pages=pages)
-    dumped = spacestation.serialize.dump_wspaces(extracted)
+    wordspaces, words = spacestation.wspace.extract(source, pages=pages)
+    dumped_space = spacestation.serialize.dump_wspaces(wordspaces)
     dumped_words = spacestation.serialize.dump_words(words)
-    return dumped, dumped_words
+    return dumped_space, dumped_words

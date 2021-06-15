@@ -7,10 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
-
 import rawmaker
-import spacestation.path
 
 __version__ = rawmaker.__version__
 

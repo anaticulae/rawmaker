@@ -9,8 +9,6 @@
 
 import utila
 
-import spacestation
-
 
 def wspace(path: str, prefix: str = '') -> str:
-    return utila.pathconnector(path, spacestation.PROCESS, 'wspace_wspace', prefix) # yapf:disable
+    return utila.pathconnector(path, 'spacestation', 'wspace_wspace', prefix)

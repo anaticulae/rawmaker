@@ -16,7 +16,7 @@ import os
 
 import rawmaker.__patch__
 
-__version__ = '2.17.5'
+__version__ = '2.18.0'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 

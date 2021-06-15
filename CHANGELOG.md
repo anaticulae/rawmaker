@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.18.0
+
+### Feature
+
+* extend special char converter (839f74bc555f)
+* add method to create config from dict (ebcfbbb93689)
+
+### Fix
+
+* pdfinfo does not require any waiting (1538bec61730)
+* enable merging umlaute in reversed order (0ddbd8acfb09)
+
 ## v2.17.5
 
 ### Feature

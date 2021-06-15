@@ -7,11 +7,14 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import typing
+
 import spacestation.serialize
 import spacestation.wspace
 
 
-def work(source: str, pages: tuple = None) -> str:
+def work(source: str, pages: tuple = None) -> typing.Tuple[str, str]:
     extracted, words = spacestation.wspace.extract(source, pages=pages)
     dumped = spacestation.serialize.dump_wspaces(extracted)
-    return dumped
+    dumped_words = spacestation.serialize.dump_words(words)
+    return dumped, dumped_words

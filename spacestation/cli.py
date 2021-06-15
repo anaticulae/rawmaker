@@ -15,7 +15,7 @@ WORKPLAN = [
     utila.create_step(
         name='wspace',
         inputs=[utila.Pattern('*', 'pdf')],
-        output=('wspace',),
+        output=('wspace', 'words'),
     ),
 ]
 

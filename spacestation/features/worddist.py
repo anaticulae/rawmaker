@@ -49,8 +49,7 @@ def document_worddist(pages):
 
 def wordspace(page) -> dict:
     collected = collections.defaultdict(list)
-    content = page.content
-    for wspace in content:
+    for wspace in page.content:
         fontsize = utila.roundme(wspace[3] - wspace[1], digits=1)
         width = utila.roundme(wspace[2] - wspace[0], digits=2)
         collected[fontsize].append(width)

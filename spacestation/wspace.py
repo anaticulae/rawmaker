@@ -29,8 +29,11 @@ def extract(document: str, pages: tuple = None):
     for page in document:
         if utila.should_skip(page.page, pages):
             continue
-        extracted, chargroups = extract_page(page)
-        result.append(iamraw.PageContent(page=page.page, content=extracted))
+        extracted = extract_page(page)
+        if not extracted:
+            continue
+        wspace, chargroups = extracted
+        result.append(iamraw.PageContent(page=page.page, content=wspace))
         words.append(iamraw.PageContent(page=page.page, content=chargroups))
     return result, words
 

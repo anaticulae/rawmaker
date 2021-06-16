@@ -35,6 +35,8 @@ def document_worddist(pages):
         ('mean', statistics.mean),
         ('median', statistics.median),
         ('count', len),
+        ('maxx', max),
+        ('minn', min),
     ):
         current = {
             fontsize: utila.roundme(operation(content), digits=3)

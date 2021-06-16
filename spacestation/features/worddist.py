@@ -29,25 +29,19 @@ def document_worddist(pages):
         for fontsize, distance in content.items():
             fontsize = utila.roundme(fontsize, digits=2)
             grouped[fontsize].extend(distance)
-    computed = []
-    for operation in (
-            statistics.mode,
-            statistics.mean,
-            statistics.median,
+    result = spacestation.serialize.DocumentWordDist()
+    for var, operation in (
+        ('mode', statistics.mode),
+        ('mean', statistics.mean),
+        ('median', statistics.median),
+        ('count', len),
     ):
-        computed.append({
+        current = {
             fontsize: utila.roundme(operation(content), digits=3)
             for fontsize, content in grouped.items()
-        })
-    result = spacestation.serialize.DocumentWordDist()
-    for fontsize, value in computed[0].items():
-        result.mode[fontsize] = value
-    for fontsize, value in computed[1].items():
-        result.mean[fontsize] = value
-    for fontsize, value in computed[2].items():
-        result.median[fontsize] = value
-    for fontsize, value in grouped.items():
-        result.count[fontsize] = len(value)
+        }
+        for fontsize, value in current.items():
+            getattr(result, var)[fontsize] = value
     return result
 
 

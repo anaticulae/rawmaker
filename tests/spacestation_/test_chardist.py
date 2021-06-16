@@ -10,17 +10,20 @@
 import power
 import pytest
 import utila
+import utilatest
 
 import spacestation.serialize
 import tests.spacestation_
 
 
+# yapf:disable
 @pytest.mark.parametrize('source, pages, expected', [
     pytest.param(power.BACHELOR051_PDF, '3', (12.0, 0.0), id='bachelor51'),
     pytest.param(power.BACHELOR056_PDF, '4', (11.25, -0.198), id='bachelor56'),
+    pytest.param(power.MASTER116_PDF, '20:50', (10.91, -0.022), id='master116', marks=utilatest.longrun),
     pytest.param(power.MASTER116_PDF, '8', (10.91, -0.022), id='shormaster116'),
-    pytest.param(power.MASTER116_PDF, '20:50', (10.91, -0.022), id='master116'),
 ])
+# yapf:enable
 def test_chardist(source, pages, expected, testdir, monkeypatch):
     cmd = f'-i {source} --pages={pages} --wspace --chardist'
     # run

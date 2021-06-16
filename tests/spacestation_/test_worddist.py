@@ -10,15 +10,18 @@
 import power
 import pytest
 import utila
+import utilatest
 
 import spacestation.serialize
 import tests.spacestation_
 
 
+# yapf:disable
 @pytest.mark.parametrize('source, pages, expected', [
     pytest.param(power.BACHELOR051_PDF, '3', (12.0, 3.939), id='bachelor51'),
-    pytest.param(power.BACHELOR056_PDF, '3:40', (12.0, 7.481), id='bachelor56'),
+    pytest.param(power.BACHELOR056_PDF, '3:40', (12.0, 7.481), id='bachelor56', marks=utilatest.longrun),
 ])
+# yapf:enable
 def test_worddist(source, pages, expected, testdir, monkeypatch):
     cmd = f'-i {source} --pages={pages} --wspace --worddist'
     # run

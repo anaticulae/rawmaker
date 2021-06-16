@@ -31,23 +31,21 @@ def group_chardist(pages):
             fontsize = utila.roundme(fontsize, digits=2)
             for distance in distances:
                 grouped[fontsize].append(distance)
-    computed = []
-    for operation in (
-            statistics.mode,
-            statistics.mean,
-            statistics.median,
+    result = spacestation.serialize.DocumentCharDist()
+    for var, operation in (
+        ('mode', statistics.mode),
+        ('mean', statistics.mean),
+        ('median', statistics.median),
+        ('count', len),
+        ('maxx', max),
+        ('minn', min),
     ):
-        computed.append({
+        current = {
             fontsize: utila.roundme(operation(content), digits=3)
             for fontsize, content in grouped.items()
-        })
-    result = spacestation.serialize.DocumentCharDist()
-    for fontsize, value in computed[0].items():
-        result.mode[fontsize] = value
-    for fontsize, value in computed[1].items():
-        result.mean[fontsize] = value
-    for fontsize, value in computed[2].items():
-        result.median[fontsize] = value
+        }
+        for fontsize, value in current.items():
+            getattr(result, var)[fontsize] = value
     return result
 
 

@@ -20,6 +20,9 @@ class DocumentCharDist:
     mode: dict = dataclasses.field(default_factory=dict)
     mean: dict = dataclasses.field(default_factory=dict)
     median: dict = dataclasses.field(default_factory=dict)
+    maxx: dict = dataclasses.field(default_factory=dict)
+    minn: dict = dataclasses.field(default_factory=dict)
+    count: dict = dataclasses.field(default_factory=dict)
 
 
 @dataclasses.dataclass

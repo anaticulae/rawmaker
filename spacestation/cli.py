@@ -24,6 +24,13 @@ WORKPLAN = [
         ],
         output=('chardist',),
     ),
+    utila.create_step(
+        name='worddist',
+        inputs=[
+            utila.ResultFile(producer='spacestation', name='wspace_wspace'),
+        ],
+        output=('worddist',),
+    ),
 ]
 
 

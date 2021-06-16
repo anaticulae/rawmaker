@@ -22,6 +22,14 @@ class DocumentCharDist:
     median: dict = dataclasses.field(default_factory=dict)
 
 
+@dataclasses.dataclass
+class DocumentWordDist:
+    mode: dict = dataclasses.field(default_factory=dict)
+    mean: dict = dataclasses.field(default_factory=dict)
+    median: dict = dataclasses.field(default_factory=dict)
+    count: dict = dataclasses.field(default_factory=dict)
+
+
 def dump_wspaces(pages) -> str:
 
     def dumper(items: list) -> str:
@@ -103,4 +111,20 @@ def load_document_chardist(path: str) -> DocumentCharDist:
         safe=True,
     )
     result = DocumentCharDist(**loaded)
+    return result
+
+
+def dump_document_worddist(item: DocumentWordDist) -> str:
+    raw = vars(item)
+    dumped = yaml.dump(raw)
+    return dumped
+
+
+def load_document_worddist(path: str) -> DocumentWordDist:
+    loaded = utila.yaml_from_raw_or_path(
+        path,
+        fname='spacestation__worddist_worddist',
+        safe=True,
+    )
+    result = DocumentWordDist(**loaded)
     return result

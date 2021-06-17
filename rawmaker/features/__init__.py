@@ -8,7 +8,6 @@
 #==============================================================================
 
 import collections
-import dataclasses
 import typing
 
 import iamraw
@@ -51,13 +50,10 @@ def process_pdfpages(
         PDFPage: tuple of page content and pdf page number
     """
     utila.call('process_pdfpages')
-    assert isinstance(
-        document,
-        pdfminer.pdfdocument.PDFDocument,
-    ), type(document)
+    utila.asserts(document, pdfminer.pdfdocument.PDFDocument)
+    create_pages = pdfminer.pdfpage.PDFPage.create_pages
     with utila.SkipCollector(pages) as collector:
-        for number, page in enumerate(
-                pdfminer.pdfpage.PDFPage.create_pages(document), start=0):
+        for number, page in enumerate(create_pages(document), start=0):
             if collector.skip(number):
                 continue
             yield (page, number)
@@ -83,10 +79,7 @@ def process_pagecontent(
     document: pdfminer.pdfdocument.PDFDocument,
     pages=None,
 ) -> pdfminer.layout.LTPage:
-    assert isinstance(
-        document,
-        pdfminer.pdfdocument.PDFDocument,
-    ), type(document)
+    utila.asserts(document, pdfminer.pdfdocument.PDFDocument)
     for _, content in process_document(document, pages=pages):
         yield content
 
@@ -122,7 +115,7 @@ def extract_content(
     """
     if config is None:
         config = rawmaker.parameter.ParsingConfiguration()
-    assert isinstance(config, rawmaker.parameter.ParsingConfiguration), type(config) # yapf:disable
+    utila.asserts(config, rawmaker.parameter.ParsingConfiguration)
 
     # prepare parser
     device = converter(config=config)
@@ -130,8 +123,9 @@ def extract_content(
     interpreter = pdfminer.pdfinterp.PDFPageInterpreter(device.rsrcmgr, device)
 
     # Processing layout
+    create_pages = pdfminer.pdfpage.PDFPage.create_pages
     with utila.SkipCollector(pages) as collector:
-        for index, page in enumerate(pdfminer.pdfpage.PDFPage.create_pages(document)): # yapf:disable
+        for index, page in enumerate(create_pages(document)):
             if collector.skip(index):
                 continue
             interpreter.process_page(page)

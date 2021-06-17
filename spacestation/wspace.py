@@ -59,6 +59,8 @@ def diffme(fontsize: float) -> tuple:
 
 
 def extract_page(chars: list, maxdiff: callable = diffme) -> list:
+    # remove empty chars
+    chars = [char for char in chars if char._text.strip()] # pylint:disable=W0212
     if not chars:
         return []
     result = []
@@ -66,11 +68,8 @@ def extract_page(chars: list, maxdiff: callable = diffme) -> list:
     chars = sameline(chars)
     last = chars[0].bbox
     for char in chars[1:]:
-        chargroups[-1].append(char)
-        text = char._text  # pylint:disable=W0212
         bbox = char.bbox
-        if text == ' ':
-            continue
+        chargroups[-1].append(char)
         xdiff_max, ydiff_max = maxdiff(char.fontsize)
         # x0, y0, x1, y1
         xdiff = last[2] - bbox[0]

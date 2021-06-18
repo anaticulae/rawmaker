@@ -25,6 +25,7 @@ HELLO_WORLD = os.path.join(RESOURCES, 'helloworld')
 NEGATIVE = os.path.join(RESOURCES, 'negative')
 SINGLE = os.path.join(RESOURCES, 'single')
 SPEC = os.path.join(RESOURCES, 'spec')
+FONTS = os.path.join(RESOURCES, 'fonts')
 
 NO_PDF = os.path.join(NEGATIVE, 'no_pdf')
 
@@ -42,6 +43,8 @@ INCREASING_FONT_A3 = os.path.join(INCREASING_FONT, 'increasing_fonts_a3.pdf')
 INCREASING_FONT_A4 = os.path.join(INCREASING_FONT, 'increasing_fonts_a4.pdf')
 INCREASING_FONT_A5 = os.path.join(INCREASING_FONT, 'increasing_fonts_a5.pdf')
 INCREASING_ZZZ = os.path.join(INCREASING_FONT, 'increasing_fonts_a4_10_20_30_40.pdf') # yapf:disable
+
+FONTS_SCALED_PDF = os.path.join(FONTS, 'scaled.pdf')
 
 HOW_TO_CPORTING_BOX_COUNT = 10
 HOW_TO_CPORTING_HORIZONTAL_COUNT = 2

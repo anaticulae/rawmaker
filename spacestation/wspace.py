@@ -40,8 +40,8 @@ def extract(document: str, pages: tuple = None):
 
 MAXDIFF = configo.HolyTable(
     items=[
-        (7.0, 2.0),
-        (10.0, 2.0),
+        (7.0, 1.4),
+        (10.0, 1.4),
         (15.0, 3.0),
         (20.0, 4.0),
         (25.0, 5.0),

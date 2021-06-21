@@ -45,6 +45,10 @@ INCREASING_FONT_A5 = os.path.join(INCREASING_FONT, 'increasing_fonts_a5.pdf')
 INCREASING_ZZZ = os.path.join(INCREASING_FONT, 'increasing_fonts_a4_10_20_30_40.pdf') # yapf:disable
 
 FONTS_SCALED_PDF = os.path.join(FONTS, 'scaled.pdf')
+FONTS_SCALED = power.generated(folder='scaled')
+FONTS_SCALED_PERCENT033 = os.path.join(FONTS_SCALED, 'page0_first.pdf')
+FONTS_SCALED_PERCENT050 = os.path.join(FONTS_SCALED, 'page0_second.pdf')
+FONTS_SCALED_PERCENT200 = os.path.join(FONTS_SCALED, 'page1_first.pdf')
 
 HOW_TO_CPORTING_BOX_COUNT = 10
 HOW_TO_CPORTING_HORIZONTAL_COUNT = 2
@@ -55,9 +59,9 @@ GOLDEN = os.path.join(RESOURCES, 'golden')
 GOLDEN_VIM = os.path.join(GOLDEN, 'vim')
 
 REQUIRED_RESOURCES = [
-    power.link(power.BOOK007_PDF),
-    power.link(power.DOCU13_PDF),
-    power.link(power.BACHELOR090_PDF),
+    FONTS_SCALED_PERCENT033,
+    FONTS_SCALED_PERCENT050,
+    FONTS_SCALED_PERCENT200,
     GOLDEN_VIM,
     HELLO_WORLD_PDF,
     INCREASING_FONT,
@@ -68,5 +72,7 @@ REQUIRED_RESOURCES = [
     NO_PDF,
     PDF2008,
     RESOURCES,
-    power.DOCU13_PDF,
+    power.link(power.BACHELOR090_PDF),
+    power.link(power.BOOK007_PDF),
+    power.link(power.DOCU13_PDF),
 ]

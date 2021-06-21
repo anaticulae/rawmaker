@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
+
 import power
 import pytest
 import utila
@@ -48,6 +50,32 @@ def extract(resources):
     ]
     completed = utila.run_parallel(todo, worker=WORKER)
     assert completed == utila.SUCCESS
+
+
+# yapf:disable
+RESOURCES_SCALED = [
+    (tests.resources.FONTS_SCALED_PDF, ('sel page_0.text_5_487', 'page0_first')),
+    (tests.resources.FONTS_SCALED_PDF, ('sel page_0.text_490_950', 'page0_second')),
+    (tests.resources.FONTS_SCALED_PDF, ('sel page_1.text_5_632', 'page1_first')),
+]
+# yapf:enable
+
+
+def extract_scaled(resources):
+    dest = power.generated(folder='scaled')
+    if os.path.exists(dest):
+        return
+    os.makedirs(dest)
+    for source, (script, name) in resources:
+        outpath = os.path.join(dest, f'{name}.pdf')
+        tmp = utila.tmpfile(power.ROOT)
+        utila.file_replace(tmp, script)
+        utila.run(f'jam -i {source} --script {tmp} -o {outpath}')
+
+
+def validate_scaled(_):  # pylint:disable=W0613
+    # disable page number validation
+    pass
 
 
 def strpages(item) -> str:

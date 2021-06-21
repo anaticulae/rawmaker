@@ -60,7 +60,7 @@ def diffme(fontsize: float) -> tuple:
 
 def extract_page(chars: list, maxdiff: callable = diffme) -> list:
     # remove empty chars
-    chars = [char for char in chars if char._text.strip()] # pylint:disable=W0212
+    chars = [char for char in chars if char._text.strip()]  # pylint:disable=W0212
     if not chars:
         return []
     result = []

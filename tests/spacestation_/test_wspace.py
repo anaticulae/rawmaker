@@ -12,14 +12,14 @@ import pytest
 import utilatest
 
 import spacestation
+import spacestation.features.wspace
 import spacestation.serialize
-import spacestation.wspace
 import tests.spacestation_
 
 
 def test_wspace_extract_bachelor56_page0():
     source = power.BACHELOR056_PDF
-    extracted, _ = spacestation.wspace.extract(source, (0,))
+    extracted, _ = spacestation.features.wspace.extract(source, (0,))
     extracted = extracted[0].content
     assert len(extracted) == 42  # VALIDATED!
 
@@ -30,7 +30,7 @@ def test_wspace_extract_bachelor56_page0():
 ])
 def test_wspace_extract_diss266_pagex(page, expected):
     source = power.DISS266_PDF
-    extracted, _ = spacestation.wspace.extract(source, (page,))
+    extracted, _ = spacestation.features.wspace.extract(source, (page,))
     extracted = extracted[0].content
     assert len(extracted) == expected  # VALIDATED!
 

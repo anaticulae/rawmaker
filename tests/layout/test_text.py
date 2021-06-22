@@ -11,6 +11,7 @@ import iamraw
 import power
 import serializeraw
 import utila
+import utilatest
 
 import tests
 
@@ -57,8 +58,8 @@ def test_diss264_text_extraction_position_page17(testdir, monkeypatch, capsys):
     cmd = f'-i {source} --text --fonts --pages=17 -VVV'
     tests.run(cmd, monkeypatch=monkeypatch)
 
-    std, _ = capsys.readouterr()
-    assert std.count('could not convert:') >= 6, std
+    stdout = utilatest.stdout(capsys)
+    assert stdout.count('could not convert:') >= 6, stdout
 
 
 def test_diss264_text_extraction_vertical_text_page21(testdir, monkeypatch):

@@ -74,8 +74,7 @@ def test_pdfinfo_stdout(testdir, monkeypatch, capsys):
     source = power.DOCU27_PDF
     with utilatest.increased_filecount(root, mindiff=0, maxdiff=0):
         tests.pdfinfo_.run(f'-i {source}', monkeypatch=monkeypatch)
-    stdout, _ = capsys.readouterr()
-
+    stdout = utilatest.stdout(capsys)
     expected = (
         '{"pages": 27, "generator": "latex", "version": {"major": 1, '
         '"minor": 5}, "meta": {"author": "", "title": "", "subject": "",')

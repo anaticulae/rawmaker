@@ -23,7 +23,7 @@ def test_extract_figures_memory_error(testdir, monkeypatch, capsys):
     # CONFUSING, PAY ATENTION TO THE PAGE NUMBERS
     source = power.BACHELOR085_PDF
     tests.run(f'-i {source}  --figures --pages=75:', monkeypatch=monkeypatch)
-    stderr = capsys.readouterr().err
+    stderr = utilatest.stderr(capsys)
     assert 'could not render' in stderr, str(stderr)
 
 

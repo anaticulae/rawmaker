@@ -10,6 +10,7 @@
 import power
 import pytest
 import serializeraw
+import utilatest
 
 import rawmaker.features.annotation
 import rawmaker.reader
@@ -23,8 +24,7 @@ def test_annotation_mining_annotations(capsys):
     assert len(extracted) == tests.resources.VIM_PAGE_COUNT
 
     # no logging errors from unsupported annotation
-    _, err = capsys.readouterr()
-    assert not err
+    assert not utilatest.stderr(capsys)
 
 
 @pytest.mark.xfail(reason='annotation is disabled right now')

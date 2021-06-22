@@ -9,6 +9,7 @@
 
 import power
 import pytest
+import utilatest
 
 import tests.letty_
 
@@ -32,7 +33,6 @@ def test_letty_whitespaces(monkeypatch, capsys):  #pylint: disable=W0613
     cmd = f'-i {power.link(power.DOCU13_PDF)} --whitespace'
     tests.letty_.run(cmd, monkeypatch=monkeypatch)
 
-    stdout = capsys.readouterr().out
-
+    stdout = utilatest.stdout(capsys)
     number_of_whitespaces = int(stdout.strip())
     assert number_of_whitespaces > 300, stdout

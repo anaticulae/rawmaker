@@ -23,8 +23,8 @@ def test_leftright_book_font_name(testdir, monkeypatch, capsys):
         f'-i {power.BOOK007_PDF} --fonts',
         monkeypatch=monkeypatch,
     )
-    _, err = capsys.readouterr()
-    assert 'ERROR' not in err
+    stderr = utilatest.stderr(capsys)
+    assert 'ERROR' not in stderr
 
 
 @utilatest.longrun

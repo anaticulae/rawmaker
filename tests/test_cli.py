@@ -48,8 +48,7 @@ def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):
     testdir.mkdir('empty')
     command = ['-i', 'empty', '-o', 'output']  # no pdf input
     failure(command, monkeypatch=monkeypatch)
-
-    stderr = capsys.readouterr().err
+    stderr = utilatest.stderr(capsys)
     assert '[ERROR]' in stderr
 
 

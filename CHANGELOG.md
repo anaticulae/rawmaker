@@ -2,6 +2,27 @@
 
 Every noteable change is logged here.
 
+## v2.19.0
+
+### Feature
+
+* adjust min word dist (206c41b25a54)
+* extend chardist detection (a0270c331c5e)
+* determine min ad mac word dist (8c5c9c948f16)
+* add method to determine document wordspace (a39e09fd90e1)
+* add step to determine document char distance (379053b836ba)
+* add step to extract char information of word-groups (4301ccb62db3)
+* group chars to words (8ddee02d4545)
+
+### Fix
+
+* skip empty character (7cae9053e44c)
+* skip empty pages (485aeb7787f4)
+
+### Documentation
+
+* document method header (df092388a55c)
+
 ## v2.18.0
 
 ### Feature

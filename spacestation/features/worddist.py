@@ -10,16 +10,16 @@
 import collections
 import statistics
 
+import iamraw
+import serializeraw
 import utila
-
-import spacestation.serialize
 
 
 def work(source: str, pages: tuple = None) -> str:
-    wspaces = spacestation.serialize.load_wspaces(source, pages=pages)
+    wspaces = serializeraw.load_wspaces(source, pages=pages)
     document = [wordspace(page) for page in wspaces]
     grouped = document_worddist(document)
-    dumped = spacestation.serialize.dump_document_worddist(grouped)
+    dumped = serializeraw.dump_document_worddist(grouped)
     return dumped
 
 
@@ -29,7 +29,7 @@ def document_worddist(pages):
         for fontsize, distance in content.items():
             fontsize = utila.roundme(fontsize, digits=2)
             grouped[fontsize].extend(distance)
-    result = spacestation.serialize.DocumentWordDist()
+    result = iamraw.DocumentWordDist()
     for var, operation in (
         ('mode', statistics.mode),
         ('mean', statistics.mean),

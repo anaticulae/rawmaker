@@ -9,11 +9,11 @@
 
 import power
 import pytest
+import serializeraw
 import utilatest
 
 import spacestation
 import spacestation.features.wspace
-import spacestation.serialize
 import tests.spacestation_
 
 
@@ -40,6 +40,5 @@ def test_wspace_cli_bachelor56(testdir, monkeypatch):
     source = power.BACHELOR056_PDF
     cmd = f'-i {source}'
     tests.spacestation_.run(cmd, monkeypatch=monkeypatch)
-    path = spacestation.path.wspace(testdir.tmpdir)
-    loaded = spacestation.serialize.load_wspaces(path)
+    loaded = serializeraw.load_wspaces(testdir.tmpdir)
     assert loaded

@@ -8,8 +8,8 @@
 # =============================================================================
 
 import pytest
+import serializeraw
 
-import spacestation.serialize
 import tests.resources
 import tests.spacestation_
 
@@ -36,7 +36,6 @@ import tests.spacestation_
 def test_scaled_font_chardist(source, expected, testdir, monkeypatch):
     cmd = f'-i {source}'
     tests.spacestation_.run(cmd, monkeypatch=monkeypatch)
-
-    worddist = spacestation.serialize.load_document_worddist(testdir.tmpdir)
+    worddist = serializeraw.load_document_worddist(testdir.tmpdir)
     current = worddist.minn, worddist.mean, worddist.maxx
     assert current == expected

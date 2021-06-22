@@ -11,18 +11,18 @@ import typing
 
 import configo
 import iamraw
+import serializeraw
 import utila
 
 import rawmaker.features
 import rawmaker.miner.char
 import rawmaker.reader
-import spacestation.serialize
 
 
 def work(source: str, pages: tuple = None) -> typing.Tuple[str, str]:
     wordspaces, words = extract(source, pages=pages)
-    dumped_space = spacestation.serialize.dump_wspaces(wordspaces)
-    dumped_words = spacestation.serialize.dump_words(words)
+    dumped_space = serializeraw.dump_wspaces(wordspaces)
+    dumped_words = serializeraw.dump_wwords(words)
     return dumped_space, dumped_words
 
 

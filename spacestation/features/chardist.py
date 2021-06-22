@@ -10,16 +10,16 @@
 import collections
 import statistics
 
+import iamraw
+import serializeraw
 import utila
-
-import spacestation.serialize
 
 
 def work(source: str, pages: tuple = None) -> str:
-    wordpages = spacestation.serialize.load_words(source, pages=pages)
+    wordpages = serializeraw.load_wwords(source, pages=pages)
     document = pages_chardist(wordpages)
     grouped = group_chardist(document)
-    dumped = spacestation.serialize.dump_document_chardist(grouped)
+    dumped = serializeraw.dump_document_chardist(grouped)
     return dumped
 
 
@@ -31,7 +31,7 @@ def group_chardist(pages):
             fontsize = utila.roundme(fontsize, digits=2)
             for distance in distances:
                 grouped[fontsize].append(distance)
-    result = spacestation.serialize.DocumentCharDist()
+    result = iamraw.DocumentCharDist()
     for var, operation in (
         ('mode', statistics.mode),
         ('mean', statistics.mean),

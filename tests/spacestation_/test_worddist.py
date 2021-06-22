@@ -9,10 +9,10 @@
 
 import power
 import pytest
+import serializeraw
 import utila
 import utilatest
 
-import spacestation.serialize
 import tests.spacestation_
 
 
@@ -27,7 +27,7 @@ def test_worddist(source, pages, expected, testdir, monkeypatch):
     # run
     tests.spacestation_.run(cmd, monkeypatch=monkeypatch)
     # load
-    loaded = spacestation.serialize.load_document_worddist(testdir.tmpdir)
+    loaded = serializeraw.load_document_worddist(testdir.tmpdir)
     # verify
     fontsize, chardist = expected
     # TODO: REPLACE WITH VERY NEAR

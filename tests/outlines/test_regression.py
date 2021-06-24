@@ -40,6 +40,8 @@ def test_imagetext_outlines(source, expected, testdir, monkeypatch):
     source = os.path.join(testdir.tmpdir, 'rawmaker__outlines_outlines.yaml')
     assert os.path.exists(source)
     loaded = serializeraw.load_toc(source)
-    assert len(loaded) == expected or\
-           str(loaded) == expected or\
-           expected is None
+    assert any((
+        len(loaded) == expected,
+        str(loaded) == expected,
+        expected is None,
+    ))

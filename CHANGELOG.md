@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.19.1
+
+### Fix
+
+* make skipper more specific (c95d6ceebea0)
+* decrease verbosity (27df62d04d95)
+
 ## v2.19.0
 
 ### Feature

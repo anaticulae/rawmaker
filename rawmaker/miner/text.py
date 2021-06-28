@@ -359,7 +359,7 @@ def merge_special_char(items):  # pylint:disable=R1260
             replaced = MERGES[result[-1].value]
         except KeyError:
             # TODO: REMOVE ERROR LOG LATER
-            utila.error(f'could not merge with before {item}')
+            utila.debug(f'could not merge with before {item}')
             result.append(item)
             continue
         result[-1].value = replaced

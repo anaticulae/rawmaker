@@ -21,6 +21,7 @@ import iamraw
 import pdfminer.converter
 import pdfminer.layout
 import pdfminer.pdfinterp
+import pdfminer.utils
 import utila
 
 import rawmaker.converter.basic
@@ -85,7 +86,8 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         # HACK: PDFMINER READS SOME PDF WITH IMAGES ON PAGE WRONG
         # THE BUG PRODUCES DUPLICATED OR TRIPPLED STRINGS. THE EXTRACTION
         # DOES NOT FAIL BUT THE RESULT IS USELESS.
-        hashed = hash(f'{self.pageno}{textstate}{seq}{ncs}{graphicstate}')
+        matrix = pdfminer.utils.mult_matrix(textstate.matrix, self.ctm)
+        hashed = hash(f'{self.pageno}{textstate}{matrix}{seq}{ncs}{graphicstate}')  # yapf:disable
         if self.done.contains(hashed):
             return
         super().render_string(textstate, seq, ncs, graphicstate)
@@ -466,7 +468,6 @@ def render_textcontainer(
     strip: bool = False,
 ) -> iamraw.TextContainer:
     splitted = split_container(item, strip=strip)
-
     result = [
         render_vertical_textcontainer(item, strip=strip) if vertical(item) else
         render_horizontal_textcontainer(item, strip=strip) for item in splitted

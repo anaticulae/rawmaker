@@ -59,9 +59,9 @@ GOLDEN = os.path.join(RESOURCES, 'golden')
 GOLDEN_VIM = os.path.join(GOLDEN, 'vim')
 
 REQUIRED_RESOURCES = [
-    FONTS_SCALED_PERCENT033,
-    FONTS_SCALED_PERCENT050,
-    FONTS_SCALED_PERCENT200,
+    # FONTS_SCALED_PERCENT033,
+    # FONTS_SCALED_PERCENT050,
+    # FONTS_SCALED_PERCENT200,
     GOLDEN_VIM,
     HELLO_WORLD_PDF,
     INCREASING_FONT,
@@ -72,7 +72,7 @@ REQUIRED_RESOURCES = [
     NO_PDF,
     PDF2008,
     RESOURCES,
-    power.link(power.BACHELOR090_PDF),
-    power.link(power.BOOK007_PDF),
-    power.link(power.DOCU13_PDF),
+    # power.link(power.BACHELOR090_PDF),
+    # power.link(power.BOOK007_PDF),
+    # power.link(power.DOCU13_PDF),
 ]

@@ -10,6 +10,7 @@
 import iamraw.path
 import power
 import serializeraw
+import utilatest
 
 import linero.features.table
 import linero.table.horizontal
@@ -29,6 +30,7 @@ def extract_tables(source, page):
     return tables
 
 
+@utilatest.requires(power.BACHELOR090_PDF)
 def test_table_bachelor90_page76_extract_table():
     source = power.link(power.BACHELOR090_PDF)
     page = 76
@@ -37,6 +39,7 @@ def test_table_bachelor90_page76_extract_table():
     assert len(tables) == 1
 
 
+@utilatest.requires(power.BACHELOR090_PDF)
 def test_table_bachelor90_page77_extract_table():
     source = power.link(power.BACHELOR090_PDF)
     page = 77

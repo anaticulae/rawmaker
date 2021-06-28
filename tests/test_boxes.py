@@ -24,6 +24,7 @@ import tests.resources
 
 @pytest.fixture
 def linecluster():
+    utilatest.fixture_requires(power.DOCU09_PDF)
     result = []
     with rawmaker.reader.read(power.DOCU09_PDF) as doc:
         parsed = rawmaker.features.line.lines(doc)
@@ -96,6 +97,7 @@ def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
     assert len(lines) == tests.resources.HOW_TO_CPORTING_HORIZONTAL_COUNT
 
 
+@utilatest.requires(power.DOCU09_PDF)
 def test_determine_textboxes():
     lines = iamraw.path.line(power.link(power.DOCU09_PDF))
     lines = serializeraw.load_lines(lines)
@@ -106,6 +108,7 @@ def test_determine_textboxes():
     assert count == tests.resources.HOW_TO_CPORTING_BOX_COUNT
 
 
+@utilatest.requires(power.MASTER072_PDF)
 def test_boxes_determine_horizontals_master72pages():
     horizontals = None
     lines = iamraw.path.line(power.link(power.MASTER072_PDF))
@@ -121,6 +124,7 @@ def test_boxes_determine_horizontals_master72pages():
         assert utila.near(curr, exp, diff=5.0), (f'{curr}; {exp}')
 
 
+@utilatest.requires(power.BACHELOR056_PDF)
 def test_boxes_determine_boxes_bachelor56_titlepage():
     lines = iamraw.path.line(power.link(power.BACHELOR056_PDF))
     lines = serializeraw.load_lines(lines, pages=(0,))

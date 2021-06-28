@@ -35,6 +35,7 @@ def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
         id='vim',
     ),
 ])
+@utilatest.requires(power.DOCU13_PDF)
 def test_table_extract(source, expected):
     source = power.link(source)
     source = iamraw.path.line(source)
@@ -48,6 +49,7 @@ def test_table_extract(source, expected):
     assert flat == expected
 
 
+@utilatest.requires(power.DOCU13_PDF)
 def test_table_dump_and_load():
     source = iamraw.path.line(power.link(power.DOCU13_PDF))
     loaded = serializeraw.load_lines(source, pages=(0, 1, 2))
@@ -60,6 +62,7 @@ def test_table_dump_and_load():
 
 
 @utilatest.longrun
+@utilatest.requires(power.BOOK007_PDF)
 def test_table_extract_negative():
     source = power.link(power.BOOK007_PDF)
     text = iamraw.path.text(source)
@@ -119,6 +122,11 @@ def test_table_extract_negative():
         id='bachelor63_singletable',
     ),
 ])
+@utilatest.requires(power.BACHELOR056_PDF)  # TODO: MERGE LATER
+@utilatest.requires(power.BACHELOR063_PDF)
+@utilatest.requires(power.BACHELOR090_PDF)
+@utilatest.requires(power.DOCU07_PDF)
+@utilatest.requires(power.DOCU13_PDF)
 @utilatest.longrun
 def test_detect_table(source, pages, expected, testdir, monkeypatch):
     source = power.link(source)
@@ -136,6 +144,7 @@ def test_detect_table(source, pages, expected, testdir, monkeypatch):
     assert current == expected
 
 
+@utilatest.requires(power.BACHELOR090_PDF)
 def test_detect_table_bachelor90_page80(testdir, monkeypatch):
     """The table header contains only one connected textual string."""
     source = power.link(power.BACHELOR090_PDF)
@@ -151,6 +160,7 @@ def test_detect_table_bachelor90_page80(testdir, monkeypatch):
     assert len(loaded) == 1
 
 
+@utilatest.requires(power.MASTER098_PDF)
 def test_detect_table_master98_page54_60(testdir, monkeypatch):
     source = power.link(power.MASTER098_PDF)
     pages = '54:62'
@@ -170,6 +180,7 @@ def test_detect_table_master98_page54_60(testdir, monkeypatch):
     assert len(utila.select_content(loaded, 59)) == 1
 
 
+@utilatest.requires(power.BACHELOR056_PDF)
 def test_detect_table_bachelor56(testdir, monkeypatch):
     source = power.link(power.BACHELOR056_PDF)
     tests.linero_.run(f'-i {source}  --table', monkeypatch=monkeypatch)
@@ -180,6 +191,7 @@ def test_detect_table_bachelor56(testdir, monkeypatch):
 
 
 @pytest.mark.timeout(30)
+@utilatest.requires(power.MASTER112_PDF)
 def test_master112_bachelor_timeout(testdir, monkeypatch):
     source = power.link(power.MASTER112_PDF)
     cmd = f'-i {source} --table --pages=110'

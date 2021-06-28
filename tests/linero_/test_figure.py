@@ -11,8 +11,10 @@ import iamraw.path
 import power
 import pytest
 import serializeraw
+import utilatest
 
 
+@utilatest.requires(power.BOOK007_PDF)
 def test_linero_figure_extract():
     pytest.skip('work in progress')
     source = power.link(power.BOOK007_PDF)

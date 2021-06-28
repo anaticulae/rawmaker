@@ -29,6 +29,7 @@ def test_letty_cli_failure(command, testdir, monkeypatch):  #pylint: disable=W06
     tests.letty_.failure(command, monkeypatch=monkeypatch)
 
 
+@utilatest.requires(power.DOCU13_PDF)
 def test_letty_whitespaces(monkeypatch, capsys):  #pylint: disable=W0613
     cmd = f'-i {power.link(power.DOCU13_PDF)} --whitespace'
     tests.letty_.run(cmd, monkeypatch=monkeypatch)

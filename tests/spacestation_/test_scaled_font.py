@@ -9,6 +9,7 @@
 
 import pytest
 import serializeraw
+import utilatest
 
 import tests.resources
 import tests.spacestation_
@@ -33,6 +34,9 @@ import tests.spacestation_
     ),
 ])
 # yapf:enable
+@utilatest.requires(tests.resources.FONTS_SCALED_PERCENT033)
+@utilatest.requires(tests.resources.FONTS_SCALED_PERCENT050)
+@utilatest.requires(tests.resources.FONTS_SCALED_PERCENT200)
 def test_scaled_font_chardist(source, expected, testdir, monkeypatch):
     cmd = f'-i {source}'
     tests.spacestation_.run(cmd, monkeypatch=monkeypatch)

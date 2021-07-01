@@ -18,8 +18,8 @@ from pdfminer.pdfdocument import PDFEncryptionError
 from pdfminer.pdfdocument import PDFSyntaxError
 from pdfminer.pdfparser import PDFParser
 
-from rawmaker.error import InvalidPDF
-from rawmaker.error import PDFParserImplementationError
+# from rawmaker.error import InvalidPDF
+# from rawmaker.error import PDFParserImplementationError
 
 
 @contextmanager
@@ -54,11 +54,11 @@ def read(path: str, password: str = None, verify: bool = True) -> PDFDocument:
         parser = PDFParser(fp)
         # Create a PDF document object that stores the document structure.
         # Supply the password for initialization.
-        document = open_document(parser, path, password)
+        document = open_document(parser, password)
         yield document
 
 
-def open_document(parser: PDFParser, path: str, password: str) -> PDFDocument:
+def open_document(parser: PDFParser, password: str) -> PDFDocument:
     """Open pdf document base on selected `parser`.
 
     Hint:
@@ -78,17 +78,22 @@ def open_document(parser: PDFParser, path: str, password: str) -> PDFDocument:
         utila.error('encryption not supported')
         utila.debug(encryption)
         sys.exit(1)
-    except Exception as exc:
-        raise PDFParserImplementationError(path) from exc
+    except Exception:  # pylint:disable=broad-except
+        utila.print_stacktrace()
+        sys.exit(2)
+        # raise PDFParserImplementationError(path) from exc
     else:
         return document
 
     try:
         utila.info('try to use `fallback` pdf loader')
         document = PDFDocument(parser, password, fallback=True)
-    except PDFSyntaxError as exc:
-        raise InvalidPDF(path) from exc
-    except Exception as exc:
-        raise PDFParserImplementationError(path) from exc
-    else:
-        return document
+    except PDFSyntaxError:
+        utila.print_stacktrace()
+        sys.exit(3)
+        # raise InvalidPDF(path) from exc
+    except Exception:  # pylint:disable=broad-except
+        # raise PDFParserImplementationError(path) from exc
+        utila.print_stacktrace()
+        sys.exit(2)
+    return document

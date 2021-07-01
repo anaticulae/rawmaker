@@ -42,6 +42,6 @@ def test_outline_count():
 
 def test_read_no_pdf():
     """Reading non valid pdf. The example contains some raw text."""
-    with pytest.raises(rawmaker.error.InvalidPDF):
+    with pytest.raises(SystemExit):
         with rawmaker.reader.read(tests.resources.NO_PDF, verify=False):
             pass

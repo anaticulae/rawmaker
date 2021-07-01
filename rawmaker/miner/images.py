@@ -125,10 +125,11 @@ IMAGE_HEIGHT_MAX = 2048
 
 
 def write_image(extracted, write_to, page, index) -> WrittenImage:
-    """Write image to `extracted` to directory `write_to`.
+    """Write image `extracted` to directory `write_to`.
 
     The file is named {page}_{index}.{extracted.ext}.
     """
+    assert extracted
     ext = extracted.ext
     filename = f'{page}_{index}.{ext}'
     if isinstance(extracted.image, PIL.Image.Image):
@@ -140,22 +141,18 @@ def write_image(extracted, write_to, page, index) -> WrittenImage:
             except Exception:  # pylint:disable=broad-except
                 utila.error(f'could not use save method: {filename}')
     else:
-        if extracted:  # TODO: THIS MAKES NO SENCE
-            try:
-                # images writer add file extention bt themself
-                writer = pdfminer.image.ImageWriter(write_to)
-                rawimage = extracted.image
-                rawimage.name = f'{page}_{index}'
-                if rawimage.width < IMAGE_WIDTH_MAX and rawimage.height < IMAGE_HEIGHT_MAX:
-                    writer.export_image(rawimage)
-                else:
-                    utila.info(f'skip image size: {rawimage.srcsize} name: {rawimage.name}')  # yapf:disable
-            except pdfminer.pdftypes.PDFNotImplementedError as error:
-                utila.error(f'could not export: {error}')
-            except TypeError:
-                utila.error(f'empty export {extracted.image.name}')
-        else:
-            # TODO: CHECK WHY THIS CAN HAPPEN
+        try:
+            # images writer add file extention bt themself
+            writer = pdfminer.image.ImageWriter(write_to)
+            rawimage = extracted.image
+            rawimage.name = f'{page}_{index}'
+            if rawimage.width < IMAGE_WIDTH_MAX and rawimage.height < IMAGE_HEIGHT_MAX:
+                writer.export_image(rawimage)
+            else:
+                utila.info(f'skip image size: {rawimage.srcsize} name: {rawimage.name}')  # yapf:disable
+        except pdfminer.pdftypes.PDFNotImplementedError as error:
+            utila.error(f'could not export: {error}')
+        except TypeError:
             utila.error(f'empty export {extracted.image.name}')
     return WrittenImage(filename=filename, bounding=extracted.bounding)
 

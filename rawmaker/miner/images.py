@@ -133,7 +133,7 @@ def write_image(extracted, write_to, page, index) -> WrittenImage:
             ext = ext.replace('jpg', 'jpeg')
             try:
                 extracted.image.save(output, format=ext)
-            except Exception as error:  # pylint:disable=broad-except
+            except Exception:  # pylint:disable=broad-except
                 utila.error(f'could not use save method: {filename}')
     else:
         if extracted:  # TODO: THIS MAKES NO SENCE

@@ -44,6 +44,8 @@ INCREASING_FONT_A4 = os.path.join(INCREASING_FONT, 'increasing_fonts_a4.pdf')
 INCREASING_FONT_A5 = os.path.join(INCREASING_FONT, 'increasing_fonts_a5.pdf')
 INCREASING_ZZZ = os.path.join(INCREASING_FONT, 'increasing_fonts_a4_10_20_30_40.pdf') # yapf:disable
 
+IMAGE_HUGEMONO = os.path.join(RESOURCES, 'image/hugemono.pdf')
+
 FONTS_SCALED_PDF = os.path.join(FONTS, 'scaled.pdf')
 FONTS_SCALED = power.generated(folder='scaled')
 FONTS_SCALED_PERCENT033 = os.path.join(FONTS_SCALED, 'page0_first.pdf')

@@ -10,8 +10,10 @@
 import power
 import serializeraw.images
 import utila
+import utilatest
 
 import tests
+import tests.resources
 
 
 def test_image_extract_with_pages_offset(testdir, monkeypatch):
@@ -51,3 +53,11 @@ def test_render_master127page32(monkeypatch, testdir):
     written = utila.file_list('rawmaker__images_images')
     expected = 2
     assert len(written) == expected, str(written)
+
+
+def test_skip_huge_image(monkeypatch, testdir, capsys):
+    """Skip image which is able to overload infrastructure cause it is
+    very huge."""
+    cmd = f'-i {tests.resources.IMAGE_HUGEMONO} --images -VVV'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    assert 'skip image size:' in utilatest.stdout(capsys)

@@ -120,6 +120,10 @@ class CollectAndMerge:
         return {key: value for key, value in self.written.items() if value}
 
 
+IMAGE_WIDTH_MAX = 2048
+IMAGE_HEIGHT_MAX = 2048
+
+
 def write_image(extracted, write_to, page, index) -> WrittenImage:
     """Write image to `extracted` to directory `write_to`.
 
@@ -140,8 +144,12 @@ def write_image(extracted, write_to, page, index) -> WrittenImage:
             try:
                 # images writer add file extention bt themself
                 writer = pdfminer.image.ImageWriter(write_to)
-                extracted.image.name = f'{page}_{index}'
-                writer.export_image(extracted.image)
+                rawimage = extracted.image
+                rawimage.name = f'{page}_{index}'
+                if rawimage.width < IMAGE_WIDTH_MAX and rawimage.height < IMAGE_HEIGHT_MAX:
+                    writer.export_image(rawimage)
+                else:
+                    utila.info(f'skip image size: {rawimage.srcsize} name: {rawimage.name}')  # yapf:disable
             except pdfminer.pdftypes.PDFNotImplementedError as error:
                 utila.error(f'could not export: {error}')
             except TypeError:

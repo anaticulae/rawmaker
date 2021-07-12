@@ -77,15 +77,12 @@ def parse(item) -> DestinationMixin:  # pylint:disable=R1260
     hyperlink = parse_hyperlink(item)
     if hyperlink:
         return hyperlink
-
     fitr = parse_fitr(item)
     if fitr:
         return fitr
-
     simple = parse_simple(item)
     if simple:
         return simple
-
     for method in (parse_explict, parse_named):
         explicit = method(item)
         if explicit:
@@ -161,11 +158,9 @@ def parse_explict(item) -> ExplicitDestination:
         # TypeError: item is already the requested list:
         # [34, /'XYZ', 72.4799999, 532.319999, 0]
         item = item['D']
-
     if isinstance(item, bytes):
         # {'S': /'GoTo', 'D': b'subsection.A.5.4'}
         return None
-
     try:
         page, _, left, top, zoom = item  # TODO: FLIP Y-Coordinate
     except ValueError:
@@ -175,7 +170,6 @@ def parse_explict(item) -> ExplicitDestination:
         # null means: do not change current zoom
         if zoom.name == b'null':
             zoom = 0.0
-
     result = ExplicitDestination(
         page=page,
         left=left,

@@ -153,7 +153,9 @@ def write_image(extracted, write_to, page, index) -> WrittenImage:
         except pdfminer.pdftypes.PDFNotImplementedError as error:
             utila.error(f'could not export: {error}')
         except TypeError:
-            utila.error(f'empty export {extracted.image.name}')
+            utila.error(f'empty export: {extracted.image.name}')
+        except ValueError:
+            utila.error(f'decompression error: {extracted.image.name}')
     return WrittenImage(filename=filename, bounding=extracted.bounding)
 
 

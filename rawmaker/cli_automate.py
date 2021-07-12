@@ -65,5 +65,5 @@ def run(inpath: str, outpath: str, cores: int = 1):
         cmd = f'rawmaker -i {item} -o {out} -j4'
         cmds.append(cmd)
     for cmd in cmds:
-        utila.log(cmd, forwardnewline=False)
+        utila.log(cmd, preserve_newlines=False)
     utila.run_parallel(cmds, worker=cores, verbose=True)

@@ -100,9 +100,9 @@ def between(lines, bounding):
     return result
 
 
-def determine_verticals(items):
+def determine_verticals(lines):
     result = [
-        item for item in items if linero.lines.vertical(
+        item for item in lines if linero.lines.vertical(
             item,
             maxdiff=linero.table.TABLE_VERTICAL_MAX_DIFF,
         )

@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v2.20.0
+
+### Feature
+
+* skip to large images (a6a4e65702f1)
+* use system exit instead of raising an exception (f4efea5c88e7)
+
+### Fix
+
+* handle non given generator (477f2ff1eed8)
+* support list and PDFObjRef as meta data content (a15b35ce5c6e)
+* adjust to new interface (bab6001c93f9)
+* do not fail on decompression error (fbf76e43006e)
+* do not preserve newlines (804409f30e74)
+
 ## v2.19.1
 
 ### Fix

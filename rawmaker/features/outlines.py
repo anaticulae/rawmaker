@@ -58,9 +58,14 @@ def work(document: str) -> str:
                 utila.log_stacktrace()
                 utila.error(error)
                 continue
-
             if not isinstance(page, int):
-                page = pagelookup[page.objid]
+                try:
+                    page = pagelookup[page.objid]
+                except KeyError:
+                    utila.error(f'invalid page lookup: {page.objid} pdf is '
+                                'maybe an invalid extraction out of an other '
+                                f'file: {pagelookup}')
+                    continue
             assert isinstance(page, int), f'require convertion: {type(page)}'
             raw_section = iamraw.SectionRaw(
                 level,

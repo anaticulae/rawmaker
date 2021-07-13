@@ -36,8 +36,9 @@ import rawmaker.reader
 
 
 def work(document: str) -> str:
-    """Extract outlines of a pdf document. If there are no outlines
-    provided dump empty list.
+    """Extract outlines of a pdf document.
+
+    If there are no outlines provided dump empty list.
     """
     assert isinstance(document, str), str(document)
     data = []
@@ -49,7 +50,6 @@ def work(document: str) -> str:
         except pdfminer.pdfdocument.PDFNoOutlines:
             outlines = []
             utila.error('could not locatate any outlines')
-
         for (level, title, dest, action, _) in outlines:
             try:
                 page = pagenumber(action, dest, pdf)
@@ -88,8 +88,7 @@ def pagenumber(action, dest, pdf) -> rawmaker.destination.ExplicitDestination:
         parsed = rawmaker.destination.parse(action)
         if isinstance(parsed, rawmaker.destination.NamedDestination):
             resolved = pdf.get_dest(parsed.pdf_reference)
-            if isinstance(resolved, pdfminer.pdftypes.PDFObjRef):
-                resolved = resolved.resolve()
+            resolved = resolve(resolved)
             parsed = rawmaker.destination.parse(resolved)
     elif dest:
         dest = resolve(dest)

@@ -20,7 +20,7 @@ import tests.spacestation_
 @pytest.mark.parametrize('source, pages, expected', [
     pytest.param(power.BACHELOR051_PDF, '3', (12.0, 0.0), id='bachelor51'),
     pytest.param(power.BACHELOR056_PDF, '4', (11.25, -0.198), id='bachelor56'),
-    pytest.param(power.MASTER116_PDF, '20:50', (10.91, -0.022), id='master116', marks=utilatest.longrun),
+    pytest.param(power.MASTER116_PDF, '20:50', (10.91, -0.022), id='master116', marks=utilatest.nightly),
     pytest.param(power.MASTER116_PDF, '8', (10.91, -0.022), id='shormaster116'),
 ])
 # yapf:enable

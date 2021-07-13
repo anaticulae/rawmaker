@@ -35,7 +35,7 @@ def test_wspace_extract_diss266_pagex(page, expected):
     assert len(extracted) == expected  # VALIDATED!
 
 
-@utilatest.longrun
+@utilatest.nightly
 def test_wspace_cli_bachelor56(testdir, monkeypatch):
     source = power.BACHELOR056_PDF
     cmd = f'-i {source}'

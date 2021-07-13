@@ -108,7 +108,7 @@ def validate_master116(firstpage):
     pytest.param(power.MASTER072_PDF, False, None, id='master72_false'),
     pytest.param(power.MASTER072_PDF, True, None, id='master72_true'),
 ])
-@utilatest.longrun
+@utilatest.nightly
 def test_text_mine_holy_whitespaces_remove(source, remove_whitespace, validate):
     # TODO: ADD MORE SINGLE PAGE VALIDATION
     pages = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)

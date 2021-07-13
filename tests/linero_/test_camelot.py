@@ -16,3 +16,9 @@ def test_camelot_run():
     source = power.DOCU13_PDF
     parsed = linero.table.camelot.run(source, pages=2)
     assert len(parsed) == 1
+
+
+def test_camelot_latex():
+    source = power.BACHELOR090_PDF
+    parsed = linero.table.camelot.run(source, pages=76)
+    assert len(parsed) == 1

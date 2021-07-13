@@ -14,6 +14,7 @@ import camelot.core
 import iamraw
 import utila
 
+import pdfinfo.pages
 import rawmaker.features.border
 
 
@@ -21,15 +22,35 @@ import rawmaker.features.border
 def run(pdffile: str, pages: tuple = None) -> iamraw.PageContentTableBoundings:
     if pdffile is None:
         # no pdffile given
-        utila.error(f'no camelot pdf file given')
+        utila.error('no camelot pdf file given')
         return []
     utila.exists_assert(pdffile)
-    # convert internal page definition to camelot definition
-    campages = camelot_pages(pages)
-    parsed: camelot.core.TableList = camelot.read_pdf(pdffile, pages=campages)
+    parsed = parse_tables(pdffile, pages)
     # group by page number
     result = group_result(parsed, pdffile, pages)
     return result
+
+
+def parse_tables(pdffile: str, pages: tuple = None):
+    # convert internal page definition to camelot definition
+    pagesmax = pdfinfo.pages.determine(pdffile)
+    pages = camelot_pages(pages, pagesmax)
+    result = parse_page(pdffile, pages)
+    return result
+
+
+def parse_page(pdffile: str, page: str) -> list:
+    parsed: camelot.core.TableList = camelot.read_pdf(
+        pdffile,
+        pages=page,
+    )
+    if not parsed:
+        parsed: camelot.core.TableList = camelot.read_pdf(
+            pdffile,
+            pages=page,
+            flavor="stream",
+        )
+    return parsed
 
 
 def group_result(parsed, pdffile, pages) -> iamraw.PageContentTableBoundings:
@@ -64,17 +85,14 @@ def zero_based(pagenumber: int) -> int:
     return pagenumber - 1
 
 
-def camelot_pages(pages: tuple = None) -> str:
+def camelot_pages(pages: tuple, pagesmax: int) -> str:
     """\
-    >>> camelot_pages((1, 2, 3, 4, 5))
+    >>> camelot_pages((1, 2, 3, 4, 5), pagesmax=20)
     '2,3,4,5,6'
     """
-    if not pages:
-        return 'all'
-    # 1024 is a hack to not determine the max page count
     pages = [
         str(page + 1)
-        for page in range(1024)
+        for page in range(pagesmax)
         if not utila.should_skip(page, pages)
     ]
     result = ','.join(pages)

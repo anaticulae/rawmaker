@@ -130,13 +130,14 @@ def test_table_extract_negative():
 @utilatest.requires(power.DOCU07_PDF)
 @utilatest.requires(power.DOCU13_PDF)
 @utilatest.longrun
-def test_detect_table(source, pages, expected, testdir, monkeypatch):
+def test_detect_table_single(source, pages, expected, testdir, monkeypatch):
+    utila.file_copy(source, os.path.join(testdir.tmpdir, 'table'))
     source = power.link(source)
     with monkeypatch.context() as context:
         # TODO: REMOVE AFTER UPGRADING CLUSTER STRATEGY
         context.setattr(linero.features.table, 'LINES_PER_PAGE_MAX', 180)
         tests.linero_.run(
-            f'-i {source} --pages={pages} --table',
+            f'-i {source} -i {testdir.tmpdir} --pages={pages} --table',
             monkeypatch=monkeypatch,
         )
     tables = linero.path.table(testdir.tmpdir)

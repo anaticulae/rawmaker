@@ -41,7 +41,21 @@ def work(document: str) -> str:
     If there are no outlines provided dump empty list.
     """
     assert isinstance(document, str), str(document)
-    data = []
+    parsed = parse_outlines(document)
+    toc = iamraw.create_toc(parsed)
+    try:
+        # toc to yaml
+        dumped = serializeraw.dump_toc(toc)
+    except TypeError:
+        utila.error('could not convert toc to YAML.')
+        utila.error('The toc may contain indirect references, buffer, etc.')
+        utila.error('Outline implementation seem not complete, yet.')
+        dumped = None
+    return dumped
+
+
+def parse_outlines(document: str) -> list:
+    result = []
     with rawmaker.reader.read(document) as pdf:
         try:
             # extract all outlines from pdf
@@ -74,17 +88,8 @@ def work(document: str) -> str:
                 raw='toc outline page',
                 raw_location=-1,
             )
-            data.append(raw_section)
-    toc = iamraw.create_toc(data)
-    try:
-        # toc to yaml
-        dumped = serializeraw.dump_toc(toc)
-    except TypeError:
-        utila.error('could not convert toc to YAML.')
-        utila.error('The toc may contain indirect references, buffer, etc.')
-        utila.error('Outline implementation seem not complete, yet.')
-        dumped = None
-    return dumped
+            result.append(raw_section)
+    return result
 
 
 def pagenumber(action, dest, pdf) -> rawmaker.destination.ExplicitDestination:

@@ -18,6 +18,7 @@ WORKPLAN = [
             utila.ResultFile('rawmaker', 'text_text'),
             utila.ResultFile('rawmaker', 'text_positions'),
             utila.ResultFile('rawmaker', 'line_line'),
+            utila.ResultFile('table', name=None, ext=None, optional=True),
         ],
         ('table',),
     ),

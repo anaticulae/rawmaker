@@ -23,7 +23,7 @@ import linero.table.horizontal
 import linero.table.word
 
 
-def run(lines, navigators):
+def run(lines, navigators, pdffile: str = None):
     crossed = functools.partial(linero.table.crossed.run, lines)
     latex = functools.partial(linero.table.horizontal.run, lines, navigators)
     word = functools.partial(linero.table.word.run, lines)

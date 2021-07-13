@@ -21,6 +21,8 @@ Example:
 
 """
 
+import os
+
 import iamraw
 import serializeraw
 
@@ -33,6 +35,7 @@ def work(
     text: str,
     textposition: str,
     lines: str,
+    pdffile: str = None,
     pages: tuple = None,
 ) -> str:
     lines = serializeraw.load_lines(lines, pages=pages)
@@ -44,7 +47,8 @@ def work(
         pages=pages,
     )
 
-    result = linero.table.strategy.run(lines, navigators)
+    pdffile = pdffile if os.path.exists(pdffile) else None
+    result = linero.table.strategy.run(lines, navigators, pdffile)
 
     # remove empty pages
     result = [item for item in result if item.content]

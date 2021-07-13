@@ -33,7 +33,16 @@ def generator(path: str) -> Generator:
 
 
 def parse_generator(info):
-    producer = str(info['Producer']).lower()
+    """\
+    No `Producer` defined:
+    >>> parse_generator({'Author': b'Maik Hesse', 'Title': b'Essays on Trust '
+    ... b'and Reputation Portability in Digital Platform Ecosystems'})
+    <Generator.UNDEFINED:...>
+    """
+    try:
+        producer = str(info['Producer']).lower()
+    except KeyError:
+        return Generator.UNDEFINED
     if 'latex' in producer or 'tex' in producer:
         return Generator.LATEX
     if 'msword' in producer or 'word' in producer:

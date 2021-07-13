@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import contextlib
+
 import pdfminer.utils
 import utila
 
@@ -25,9 +27,15 @@ def determine(path: str) -> dict:
         infos = infos[0]
         for key, value in infos.items():
             key = key.lower()
+            with contextlib.suppress(AttributeError):
+                # PDFObjRef
+                value = value.resolve()
             if isinstance(value, bytes):
                 # SEE PDFDocEncoding Character Set
-                result[key] = pdfminer.utils.decode_text(value)
+                value = pdfminer.utils.decode_text(value)
+            elif isinstance(value, list):
+                pass  # nothing todo
             else:
-                result[key] = utila.str2bool(value.name)
+                value = utila.str2bool(value.name)
+            result[key] = value
     return result

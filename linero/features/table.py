@@ -25,6 +25,7 @@ import os
 
 import iamraw
 import serializeraw
+import utila
 
 import linero.table.strategy
 
@@ -47,8 +48,8 @@ def work(
         pages=pages,
     )
 
-    pdffile = pdffile if os.path.exists(pdffile) else None
-    result = linero.table.strategy.run(lines, navigators, pdffile)
+    pdffile = pdffile if utila.exists(pdffile) else None
+    result = linero.table.strategy.run(lines, navigators, pdffile, pages)
 
     # remove empty pages
     result = [item for item in result if item.content]

@@ -18,47 +18,74 @@ import functools
 import iamraw
 import utila
 
+import linero.table.camelot
 import linero.table.crossed
 import linero.table.horizontal
 import linero.table.word
 
 
-def run(lines, navigators, pdffile: str = None):
+def run(lines, navigators, pdffile: str = None, pages: tuple = None):
     crossed = functools.partial(linero.table.crossed.run, lines)
     latex = functools.partial(linero.table.horizontal.run, lines, navigators)
     word = functools.partial(linero.table.word.run, lines)
+    camelot = functools.partial(linero.table.camelot.run, pdffile, pages)
 
-    crossed, latex, word = utila.fork(crossed, latex, word, process=True)
+    crossed, latex, word, camelot = utila.fork(
+        crossed,
+        latex,
+        word,
+        camelot,
+        process=True,
+    )
 
     latex_detected = sum([len(item.content) for item in latex])
     word_detected = sum([len(item.content) for item in word])
     crossed_detected = sum([len(item.content) for item in crossed])
+    camelot_detected = sum([len(item.content) for item in camelot])
 
     utila.log(f'latex:   {latex_detected}')
     utila.log(f'word:    {word_detected}')
     utila.log(f'crossed: {crossed_detected}')
+    utila.log(f'camelot: {camelot_detected}')
 
-    result = select_best(latex, word, crossed)
+    result = select_best(latex, word, crossed, camelot)
     return result
 
 
-def select_best(latexs, words, crosseds) -> iamraw.PageContentTableBoundings:
+def select_best(
+    latexs,
+    words,
+    crosseds,
+    camelots,
+) -> iamraw.PageContentTableBoundings:
     result = []
-    synced = utila.sync_pages([latexs, words, crosseds], numbers=False)
-    for latex, word, crossed in synced:
-        selected = select_page(latex, word, crossed)
+    synced = utila.sync_pages(
+        [
+            latexs,
+            words,
+            crosseds,
+            camelots,
+        ],
+        numbers=False,
+    )
+    for latex, word, crossed, camelot in synced:
+        selected = select_page(latex, word, crossed, camelot)
+        if not selected:
+            continue
         result.append(selected)
     return result
 
 
-def select_page(latex, word, crossed):
+def select_page(latex, word, crossed, camelot):
     latex = latex or []
     word = word or []
     crossed = crossed or []
+    camelot = camelot or []
 
     latex_detected = len(latex)
     word_detected = len(word)
     crossed_detected = len(crossed)
+    camelot_detected = len(camelot)
 
     result = crossed
     if word_detected > crossed_detected:

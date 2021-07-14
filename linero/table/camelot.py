@@ -19,6 +19,10 @@ import rawmaker.features.border
 
 @utila.profile('strategy:camelot')
 def run(pdffile: str, pages: tuple = None) -> iamraw.PageContentTableBoundings:
+    if pdffile is None:
+        # no pdffile given
+        utila.error(f'no camelot pdf file given')
+        return []
     utila.exists_assert(pdffile)
     # convert internal page definition to camelot definition
     campages = camelot_pages(pages)

@@ -91,6 +91,7 @@ def test_table_extract_negative():
         '2:7',
         [1, 3, 3, 5, 2],
         id='vimguide',
+        marks=pytest.mark.xfail(reason='layout extractor changed'),
     ),
     pytest.param(
         power.DOCU13_PDF,

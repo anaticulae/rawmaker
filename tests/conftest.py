@@ -9,6 +9,7 @@
 
 import os
 
+import genex
 import power
 import pytest
 import utila
@@ -44,12 +45,15 @@ def pytest_sessionstart():
 
 
 def extract(resources):
-    todo = [
-        f'rawmaker -i {source} -o {power.link(source)} -j=8 --pages={strpages(pages)}'
-        for source, pages in resources
-    ]
-    completed = utila.run_parallel(todo, worker=WORKER)
-    assert completed == utila.SUCCESS
+    genex.extract(
+        files=resources,
+        destination=power.generated(),
+        oneline=None,
+        pdfinfo=False,
+        linero=False,
+        worker=WORKER,
+        base=power.REPOSITORY,
+    )
 
 
 # yapf:disable
@@ -76,9 +80,3 @@ def extract_scaled(resources):
 def validate_scaled(_):  # pylint:disable=W0613
     # disable page number validation
     pass
-
-
-def strpages(item) -> str:
-    if item is None:
-        return ':'
-    return item

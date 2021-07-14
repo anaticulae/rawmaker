@@ -22,6 +22,8 @@ utila.exists_assert(RUNTIME)
 
 
 def run(pdffile, pages: tuple = None, worker: int = 1):
+    if not utila.exists(pdffile):
+        return []
     pages = determine_pages(pdffile, pages)
     grouped = utila.xsome(pages, count=worker)
     todo = [functools.partial(single, pdffile, page) for page in grouped]

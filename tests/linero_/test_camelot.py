@@ -8,6 +8,7 @@
 # =============================================================================
 
 import power
+import utila
 
 import linero.table.camelot
 
@@ -16,6 +17,13 @@ def test_camelot_run():
     source = power.DOCU13_PDF
     parsed = linero.table.camelot.run(source, pages=2)
     assert len(parsed) == 1
+
+
+def test_camelot_forked():
+    source = power.DOCU13_PDF
+    parsed = linero.table.camelot.run(source)
+    flatten = utila.flatten_content(parsed)
+    assert len(flatten) == 38
 
 
 def test_camelot_latex():

@@ -2,6 +2,25 @@
 
 Every noteable change is logged here.
 
+## v2.21.0
+
+### Feature
+
+* avoid duplicated pdf length computation (3016cb7e5df9)
+* fork camelot to improve strategy speed (c24c240c3ec4)
+* enable process forking for camelot (c75fa7c876a0)
+* use camelot to extract latex table (a6be34f73478)
+* add camelot strategy (bd485020cf20)
+* disable camelot file path check (02d8c7460ec2)
+* add option table resource (ebea657c2763)
+* add camelot as table detector (6b64aacf9968)
+
+### Fix
+
+* use tuple as table bounding datatype (1ddf98b49eb2)
+* ensure to handle page number as list correctly (e0b13c929662)
+* skip invalid outlines extraction (c9a5e0fd3695)
+
 ## v2.20.0
 
 ### Feature

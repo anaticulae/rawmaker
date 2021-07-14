@@ -21,8 +21,6 @@ Example:
 
 """
 
-import os
-
 import iamraw
 import serializeraw
 import utila

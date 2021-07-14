@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import sys
+
 import camelot.handlers
 
 
@@ -19,7 +21,7 @@ def __init__(self, filepath, pages="1", password=None):
         self.password = password
         if sys.version_info[0] < 3:
             self.password = self.password.encode("ascii")
-    self.pages = self._get_pages(self.filepath, pages)
+    self.pages = self._get_pages(self.filepath, pages)  # pylint:disable=W0212
 
 
 # disable path check, we know what we do.

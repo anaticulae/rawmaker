@@ -7,29 +7,17 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
-import pytest
+import sys
+
+import serializeraw
 import utila
 
-import linero.camelot.fork
 import linero.table.camelot
 
-
-def test_camelot_run():
-    source = power.DOCU13_PDF
-    parsed = linero.table.camelot.run(source, pages=2)
-    assert len(parsed) == 1
-
-
-@pytest.mark.xfail(reason='adjust camelot strategy')
-def test_camelot_forked():
-    source = power.DOCU13_PDF
-    parsed = linero.camelot.fork.run(source, worker=4)
-    flatten = utila.flatten_content(parsed)
-    assert len(flatten) == 38
-
-
-def test_camelot_latex():
-    source = power.BACHELOR090_PDF
-    parsed = linero.table.camelot.run(source, pages=76)
-    assert len(parsed) == 1
+if __name__ == "__main__":
+    FILE, PAGES = sys.argv[1], sys.argv[2]
+    # TODO: REPLACE AFTER UPGRADING UTILA
+    PAGES = utila.parse_numbers(PAGES.replace('_', ' '))
+    result = linero.table.camelot.run(FILE, PAGES)
+    dumped = serializeraw.dump_tables(result)
+    utila.log(dumped)

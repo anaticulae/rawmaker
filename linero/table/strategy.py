@@ -85,7 +85,7 @@ def select_page(latex, word, crossed, camelot):
     latex_detected = len(latex)
     word_detected = len(word)
     crossed_detected = len(crossed)
-    camelot_detected = len(camelot)
+    camelot_detected = len(camelot)  # pylint:disable=W0612
 
     result = crossed
     if word_detected > crossed_detected:

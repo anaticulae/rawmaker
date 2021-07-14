@@ -7,11 +7,14 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import functools
+
 import pdfminer.pdfpage
 
 import rawmaker.reader
 
 
+@functools.lru_cache(128)
 def determine(path: str) -> int:
     with rawmaker.reader.read(path) as document:
         pages = list(pdfminer.pdfpage.PDFPage.create_pages(document))

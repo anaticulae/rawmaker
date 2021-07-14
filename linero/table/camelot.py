@@ -89,7 +89,11 @@ def camelot_pages(pages: tuple, pagesmax: int) -> str:
     """\
     >>> camelot_pages((1, 2, 3, 4, 5), pagesmax=20)
     '2,3,4,5,6'
+    >>> camelot_pages((8, 9, 10, 11), 13)
+    '9,10,11,12'
     """
+    if isinstance(pages, list):
+        pages = tuple(pages)  # TODO: REMOVE AFTER UPGRADING UTILA
     pages = [
         str(page + 1)
         for page in range(pagesmax)

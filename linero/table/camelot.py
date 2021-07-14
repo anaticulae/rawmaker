@@ -71,13 +71,12 @@ def group_result(parsed, pdffile, pages) -> iamraw.PageContentTableBoundings:
 
 def flip_bounding(bounding, pagesize) -> iamraw.BoundingBox:
     pageheight = pagesize[1]
-    bounding = (
+    result = (
         bounding[0],
         pageheight - bounding[3],
         bounding[2],
         pageheight - bounding[1],
     )
-    result = iamraw.BoundingBox.from_list(bounding)
     return result
 
 

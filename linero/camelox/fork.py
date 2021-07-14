@@ -14,10 +14,10 @@ import serializeraw
 import utila
 
 import linero
-import linero.table.camelot
+import linero.table.camelox
 import pdfinfo.pages
 
-RUNTIME = os.path.join(linero.ROOT, 'linero/camelot/runtime.py')
+RUNTIME = os.path.join(linero.ROOT, 'linero/camelox/runtime.py')
 utila.exists_assert(RUNTIME)
 
 

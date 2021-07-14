@@ -11,25 +11,25 @@ import power
 import pytest
 import utila
 
-import linero.camelot.fork
-import linero.table.camelot
+import linero.camelox.fork
+import linero.table.camelox
 
 
 def test_camelot_run():
     source = power.DOCU13_PDF
-    parsed = linero.table.camelot.run(source, pages=2)
+    parsed = linero.table.camelox.run(source, pages=2)
     assert len(parsed) == 1
 
 
 @pytest.mark.xfail(reason='adjust camelot strategy')
 def test_camelot_forked():
     source = power.DOCU13_PDF
-    parsed = linero.camelot.fork.run(source, worker=4)
+    parsed = linero.camelox.fork.run(source, worker=4)
     flatten = utila.flatten_content(parsed)
     assert len(flatten) == 38
 
 
 def test_camelot_latex():
     source = power.BACHELOR090_PDF
-    parsed = linero.table.camelot.run(source, pages=76)
+    parsed = linero.table.camelox.run(source, pages=76)
     assert len(parsed) == 1

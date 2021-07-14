@@ -18,7 +18,7 @@ import functools
 import iamraw
 import utila
 
-import linero.camelot.fork
+import linero.camelox.fork
 import linero.table.crossed
 import linero.table.horizontal
 import linero.table.word
@@ -28,7 +28,7 @@ def run(lines, navigators, pdffile: str = None, pages: tuple = None):
     crossed = functools.partial(linero.table.crossed.run, lines)
     latex = functools.partial(linero.table.horizontal.run, lines, navigators)
     word = functools.partial(linero.table.word.run, lines)
-    camelot = functools.partial(linero.camelot.fork.run, pdffile, pages)
+    camelot = functools.partial(linero.camelox.fork.run, pdffile, pages)
 
     crossed, latex, word, camelot = utila.fork(
         crossed,

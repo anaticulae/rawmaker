@@ -45,6 +45,7 @@ if __name__ == "__main__":
             'linero',
             'linero.features',
             'linero.table',
+            'linero.camelot',
             'pdfinfo',
             'rawmaker',
             'rawmaker.converter',

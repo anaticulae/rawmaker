@@ -8,6 +8,7 @@
 # =============================================================================
 
 import power
+import pytest
 import serializeraw
 import utila
 
@@ -60,10 +61,10 @@ def test_extract_math_master110_page67():
     assert len(formulas) == 3
 
 
+@pytest.mark.xfail(reason='improve math parser')
 def test_extract_math_master110_page59():
     source = power.MASTER110_PDF
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.math.extract_content(pdf, pages=(59,))
-
     formulas = extracted[0].content
-    assert len(formulas) == 6  # may change later
+    assert len(formulas) == 10  # VALIDATED

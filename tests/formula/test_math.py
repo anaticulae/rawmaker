@@ -9,6 +9,7 @@
 
 import iamraw.path
 import power
+import pytest
 import serializeraw
 import utila
 
@@ -17,13 +18,14 @@ import rawmaker.reader
 import tests
 
 
+@pytest.mark.xfail(reason='improve math parser')
 def test_extract_math_homework50_page8():
     source = power.HOME050_PDF
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.math.extract_content(pdf, pages=(8,))
 
     formula = utila.select_content(extracted, page=8)
-    assert len(formula) == 3  # NOT VALIDATED
+    assert len(formula) == 3  # VALIDATED
 
 
 def test_dump_and_load_formula(testdir, monkeypatch):

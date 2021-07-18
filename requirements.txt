@@ -11,7 +11,7 @@ pdfminer.six==20210301
 # Image extractor
 Pillow>=8.2.0<9.0.0
 # Table Extractor
-camelot_py>=0.8.2<0.9.0
+camelot_py[cv]>=0.8.2<0.9.0
 
 # Internal packages
 utila>=2.40.4<3.0.0

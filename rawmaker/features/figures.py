@@ -28,18 +28,16 @@ import rawmaker.reader
 DumpedFigureInformation = typing.List[typing.Tuple[str, bytes]]
 
 
-def work(  # pylint:disable=keyword-arg-before-vararg
+def work(  # pylint:disable=keyword-arg-before-vararg,W0613
     path: str,
     boxes: str = None,  # pylint:disable=W0613
     *images: list,
     pages: tuple = None,
 ) -> DumpedFigureInformation:
-    pages = sorted(pages) if pages else pages
-
-    len(images)  # TODO: REMOVE LATER
-
-    figures = rawmaker.converter.figure.extract_figures(path, pages=pages)
-
+    # pages = sorted(pages) if pages else pages
+    # len(images)  # TODO: REMOVE LATER
+    # figures = rawmaker.converter.figure.extract_figures(path, pages=pages)
+    figures = []
     dumped = dump_figures(figures)
     return dumped
 

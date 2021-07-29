@@ -50,7 +50,6 @@ if __name__ == "__main__":
             'rawmaker',
             'rawmaker.converter',
             'rawmaker.features',
-            'rawmaker.figure',
             'rawmaker.fonts',
             'rawmaker.images',
             'rawmaker.miner',

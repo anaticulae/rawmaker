@@ -9,21 +9,9 @@
 """Figure Extractor
 
 Extract figures and convert to images
-
-# TODO: CHANGE ASCENDING NUMBERS TO PAGE DEPENDENT NUMBER
-
 """
 
 import typing
-
-import iamraw
-import serializeraw
-import utila
-
-import rawmaker.converter.basic
-import rawmaker.converter.figure
-import rawmaker.figure.utils
-import rawmaker.reader
 
 DumpedFigureInformation = typing.List[typing.Tuple[str, bytes]]
 
@@ -34,27 +22,5 @@ def work(  # pylint:disable=keyword-arg-before-vararg,W0613
     *images: list,
     pages: tuple = None,
 ) -> DumpedFigureInformation:
-    # pages = sorted(pages) if pages else pages
-    # len(images)  # TODO: REMOVE LATER
-    # figures = rawmaker.converter.figure.extract_figures(path, pages=pages)
-    figures = []
-    dumped = dump_figures(figures)
+    dumped = []
     return dumped
-
-
-def dump_figures(figures) -> DumpedFigureInformation:
-    result = []
-    for figure in figures:
-        bounding = tuple(figure.bounding)
-        width = figure.bounding[2] - figure.bounding[0]
-        height = figure.bounding[3] - figure.bounding[1]
-        width, height = utila.roundme(width, height)
-        info = iamraw.ImageInformation(
-            page=figure.page,
-            width=width,
-            height=height,
-            bounding=bounding,
-        )
-        info = serializeraw.dump_image_info(info)
-        result.append((info, rawmaker.figure.utils.image_tobytes(figure.data)))
-    return result

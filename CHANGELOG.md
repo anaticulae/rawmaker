@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.22.0
+
+### Feature
+
+* disable figure step, use figureo instead (012956f3c44e)
+
 ## v2.21.1
 
 ## v2.21.0

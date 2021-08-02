@@ -20,6 +20,7 @@ import collections
 import os
 import typing
 
+import ghost
 import serializeraw
 import utila
 
@@ -36,11 +37,25 @@ DumpedImageInformations = typing.List[typing.Tuple[str, bytes]]
 
 def work(document: str, pages: tuple = None) -> DumpedImageInformations:
     extracted = extract_pages(document, pages=pages)
+    extracted = beautify_images(extracted, document)
     result = []
     for page in extracted:
         for info, (rawimage, ext) in page.content:
             info = serializeraw.dump_image_info(info)
             result.append((info, (rawimage, ext)))
+    return result
+
+
+def beautify_images(images, path: str):
+    """Use ghost to render pdf and crop image area."""
+    result = []
+    for page in images:
+        boundings = [item[0] for item in page.content]
+        extracted = ghost.images(path, boundings)
+        content = []
+        for raw, bounding in zip(extracted, boundings):
+            content.append((bounding, (raw, 'png')))
+        result.append(PageContentImages(content=content, page=page.page))
     return result
 
 

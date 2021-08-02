@@ -9,6 +9,7 @@
 
 import power
 import pytest
+import utila
 import utilatest
 
 import rawmaker.miner.images
@@ -146,3 +147,24 @@ def test_images_export_document_complete(
     ):
         cmd = f'-i {source} --images'
         tests.run(cmd, monkeypatch=monkeypatch)
+
+
+@pytest.mark.parametrize('source, pages, expected', [
+    pytest.param(power.BACHELOR090_PDF, (18, 58), 2, id='bachelor90'),
+    pytest.param(power.MASTER116_PDF, (2, 3), 2, id='master116'),
+])
+def test_images_export_x(source, pages, expected, testdir):
+    root = testdir.tmpdir
+    with utilatest.increased_filecount(
+            root,
+            mindiff=expected,
+            maxdiff=expected,
+    ):
+        with rawmaker.reader.read(source) as pdf:
+            extracted = rawmaker.miner.images.extract_images(
+                pdf,
+                root,
+                pages=pages,
+            )
+    extracted = utila.flatten(extracted.values())
+    assert len(extracted) == expected

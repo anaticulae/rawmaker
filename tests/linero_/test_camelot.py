@@ -10,6 +10,7 @@
 import power
 import pytest
 import utila
+import utilatest
 
 import linero.camelox.fork
 import linero.table.camelox
@@ -21,6 +22,7 @@ def test_camelot_run():
     assert len(parsed) == 1
 
 
+@utilatest.longrun
 @pytest.mark.xfail(reason='adjust camelot strategy')
 def test_camelot_forked():
     source = power.DOCU13_PDF

@@ -43,6 +43,7 @@ import rawmaker.miner.colorspace
 
 MergedImage = collections.namedtuple('MergedImage', 'image, ext, bounding')
 WrittenImage = collections.namedtuple('WrittenImage', 'filename, bounding')
+LTImages = typing.List[pdfminer.layout.LTImage]
 
 
 def extract_images(
@@ -168,7 +169,7 @@ def merge_document_images(items):
     return result
 
 
-def merge_page(images: typing.List[pdfminer.layout.LTImage], page: int):
+def merge_page(images: LTImages, page: int):
     todo = [
         utila.roundme((image.x0, image.y0, image.x1, image.y1))
         for image in images
@@ -212,7 +213,7 @@ BITMAP = '1'
 
 
 # pylint:disable=R1260,R0914,R0915
-def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImage: # yapf:disable
+def raw_images_merge(images: LTImages) -> MergedImage:
     """Merge list of images to one image."""
     ext = extention(images[0])
     bounding = tuple(images[0].bbox)

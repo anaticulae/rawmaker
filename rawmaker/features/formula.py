@@ -9,12 +9,8 @@
 
 import serializeraw
 
-import rawmaker.math
-import rawmaker.reader
-
 
 def work(path: str, pages: tuple = None) -> str:
-    with rawmaker.reader.read(path) as pdf:
-        formulas = rawmaker.math.extract_content(pdf, pages=pages)
+    formulas = []
     dumped = serializeraw.dump_rawformulas(formulas)
     return dumped

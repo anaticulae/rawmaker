@@ -63,3 +63,10 @@ def test_skip_huge_image(monkeypatch, testdir, capsys):
     cmd = f'-i {tests.resources.IMAGE_HUGEMONO} --images -VVV'
     tests.run(cmd, monkeypatch=monkeypatch)
     assert 'skip image size:' in utilatest.stdout(capsys)
+
+
+def test_image_write_error(monkeypatch, testdir):
+    cmd = f'-i {power.DISS143_PDF} --images --pages=85'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    extracted = utila.file_list('rawmaker__images_images', include='png')
+    assert len(extracted) == 1

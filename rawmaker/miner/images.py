@@ -219,27 +219,25 @@ def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImag
     if ext == 'jbig2':
         images = [jbig2(images[0])]
         ext = 'jpg'
-
     if len(images) == 1:
         # TODO: png is not supported by pdfimage exporter properly
         if ext != 'png':
             # no merge required
             return MergedImage(images[0], ext, bounding)
         utila.debug(f'extraction not supported: {images[0]}')
-
+    # determine rectangle bounding
     x00 = min(item.x0 for item in images)
     x11 = max(item.x1 for item in images)
     y00 = min(item.y0 for item in images)
     y11 = max(item.y1 for item in images)
-
+    # create empty image to render sub images into
     image_width = x11 - x00
     image_height = y11 - y00
     size = (int(image_width), int(image_height))
-
     mode = 'RGB'
     result = PIL.Image.new(mode, size, color=0)
     renderer = PIL.ImageDraw.Draw(result, mode=mode)
-
+    # render sub-images
     for image in images:
         ext = extention(image)
         current = image_fromlt(image)
@@ -248,8 +246,7 @@ def raw_images_merge(images: typing.List[pdfminer.layout.LTImage]) -> MergedImag
         # render to common image
         renderer.bitmap((image.x0 - x00, image.y0 - y00), bitmap=current)
     # update bottom bounding of merged rectangle
-    last = images[-1].bbox
-    multi_bounding = (bounding[0], bounding[1], last[2], last[3])
+    multi_bounding = (x00, y00, x11, y11)
     return MergedImage(result, ext, multi_bounding)
 
 

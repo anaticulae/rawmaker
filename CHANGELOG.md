@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.23.0
+
+### Feature
+
+* use ghost to render image (7b8f92773849)
+* fix support for figure images (b50fc277d77c)
+
+### Fix
+
+* ensure correct merged images (e43c539e40c8)
+
 ## v2.22.0
 
 ### Feature

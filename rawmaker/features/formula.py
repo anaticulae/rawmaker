@@ -10,7 +10,7 @@
 import serializeraw
 
 
-def work(path: str, pages: tuple = None) -> str:
+def work(path: str, pages: tuple = None) -> str:  # pylint:disable=W0613
     formulas = []
     dumped = serializeraw.dump_rawformulas(formulas)
     return dumped

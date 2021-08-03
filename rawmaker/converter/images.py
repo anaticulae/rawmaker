@@ -62,7 +62,7 @@ class ImageConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         if len(images) == 1:
             if isinstance(images[0], pdfminer.layout.LTFigure):
                 # image inside figure
-                images = images[0]._objs
+                images = images[0]._objs  # pylint:disable=W0212
         images = [
             item for item in images if isinstance(item, pdfminer.layout.LTImage)
         ]

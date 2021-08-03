@@ -166,5 +166,5 @@ def test_images_export_x(source, pages, expected, testdir):
                 root,
                 pages=pages,
             )
-    extracted = utila.flatten(extracted.values())
+    extracted: list = utila.flatten(extracted.values())
     assert len(extracted) == expected

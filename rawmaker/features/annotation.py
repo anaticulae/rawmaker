@@ -48,7 +48,7 @@ def parse_page(  # pylint:disable=R1260
     page: pdfminer.pdfpage.PDFPage,
     pagenumber: int,
 ) -> iamraw.PageAnnotation:
-    """Parse annoation from `PDFPage`.
+    """Parse annotation from `PDFPage`.
 
     Args:
         page: pdf page to parse annotation

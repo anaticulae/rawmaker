@@ -16,6 +16,7 @@ import tests
 import tests.resources
 
 
+@utilatest.longrun
 def test_image_extract_with_pages_offset(testdir, monkeypatch):
     """This test ensures that the image information is stored correctly
     even if only a part of --pages=10:20 is extracted."""
@@ -28,6 +29,7 @@ def test_image_extract_with_pages_offset(testdir, monkeypatch):
     assert pages == {16, 17}, pages
 
 
+@utilatest.longrun
 def test_render_master75_page0_10_28(monkeypatch, testdir):
     """This document contains images on different pages with the same
     name. Before this fix, these images where ignored cause of the same

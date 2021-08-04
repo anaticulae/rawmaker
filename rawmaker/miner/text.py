@@ -143,7 +143,10 @@ def render_char(
         # add threshold to avoid noise in char-fontrise
         fontrise = 0.0  # pylint:disable=R0204
     char = None
-    replaced = rawmaker.miner.rawchar.special_char(value)
+    replaced = rawmaker.miner.rawchar.special_char(
+        value,
+        fontname=item.fontname,
+    )
     if replaced is not None:
         # Unicode character
         char = rawmaker.miner.rawchar.RawUnicodeChar(

@@ -34,15 +34,20 @@ class RawUnicodeChar(iamraw.UnicodeChar):
         self.ltchar = ltchar
 
 
-def special_char(item: str) -> str:
+def special_char(item: str, fontname: str = None) -> str:
     """\
     >>> special_char('š')
     's'
     >>> special_char('é')
     'e'
     """
+    if item and ord(item[0]) <= 128:
+        return item
+    if fontname and 'LMMath' in fontname:
+        with contextlib.suppress(KeyError):
+            return SPECIAL_CHARS_LMMath[item]
     with contextlib.suppress(KeyError):
-        return SPECIAL_CHAR_TABLE[item]
+        return SPECIAL_CHARS_TABLE[item]
     return None
 
 
@@ -63,8 +68,40 @@ def special_chars(text: str) -> str:
     return result
 
 
+def parse_special_chars(table: str) -> dict:
+    result = {
+        line.split()[0]: line.split()[1]
+        for line in table.strip().splitlines()
+        if line and not line.strip().startswith('#')
+    }
+    return result
+
+
+SPECIAL_CHARS_LMMath = parse_special_chars("""
+\u03B1          α        # alpha
+\u03B2          β        # beta
+# \u2211          −        # minus
+\u2206          ∆
+\u223c          ∼
+\u2212          −        # minus
+\u03c0          π
+\u03c6          φ
+\u03c9          ω
+\u25e6          ◦
+\u03c4          τ
+\u03c1          ρ
+\xb7            ·
+\xb5            µ
+# \u03B1          a        # alpha
+# \u03B2          b        # beta
+# \u2212          -        # minus
+# \u03c0          p
+# \u03c6          o
+# \u03c9          w
+""")
+
 # TODO: REQUIRE BETTER APPROACH OF REPLACING `LEGATURES`
-SPECIAL_CHARS = """
+SPECIAL_CHARS_TABLE = parse_special_chars("""
 # legiaturen
 \uFB00      ff
 \uFB01      fi
@@ -148,10 +185,4 @@ SPECIAL_CHARS = """
 ř           r
 ů           u
 Ů           U
-"""
-
-SPECIAL_CHAR_TABLE = {
-    line.split()[0]: line.split()[1]
-    for line in SPECIAL_CHARS.strip().splitlines()
-    if line and not line.strip().startswith('#')
-}
+""")

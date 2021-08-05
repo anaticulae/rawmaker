@@ -9,9 +9,12 @@
 """Line Extractor
 ==============
 
-This module aims to extract lines out of pdf document. Furthermore the
-lines are fixed in x0/x1 and y0/y1, sorted from top to bottom and left
-to right and if required merged together.
+This module aims to extract lines out of pdf document.
+
+Furthermore the lines are:
+    * fixed in x0/x1 and y0/y1
+    * sorted from top to bottom and left to right
+    * if required merged together.
 """
 
 import operator

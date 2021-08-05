@@ -39,7 +39,7 @@ LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]
 # minimal length of a horizontal line
 HORIZONTAL_MIN_WIDTH = configo.HV_FLOAT(default=0.2).value
 # maximal difference in x-component
-HORIZONTAL_VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=2.0).value
+HORIZONTAL_VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=5.0).value
 
 
 def work(lines: str, pages: tuple) -> str:

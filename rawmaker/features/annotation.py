@@ -88,7 +88,23 @@ def parse_page(
             hyperlinks.append(external)
             continue
         utila.error(f'Unhandeld annotation {pageobject}')
+    # flip boundings
+    pageheight = float(page.mediabox[3])
+    for item in pagelinks:
+        item.bounds = flip_bounding(item.bounds, pageheight)
+    for item in hyperlinks:
+        item.bounds = flip_bounding(item.bounds, pageheight)
     return iamraw.PageAnnotation(pagelinks, hyperlinks, page=pagenumber)
+
+
+def flip_bounding(box, pageheight):
+    result = iamraw.BoundingBox(
+        box[0],
+        pageheight - box[3],
+        box[2],
+        pageheight - box[1],
+    )
+    return result
 
 
 def parse_reference(pageobject, getobj=None) -> iamraw.PageLink:

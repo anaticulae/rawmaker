@@ -37,9 +37,15 @@ REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(default=40).value
 
 
 def work(document: str, annotation: str, pages: tuple = None) -> str:
+    if utila.exists(annotation):
+        annotation = serializeraw.load_annotations(annotation, pages=pages)
+    else:
+        utila.error(f'missing {annotation} could not skip underlines')
+        annotation = []
     with rawmaker.reader.read(document) as pdf:
-        result = determine_lines(pdf, pages=pages)
-    dumped = serializeraw.dump_lines(result)
+        extracted = determine_lines(pdf, pages=pages)
+    extracted = skip_lines(extracted, annotation)
+    dumped = serializeraw.dump_lines(extracted)
     return dumped
 
 
@@ -57,6 +63,24 @@ def determine_lines(
         # merge lines which are divided by pdf printer
         merged = utila.merge_lines(content)
         result.append(iamraw.PageContentLine(content=merged, page=number))
+    return result
+
+
+def skip_lines(linex, annotation) -> list:
+    result = []
+    for page in linex:
+        anno = utila.select_page(annotation, page.page)
+        if not anno:
+            result.append(page)
+            continue
+        invalid_area = [item.bounds for item in anno.hyperlinks]
+        # remove annotated lines. This lines are the underlines of
+        # hyperlinks which are produced by cray pdf printer.
+        linex = [
+            item for item in page.content
+            if not utila.rectangles_intersecting(invalid_area, item)
+        ]
+        result.append(iamraw.PageContentLine(content=linex, page=page.page))
     return result
 
 

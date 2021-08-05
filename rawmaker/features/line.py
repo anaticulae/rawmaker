@@ -130,14 +130,21 @@ def lines(
 
 
 def accept_text_as_line(item: pdfminer.layout.LTTextBoxHorizontal):
-    symbols = ['_', '-', '=']
+    symbols = '_-='
+    text = item.get_text()
+    if len(text) < REQUIRED_MINUS_SIGNS:
+        return False
     for symbol in symbols:
-        if item.get_text().count(symbol) >= REQUIRED_MINUS_SIGNS:
+        if text.count(symbol) >= REQUIRED_MINUS_SIGNS:
             # update bounding to pass vertical error test.
             # use vertical centric position
             # TODO: CHECK THIS: Make it symbol dependend?
-            middle = utila.roundme((item.bbox[1] + item.bbox[3]) / 2)
-            item.bbox = (item.bbox[0], middle, item.bbox[2], middle)
+            if symbol in '_':
+                ypos = utila.roundme(max((item.bbox[1], item.bbox[3])))
+            else:
+                ypos = utila.roundme((item.bbox[1] + item.bbox[3]) / 2)
+            # update bounding box
+            item.bbox = (item.bbox[0], ypos, item.bbox[2], ypos)
             return True
     return False
 

@@ -36,7 +36,7 @@ VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=2.0).value
 REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(default=40).value
 
 
-def work(document: str, pages: tuple = None) -> str:
+def work(document: str, annotation: str, pages: tuple = None) -> str:
     with rawmaker.reader.read(document) as pdf:
         result = determine_lines(pdf, pages=pages)
     dumped = serializeraw.dump_lines(result)

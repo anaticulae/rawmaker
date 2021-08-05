@@ -112,7 +112,10 @@ WORKPLAN = [
     ),
     utila.create_step(
         'line',
-        inputs=PDF_INPUT,
+        inputs=[
+            PDF,
+            utila.ResultFile(producer='rawmaker', name='annotation_annotation'),
+        ],
         output=('line',),
     ),
     utila.create_step(

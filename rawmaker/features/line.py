@@ -40,7 +40,6 @@ REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(default=40).value
 def work(document: str, pages: tuple = None) -> str:
     with rawmaker.reader.read(document) as pdf:
         result = determine_lines(pdf, pages=pages)
-
     dumped = serializeraw.dump_lines(result)
     return dumped
 
@@ -79,7 +78,7 @@ def lines(
     Returns:
         list of line objects[LTLine, LTRect, LTTextBoxHorizontal]
     """
-    assert isinstance(pdf, pdfminer.pdfdocument.PDFDocument), type(pdf)
+    utila.asserts(pdf, pdfminer.pdfdocument.PDFDocument)
     possible_lines = type_in_document(
         pdf,
         datatype=(
@@ -309,7 +308,7 @@ def type_in_document(
     Returns:
         List with selected `datatype`.
     """
-    assert isinstance(document, pdfminer.pdfdocument.PDFDocument), type(document) # yapf:disable
+    utila.asserts(document, pdfminer.pdfdocument.PDFDocument)
     result = []
     for page in rawmaker.features.process_pagecontent(document, pages=pages):
         data = [item for item in page.content if isinstance(item, datatype)]

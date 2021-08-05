@@ -8,20 +8,21 @@
 # =============================================================================
 """Add parser to parse non annotated links to inform user about
 broken/malformated links."""
-from contextlib import suppress
+
+import contextlib
 
 import iamraw
 import pdfminer.pdfdocument
 import serializeraw
 import utila
 
-from rawmaker.features import process_pdfpages
-from rawmaker.reader import read
+import rawmaker.features
+import rawmaker.reader
 
 
 def work(document: str, pages=None) -> str:
     assert isinstance(document, str), str(document)
-    with read(document) as pdf:
+    with rawmaker.reader.read(document) as pdf:
         annotations = extract_annotations(pdf, pages=pages)
     dumped = serializeraw.dump_annotations(annotations)
     return dumped
@@ -32,7 +33,10 @@ def extract_annotations(
     pages=None,
 ) -> iamraw.PageAnnotations:
     result = []
-    for page, number in process_pdfpages(document, pages=pages):
+    for page, number in rawmaker.features.process_pdfpages(
+            document,
+            pages=pages,
+    ):
         parsed = parse_page(page, pagenumber=number)
         result.append(parsed)
     return result
@@ -102,12 +106,12 @@ def parse_page(  # pylint:disable=R1260
             # TODO: add layer to automatically convert reference to object.
             annotated = page.doc.getobj(annotated.objid)
 
-        with suppress(KeyError):
+        with contextlib.suppress(KeyError):
             hyperlink = annotated['URI'].decode(utila.UTF8)
             hyperlinks.append(iamraw.HyperLink(bounds=bounds, goal=hyperlink))
             continue
 
-        with suppress(KeyError):
+        with contextlib.suppress(KeyError):
             try:
                 pagelink = annotated['D'].decode(utila.UTF8)
             except AttributeError:

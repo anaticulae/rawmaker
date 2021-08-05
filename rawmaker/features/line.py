@@ -53,7 +53,7 @@ def determine_lines(
         # left point is left above from right down point
         content = [utila.rectangle_ensure_bounding(item) for item in content]
         # top down, left right
-        content = sorted(content, key=operator.itemgetter(1, 0))
+        content.sort(key=operator.itemgetter(1, 0))
         # merge lines which are divided by pdf printer
         merged = utila.merge_lines(content)
         result.append(iamraw.PageContentLine(content=merged, page=number))
@@ -118,7 +118,7 @@ def lines(
         # ensure left, top, right, down bounding
         page = [utila.rectangle_ensure_bounding(item) for item in page]
         # sort item top down; left right
-        page = sorted(page, key=operator.itemgetter(1, 0))
+        page.sort(key=operator.itemgetter(1, 0))
         # merges divided lines
         page = utila.merge_lines(page)
         # remove duplicated lines which mainly produces out of bad figure

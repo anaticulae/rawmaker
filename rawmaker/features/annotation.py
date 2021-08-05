@@ -21,9 +21,6 @@ from rawmaker.reader import read
 
 def work(document: str, pages=None) -> str:
     assert isinstance(document, str), str(document)
-    if True:  # pylint:disable=using-constant-test
-        # disable bad annotation parser
-        return ''
     with read(document) as pdf:
         annotations = extract_annotations(pdf, pages=pages)
     dumped = serializeraw.dump_annotations(annotations)

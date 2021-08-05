@@ -84,17 +84,12 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
     root = testdir.tmpdir
     brokenpath = os.path.join(root, 'broken.pdf')
     utila.file_create(brokenpath, 'content = non valid pdf document')
-
     command = f'-i {root} --linter'
     failure(command, monkeypatch=monkeypatch)
-
     # check that result is written
     files_written = list(os.scandir(root))
-
     # broken file + developer.lin and user.lin
     expected = 3
-    # TODO: REMOVE AFTER ACTIVATING ANNOTATION
-    expected += 1
     assert len(files_written) == expected, str(files_written)
 
 

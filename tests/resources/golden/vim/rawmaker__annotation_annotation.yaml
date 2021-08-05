@@ -1,0 +1,97 @@
+- data:
+  - - bounds: 49.4 571.64 137.22 580.5
+      goto: chapter*.1
+    - bounds: 49.4 549.72 147.44 558.59
+      goto: chapter.1
+    - bounds: 64.34 535.83 146.54 546.62
+      goto: section.1.1
+    - bounds: 64.34 523.32 140.01 535.27
+      goto: section.1.2
+    - bounds: 64.34 513.86 114.5 522.71
+      goto: section.1.3
+    - bounds: 64.34 499.41 173.13 511.36
+      goto: section.1.4
+    - bounds: 64.34 489.94 242.33 498.8
+      goto: section.1.5
+    - bounds: 64.34 477.99 117.77 486.84
+      goto: section.1.6
+    - bounds: 64.34 464.1 123.14 474.89
+      goto: section.1.7
+    - bounds: 64.34 454.08 139.6 462.93
+      goto: section.1.8
+    - bounds: 64.34 440.19 153.88 450.98
+      goto: section.1.9
+    - bounds: 64.34 427.68 194.16 439.63
+      goto: section.1.10
+    - bounds: 64.34 418.21 166.27 427.07
+      goto: section.1.11
+    - bounds: 64.34 406.26 169.01 415.11
+      goto: section.1.12
+    - bounds: 64.34 394.3 134.62 403.16
+      goto: section.1.13
+    - bounds: 64.34 380.41 128.81 391.2
+      goto: section.1.14
+    - bounds: 64.34 368.46 149.75 379.25
+      goto: section.1.15
+    - bounds: 64.34 358.44 112.51 367.29
+      goto: section.1.16
+    - bounds: 64.34 344.55 120.81 355.34
+      goto: section.1.17
+    - bounds: 64.34 332.59 165.22 343.38
+      goto: section.1.18
+    - bounds: 64.34 320.63 127.7 331.43
+      goto: section.1.19
+    - bounds: 87.25 308.13 242.41 320.08
+      goto: subsection.1.19.1
+    - bounds: 87.25 296.73 208.02 307.52
+      goto: subsection.1.19.2
+    - bounds: 87.25 286.71 188.07 295.56
+      goto: subsection.1.19.3
+    - bounds: 64.34 274.75 115.97 283.61
+      goto: section.1.20
+    - bounds: 64.34 260.86 149.89 271.65
+      goto: section.1.21
+    - bounds: 64.34 248.9 162.01 259.69
+      goto: section.1.22
+    - bounds: 64.34 238.89 129.14 247.74
+      goto: section.1.23
+    - bounds: 64.34 226.93 120.59 235.78
+      goto: section.1.24
+    - bounds: 64.34 214.98 160.99 223.83
+      goto: section.1.25
+    - bounds: 64.34 203.02 172.16 211.87
+      goto: section.1.26
+    - bounds: 64.34 191.06 145.44 199.92
+      goto: section.1.27
+    - bounds: 64.34 179.11 141.7 187.96
+      goto: section.1.28
+    - bounds: 64.34 165.22 121.48 176.01
+      goto: section.1.29
+    - bounds: 64.34 153.26 121.53 164.05
+      goto: section.1.30
+    - bounds: 87.25 143.25 169.42 152.1
+      goto: subsection.1.30.1
+    - bounds: 87.25 131.29 161.57 140.14
+      goto: subsection.1.30.2
+    - bounds: 87.25 119.33 193.11 128.19
+      goto: subsection.1.30.3
+    - bounds: 87.25 107.38 189.18 116.23
+      goto: subsection.1.30.4
+    - bounds: 87.25 95.42 169.81 104.28
+      goto: subsection.1.30.5
+    - bounds: 87.25 81.53 178.97 92.32
+      goto: subsection.1.30.6
+    - bounds: 87.25 71.51 150.75 80.37
+      goto: subsection.1.30.7
+  - []
+  page: 1
+- data:
+  - []
+  - - bounds: 162.9 456.32 192.31 467.11
+      href: https://drive.google.com/file/d/0B9zymgX8PsIXVm1yRjBjYzdlSkE/view?usp=sharing
+  page: 2
+- data:
+  - []
+  - - bounds: 509.06 37.53 545.87 51.48
+      href: http://pythondsp.readthedocs.io/en/latest/pythondsp/toc.html
+  page: 3

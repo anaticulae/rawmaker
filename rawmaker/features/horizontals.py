@@ -100,14 +100,17 @@ def determine_pagehorizontals(
         x0, y0, x1, y1 = utila.roundme(tuple(merged[0]))
         height = abs(y1 - y0)
         width = abs(x1 - x0)
-        assert height >= 0, str(height)
-        assert width >= 0, str(width)
-        if height < vertical_maxerror and width > horizontal_minwidth:
-            box = iamraw.BoundingBox.from_list(merged[0])
-            horizontal = iamraw.HorizontalLine(box=box)
-            result.append(horizontal)
-        else:
+        if height > vertical_maxerror:
             utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}')
+            continue
+        if width < horizontal_minwidth:
+            utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}')
+            continue
+        y0 = utila.roundme((y0 + y1) / 2)
+        y1 = y0
+        box = iamraw.BoundingBox(x0, y0, x1, y1)
+        horizontal = iamraw.HorizontalLine(box=box)
+        result.append(horizontal)
     # ensure to sort items top to bottom and left to right
     result = sorted(result, key=operator.attrgetter('box.y0', 'box.x0'))
     return iamraw.PageContentHorizontals(content=result, page=page)

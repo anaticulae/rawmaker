@@ -39,3 +39,17 @@ def test_lines_bachelor63_page10(testdir, monkeypatch):
     lines = serializeraw.load_lines(iamraw.path.line(testdir.tmpdir))
     lines = utila.select_content(lines, page=10)
     assert len(lines) == 46
+
+
+def test_lines_master72_hyperlinks_as_line(testdir, monkeypatch):
+    cmd = f'-i {power.MASTER072_PDF} --pages=65 --line --annotation'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    lines = serializeraw.load_lines(testdir.tmpdir)
+    assert not lines, 'hyperlink underlines missparsed as lines'
+
+
+def test_lines_master75_hyperlinks_as_line(testdir, monkeypatch):
+    cmd = f'-i {power.MASTER075_PDF} --pages=6 --line --annotation'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    lines = serializeraw.load_lines(testdir.tmpdir)[0].content
+    assert len(lines) == 2, 'header and footer line, but no underline'

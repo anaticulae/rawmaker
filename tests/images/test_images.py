@@ -65,10 +65,15 @@ def test_images_export_master116(testdir):
     source = power.MASTER116_PDF
     root = testdir.tmpdir
     pages = None
-    # master116 contains **9** extractable images, but on page 50 the png
+    # master116 contains **9?** extractable images, but on page 50 the png
     # extraction is broken. After fix this issue we have to increase
     # number of extracted images.
-    with utilatest.increased_filecount(root, mindiff=9, maxdiff=9):
+    expected = 11  # VALIDATED?
+    with utilatest.increased_filecount(
+            root,
+            mindiff=expected,
+            maxdiff=expected,
+    ):
         with rawmaker.reader.read(source) as pdf:
             extracted = rawmaker.miner.images.extract_images(
                 pdf,

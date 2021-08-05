@@ -131,7 +131,14 @@ def parse_reference(pageobject, getobj=None) -> iamraw.PageLink:
             #0.5, 0.5], 'Rect': [348.517, 428.927, 431.794, 439.831],
             #'Subtype': /'Link', 'A': {'F': b'distributions.pdf', 'S':
             #/'GoToR', 'D': [0, /'Fit']}} [0, /'Fit']
-            pagelink = str(annotated['D'])
+            pagelink = annotated['D']
+            if isinstance(pagelink, list):
+                if isinstance(pagelink[0], pdfminer.pdftypes.PDFObjRef):
+                    # internal link to pdf page
+                    # resolve objid
+                    pagelink[0] = f'objid: {pagelink[0].objid}'
+            else:
+                pagelink = str(pagelink)
         return iamraw.PageLink(bounds=bounds, goal=pagelink)
     return None
 

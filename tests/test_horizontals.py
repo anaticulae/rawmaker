@@ -18,7 +18,7 @@ import tests
 def test_horizontals_master110_page19(testdir, monkeypatch):
     """Ensure that lines in figures are accepted as correct horizontal
     lines."""
-    cmd = f'-i {power.MASTER110_PDF} --pages=19 --line --horizontals'
+    cmd = f'-i {power.MASTER110_PDF} --pages=19 --line --horizontals --annotation'
     tests.run(cmd, monkeypatch=monkeypatch)
     horizontals = serializeraw.load_horizontals(testdir.tmpdir)
     horizontals = utila.select_content(horizontals, page=19)
@@ -26,7 +26,7 @@ def test_horizontals_master110_page19(testdir, monkeypatch):
 
 
 def test_horizontals_master155_page1(testdir, monkeypatch):
-    cmd = f'-i {power.MASTER155_PDF} --pages=1 --line --horizontals'
+    cmd = f'-i {power.MASTER155_PDF} --pages=1 --line --horizontals --annotation'
     tests.run(cmd, monkeypatch=monkeypatch)
     horizontals = serializeraw.load_horizontals(testdir.tmpdir)
     horizontals = utila.select_content(horizontals, page=1)
@@ -34,7 +34,7 @@ def test_horizontals_master155_page1(testdir, monkeypatch):
 
 
 def test_lines_bachelor63_page10(testdir, monkeypatch):
-    cmd = f'-i {power.BACHELOR063_PDF} --pages=10 --line'
+    cmd = f'-i {power.BACHELOR063_PDF} --pages=10 --line --annotation'
     tests.run(cmd, monkeypatch=monkeypatch)
     lines = serializeraw.load_lines(iamraw.path.line(testdir.tmpdir))
     lines = utila.select_content(lines, page=10)

@@ -20,7 +20,7 @@ import tests
 
 def test_line_run_cli(testdir, monkeypatch):  #pylint: disable=W0613
     root = str(testdir)
-    cmd = f'-i {power.BOOK007_PDF} --line'
+    cmd = f'-i {power.BOOK007_PDF} --line --annotation'
     with utilatest.increased_filecount(root, ext='yaml'):
         tests.run(cmd, monkeypatch=monkeypatch)
 

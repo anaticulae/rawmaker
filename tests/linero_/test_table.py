@@ -25,11 +25,6 @@ import tests
 import tests.linero_
 
 
-def test_run_table(testdir, monkeypatch):  #pylint: disable=W0613
-    cmd = f'-i {power.BOOK007_PDF} --line'
-    tests.run(cmd, monkeypatch=monkeypatch)
-
-
 @pytest.mark.parametrize('source, expected', [
     pytest.param(
         power.DOCU13_PDF,

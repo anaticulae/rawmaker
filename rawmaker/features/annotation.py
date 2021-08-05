@@ -45,84 +45,92 @@ def extract_annotations(
 ANNOTATION_LABEL = 'Annot'
 
 
-def parse_page(  # pylint:disable=R1260
+def parse_page(
     page: pdfminer.pdfpage.PDFPage,
     pagenumber: int,
 ) -> iamraw.PageAnnotation:
     """Parse annotation from `PDFPage`.
 
     Args:
-        page: pdf page to parse annotation
-        pagenumber: number of selected page
+        page(PDFPage): pdf page to parse annotation
+        pagenumber(int): number of selected page
     Returns:
         parsed Annotations.
 
     There are 2 different types of annotation, the internal and external
-    links.
-
-        The internal links, better called page links refer to a chapter or
-    a location in the document.
-        The external links, so called hyperlink refer
-    to clickable weblinks.
+    links:
+    *   The internal links, better called page links refer to a chapter or a
+        location in the document.
+    *   The external links, so called hyperlink refer to clickable weblinks.
 
     # Internal reference
     # {'A': {'S': /'GoTo', 'D': b'subsection.1.30.7'}}
     # {'S': /'GoTo', 'D': b'chapter*.1'}
-
-    Args:
-        page(PDFPage):
-    Returns:
-
     """
     pageannotation = page.annots
     if not pageannotation:
         return iamraw.PageAnnotation(None, None, pagenumber)
-    # WORKAROUND: THIS IS A FIX WHEN PAGE ANNOTATIONS ARE NESTED IN A SINGLE
-    # REFERENCE, DON'T KNOW WHY THIS CAN HAPPEN. TODO: INVESTIGATE LATER
+    getobj = page.doc.getobj
     if not isinstance(pageannotation, list):
-        getobj = page.doc.getobj
+        # WORKAROUND: THIS IS A FIX WHEN PAGE ANNOTATIONS ARE NESTED IN A
+        # SINGLE REFERENCE, DON'T KNOW WHY THIS CAN HAPPEN. TODO:
+        # INVESTIGATE LATER
         pageannotation = list(getobj(page.annots.objid))
-
     pagelinks, hyperlinks = [], []
     for reference in pageannotation:
-        pageobject = page.doc.getobj(reference.objid)
-        coords = list(pageobject['Rect'])
-        bounds = iamraw.BoundingBox.from_list(coords)
-        try:
-            typ = pageobject['Type'].name
-        except KeyError:
-            # TODO: REMOVE THIS PART OF CODE
-            utila.error('skip annotation %s' % pageobject)
+        pageobject = getobj(reference.objid)
+        reference = parse_reference(pageobject, getobj)
+        if reference:
+            pagelinks.append(reference)
             continue
-        assert typ == ANNOTATION_LABEL, typ
-        try:
-            annotated = pageobject['A']
-        except KeyError:
-            # TODO: WORKAORUND: INVESTIGATE LASTER
-            utila.error(f'Unhandeld annotation A {pageobject}')
+        external = parse_external(pageobject, getobj)
+        if external:
+            hyperlinks.append(external)
             continue
-
-        if isinstance(annotated, pdfminer.pdftypes.PDFObjRef):
-            # TODO: add layer to automatically convert reference to object.
-            annotated = page.doc.getobj(annotated.objid)
-
-        with contextlib.suppress(KeyError):
-            hyperlink = annotated['URI'].decode(utila.UTF8)
-            hyperlinks.append(iamraw.HyperLink(bounds=bounds, goal=hyperlink))
-            continue
-
-        with contextlib.suppress(KeyError):
-            try:
-                pagelink = annotated['D'].decode(utila.UTF8)
-            except AttributeError:
-                # TODO: don't know what this element means
-                #{'Type': /'Annot', 'Border': [0, 0, 0], 'H': /'I', 'C': [0,
-                #0.5, 0.5], 'Rect': [348.517, 428.927, 431.794, 439.831],
-                #'Subtype': /'Link', 'A': {'F': b'distributions.pdf', 'S':
-                #/'GoToR', 'D': [0, /'Fit']}} [0, /'Fit']
-                pagelink = str(annotated['D'])
-            pagelinks.append(iamraw.PageLink(bounds=bounds, goal=pagelink))
-            continue
-        utila.error('Unhandeld annotation %s' % pageobject)
-
+        utila.error(f'Unhandeld annotation {pageobject}')
     return iamraw.PageAnnotation(pagelinks, hyperlinks, page=pagenumber)
+
+
+def parse_reference(pageobject, getobj=None) -> iamraw.PageLink:
+    try:
+        typ = pageobject['Type'].name
+    except KeyError:
+        return None
+    assert typ == ANNOTATION_LABEL, typ
+    try:
+        annotated = pageobject['A']
+    except KeyError:
+        return None
+    if isinstance(annotated, pdfminer.pdftypes.PDFObjRef):
+        # TODO: add layer to automatically convert reference to object.
+        annotated = getobj(annotated.objid)
+    coords = list(pageobject['Rect'])
+    bounds = iamraw.BoundingBox.from_list(coords)
+    with contextlib.suppress(KeyError):
+        try:
+            pagelink = annotated['D'].decode(utila.UTF8)
+        except AttributeError:
+            # TODO: don't know what this element means
+            #{'Type': /'Annot', 'Border': [0, 0, 0], 'H': /'I', 'C': [0,
+            #0.5, 0.5], 'Rect': [348.517, 428.927, 431.794, 439.831],
+            #'Subtype': /'Link', 'A': {'F': b'distributions.pdf', 'S':
+            #/'GoToR', 'D': [0, /'Fit']}} [0, /'Fit']
+            pagelink = str(annotated['D'])
+        return iamraw.PageLink(bounds=bounds, goal=pagelink)
+    return None
+
+
+def parse_external(pageobject, getobj=None) -> iamraw.HyperLink:
+    try:
+        annotated = pageobject['A']
+    except KeyError:
+        return None
+    if isinstance(annotated, pdfminer.pdftypes.PDFObjRef):
+        # TODO: add layer to automatically convert reference to object.
+        annotated = getobj(annotated.objid)
+    coords = list(pageobject['Rect'])
+    bounds = iamraw.BoundingBox.from_list(coords)
+    with contextlib.suppress(KeyError):
+        hyperlink = annotated['URI'].decode(utila.UTF8)
+        return iamraw.HyperLink(bounds=bounds, goal=hyperlink)
+    return None

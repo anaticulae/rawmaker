@@ -30,6 +30,7 @@ import serializeraw
 import utila
 
 import rawmaker.features
+import rawmaker.features.text
 import rawmaker.fonts.parser
 import rawmaker.parameter
 import rawmaker.reader
@@ -57,13 +58,11 @@ def work(  # pylint:disable=W9015,W0613
     """
     assert isinstance(document, str), str(document)
     config = rawmaker.parameter.ParsingConfiguration.from_dict(**locals())
-    with rawmaker.reader.read(document) as pdf:
-        document = rawmaker.features.extract_content(
-            pdf,
-            config=config,
-            pages=pages,
-        )
-
+    document = rawmaker.features.text.extract_document(
+        document,
+        config=config,
+        pages=pages,
+    )
     header, content = parse_fonts(document)
     header, content = (
         serializeraw.dump_font_header(header),

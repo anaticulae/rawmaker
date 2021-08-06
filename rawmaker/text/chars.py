@@ -9,7 +9,6 @@
 
 import iamraw
 
-import rawmaker.features
 import rawmaker.features.text
 import rawmaker.miner.char
 import rawmaker.reader
@@ -17,10 +16,9 @@ import rawmaker.reader
 
 def extract_chars(document: str, pages: tuple = None) -> iamraw.Document:
     assert isinstance(document, str), str(document)
-    with rawmaker.reader.read(document) as pdf:
-        document = rawmaker.features.extract_content(
-            pdf,
-            pages=pages,
-            converter=rawmaker.miner.char.CharPDFConvert,
-        )
+    document = rawmaker.features.text.extract_document(
+        document,
+        pages=pages,
+        converter=rawmaker.miner.char.CharPDFConvert,
+    )
     return document

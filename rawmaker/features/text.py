@@ -19,6 +19,7 @@ import pdfinfo.pages
 import rawmaker.cli
 import rawmaker.features
 import rawmaker.miner.position
+import rawmaker.miner.text
 import rawmaker.parameter
 import rawmaker.reader
 
@@ -50,7 +51,7 @@ def work(  # pylint:disable=W9015,W0613
         result = os.getcwd()
         document = superfast(document, config, result, pages)
     else:
-        document = extract_document(document, config, pages)
+        document = extract_document(source=document, config=config, pages=pages)
 
     positions = rawmaker.miner.position.hash_positions(document, pages=pages)
 
@@ -136,17 +137,21 @@ def fake_text_mean_height(item, bounding, mean):
 
 
 def extract_document(
-    document: str,
+    source: str,
     config: rawmaker.parameter.ParsingConfiguration = None,
+    converter=None,
     pages: tuple = None,
 ) -> iamraw.Document:
     if config:
         rawmaker.parameter.print_layout(config)
-    assert isinstance(document, str), str(document)
-    with rawmaker.reader.read(document) as pdf:
+    if converter is None:
+        converter = rawmaker.miner.text.PrecisePDFConverter
+    assert isinstance(source, str), str(source)
+    with rawmaker.reader.read(source) as pdf:
         document = rawmaker.features.extract_content(
             pdf,
             config=config,
+            converter=converter,
             pages=pages,
         )
     return document

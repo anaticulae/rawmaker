@@ -12,8 +12,8 @@ import contextlib
 import statistics
 
 import iamraw
+
 import utila
-import yaml
 
 
 class DocumentItemHasher:
@@ -52,9 +52,7 @@ class DocumentItemHasher:
 
 
 def load_hasher(content: str) -> DocumentItemHasher:
-    content = utila.from_raw_or_path(content, ftype='yaml')
-    loaded = yaml.safe_load(content)
-
+    loaded = utila.yaml_from_raw_or_path(content)
     result = []
     for page in loaded:
         pagenumber = int(page['page'])

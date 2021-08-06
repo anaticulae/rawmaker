@@ -28,6 +28,8 @@ import dataclasses
 import pdfminer.pdfpage
 import pdfminer.pdftypes
 
+import rawmaker.utils
+
 
 class DestinationMixin:
     pass
@@ -72,8 +74,7 @@ def parse(item) -> DestinationMixin:  # pylint:disable=R1260
     >>> parse([b'/null', 0.0, 0.0, 1.0]).page
     0
     """
-    if isinstance(item, pdfminer.pdftypes.PDFObjRef):
-        item = item.resolve()
+    item = rawmaker.utils.resolve(item)
     hyperlink = parse_hyperlink(item)
     if hyperlink:
         return hyperlink
@@ -128,8 +129,7 @@ def parse_fitr(item) -> ExplicitDestination:
     >>> parse_fitr({'D': [None, 'FitH', 3512], 'S': 'GoTo'})
     ExplicitDestination(page=0, left=None, top=3512, zoom=None)
     """
-    with contextlib.suppress(AttributeError):
-        item = item.resolve()
+    item = rawmaker.utils.resolve(item)
     # {'S': /'GoTo', 'D': [0, /'FitR', 0, 625, 440, 309]}
     with contextlib.suppress(TypeError):
         item = item['D']
@@ -151,8 +151,7 @@ def parse_fitr(item) -> ExplicitDestination:
 
 
 def parse_explict(item) -> ExplicitDestination:
-    with contextlib.suppress(AttributeError):
-        item = item.resolve()
+    item = rawmaker.utils.resolve(item)
     with contextlib.suppress(KeyError, TypeError):
         # KeyError: ? add docs here ?
         # TypeError: item is already the requested list:
@@ -181,10 +180,11 @@ def parse_explict(item) -> ExplicitDestination:
 
 def parse_named(item) -> ExplicitDestination:
     doc = item.doc
-    item = item.resolve()
+    item = rawmaker.utils.resolve(item)
     with contextlib.suppress(KeyError):
         item = item['D']
-    resolved = doc.lookup_name('Dests', item).resolve()
+    resolved = doc.lookup_name('Dests', item)
+    resolved = rawmaker.utils.resolve(resolved)
     return parse_explict(resolved)
 
 

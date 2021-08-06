@@ -7,12 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import contextlib
-
 import pdfminer.utils
 import utila
 
 import rawmaker.reader
+import rawmaker.utils
 
 
 def determine(path: str) -> dict:
@@ -27,9 +26,7 @@ def determine(path: str) -> dict:
         infos = infos[0]
         for key, value in infos.items():
             key = key.lower()
-            with contextlib.suppress(AttributeError):
-                # PDFObjRef
-                value = value.resolve()
+            value = rawmaker.utils.resolve(value)
             if isinstance(value, bytes):
                 # SEE PDFDocEncoding Character Set
                 value = pdfminer.utils.decode_text(value)

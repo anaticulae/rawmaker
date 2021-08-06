@@ -23,8 +23,6 @@ A(dict): Action(launch application, play sound, chaning state) Shall
 SE(dict): Reference to structure element(see Structural Hierarchy)
 """
 
-import contextlib
-
 import iamraw
 import pdfminer.pdfdocument
 import pdfminer.pdfpage
@@ -33,6 +31,7 @@ import utila
 
 import rawmaker.destination
 import rawmaker.reader
+import rawmaker.utils
 
 
 def work(document: str) -> str:
@@ -98,10 +97,10 @@ def pagenumber(action, dest, pdf) -> rawmaker.destination.ExplicitDestination:
         parsed = rawmaker.destination.parse(action)
         if isinstance(parsed, rawmaker.destination.NamedDestination):
             resolved = pdf.get_dest(parsed.pdf_reference)
-            resolved = resolve(resolved)
+            resolved = rawmaker.utils.resolve(resolved)
             parsed = rawmaker.destination.parse(resolved)
     elif dest:
-        dest = resolve(dest)
+        dest = rawmaker.utils.resolve(dest)
         if isinstance(dest, list):
             # pdf 1.5: [<PDFObjRef:13>, /'XYZ', 72.0, 769.89, None]
             resolved = dest
@@ -112,15 +111,9 @@ def pagenumber(action, dest, pdf) -> rawmaker.destination.ExplicitDestination:
                 # pdf 1.4: [<PDFObjRef:4>, /'XYZ', 134.031754, 373.949829, None]
                 pass
             else:
-                resolved = resolved.resolve()
+                resolved = rawmaker.utils.resolve(resolved)
         parsed = rawmaker.destination.parse(resolved)
     assert parsed
     if isinstance(parsed, rawmaker.destination.ExternalLinkDestination):
         return -1
     return parsed.page
-
-
-def resolve(reference):
-    with contextlib.suppress(AttributeError):
-        return reference.resolve()
-    return reference

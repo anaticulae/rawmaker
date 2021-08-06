@@ -9,6 +9,8 @@
 
 import contextlib
 
+import rawmaker.utils
+
 
 def parse(colorspace) -> str:  # pylint:disable=R0911
     """\
@@ -37,14 +39,14 @@ def parse(colorspace) -> str:  # pylint:disable=R0911
     if typ == 'Indexed':
         return indexed_space(*colorspace[1:])
     if typ == 'ICCBased':
-        return iccbased(colorspace[1].resolve())
+        return iccbased(rawmaker.utils.resolve(colorspace[1]))
     return 'DeviceRGB'
 
 
 def indexed_space(base, hival, lookup):  # pylint:disable=W0613
     base = name(base)
     if base[0] == 'ICCBased':
-        return iccbased(base[1].resolve())
+        return iccbased(rawmaker.utils.resolve(base[1]))
     if str(base) == 'DeviceRGB':
         return 'DeviceRGB'
     return None
@@ -52,7 +54,7 @@ def indexed_space(base, hival, lookup):  # pylint:disable=W0613
 
 def iccbased(stream) -> str:
     attributes = stream.attrs
-    rawdata = stream.rawdata  # pylint:disable=W0612
+    # rawdata = stream.rawdata  # pylint:disable=W0612
     with contextlib.suppress(KeyError):
         colorspace = attributes['N']
         if colorspace == 1:
@@ -67,8 +69,7 @@ def iccbased(stream) -> str:
 
 
 def name(reference) -> str:
-    with contextlib.suppress(AttributeError):
-        reference = reference.resolve()
+    reference = rawmaker.utils.resolve(reference)
     with contextlib.suppress(AttributeError):
         return reference.name
     return reference

@@ -138,7 +138,12 @@ def process_page(  # pylint:disable=R0914
                 scale = utila.roundme(char.size / 1.34005)
                 if scale < 0:
                     utila.error(f'negative font size: {scale} {char}')
-                flags = char.ltchar.flags
+                try:
+                    # LTChar
+                    flags = char.ltchar.flags
+                except AttributeError:
+                    # Char
+                    flags = char.flags
                 # No font type or size is selected
                 if current_font is None:
                     current_font, current_scale = (font, scale)

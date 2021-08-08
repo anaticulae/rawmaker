@@ -106,7 +106,7 @@ def process_page(  # pylint:disable=R0914
     container, and the char in line. The position of change is oriented
     on python range/indexing. We note the change one char after the
     change. Container and line are equal. Therefore on line endings, the
-    change is noted on a char position which doe not exists.
+    change is noted on a char position which does not exists.
 
     Args:
         page(Page): current pdf page

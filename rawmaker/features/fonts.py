@@ -132,26 +132,19 @@ def process_page(  # pylint:disable=R0914
                     # of font definition.
                     position = (container_index, line_index, char_index)
                     continue
-                # TODO: INVESTIGATE 1.34??
-                # NOTE: This works for POSTSCRIPT_14_DEFAULT's but not for
-                # Calibri.
-                scale = utila.roundme(char.size / 1.34005)
-                if scale < 0:
-                    utila.error(f'negative font size: {scale} {char}')
-                try:
-                    # LTChar
-                    flags = char.ltchar.flags
-                except AttributeError:
-                    # Char
-                    flags = char.flags
+                scale = scale_fromchar(char)
+                flags = flags_fromchar(char)
                 # No font type or size is selected
                 if current_font is None:
                     current_font, current_scale = (font, scale)
                     current_flags = flags
                     continue
                 # Font type, size or flags changed
-                if any((current_font != font, current_scale != scale,
-                        current_flags != flags)):
+                if any((
+                        current_font != font,
+                        current_scale != scale,
+                        current_flags != flags,
+                )):
                     fontid = add_font(
                         current_font,
                         current_scale,
@@ -194,3 +187,23 @@ def add_font(font, scale, flags, *, fontstore, position):
     char = char + 1
     fontkey = fontstore.font_key(font, scale, flags)
     return (container, line, char, fontkey)
+
+
+def flags_fromchar(char) -> tuple:
+    try:
+        # LTChar
+        flags = char.ltchar.flags
+    except AttributeError:
+        # Char
+        flags = char.flags
+    return flags
+
+
+def scale_fromchar(char) -> float:
+    # TODO: INVESTIGATE 1.34??
+    # NOTE: This works for POSTSCRIPT_14_DEFAULT's but not for
+    # Calibri.
+    scale = utila.roundme(char.size / 1.34005)
+    if scale < 0:
+        utila.error(f'negative font size: {scale} {char}')
+    return scale

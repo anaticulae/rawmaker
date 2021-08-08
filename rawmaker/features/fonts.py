@@ -9,12 +9,13 @@
 """Extract fonts out of pdf document to gather information
 
 Stored format:
+
     (
-     container,
-     line,
-     char,
-     fontkey
-     )
+        container,
+        line,
+        char,
+        fontkey
+    )
 
 Stored item is the first different item.
 

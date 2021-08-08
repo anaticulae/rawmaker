@@ -255,6 +255,24 @@ def named(font: str):
     return font
 
 
+def font_toraw(font: iamraw.Font) -> str:
+    result = font.name
+    selected = {font.weight, font.style, font.stretch}
+    styles = [
+        ('Bd', BOLD, None, None),
+        ('Italic', None, ITALIC, None),
+        ('Medium', MEDIUM, None, None),
+        ('Oblique', None, OBLIQUE, None),
+        ('Regular', None, None, REGULAR),
+        ('Light', LIGHT, None, None),
+    ]
+    for raw, *items in styles:
+        if not any(item for item in items if item in selected):
+            continue
+        result += raw
+    return result
+
+
 def parse_style(raw_style):  # pylint:disable=R1260,R0912
     save = raw_style
     weight, style, stretch = LIGHT, NORMAL, REGULAR
@@ -306,6 +324,7 @@ STYLES = [
     ('Regular', None, None, REGULAR),
     ('Regu', None, None, REGULAR),
     ('Rg', None, None, REGULAR),
+    ('Light', LIGHT, None, None),
 ]
 #  TODO: Roman converts TimesNewRoman to TimesNew. I could not verify if
 #  that is a smart necessary option or it will introduce more problems?

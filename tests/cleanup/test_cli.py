@@ -8,6 +8,8 @@
 # =============================================================================
 
 import power
+import pytest
+import serializeraw
 import utila
 
 import tests.cleanup
@@ -29,3 +31,32 @@ def test_cleanup_bachelor56(testdir, monkeypatch):
         monkeypatch=monkeypatch,
     )
     assert len(utila.file_list(testdir.tmpdir)) == 8
+
+
+@pytest.mark.parametrize('pages', [
+    pytest.param('0:10,20:25', id='all'),
+    pytest.param('5,6,7', id='fiveSixSeven'),
+])
+def test_cleanup_bachelor56_compare_reduction(pages, testdir, monkeypatch):
+    source = power.link(power.BACHELOR056_PDF)
+    utila.copy_content(
+        source,
+        testdir.tmpdir,
+        pattern='(rawmaker__text|rawmaker__fonts)_*.yaml',
+    )
+    tests.cleanup.run(
+        f'-i . -o . --postfix=cleaned --pages={pages}',
+        monkeypatch=monkeypatch,
+    )
+    pages = utila.parse_pages(pages)
+    fontstore = serializeraw.create_fontstore_frompath(
+        testdir.tmpdir,
+        pages=pages,
+    )
+    fontstore_dumped = serializeraw.create_fontstore_frompath(
+        testdir.tmpdir,
+        prefix='cleaned',
+        pages=pages,
+    )
+    assert fontstore_dumped.pages == fontstore.pages
+    assert fontstore_dumped.header == fontstore.header

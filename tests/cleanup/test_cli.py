@@ -25,7 +25,7 @@ def test_cleanup_bachelor56(testdir, monkeypatch):
         pattern='(rawmaker__text|rawmaker__fonts)_*.yaml',
     )
     tests.cleanup.run(
-        '-i . -o . --postfix=cleaned',
+        '-i . -o . --postfix=cleaned --pages=0',
         monkeypatch=monkeypatch,
     )
     assert len(utila.file_list(testdir.tmpdir)) == 8

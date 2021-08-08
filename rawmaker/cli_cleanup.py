@@ -60,13 +60,18 @@ def user_input() -> tuple:
         dest='postfix',
         default='',
     )
+    parser.add_argument(
+        '--pages',
+        dest='pages',
+        default='',
+    )
     args = parser.parse_args()
-    choice = args.inpath, args.outpath, args.prefix, args.postfix
+    pages = utila.parse_pages(args.pages)
+    choice = args.inpath, args.outpath, args.prefix, args.postfix, pages
     return choice
 
 
-def cleanup(inpath, outpath, prefix: str = '', postfix: str = ''):
-    pages = (0,)
+def cleanup(inpath, outpath, prefix: str = '', postfix: str = '', pages=None):
     ptn = serializeraw.create_pagetextnavigators_frompath(
         inpath,
         prefix=prefix,

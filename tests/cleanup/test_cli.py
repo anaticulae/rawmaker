@@ -28,4 +28,4 @@ def test_cleanup_bachelor56(testdir, monkeypatch):
         '-i . -o . --postfix=cleaned',
         monkeypatch=monkeypatch,
     )
-    assert 0
+    assert len(utila.file_list(testdir.tmpdir)) == 8

@@ -118,10 +118,8 @@ def process_page(  # pylint:disable=R0914
     position = (0, 0, 0)  # container, line, char
     current_font, current_scale = None, None
     current_flags = None
+    textcontainer = utila.select_type(page.children, iamraw.TextContainer)
     result = []
-    textcontainer = [
-        item for item in page.children if isinstance(item, iamraw.TextContainer)
-    ]
     for container_index, container in enumerate(textcontainer):
         for line_index, line in enumerate(container.lines):
             for char_index, char in enumerate(line):
@@ -173,10 +171,11 @@ def process_page(  # pylint:disable=R0914
 
 def parse_fonts(document: iamraw.Document):
     fontstore = FontStore(rawmaker.fonts.parser.font_fromraw)
-
     content = [process_page(page, fontstore) for page in document.pages]
+    # Run header after content is important. DO NOT CHANGE ORDER. If
+    # running .fonts() first, content will be empty cause no fonts where
+    # processed.
     header = fontstore.fonts()
-
     return header, content
 
 

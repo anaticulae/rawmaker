@@ -41,7 +41,7 @@ def test_regression_oneline_master078_toc(testdir, monkeypatch):
     cmd = f'-i {power.MASTER078_PDF} --pages=2 ' + ONELINE
     tests.run(cmd, monkeypatch=monkeypatch)
 
-    loaded = serializeraw.create_pagetextnavigators_frompath(
+    loaded = serializeraw.ptn_frompath(
         testdir.tmpdir,
         prefix='oneline',
     )[0]

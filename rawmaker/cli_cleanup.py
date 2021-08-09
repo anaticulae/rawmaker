@@ -72,7 +72,7 @@ def user_input() -> tuple:
 
 
 def cleanup(inpath, outpath, prefix: str = '', postfix: str = '', pages=None):
-    ptn = serializeraw.create_pagetextnavigators_frompath(
+    ptn = serializeraw.ptn_frompath(
         inpath,
         prefix=prefix,
         pages=pages,

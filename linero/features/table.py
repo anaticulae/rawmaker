@@ -40,7 +40,7 @@ def work(
     lines = serializeraw.load_lines(lines, pages=pages)
     lines = limit_lines(lines)
 
-    navigators = serializeraw.create_pagetextnavigators_fromfile(
+    navigators = serializeraw.ptn_fromfile(
         text,
         textposition,
         pages=pages,

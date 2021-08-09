@@ -52,11 +52,11 @@ def test_cleanup_bachelor56_compare_reduction(pages, testdir, monkeypatch):
         monkeypatch=monkeypatch,
     )
     pages = utila.parse_pages(pages)
-    ptn = serializeraw.create_pagetextnavigators_frompath(
+    ptn = serializeraw.ptn_frompath(
         testdir.tmpdir,
         pages=pages,
     )
-    ptn_dumped = serializeraw.create_pagetextnavigators_frompath(
+    ptn_dumped = serializeraw.ptn_frompath(
         testdir.tmpdir,
         prefix='cleaned',
         pages=pages,

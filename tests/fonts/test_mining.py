@@ -197,7 +197,7 @@ def test_strip_correct_bounding_box(testdir, monkeypatch):
     cmd = f'-i {source} --text --pages=1 {config.cmdline()}'
     tests.run(cmd, monkeypatch=monkeypatch)
 
-    navigators = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)
+    navigators = serializeraw.ptn_frompath(testdir.tmpdir)
     navigator = navigators[0]
     parsed = sorted(
         navigator,
@@ -224,7 +224,7 @@ def test_strip_correct_bounding_box_master116(testdir, monkeypatch):
     cmd = f'-i {source} --text --pages=96 {config.cmdline()}'
     tests.run(cmd, monkeypatch=monkeypatch)
 
-    navigators = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)
+    navigators = serializeraw.ptn_frompath(testdir.tmpdir)
     navigator = navigators[0]
     parsed = sorted(
         navigator,
@@ -254,7 +254,7 @@ def test_strip_correct_bounding_box_master116(testdir, monkeypatch):
 def test_mining_fonts_bachelor37(testdir, monkeypatch):
     source = power.BACHELOR037_PDF
     tests.run(f'-i {source} --pages=5 --text --font', monkeypatch=monkeypatch)
-    navigators = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)
+    navigators = serializeraw.ptn_frompath(testdir.tmpdir)
     page5 = navigators[0]
     firstline = page5[1]
     assert firstline.style.content[0].size == 11.04

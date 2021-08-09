@@ -18,7 +18,7 @@ def test_fontrise_bachelor90_page3(testdir, monkeypatch):
     source = power.BACHELOR090_PDF
     tests.run(f'-i {source} --pages=3 --text', monkeypatch=monkeypatch)
 
-    loaded = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)[0]
+    loaded = serializeraw.ptn_frompath(testdir.tmpdir)[0]
     riseline = loaded[1]
     assert len(riseline.style.content) == 1
     style = riseline.style.content[0]

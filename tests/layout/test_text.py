@@ -26,7 +26,7 @@ def test_bachelor63_text_extraction(testdir, monkeypatch):
     cmd = f'-i {source} --text --pages=0 {config}'
     tests.run(cmd, monkeypatch=monkeypatch)
 
-    navigator = serializeraw.create_pagetextnavigators_frompath(root)[0]
+    navigator = serializeraw.ptn_frompath(root)[0]
     text = [str(item).strip() for item in navigator]
     unique = utila.make_unique(text)
     assert len(unique) == len(text), str(text)
@@ -42,7 +42,7 @@ def test_bachelor37_text_extraction_position_page4(testdir, monkeypatch):
     cmd = f'-i {source} --text --pages=4'
     tests.run(cmd, monkeypatch=monkeypatch)
 
-    navigator = serializeraw.create_pagetextnavigators_frompath(root)[0]
+    navigator = serializeraw.ptn_frompath(root)[0]
 
     first = navigator[0].bounding
     second = navigator[1].bounding

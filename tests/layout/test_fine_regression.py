@@ -24,7 +24,7 @@ def test_layout_fine_master72_page3_horizontal_problem(testdir, monkeypatch):
            '--horizontals --annotation --pages=3')
     tests.run(cmd, monkeypatch=monkeypatch)
 
-    navigators = serializeraw.create_pagetextnavigators_frompath(source)
+    navigators = serializeraw.ptn_frompath(source)
     horizontal = serializeraw.load_horizontals(source)[0][0][0]
     firstpage = navigators[0]
     first_footer_line = firstpage[32]
@@ -39,7 +39,7 @@ def test_layout_fine_bachelor111_page9_horizontal_problem(testdir, monkeypatch):
     source = testdir.tmpdir
     cmd = f'-i {power.BACHELOR111_PDF} --text --boxes --pages=9'
     tests.run(cmd, monkeypatch=monkeypatch)
-    navigators = serializeraw.create_pagetextnavigators_frompath(source)
+    navigators = serializeraw.ptn_frompath(source)
     horizontal = serializeraw.load_horizontals(source)[0][0][-1]
     first_footer_line = navigators[0][34]
     text = utila.normalize_whitespaces(first_footer_line.text)

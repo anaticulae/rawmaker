@@ -30,7 +30,7 @@ def test_text_diss274_negative_bounding(testdir, monkeypatch):
     layout = '--char_margin=3.1 --boxes_flow=1.0 --line_margin=0.25'
     cmd = f'-i {power.DISS274_PDF} --text --pages=0 {layout}'
     tests.run(cmd, monkeypatch=monkeypatch)
-    navigators = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)
+    navigators = serializeraw.ptn_frompath(testdir.tmpdir)
     navigator = navigators[0]
     # TODO: CHANGES AFTER INVESTIGATING PROBLEM WITH NEGATIVE TEXT CONTENT
     # ON LEFT BORDER.

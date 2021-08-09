@@ -18,7 +18,7 @@ import linero.table.horizontal
 
 
 def extract_tables(source, page):
-    ptn = serializeraw.create_pagetextnavigators_frompath(
+    ptn = serializeraw.ptn_frompath(
         source,
         pages=(page,),
     )[0]

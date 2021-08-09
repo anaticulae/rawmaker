@@ -19,7 +19,7 @@ PageWhitespaces = typing.List[PageWhitespace]
 
 
 def determine(path: str, pages: tuple = None) -> PageWhitespaces:
-    data = serializeraw.create_pagetextnavigators_frompath(
+    data = serializeraw.ptn_frompath(
         path,
         pages=pages,
         logging=False,

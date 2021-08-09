@@ -41,7 +41,7 @@ def test_parse_howtoread_vertically(
     else:
         mode = texmex.PageTextNavigatorMode.HORIZONTAL
 
-    loaded = serializeraw.create_pagetextnavigators_frompath(root, mode=mode)[0]
+    loaded = serializeraw.ptn_frompath(root, mode=mode)[0]
     content = loaded[:]
     empty = [] == content
     assert empty == expected_empty, str(content)

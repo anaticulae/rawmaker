@@ -83,26 +83,32 @@ def cleanup(inpath, outpath, prefix: str = '', postfix: str = '', pages=None):
         pages=pages,
     )
     text = iamraw.Document(dimension=ptn[0].pagesize)
-    text_positions = []
+    textpositions = []
     for page in ptn:
-        content = iamraw.Page(page=page.page, dimension=page.pagesize)
-        positions = iamraw.PageContentTextPosition(page=page.page, content={})
-        for index, item in enumerate(page):
-            line = create_line(item, fontstore)
-            content.append(line)
-            positions.content[index] = iamraw.TextPosition(
-                bounding=item.bounding,
-                mean=item.bounding_mean,
-            )
+        children, posis = create_page(page, fontstore)
+        content = iamraw.Page(
+            children=children,
+            page=page.page,
+            dimension=page.pagesize,
+        )
+        positions = iamraw.PageContentTextPosition(
+            page=page.page,
+            content=posis,
+        )
         text.append(content)
-        text_positions.append(positions)
+        textpositions.append(positions)
+    # dump result
+    dump_result(text, textpositions, outpath, postfix)
+
+
+def dump_result(text, textpositions, outpath, postfix):
     # write document
     text_dumped = serializeraw.dump_document(text)
     utila.file_replace(
         iamraw.path.text(outpath, prefix=postfix),
         text_dumped,
     )
-    textpositions_dumped = serializeraw.dump_textpositions(text_positions)
+    textpositions_dumped = serializeraw.dump_textpositions(textpositions)
     utila.file_replace(
         iamraw.path.textposition(outpath, prefix=postfix),
         textpositions_dumped,
@@ -121,7 +127,21 @@ def cleanup(inpath, outpath, prefix: str = '', postfix: str = '', pages=None):
     )
 
 
-def create_line(item, fontstore: iamraw.FontStore) -> iamraw.Line:
+def create_page(page, fontstore: iamraw.FontStore) -> iamraw.Page:
+    content, positions = [], []
+    for item in page:
+        line = create_line(item, fontstore)
+        content.append(line)
+        position = iamraw.TextPosition(
+            bounding=item.bounding,
+            mean=item.bounding_mean,
+        )
+        positions.append(position)
+    positions = {index: item for index, item in enumerate(positions)}
+    return content, positions
+
+
+def create_line(item, fontstore: iamraw.fontstore) -> iamraw.line:
     line = iamraw.TextContainer()
     style = item.style.content
     sizes = utila.flatten([

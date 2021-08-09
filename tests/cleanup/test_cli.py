@@ -34,7 +34,8 @@ def test_cleanup_bachelor56(testdir, monkeypatch):
 
 
 @pytest.mark.parametrize('pages', [
-    pytest.param('0:10,20:25', id='all'),
+    pytest.param('0:10,20:25', id='partial'),
+    pytest.param('15', id='fifteen'),
     pytest.param('5,6,7', id='fiveSixSeven'),
 ])
 def test_cleanup_bachelor56_compare_reduction(pages, testdir, monkeypatch):

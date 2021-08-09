@@ -76,6 +76,7 @@ def cleanup(inpath, outpath, prefix: str = '', postfix: str = '', pages=None):
         inpath,
         prefix=prefix,
         pages=pages,
+        sort=False,
     )
     fontstore = serializeraw.create_fontstore_frompath(
         inpath,
@@ -128,17 +129,47 @@ def dump_result(text, textpositions, outpath, postfix):
 
 
 def create_page(page, fontstore: iamraw.FontStore) -> iamraw.Page:
-    content, positions = [], []
+    if not page:
+        return [], {}
+    lines, positions = [], []
     for item in page:
         line = create_line(item, fontstore)
-        content.append(line)
+        lines.append((item.line, line))
         position = iamraw.TextPosition(
             bounding=item.bounding,
             mean=item.bounding_mean,
         )
         positions.append(position)
+    container, positions = merge_neighbors(lines, positions)
     positions = {index: item for index, item in enumerate(positions)}
-    return content, positions
+    return container, positions
+
+
+def merge_neighbors(lines, positions):
+    container, current = [lines[0][1]], lines[0][0]
+    textpositions = [positions[0]]
+    for ((number, line), texpos) in zip(lines[1:], positions[1:]):
+        if (number - current) == 1:
+            # merge
+            before = container[-1]
+            # add content
+            before.lines.extend(line.lines)
+            # update rectangle
+            before.box = utila.rectangle_max((before.box, line.box))
+            # merge textpositions
+            textpositions[-1] = iamraw.TextPosition(
+                bounding=tuple(before.box),
+                mean=textpositions[-1].mean,
+            )
+            # update last line id to merge further items
+            current = number
+        else:
+            # add new one
+            container.append(line)
+            textpositions.append(texpos)
+            # reset merger
+            current = 0
+    return container, textpositions
 
 
 def create_line(item, fontstore: iamraw.fontstore) -> iamraw.line:

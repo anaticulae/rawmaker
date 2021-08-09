@@ -50,6 +50,16 @@ def test_cleanup_bachelor56_compare_reduction(pages, testdir, monkeypatch):
         monkeypatch=monkeypatch,
     )
     pages = utila.parse_pages(pages)
+    ptn = serializeraw.create_pagetextnavigators_frompath(
+        testdir.tmpdir,
+        pages=pages,
+    )
+    ptn_dumped = serializeraw.create_pagetextnavigators_frompath(
+        testdir.tmpdir,
+        prefix='cleaned',
+        pages=pages,
+    )
+    assert ptn_dumped == ptn
     fontstore = serializeraw.create_fontstore_frompath(
         testdir.tmpdir,
         pages=pages,

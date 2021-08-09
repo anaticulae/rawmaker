@@ -142,7 +142,7 @@ def create_page(page, fontstore: iamraw.FontStore) -> iamraw.Page:
 
 
 def create_line(item, fontstore: iamraw.fontstore) -> iamraw.line:
-    line = iamraw.TextContainer()
+    line = iamraw.TextContainer(box=item.bounding)
     style = item.style.content
     sizes = utila.flatten([
         (item.end - item.start) * [item.size] for item in style
@@ -175,5 +175,5 @@ def create_line(item, fontstore: iamraw.fontstore) -> iamraw.line:
             flags,
         )
     ]
-    line.append(iamraw.Line(chars=chars))
+    line.append(iamraw.Line(chars=chars, box=item.bounding))
     return line

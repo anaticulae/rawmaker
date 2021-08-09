@@ -141,7 +141,7 @@ def create_page(page, fontstore: iamraw.FontStore) -> iamraw.Page:
         )
         positions.append(position)
     container, positions = merge_neighbors(lines, positions)
-    positions = {index: item for index, item in enumerate(positions)}
+    positions = dict(enumerate(positions))
     return container, positions
 
 

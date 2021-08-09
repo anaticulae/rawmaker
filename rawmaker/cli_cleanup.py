@@ -14,6 +14,7 @@ import sys
 import iamraw
 import serializeraw
 import serializeraw.fonts
+import texmex
 import utila
 
 import rawmaker.features.fonts
@@ -72,20 +73,60 @@ def user_input() -> tuple:
 
 
 def cleanup(inpath, outpath, prefix: str = '', postfix: str = '', pages=None):
-    ptn = serializeraw.ptn_frompath(
+    ptns = serializeraw.ptn_frompath(
         inpath,
         prefix=prefix,
         pages=pages,
         sort=False,
     )
+    # remove content here
     fontstore = serializeraw.create_fontstore_frompath(
         inpath,
         prefix=prefix,
         pages=pages,
     )
-    text = iamraw.Document(dimension=ptn[0].pagesize)
+    document, textpositions, fontheader, fontcontent = dump_ptn(ptns, fontstore)
+    write_result(
+        outpath,
+        document,
+        textpositions,
+        fontheader,
+        fontcontent,
+        postfix,
+    )
+
+
+def write_result(
+    outpath: str,
+    document: iamraw.Document,
+    textpositions: iamraw.TextPositions,
+    fontheader: dict,
+    fontcontent: list,
+    postfix: str = '',
+):
+    utila.file_replace(
+        iamraw.path.text(outpath, prefix=postfix),
+        document,
+    )
+    utila.file_replace(
+        iamraw.path.textposition(outpath, prefix=postfix),
+        textpositions,
+    )
+    # write reduced font store
+    utila.file_replace(
+        iamraw.path.fontheader(outpath, prefix=postfix),
+        fontheader,
+    )
+    utila.file_replace(
+        iamraw.path.fontcontent(outpath, prefix=postfix),
+        fontcontent,
+    )
+
+
+def dump_ptn(ptns: texmex.PageTextNavigators, fontstore: iamraw.FontStore):
+    document = iamraw.Document(dimension=ptns[0].pagesize)
     textpositions = []
-    for page in ptn:
+    for page in ptns:
         children, posis = create_page(page, fontstore)
         content = iamraw.Page(
             children=children,
@@ -96,36 +137,15 @@ def cleanup(inpath, outpath, prefix: str = '', postfix: str = '', pages=None):
             page=page.page,
             content=posis,
         )
-        text.append(content)
+        document.append(content)
         textpositions.append(positions)
-    # dump result
-    dump_result(text, textpositions, outpath, postfix)
-
-
-def dump_result(text, textpositions, outpath, postfix):
     # write document
-    text_dumped = serializeraw.dump_document(text)
-    utila.file_replace(
-        iamraw.path.text(outpath, prefix=postfix),
-        text_dumped,
-    )
-    textpositions_dumped = serializeraw.dump_textpositions(textpositions)
-    utila.file_replace(
-        iamraw.path.textposition(outpath, prefix=postfix),
-        textpositions_dumped,
-    )
-    # write reduced font store
-    fontstore, fontcontent = rawmaker.features.fonts.parse_fonts(text)
+    dumped_document = serializeraw.dump_document(document)
+    dumped_textpositions = serializeraw.dump_textpositions(textpositions)
+    fontstore, fontcontent = rawmaker.features.fonts.parse_fonts(document)
     dumped_header = serializeraw.dump_font_header(fontstore)
-    utila.file_replace(
-        iamraw.path.fontheader(outpath, prefix=postfix),
-        dumped_header,
-    )
     dumped_content = serializeraw.dump_font_content(fontcontent)
-    utila.file_replace(
-        iamraw.path.fontcontent(outpath, prefix=postfix),
-        dumped_content,
-    )
+    return dumped_document, dumped_textpositions, dumped_header, dumped_content
 
 
 def create_page(page, fontstore: iamraw.FontStore) -> iamraw.Page:

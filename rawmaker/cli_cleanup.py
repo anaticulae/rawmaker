@@ -7,8 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import argparse
-import os
 import sys
 
 import iamraw
@@ -37,38 +35,32 @@ def main():
 
 
 def user_input() -> tuple:
-    parser = argparse.ArgumentParser(
+    todo = [
+        utila.Parameter(longcut='postfix', message='rename output'),
+    ]
+    parser = utila.cli.create_parser(
+        todo=todo,
+        config=utila.ParserConfiguration(
+            inputparameter=True,
+            outputparameter=True,
+            multiprocessed=False,
+            pages=True,
+            prefix=True,
+            verboseflag=True,
+            waitingflag=False,
+            cacheflag=False,
+        ),
+        version=rawmaker.__version__,
         prog=PROCESS,
-        description=DESCRIPTION,
     )
-    parser.add_argument(
-        '-i',
-        dest='inpath',
-        default=os.getcwd(),
+    args = utila.parse(parser)
+    choice = (
+        args['input'][0],
+        args['output'],
+        args['prefix'],
+        args['postfix'],
+        utila.parse_pages(','.join(args['pages'])),  # DIRTY
     )
-    parser.add_argument(
-        '-o',
-        dest='outpath',
-        default=os.path.join(os.getcwd(), 'outpath'),
-    )
-    parser.add_argument(
-        '--prefix',
-        dest='prefix',
-        default='',
-    )
-    parser.add_argument(
-        '--postfix',
-        dest='postfix',
-        default='',
-    )
-    parser.add_argument(
-        '--pages',
-        dest='pages',
-        default='',
-    )
-    args = parser.parse_args()
-    pages = utila.parse_pages(args.pages)
-    choice = args.inpath, args.outpath, args.prefix, args.postfix, pages
     return choice
 
 

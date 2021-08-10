@@ -33,15 +33,24 @@ def test_cleanup_bachelor56(testdir, monkeypatch):
     assert len(utila.file_list(testdir.tmpdir)) == 8
 
 
-@pytest.mark.parametrize('pages', [
-    pytest.param('0:10,20:25', id='partial'),
-    pytest.param('15', id='fifteen'),
-    pytest.param('27', id='27'),
-    pytest.param('5,6,7', id='fiveSixSeven'),
-    pytest.param(':', id='all'),
+@pytest.mark.parametrize('source, pages', [
+    pytest.param(power.BACHELOR056_PDF, '0:10,20:25', id='partial'),
+    pytest.param(power.BACHELOR056_PDF, '15', id='fifteen'),
+    pytest.param(power.BACHELOR056_PDF, '27', id='27'),
+    pytest.param(power.BACHELOR056_PDF, '5,6,7', id='fiveSixSeven'),
+    pytest.param(power.BACHELOR056_PDF, ':', id='all'),
+    pytest.param(power.BACHELOR051_PDF, ':', id='bachelor51_all'),
 ])
-def test_cleanup_bachelor56_compare_reduction(pages, testdir, monkeypatch):
-    source = power.link(power.BACHELOR056_PDF)
+def test_cleanup_source_compare_reduction(
+    source,
+    pages,
+    testdir,
+    monkeypatch,
+):
+    """Ensure that resource is loaded and dumped correctly. This is
+    required before we can test that cleanup reduces some data out of
+    ptn."""
+    source = power.link(source)
     utila.copy_content(
         source,
         testdir.tmpdir,

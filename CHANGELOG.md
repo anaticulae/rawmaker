@@ -2,6 +2,40 @@
 
 Every noteable change is logged here.
 
+## v2.24.0
+
+### Feature
+
+* remove text in extracted image area (7d3a76d3f366)
+* add rotation to ptn dumper (efc5386f2c84)
+* replace with full proven parser approach (c04167901ad5)
+* merge multiple lines to single TextContainer (028a12f7293f)
+* add font to raw converter (f3d731049a3b)
+* add optional pages flag (37aabedc69cf)
+* convert ptn to raw (53c073b76eca)
+* add support to convert Chars and not only LTChar (8c2c4ca6be13)
+* add cli to cleanup rawmaker extraction (360eab9f5c57)
+* adjust y0 and y1 to ease further processing (b0ee6496f7c3)
+* adjust max vertical horizontal diff (729a39cd6794)
+* add internal page link resolver (e434dca79190)
+* use annotation to skip underlines (c93919d7e9b2)
+* add annotation as input (1dbad1f2203d)
+* flip annotation bounding (b4802a4471c7)
+* rework annotation parser (8bf1664f1ee4)
+* enable to skip lines as hyperlink underline (d6c398258d55)
+* improve line as text check (99c754fffe6f)
+* make char converter font dependent (bfd653fbfbcb)
+
+### Fix
+
+* add default font style (861429d851b4)
+* add missing bounding (64cc5eb24382)
+
+### Documentation
+
+* format docs (cd0ea4771f1e)
+* format lines (dbe944411f4b)
+
 ## v2.23.0
 
 ### Feature

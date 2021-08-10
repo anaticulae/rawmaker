@@ -48,7 +48,7 @@ def test_cleanup_bachelor56_compare_reduction(pages, testdir, monkeypatch):
         pattern='(rawmaker__text|rawmaker__fonts)_*.yaml',
     )
     tests.cleanup.run(
-        f'-i . -o . --postfix=cleaned --pages={pages}',
+        f'-i {testdir.tmpdir}. -o {testdir.tmpdir} --postfix=cleaned --pages={pages}',
         monkeypatch=monkeypatch,
     )
     pages = utila.parse_pages(pages)
@@ -79,11 +79,11 @@ def test_cleanup_figures(testdir, monkeypatch):
     """Remove text in figure area."""
     source = power.link(power.BACHELOR051_PDF)
     tests.cleanup.run(
-        f'-i {source} -o .',
+        f'-i {source} -o {testdir.tmpdir}',
         monkeypatch=monkeypatch,
     )
     ptn = serializeraw.ptn_frompath(source)
-    ptn_dumped = serializeraw.ptn_frompath('.')
+    ptn_dumped = serializeraw.ptn_frompath(testdir.tmpdir)
     assert ptn_dumped != ptn
     before = utila.select_page(ptn, page=29)
     clean = utila.select_page(ptn_dumped, page=29)

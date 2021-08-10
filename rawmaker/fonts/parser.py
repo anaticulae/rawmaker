@@ -69,6 +69,7 @@ Summary:
 import contextlib
 
 import iamraw
+import iamraw.fonts
 import serializeraw
 import utila
 
@@ -107,13 +108,13 @@ def font_fromraw(font: str, scale: float, flags: int = 0) -> iamraw.Font:
     # containg white spaces, for example `Times - Roman` instead of
     # `Times-Roman`.
     font = font.replace(' ', '')
-
+    # parse different fonts
     basefont = parse_basefont(font)
     cidfont = parse_cidfont(font)
     default = parse_default(font)
     styled = parse_font_styled(font)
     simple = parse_font_simple(font)
-
+    # select best font parsing
     fontname, style = None, None
     if cidfont is not None:
         # cidfont at first, cause cidfont selector is the clearest and not
@@ -127,12 +128,11 @@ def font_fromraw(font: str, scale: float, flags: int = 0) -> iamraw.Font:
         fontname, style = basefont
     elif default is not None:
         fontname, style = default
-
+    # use default style if no style is given
     weight, style, stretch = style if style else (None, None, None)
-
+    # inform about parsing problem
     if fontname is None or '+' in fontname or ',' in fontname:
         utila.error(f'detected fontname {fontname}; input: {font}')
-
     font = iamraw.Font(
         name=fontname,
         scale=scale,
@@ -258,6 +258,9 @@ def named(font: str):
 def font_toraw(font: iamraw.Font) -> str:
     result = font.name
     selected = {font.weight, font.style, font.stretch}
+    if not any(selected):
+        # no style given, do not use default style
+        return f'CIDFont+{result}'
     styles = [
         ('Bd', BOLD, None, None),
         ('Italic', None, ITALIC, None),

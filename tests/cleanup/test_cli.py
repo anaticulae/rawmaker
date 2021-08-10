@@ -73,3 +73,19 @@ def test_cleanup_bachelor56_compare_reduction(pages, testdir, monkeypatch):
     )
     assert fontstore_dumped.pages == fontstore.pages
     assert fontstore_dumped.header == fontstore.header
+
+
+def test_cleanup_figures(testdir, monkeypatch):
+    """Remove text in figure area."""
+    source = power.link(power.BACHELOR051_PDF)
+    tests.cleanup.run(
+        f'-i {source} -o .',
+        monkeypatch=monkeypatch,
+    )
+    ptn = serializeraw.ptn_frompath(source)
+    ptn_dumped = serializeraw.ptn_frompath('.')
+    assert ptn_dumped != ptn
+    before = utila.select_page(ptn, page=29)
+    clean = utila.select_page(ptn_dumped, page=29)
+    # remove 4 lines on page 29
+    assert len(clean) + 4 == len(before)

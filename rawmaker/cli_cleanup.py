@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
 import sys
 
 import iamraw
@@ -72,6 +73,7 @@ def cleanup(inpath, outpath, prefix: str = '', postfix: str = '', pages=None):
         sort=False,
     )
     # remove content here
+    ptns = remove_skip_area(ptns, inpath, pages=pages)
     fontstore = serializeraw.create_fontstore_frompath(
         inpath,
         prefix=prefix,
@@ -86,6 +88,25 @@ def cleanup(inpath, outpath, prefix: str = '', postfix: str = '', pages=None):
         fontcontent,
         postfix,
     )
+
+
+def remove_skip_area(ptns, inpath: str, pages: tuple = None):
+    imagepath = os.path.join(inpath, 'rawmaker__images_images')
+    images = serializeraw.load_image_infos_frompath(imagepath, pages=pages)
+    for ptn in ptns:
+        image = utila.select_content(images, page=ptn.page)
+        if not image:
+            # no image area to remove
+            continue
+        invalid_area = utila.rectangle_merge([item.bounding for item in image])
+        # line intersects with invalid area
+        invalid_lines = [
+            item for item in ptn
+            if utila.rectangles_intersecting(invalid_area, item.bounding)
+        ]
+        for line in invalid_lines:
+            ptn.remove(line)
+    return ptns
 
 
 def write_result(

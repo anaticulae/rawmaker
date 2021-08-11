@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.24.2
+
+### Feature
+
+* add default value (694c908ba389)
+
+### Fix
+
+* improve font name parser (3109fd3380cf)
+
 ## v2.24.1
 
 ### Feature

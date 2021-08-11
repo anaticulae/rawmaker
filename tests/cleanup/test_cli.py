@@ -58,7 +58,7 @@ def test_cleanup_source_compare_reduction(
         pattern='(rawmaker__text|rawmaker__fonts)_*.yaml',
     )
     tests.cleanup.run(
-        f'-i {testdir.tmpdir}. -o {testdir.tmpdir} --postfix=cleaned --pages={pages}',
+        f'-i {testdir.tmpdir} -o {testdir.tmpdir} --postfix=cleaned --pages={pages}',
         monkeypatch=monkeypatch,
     )
     pages = utila.parse_pages(pages)

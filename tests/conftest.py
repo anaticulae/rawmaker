@@ -51,7 +51,7 @@ def extract(resources):
         destination=power.generated(),
         oneline=None,
         pdfinfo=False,
-        linero=False,
+        tablero=False,
         worker=WORKER,
         base=power.REPOSITORY,
     )

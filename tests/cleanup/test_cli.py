@@ -41,6 +41,7 @@ def test_cleanup_bachelor56(testdir, monkeypatch):
     pytest.param(power.BACHELOR056_PDF, '5,6,7', id='fiveSixSeven'),
     pytest.param(power.BACHELOR056_PDF, ':', id='all'),
     pytest.param(power.BACHELOR051_PDF, ':', id='bachelor51_all'),
+    pytest.param(power.HOME040_PDF, ':', id='home40'),
 ])
 def test_cleanup_source_compare_reduction(
     source,

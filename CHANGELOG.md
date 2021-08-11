@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.24.1
+
+### Feature
+
+* add backup flag to store source content (c788946115e6)
+
 ## v2.24.0
 
 ### Feature

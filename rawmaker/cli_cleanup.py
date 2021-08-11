@@ -37,6 +37,7 @@ def main():
 
 def user_input() -> tuple:
     todo = [
+        utila.Flag(longcut='backup', message='write copy of source data'),
         utila.Parameter(longcut='postfix', message='rename output'),
     ]
     parser = utila.cli.create_parser(
@@ -61,11 +62,37 @@ def user_input() -> tuple:
         args['prefix'],
         args['postfix'],
         utila.parse_pages(','.join(args['pages'])),  # DIRTY
+        args['backup'],
     )
     return choice
 
 
-def cleanup(inpath, outpath, prefix: str = '', postfix: str = '', pages=None):
+BACKUP_EXT = 'baml'
+
+
+def rename_backup(dest):
+    dest = str(dest)
+    dest = dest.replace('.yaml', f'.{BACKUP_EXT}')
+    return dest
+
+
+def cleanup(
+    inpath,
+    outpath,
+    prefix: str = '',
+    postfix: str = '',
+    pages=None,
+    backup: bool = False,
+):
+    if backup:
+        prefixed = f'{prefix}_' if prefix else ''
+        pattern = f'(rawmaker__{prefixed}text|rawmaker__{prefixed}fonts)_*.yaml'
+        utila.copy_content(
+            inpath,
+            outpath,
+            pattern=pattern,
+            rename=rename_backup,
+        )
     ptns = serializeraw.ptn_frompath(
         inpath,
         prefix=prefix,

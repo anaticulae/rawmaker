@@ -12,6 +12,7 @@ import pytest
 import serializeraw
 import utila
 
+import rawmaker.cli_cleanup
 import tests.cleanup
 
 
@@ -98,3 +99,18 @@ def test_cleanup_figures(testdir, monkeypatch):
     clean = utila.select_page(ptn_dumped, page=29)
     # remove 4 lines on page 29
     assert len(clean) + 4 == len(before)
+
+
+def test_cleanup_backup(testdir, monkeypatch):
+    """Copy source files as backup files(change data type)."""
+    source = power.link(power.BACHELOR051_PDF)
+    tests.cleanup.run(
+        f'-i {source} -o {testdir.tmpdir} --backup',
+        monkeypatch=monkeypatch,
+    )
+    # four backup files written
+    backupfiles = utila.file_list(
+        testdir.tmpdir,
+        include=rawmaker.cli_cleanup.BACKUP_EXT,
+    )
+    assert len(backupfiles) == 4

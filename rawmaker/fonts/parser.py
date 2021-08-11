@@ -91,7 +91,7 @@ POSTSCRIPT_14_DEFAULT = {
 }
 
 
-def font_fromraw(font: str, scale: float, flags: int = 0) -> iamraw.Font:
+def font_fromraw(font: str, scale: float = 0.0, flags: int = 0) -> iamraw.Font:
     """Parse `Font` from pdf representation, read the description above.
 
     Args:

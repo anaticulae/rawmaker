@@ -100,6 +100,9 @@ def font_fromraw(font: str, scale: float = 0.0, flags: int = 0) -> iamraw.Font:
         flags(int): style of rendered font
     Returns:
         returns internal `Font` object with detected style and scale
+
+    >>> font_fromraw('Times-RomanRegularLight')
+    Font(name='Times-Roman',...)
     """
     utila.call('rawmaker.fonts.parser.font_fromraw')
     utila.debug('%s %.2f' % (str(font), scale))
@@ -150,6 +153,8 @@ def parse_basefont(font: str):
     ('Arial',...Weight.BOLD...)
     >>> parse_basefont('WTUVLZ+NimbusRomNo9L-Regu') is None
     True
+    >>> parse_basefont('Times-RomanRegularLight')
+    ('Times-Roman', (...))
     """
     if '+' in font:
         return None
@@ -160,6 +165,11 @@ def parse_basefont(font: str):
     style = parse_style(raw_style)
     if not style:
         return None
+    for name, *styles in STYLES:
+        if not set(style) & set(styles):
+            # nothing to replace
+            continue
+        fontname = utila.rreplace(fontname, name, '')
     return fontname, style
 
 
@@ -256,6 +266,10 @@ def named(font: str):
 
 
 def font_toraw(font: iamraw.Font) -> str:
+    """\
+    >>> font_toraw(iamraw.Font('Times-Roman', scale=8.95, weight=LIGHT, stretch=REGULAR))
+    'Times-RomanRegularLight'
+    """
     result = font.name
     selected = {font.weight, font.style, font.stretch}
     if not any(selected):

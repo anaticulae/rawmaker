@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.24.4
+
+### Feature
+
+* backup horizontal and line files (2f3f78e77fb1)
+* cleanup lines and horizontals (58b323954b9c)
+
 ## v2.24.3
 
 ### Feature

@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import collections
 import os
 import sys
 
@@ -119,13 +120,19 @@ def cleanup(
 
 def remove_skip_area(ptns, inpath: str, pages: tuple = None):
     imagepath = os.path.join(inpath, 'rawmaker__images_images')
-    images = serializeraw.load_image_infos_frompath(imagepath, pages=pages)
+    tableropath = iamraw.path.tablero_result(inpath)
+    images = []
+    if utila.exists(imagepath):
+        images = serializeraw.load_image_infos_frompath(imagepath, pages=pages)
+    tables = []
+    if utila.exists(tableropath):
+        tables = serializeraw.load_tables(tableropath, pages=pages)
+    invalids = create_invalid_area(images, tables)
     for ptn in ptns:
-        image = utila.select_content(images, page=ptn.page)
-        if not image:
-            # no image area to remove
+        try:
+            invalid_area = invalids[ptn.page]
+        except KeyError:
             continue
-        invalid_area = utila.rectangle_merge([item.bounding for item in image])
         # line intersects with invalid area
         invalid_lines = [
             item for item in ptn
@@ -134,6 +141,19 @@ def remove_skip_area(ptns, inpath: str, pages: tuple = None):
         for line in invalid_lines:
             ptn.remove(line)
     return ptns
+
+
+def create_invalid_area(images, tables) -> dict:
+    invalid = collections.defaultdict(list)
+    for page in images:
+        invalid[page.page].extend([item.bounding for item in page.content])
+    for page in tables:
+        invalid[page.page].extend([item.bounding for item in page.content])
+    # reduce rectangle count
+    result = {
+        key: utila.rectangle_merge(value) for key, value in invalid.items()
+    }
+    return result
 
 
 def write_result(

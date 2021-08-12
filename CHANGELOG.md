@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.24.3
+
+### Feature
+
+* add tablero as skip area (c68007085cc8)
+
+### Fix
+
+* enable multiple sources (76e5baab2209)
+
 ## v2.24.2
 
 ### Feature

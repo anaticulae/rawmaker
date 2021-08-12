@@ -58,7 +58,7 @@ def user_input() -> tuple:
     )
     args = utila.parse(parser)
     choice = (
-        args['input'][0],
+        args['input'],
         args['output'],
         args['prefix'],
         args['postfix'],
@@ -78,8 +78,8 @@ def rename_backup(dest):
 
 
 def cleanup(
-    inpath,
-    outpath,
+    inpaths: list,
+    outpath: str,
     prefix: str = '',
     postfix: str = '',
     pages=None,
@@ -88,25 +88,17 @@ def cleanup(
     if backup:
         prefixed = f'{prefix}_' if prefix else ''
         pattern = f'(rawmaker__{prefixed}text|rawmaker__{prefixed}fonts)_*.yaml'
-        utila.copy_content(
-            inpath,
-            outpath,
-            pattern=pattern,
-            rename=rename_backup,
-        )
-    ptns = serializeraw.ptn_frompath(
-        inpath,
-        prefix=prefix,
-        pages=pages,
-        sort=False,
-    )
+        for inpath in inpaths:
+            utila.copy_content(
+                inpath,
+                outpath,
+                pattern=pattern,
+                rename=rename_backup,
+            )
+    ptns = ptn_frompath(inpaths, prefix, pages)
     # remove content here
-    ptns = remove_skip_area(ptns, inpath, pages=pages)
-    fontstore = serializeraw.create_fontstore_frompath(
-        inpath,
-        prefix=prefix,
-        pages=pages,
-    )
+    ptns = remove_skip_area(ptns, inpaths, pages=pages)
+    fontstore = fontstore_frompath(inpaths, prefix, pages)
     document, textpositions, fontheader, fontcontent = dump_ptn(ptns, fontstore)
     write_result(
         outpath,
@@ -118,15 +110,47 @@ def cleanup(
     )
 
 
-def remove_skip_area(ptns, inpath: str, pages: tuple = None):
-    imagepath = os.path.join(inpath, 'rawmaker__images_images')
-    tableropath = iamraw.path.tablero_result(inpath)
-    images = []
-    if utila.exists(imagepath):
-        images = serializeraw.load_image_infos_frompath(imagepath, pages=pages)
-    tables = []
-    if utila.exists(tableropath):
-        tables = serializeraw.load_tables(tableropath, pages=pages)
+def ptn_frompath(inpaths, prefix, pages):
+    for inpath in inpaths:
+        utila.debug(inpath)
+        ptns = serializeraw.ptn_frompath(
+            inpath,
+            prefix=prefix,
+            pages=pages,
+            sort=False,
+        )
+        if ptns:
+            return ptns
+    return None
+
+
+def fontstore_frompath(inpaths, prefix, pages):
+    for inpath in inpaths:
+        utila.debug(inpath)
+        fontstore = serializeraw.create_fontstore_frompath(
+            inpath,
+            prefix=prefix,
+            pages=pages,
+        )
+        if fontstore:
+            return fontstore
+    return None
+
+
+def remove_skip_area(ptns, inpaths: list, pages: tuple = None):
+    images, tables = [], []
+    # load images and tables from multiple `inpaths`
+    for inpath in inpaths:
+        imagepath = os.path.join(inpath, 'rawmaker__images_images')
+        if utila.exists(imagepath):
+            images.extend(
+                serializeraw.load_image_infos_frompath(
+                    imagepath,
+                    pages=pages,
+                ))
+        tableropath = iamraw.path.tablero_result(inpath)
+        if utila.exists(tableropath):
+            tables.extend(serializeraw.load_tables(tableropath, pages=pages))
     invalids = create_invalid_area(images, tables)
     for ptn in ptns:
         try:

@@ -77,7 +77,7 @@ def rename_backup(dest):
     return dest
 
 
-def cleanup(
+def cleanup(  # pylint:disable=R0914
     inpaths: list,
     outpath: str,
     prefix: str = '',
@@ -96,8 +96,15 @@ def cleanup(
                 rename=rename_backup,
             )
     ptns = ptn_frompath(inpaths, prefix, pages)
+    horizontals, lines = lines_frompath(inpaths, prefix, pages)
     # remove content here
-    ptns = remove_skip_area(ptns, inpaths, pages=pages)
+    ptns, horizontals, lines = remove_skip_area(
+        ptns,
+        horizontals,
+        lines,
+        inpaths,
+        pages=pages,
+    )
     fontstore = fontstore_frompath(inpaths, prefix, pages)
     document, textpositions, fontheader, fontcontent = dump_ptn(ptns, fontstore)
     write_result(
@@ -106,6 +113,8 @@ def cleanup(
         textpositions,
         fontheader,
         fontcontent,
+        horizontals,
+        lines,
         postfix,
     )
 
@@ -124,6 +133,45 @@ def ptn_frompath(inpaths, prefix, pages):
     return None
 
 
+def lines_frompath(inpaths: list, prefix: str, pages: tuple) -> tuple:
+    """\
+    Args:
+        inpaths(list): list of possible sources
+        prefix(str): prefix inpath data
+        pages(tuple): selected pages
+    Returns:
+        Filtered horizontals and lines
+
+    Hint: It is only required to write the result file if the source
+    file exists. We have to destingush between non existing, empty
+    source file and empty remove source file.
+    It is enough to have two groups, we only want to know if we must
+    write the empty file.
+    """
+    horizontals, lines = None, None
+    for inpath in inpaths:
+        utila.debug(inpath)
+        if utila.exists(iamraw.path.horizontals(inpath, prefix)):
+            # use list, to signal that line source file exists.
+            horizontals = horizontals or []
+            horizontals.extend(
+                serializeraw.load_horizontals(
+                    inpath,
+                    prefix=prefix,
+                    pages=pages,
+                ))
+        if utila.exists(iamraw.path.line(inpath, prefix)):
+            # use list, to signal that line source file exists.
+            lines = lines or []
+            lines.extend(
+                serializeraw.load_lines(
+                    inpath,
+                    prefix=prefix,
+                    pages=pages,
+                ))
+    return horizontals, lines
+
+
 def fontstore_frompath(inpaths, prefix, pages):
     for inpath in inpaths:
         utila.debug(inpath)
@@ -137,22 +185,59 @@ def fontstore_frompath(inpaths, prefix, pages):
     return None
 
 
-def remove_skip_area(ptns, inpaths: list, pages: tuple = None):
+def remove_skip_area(
+    ptns,
+    horizontals,
+    lines,
+    inpaths: list,
+    pages: tuple = None,
+):
     images, tables = load_images_tables(inpaths, pages=pages)
     invalids = create_invalid_area(images, tables)
-    for ptn in ptns:
+
+    def valid_bounding(bounding, page: int) -> bool:
         try:
-            invalid_area = invalids[ptn.page]
+            invalid_area = invalids[page]
         except KeyError:
+            return True
+        if utila.rectangles_intersecting(invalid_area, bounding):
+            return False
+        return True
+
+    for ptn in ptns:
+        if ptn.page not in invalids:
+            # no invalid possible
             continue
         # line intersects with invalid area
         invalid_lines = [
-            item for item in ptn
-            if utila.rectangles_intersecting(invalid_area, item.bounding)
+            item for item in ptn if not valid_bounding(item.bounding, ptn.page)
         ]
         for line in invalid_lines:
             ptn.remove(line)
-    return ptns
+    if horizontals:
+        horizontals = [
+            iamraw.PageContentHorizontals(
+                page=page.page,
+                content=[
+                    item
+                    for item in page.content
+                    if valid_bounding(item.box, page.page)
+                ])
+            for page in horizontals
+        ]
+    if lines:
+        lines = [
+            iamraw.PageContentLine(
+                page=page.page,
+                content=[
+                    item
+                    for item in page.content
+                    if valid_bounding(item, page.page)
+                ],
+            )
+            for page in lines
+        ]
+    return ptns, horizontals, lines
 
 
 def create_invalid_area(images, tables) -> dict:
@@ -191,8 +276,11 @@ def write_result(
     textpositions: iamraw.TextPositions,
     fontheader: dict,
     fontcontent: list,
+    horizontals: list,
+    lines: list,
     postfix: str = '',
 ):
+    # write document
     utila.file_replace(
         iamraw.path.text(outpath, prefix=postfix),
         document,
@@ -210,6 +298,19 @@ def write_result(
         iamraw.path.fontcontent(outpath, prefix=postfix),
         fontcontent,
     )
+    # write lines
+    if horizontals is not None:
+        # None signals that the source does not contain any horizontal file
+        utila.file_replace(
+            iamraw.path.horizontals(outpath, prefix=postfix),
+            serializeraw.dump_horizontals(horizontals),
+        )
+    if lines is not None:
+        # None signals that the source does not contain any line file
+        utila.file_replace(
+            iamraw.path.line(outpath, prefix=postfix),
+            serializeraw.dump_lines(lines),
+        )
 
 
 def dump_ptn(ptns: texmex.PageTextNavigators, fontstore: iamraw.FontStore):

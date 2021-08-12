@@ -144,4 +144,4 @@ def test_cleanup_backup(testdir, monkeypatch):
         testdir.tmpdir,
         include=rawmaker.cli_cleanup.BACKUP_EXT,
     )
-    assert len(backupfiles) == 4
+    assert len(backupfiles) == 6

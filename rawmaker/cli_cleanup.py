@@ -87,7 +87,8 @@ def cleanup(  # pylint:disable=R0914
 ):
     if backup:
         prefixed = f'{prefix}_' if prefix else ''
-        pattern = f'(rawmaker__{prefixed}text|rawmaker__{prefixed}fonts)_*.yaml'
+        raw = f'rawmaker__{prefixed}'
+        pattern = f'({raw}text|{raw}fonts|{raw}line|{raw}horizontals)_*.yaml'
         for inpath in inpaths:
             utila.copy_content(
                 inpath,

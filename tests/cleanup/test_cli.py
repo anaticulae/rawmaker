@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import iamraw
 import power
 import pytest
 import serializeraw
@@ -100,6 +101,35 @@ def test_cleanup_figures(testdir, monkeypatch):
     clean = utila.select_page(ptn_dumped, page=29)
     # remove 4 lines on page 29
     assert len(clean) + 4 == len(before)
+
+
+def test_cleanup_tables(testdir, monkeypatch):
+    """Verify multiple input soruces and tablero cleanup."""
+    source = power.link(power.BACHELOR051_PDF)
+    page = 25
+    # create table to verify removing table content
+    tables = [
+        iamraw.PageContentTableBounding(
+            page=page,
+            content=[iamraw.TableBounding(bounding=(0, 0, 300, 300))],
+        )
+    ]
+    dumped = serializeraw.dump_tables(tables)
+    utila.file_create('tablero__decide_decide.yaml', dumped)
+    # run cleanup
+    tests.cleanup.run(
+        f'-i {source} -i {testdir.tmpdir} -o {testdir.tmpdir} --pages={page}',
+        monkeypatch=monkeypatch,
+    )
+    # load result
+    ptn = serializeraw.ptn_frompath(source)
+    ptn_dumped = serializeraw.ptn_frompath(testdir.tmpdir)
+    assert ptn_dumped != ptn
+    before = utila.select_page(ptn, page=page)
+    clean = utila.select_page(ptn_dumped, page=page)
+    # remove some lines due tablero
+    assert len(before) == 55
+    assert len(clean) == 42
 
 
 def test_cleanup_backup(testdir, monkeypatch):

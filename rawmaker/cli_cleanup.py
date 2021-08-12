@@ -138,19 +138,7 @@ def fontstore_frompath(inpaths, prefix, pages):
 
 
 def remove_skip_area(ptns, inpaths: list, pages: tuple = None):
-    images, tables = [], []
-    # load images and tables from multiple `inpaths`
-    for inpath in inpaths:
-        imagepath = os.path.join(inpath, 'rawmaker__images_images')
-        if utila.exists(imagepath):
-            images.extend(
-                serializeraw.load_image_infos_frompath(
-                    imagepath,
-                    pages=pages,
-                ))
-        tableropath = iamraw.path.tablero_result(inpath)
-        if utila.exists(tableropath):
-            tables.extend(serializeraw.load_tables(tableropath, pages=pages))
+    images, tables = load_images_tables(inpaths, pages=pages)
     invalids = create_invalid_area(images, tables)
     for ptn in ptns:
         try:
@@ -178,6 +166,23 @@ def create_invalid_area(images, tables) -> dict:
         key: utila.rectangle_merge(value) for key, value in invalid.items()
     }
     return result
+
+
+def load_images_tables(inpaths: list, pages: tuple = None):
+    images, tables = [], []
+    # load images and tables from multiple `inpaths`
+    for inpath in inpaths:
+        imagepath = os.path.join(inpath, 'rawmaker__images_images')
+        if utila.exists(imagepath):
+            images.extend(
+                serializeraw.load_image_infos_frompath(
+                    imagepath,
+                    pages=pages,
+                ))
+        tableropath = iamraw.path.tablero_result(inpath)
+        if utila.exists(tableropath):
+            tables.extend(serializeraw.load_tables(tableropath, pages=pages))
+    return images, tables
 
 
 def write_result(

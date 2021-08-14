@@ -116,13 +116,14 @@ def cleanup(  # pylint:disable=R0914
         fontcontent,
         horizontals,
         lines,
-        postfix,
+        prefix=prefix,
+        postfix=postfix,
     )
 
 
 def ptn_frompath(inpaths, prefix, pages):
     for inpath in inpaths:
-        utila.debug(inpath)
+        utila.debug(f'ptn: {inpath}')
         ptns = serializeraw.ptn_frompath(
             inpath,
             prefix=prefix,
@@ -149,10 +150,12 @@ def lines_frompath(inpaths: list, prefix: str, pages: tuple) -> tuple:
     It is enough to have two groups, we only want to know if we must
     write the empty file.
     """
+    prefix = ''  # DISABLE PREFIX
     horizontals, lines = None, None
     for inpath in inpaths:
-        utila.debug(inpath)
-        if utila.exists(iamraw.path.horizontals(inpath, prefix)):
+        utila.debug(f'lines: {inpath}')
+        if utila.exists(iamraw.path.horizontals(inpath)):
+            # if utila.exists(iamraw.path.horizontals(inpath, prefix)):
             # use list, to signal that line source file exists.
             horizontals = horizontals or []
             horizontals.extend(
@@ -161,7 +164,8 @@ def lines_frompath(inpaths: list, prefix: str, pages: tuple) -> tuple:
                     prefix=prefix,
                     pages=pages,
                 ))
-        if utila.exists(iamraw.path.line(inpath, prefix)):
+        if utila.exists(iamraw.path.line(inpath)):
+            # if utila.exists(iamraw.path.line(inpath, prefix)):
             # use list, to signal that line source file exists.
             lines = lines or []
             lines.extend(
@@ -175,7 +179,7 @@ def lines_frompath(inpaths: list, prefix: str, pages: tuple) -> tuple:
 
 def fontstore_frompath(inpaths, prefix, pages):
     for inpath in inpaths:
-        utila.debug(inpath)
+        utila.debug(f'fontstore: {inpath}')
         fontstore = serializeraw.create_fontstore_frompath(
             inpath,
             prefix=prefix,
@@ -266,6 +270,7 @@ def load_images_tables(inpaths: list, pages: tuple = None):
                     pages=pages,
                 ))
         tableropath = iamraw.path.tablero_result(inpath)
+        utila.debug(f'tablero: {tableropath}')
         if utila.exists(tableropath):
             tables.extend(serializeraw.load_tables(tableropath, pages=pages))
     return images, tables
@@ -279,24 +284,27 @@ def write_result(
     fontcontent: list,
     horizontals: list,
     lines: list,
+    prefix: str = '',
     postfix: str = '',
 ):
+    prefix = prefix or ''
+    postfix = postfix or ''
     # write document
     utila.file_replace(
-        iamraw.path.text(outpath, prefix=postfix),
+        iamraw.path.text(outpath, prefix=prefix + postfix),
         document,
     )
     utila.file_replace(
-        iamraw.path.textposition(outpath, prefix=postfix),
+        iamraw.path.textposition(outpath, prefix=prefix + postfix),
         textpositions,
     )
     # write reduced font store
     utila.file_replace(
-        iamraw.path.fontheader(outpath, prefix=postfix),
+        iamraw.path.fontheader(outpath, prefix=prefix + postfix),
         fontheader,
     )
     utila.file_replace(
-        iamraw.path.fontcontent(outpath, prefix=postfix),
+        iamraw.path.fontcontent(outpath, prefix=prefix + postfix),
         fontcontent,
     )
     # write lines

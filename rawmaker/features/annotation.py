@@ -111,6 +111,13 @@ def parse_reference(pageobject, getobj=None) -> iamraw.PageLink:
     link = parse_link(pageobject)
     if link:
         return link
+    label = parse_label(pageobject, getobj)
+    if label:
+        return label
+    return None
+
+
+def parse_label(pageobject, getobj=None) -> iamraw.PageLink:
     try:
         typ = pageobject['Type'].name
     except KeyError:

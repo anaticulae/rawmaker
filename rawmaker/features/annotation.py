@@ -81,7 +81,11 @@ def parse_page(
         pageannotation = list(getobj(page.annots.objid))
     pagelinks, hyperlinks = [], []
     for reference in pageannotation:
-        pageobject = getobj(reference.objid)
+        if isinstance(reference, dict):
+            # reference is already resolved
+            pageobject = reference
+        else:
+            pageobject = getobj(reference.objid)
         reference = parse_reference(pageobject, getobj)
         if reference:
             pagelinks.append(reference)

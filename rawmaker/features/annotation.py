@@ -164,8 +164,18 @@ def parse_link(pageobject) -> iamraw.PageLink:
         return None
     coords = list(pageobject['Rect'])
     bounds = iamraw.BoundingBox.from_list(coords)
-    # TODO: GOAL = dest
-    return iamraw.PageLink(bounds=bounds, goal=None)
+    try:
+        pagelink = pageobject['Dest']
+    except KeyError:
+        return None
+    if isinstance(pagelink, list):
+        if isinstance(pagelink[0], pdfminer.pdftypes.PDFObjRef):
+            # internal link to pdf page
+            # resolve objid
+            pagelink[0] = f'objid: {pagelink[0].objid}'
+    else:
+        pagelink = str(pagelink)
+    return iamraw.PageLink(bounds=bounds, goal=pagelink)
 
 
 def parse_external(pageobject, getobj=None) -> iamraw.HyperLink:

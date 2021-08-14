@@ -53,10 +53,16 @@ def test_annotation_dump_and_load(vim_guide_annotation):  #pylint:disable=W0621
     pytest.param(power.BACHELOR076_PDF, id='bachelor076'),
     pytest.param(power.MASTER075_PDF, id='master075'),
     pytest.param(power.MASTER155_PDF, id='master155'),
+    pytest.param(power.DOCU013_PDF, id='docu013'),
 ])
 def test_annotation_x(source, capsys):
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.features.annotation.extract_annotations(pdf)
+    for page in extracted:
+        for hyperlink in page.hyperlinks or []:
+            assert hyperlink.goal, str(hyperlink)
+        for pagelink in page.pagelinks or []:
+            assert pagelink.goal, str(pagelink)
     extracted: str = str(extracted)
     assert 'PDFObjRef' not in extracted, 'improve annotation parser'
     error = utilatest.stderr(capsys)

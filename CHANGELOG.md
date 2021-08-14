@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.24.5
+
+### Feature
+
+* skip empty pages (a89ef7bdc5af)
+* add link annotation parser (0694ffe7455b)
+
+### Fix
+
+* add page link goal parsing (2806db79da40)
+* fix oneline problem (b734e59c8884)
+
 ## v2.24.4
 
 ### Feature

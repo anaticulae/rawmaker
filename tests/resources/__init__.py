@@ -29,7 +29,6 @@ FONTS = os.path.join(RESOURCES, 'fonts')
 
 NO_PDF = os.path.join(NEGATIVE, 'no_pdf')
 
-VIM_PAGE_COUNT = 13
 VIM_OUTLINES = 42
 
 HELLO_WORLD_PDF = os.path.join(HELLO_WORLD, 'hello_world.pdf')

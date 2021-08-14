@@ -38,6 +38,9 @@ def extract_annotations(
             pages=pages,
     ):
         parsed = parse_page(page, pagenumber=number)
+        if not (parsed.hyperlinks or parsed.pagelinks):
+            # skip empty page
+            continue
         result.append(parsed)
     return result
 

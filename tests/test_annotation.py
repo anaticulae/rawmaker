@@ -14,14 +14,14 @@ import utilatest
 
 import rawmaker.features.annotation
 import rawmaker.reader
-import tests.resources
 
 
 def test_annotation_mining_annotations(capsys):
     extracted = None
     with rawmaker.reader.read(power.DOCU13_PDF) as pdf:
         extracted = rawmaker.features.annotation.extract_annotations(pdf)
-    assert len(extracted) == tests.resources.VIM_PAGE_COUNT
+    # 8 pages with annotation, skip empty one
+    assert len(extracted) == 8
     # no logging errors from unsupported annotation
     assert not utilatest.stderr(capsys)
 

@@ -108,6 +108,9 @@ def flip_bounding(box, pageheight):
 
 
 def parse_reference(pageobject, getobj=None) -> iamraw.PageLink:
+    link = parse_link(pageobject)
+    if link:
+        return link
     try:
         typ = pageobject['Type'].name
     except KeyError:
@@ -141,6 +144,18 @@ def parse_reference(pageobject, getobj=None) -> iamraw.PageLink:
                 pagelink = str(pagelink)
         return iamraw.PageLink(bounds=bounds, goal=pagelink)
     return None
+
+
+def parse_link(pageobject) -> iamraw.PageLink:
+    try:
+        typ = pageobject['Subtype'].name
+        assert typ == 'Link'
+    except KeyError:
+        return None
+    coords = list(pageobject['Rect'])
+    bounds = iamraw.BoundingBox.from_list(coords)
+    # TODO: GOAL = dest
+    return iamraw.PageLink(bounds=bounds, goal=None)
 
 
 def parse_external(pageobject, getobj=None) -> iamraw.HyperLink:

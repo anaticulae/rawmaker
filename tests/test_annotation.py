@@ -49,11 +49,11 @@ def test_annotation_dump_and_load(vim_guide_annotation):  #pylint:disable=W0621
     assert loaded == without_none
 
 
-def test_master075_annotation():
-    with rawmaker.reader.read(power.MASTER075_PDF) as pdf:
-        extracted = rawmaker.features.annotation.extract_annotations(
-            pdf,
-            pages=2,
-        )
+@pytest.mark.parametrize('source', [
+    pytest.param(power.MASTER075_PDF, id='master075'),
+])
+def test_annotation_x(source):
+    with rawmaker.reader.read(source) as pdf:
+        extracted = rawmaker.features.annotation.extract_annotations(pdf)
     extracted: str = str(extracted)
     assert 'PDFObjRef' not in extracted, 'improve annotation parser'

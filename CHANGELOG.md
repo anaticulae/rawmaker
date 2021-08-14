@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.24.6
+
+### Fix
+
+* fix parser bug (74b250894a40)
+
 ## v2.24.5
 
 ### Feature

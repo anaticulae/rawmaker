@@ -27,6 +27,19 @@ def test_leftright_book_font_name(testdir, monkeypatch, capsys):
     assert 'ERROR' not in stderr
 
 
+@pytest.mark.xfail(reason='support ROMA')
+def test_bachelor90_fontname(testdir, monkeypatch, capsys):
+    """\
+    TODO: VERIFY WHAT ROMAN MEANS
+    """
+    tests.run(
+        f'-i {power.BACHELOR090_PDF} --fonts --pages=1:20',
+        monkeypatch=monkeypatch,
+    )
+    stderr = utilatest.stderr(capsys)
+    assert 'ERROR' not in stderr
+
+
 @utilatest.longrun
 def test_leftright_book_font_size(testdir, monkeypatch):
     tests.run(

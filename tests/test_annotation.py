@@ -50,10 +50,14 @@ def test_annotation_dump_and_load(vim_guide_annotation):  #pylint:disable=W0621
 
 
 @pytest.mark.parametrize('source', [
+    pytest.param(power.BACHELOR076_PDF, id='bachelor076'),
     pytest.param(power.MASTER075_PDF, id='master075'),
+    pytest.param(power.MASTER155_PDF, id='master155'),
 ])
-def test_annotation_x(source):
+def test_annotation_x(source, capsys):
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.features.annotation.extract_annotations(pdf)
     extracted: str = str(extracted)
     assert 'PDFObjRef' not in extracted, 'improve annotation parser'
+    error = utilatest.stderr(capsys)
+    assert '[ERROR]' not in error, error

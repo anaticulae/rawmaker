@@ -154,6 +154,7 @@ def parse_label(pageobject, getobj=None) -> iamraw.PageLink:
                     # internal link to pdf page
                     # resolve objid
                     pagelink[0] = f'objid: {pagelink[0].objid}'
+                pagelink = [str(item) for item in pagelink]
             else:
                 pagelink = str(pagelink)
         return iamraw.PageLink(bounds=bounds, goal=pagelink)
@@ -177,6 +178,7 @@ def parse_link(pageobject) -> iamraw.PageLink:
             # internal link to pdf page
             # resolve objid
             pagelink[0] = f'objid: {pagelink[0].objid}'
+        pagelink = [str(item) for item in pagelink]
     else:
         pagelink = str(pagelink)
     return iamraw.PageLink(bounds=bounds, goal=pagelink)

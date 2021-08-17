@@ -62,7 +62,7 @@ def test_porting_module_font_index(strip, testdir, monkeypatch):
     striping there can be more than one white space at the end of a
     line."""
     nostrip = '' if strip else '--nostrip'
-    cmd = (f'-i {power.DOCU09_PDF} --fonts --text {nostrip}')
+    cmd = (f'-i {power.DOCU009_PDF} --fonts --text {nostrip}')
     tests.run(cmd, monkeypatch=monkeypatch)
     source = iamraw.path.fontcontent(testdir.tmpdir)
     position = serializeraw.load_font_content(source)

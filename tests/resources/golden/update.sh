@@ -9,7 +9,7 @@ pushd $scriptroot
 
 todo="--images! --figures!"
 
-vimguide=$(python -c 'import power; print(power.DOCU13_PDF)')
+vimguide=$(python -c 'import power; print(power.DOCU013_PDF)')
 rawmaker -i ${vimguide} -j8 --pages=1:4 ${todo} -o vim
 
 # TODO COMPARE $0 with SUCCESS

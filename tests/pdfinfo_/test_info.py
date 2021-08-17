@@ -13,7 +13,7 @@ import pdfinfo.info
 
 
 def test_pdfinfo_info_generator():
-    resource = power.DOCU27_PDF
+    resource = power.DOCU027_PDF
     generator = pdfinfo.info.generator(resource)
 
     assert generator == pdfinfo.info.Generator.LATEX, str(generator)

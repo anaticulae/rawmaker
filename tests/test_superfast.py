@@ -18,7 +18,7 @@ import tests
 
 @utilatest.longrun  # requires installed package
 def test_rawmaker_cli_superfast(testdir, monkeypatch):
-    source = power.DOCU27_PDF
+    source = power.DOCU027_PDF
     cmd = ['--sf', '-i', source, '--text']
     tests.run(cmd, monkeypatch=monkeypatch)
 
@@ -26,7 +26,7 @@ def test_rawmaker_cli_superfast(testdir, monkeypatch):
 @utilatest.longrun  # requires installed package
 def test_rawmaker_cli_superfast_compare(testdir, monkeypatch):
     """Ensure that --superfast produces the same results as without superfast"""
-    source = power.DOCU27_PDF
+    source = power.DOCU027_PDF
 
     workspace = str(testdir)
     first = os.path.join(workspace, 'first')

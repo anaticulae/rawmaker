@@ -24,9 +24,9 @@ import tests.resources
 
 @pytest.fixture
 def linecluster():
-    utilatest.fixture_requires(power.DOCU09_PDF)
+    utilatest.fixture_requires(power.DOCU009_PDF)
     result = []
-    with rawmaker.reader.read(power.DOCU09_PDF) as doc:
+    with rawmaker.reader.read(power.DOCU009_PDF) as doc:
         parsed = rawmaker.features.line.lines(doc)
         size = rawmaker.features.border.pagesizes(doc)[0].size
         for pagelines, _ in parsed:
@@ -97,9 +97,9 @@ def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
     assert len(lines) == tests.resources.HOW_TO_CPORTING_HORIZONTAL_COUNT
 
 
-@utilatest.requires(power.DOCU09_PDF)
+@utilatest.requires(power.DOCU009_PDF)
 def test_determine_textboxes():
-    lines = iamraw.path.line(power.link(power.DOCU09_PDF))
+    lines = iamraw.path.line(power.link(power.DOCU009_PDF))
     lines = serializeraw.load_lines(lines)
     boxes = rawmaker.features.boxes.determine_boxes(lines)
     # flatten boxes to compute box count of document

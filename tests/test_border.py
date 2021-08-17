@@ -18,7 +18,7 @@ import tests.resources
 
 @pytest.fixture
 def boxdata_from_pdf():
-    with rawmaker.reader.read(power.DOCU35_PDF) as pdf:
+    with rawmaker.reader.read(power.DOCU035_PDF) as pdf:
         sizeandborders, boxes = rawmaker.features.border.determine_boundingboxes(
             pdf)
     assert sizeandborders

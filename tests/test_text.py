@@ -20,7 +20,7 @@ import tests.resources
 
 @utilatest.longrun
 def test_miner_pdf():
-    parsed_file = rawmaker.features.text.work(power.DOCU13_PDF)
+    parsed_file = rawmaker.features.text.work(power.DOCU013_PDF)
     assert parsed_file
 
 
@@ -36,7 +36,7 @@ def test_mine_hello_world_pdf():
     'pdf_path',
     [
         tests.resources.HELLO_WORLD_PDF,
-        power.DOCU13_PDF,
+        power.DOCU013_PDF,
     ],
     ids=[
         'hello_world.pdf',
@@ -69,7 +69,7 @@ def test_dump_and_load_pdf(pdf_path):
 def test_text_mine_pdf_page_0():
     selected_pages = [3, 4, 5]
     parsed = rawmaker.features.text.work(
-        power.DOCU13_PDF,
+        power.DOCU013_PDF,
         pages=selected_pages,
     )
     dumped_text, _ = parsed

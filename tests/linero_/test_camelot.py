@@ -17,7 +17,7 @@ import linero.table.camelox
 
 
 def test_camelot_run():
-    source = power.DOCU13_PDF
+    source = power.DOCU013_PDF
     parsed = linero.table.camelox.run(source, pages=2)
     assert len(parsed) == 1
 
@@ -25,7 +25,7 @@ def test_camelot_run():
 @utilatest.longrun
 @pytest.mark.xfail(reason='adjust camelot strategy')
 def test_camelot_forked():
-    source = power.DOCU13_PDF
+    source = power.DOCU013_PDF
     parsed = linero.camelox.fork.run(source, worker=4)
     flatten = utila.flatten_content(parsed)
     assert len(flatten) == 38

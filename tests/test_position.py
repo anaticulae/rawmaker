@@ -51,7 +51,7 @@ def test_key_does_not_exists():
 @fixture
 def document() -> Document:
     extracted = None
-    with read(power.DOCU13_PDF) as pdf:
+    with read(power.DOCU013_PDF) as pdf:
         extracted = extract_content(pdf)
     assert extracted
     return extracted

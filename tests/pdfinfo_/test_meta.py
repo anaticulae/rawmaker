@@ -13,7 +13,7 @@ import pdfinfo.meta
 
 
 def test_pdfinfo_meta():
-    resource = power.DOCU27_PDF
+    resource = power.DOCU027_PDF
     meta = pdfinfo.meta.determine(resource)
     assert 'author' in meta
     assert 'title' in meta

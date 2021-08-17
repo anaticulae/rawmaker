@@ -18,7 +18,7 @@ import rawmaker.reader
 
 def test_annotation_mining_annotations(capsys):
     extracted = None
-    with rawmaker.reader.read(power.DOCU13_PDF) as pdf:
+    with rawmaker.reader.read(power.DOCU013_PDF) as pdf:
         extracted = rawmaker.features.annotation.extract_annotations(pdf)
     # 8 pages with annotation, skip empty one
     assert len(extracted) == 8
@@ -27,14 +27,14 @@ def test_annotation_mining_annotations(capsys):
 
 
 def test_annotation_work():
-    result = rawmaker.features.annotation.work(power.DOCU13_PDF)
+    result = rawmaker.features.annotation.work(power.DOCU013_PDF)
     assert len(result) > 200
 
 
 @pytest.fixture
 def vim_guide_annotation():
     extracted = None
-    with rawmaker.reader.read(power.DOCU13_PDF) as pdf:
+    with rawmaker.reader.read(power.DOCU013_PDF) as pdf:
         extracted = rawmaker.features.annotation.extract_annotations(pdf)
     return extracted
 

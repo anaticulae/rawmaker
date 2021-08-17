@@ -13,7 +13,7 @@ import pdfinfo.data
 
 
 def test_pdfinfo_data_jsonify():
-    resource = power.DOCU27_PDF
+    resource = power.DOCU027_PDF
     info = pdfinfo.data.parse(resource)
 
     jsoned = pdfinfo.data.dump(info)

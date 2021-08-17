@@ -29,7 +29,7 @@ import tests.resources
 
 @utilatest.longrun
 def test_mining_fonts(testdir):
-    header, content = rawmaker.features.fonts.work(power.DOCU35_PDF)
+    header, content = rawmaker.features.fonts.work(power.DOCU035_PDF)
 
     assert len(header) > 100
     assert len(content) > 300
@@ -39,7 +39,7 @@ def test_mining_fonts(testdir):
 
 
 def test_mining_fonts_cporting():
-    header, content = rawmaker.features.fonts.work(power.DOCU09_PDF)
+    header, content = rawmaker.features.fonts.work(power.DOCU009_PDF)
     # XXX: Define good numbers
     assert len(header) > 100
     assert len(content) > 200
@@ -48,7 +48,7 @@ def test_mining_fonts_cporting():
 def test_minining_fonts_cporting_first_page():
     """Mine the first font of the document at the first page"""
     # TODO: Test mining last font of document
-    with rawmaker.reader.read(power.DOCU09_PDF) as pdf:
+    with rawmaker.reader.read(power.DOCU009_PDF) as pdf:
         document = rawmaker.features.extract_content(pdf)
 
     fontstore = rawmaker.features.fonts.FontStore(rawmaker.fonts.parser.font_fromraw) # yapf:disable
@@ -69,7 +69,7 @@ def test_minining_fonts_rise():
     """Ensure that that flip works correctly. There was a problem that
     only the chars till the first VirtualChar was flipped correctly.
     This was an effect cause VirtualChars have no BoundingBox."""
-    with rawmaker.reader.read(power.DOCU09_PDF) as pdf:
+    with rawmaker.reader.read(power.DOCU009_PDF) as pdf:
         document = rawmaker.features.extract_content(pdf)
     first_page = document[0]
     no_rise = first_page[0][0][-2]
@@ -98,7 +98,7 @@ def test_mining_increasing_fonts():
 def test_mining_fonts_restruct_page_5():
     """Mine the fifths page, compare only `Weight` for not being to
     specific."""
-    header, content = rawmaker.features.fonts.work(power.DOCU27_PDF)
+    header, content = rawmaker.features.fonts.work(power.DOCU027_PDF)
     header = serializeraw.load_font_header(header)
     content = serializeraw.load_font_content(content)
     fifths_page = content[4]

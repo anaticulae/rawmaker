@@ -13,7 +13,7 @@ import pdfinfo.pages
 
 
 def test_pdfinfo_parse_pages():
-    resource = power.DOCU27_PDF
+    resource = power.DOCU027_PDF
     pages = pdfinfo.pages.determine(resource)
 
     assert pages == 27, str(pages)

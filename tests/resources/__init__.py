@@ -75,5 +75,5 @@ REQUIRED_RESOURCES = [
     RESOURCES,
     # power.link(power.BACHELOR090_PDF),
     # power.link(power.BOOK007_PDF),
-    # power.link(power.DOCU13_PDF),
+    # power.link(power.DOCU013_PDF),
 ]

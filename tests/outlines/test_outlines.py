@@ -30,7 +30,7 @@ def test_outlines_from_document_no_outlines(monkeypatch, capsys):
             'get_outlines',
             get_outlines,
         )
-        rawmaker.features.outlines.work(power.DOCU13_PDF)
+        rawmaker.features.outlines.work(power.DOCU013_PDF)
 
     present_inerror('error', 'outlines', captured=capsys)
 
@@ -88,7 +88,7 @@ def diss264(toc):
 
 
 @pytest.mark.parametrize('source, validate', [
-    pytest.param(power.DOCU13_PDF, vim, id='vim'),
+    pytest.param(power.DOCU013_PDF, vim, id='vim'),
     pytest.param(power.BACHELOR037_PDF, bachelor37, id='bachelor37'),
     pytest.param(power.MASTER116_PDF, master116, id='master116'),
     pytest.param(power.BACHELOR111_PDF, bachelor111, id='bachelor111'),
@@ -106,7 +106,7 @@ def test_outlines_howto_argparse():
     """Some NamedDestinations are store as hexadecimal numbers. This test
     ensures, that parsing, lookup in pdf dest dict and converting the
     page number works correctly."""
-    source = power.DOCU14_PDF
+    source = power.DOCU014_PDF
     extracted = rawmaker.features.outlines.work(source)
     toc = serializeraw.load_toc(extracted)
 

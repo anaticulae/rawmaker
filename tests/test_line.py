@@ -28,7 +28,7 @@ def test_line_run_cli(testdir, monkeypatch):  #pylint: disable=W0613
 @utilatest.longrun
 @pytest.mark.parametrize('source, expected', [
     pytest.param(
-        power.DOCU13_PDF,
+        power.DOCU013_PDF,
         (0, 1, 1, 3, 3, 5, 2, 5, 6, 4, 5, 3, 2),
         id='vim',
     ),
@@ -46,7 +46,7 @@ def test_line_extract(source, expected):
 
 
 def test_line_dump_load():
-    with rawmaker.reader.read(power.DOCU09_PDF) as pdf:
+    with rawmaker.reader.read(power.DOCU009_PDF) as pdf:
         lines = rawmaker.features.line.determine_lines(pdf)
 
     dumped = serializeraw.dump_lines(lines)

@@ -26,7 +26,7 @@ import tests.resources
     '--help',
     pytest.param(f'-i {tests.resources.NO_PDF}', id='invalid_pdf'),
     pytest.param(f'-i {tests.resources.NO_PDF} --format=yaml', id='use yaml'),
-    pytest.param(f'-i {power.DOCU27_PDF}', id='valid_pdf'),
+    pytest.param(f'-i {power.DOCU027_PDF}', id='valid_pdf'),
     pytest.param(f'-i {power.MASTER116_PDF}', id='master116'),
     pytest.param(f'-i {power.MASTER089_PDF}', id='master89'),
     pytest.param(f'-i {power.MASTER098_PDF}', id='master98'),
@@ -71,7 +71,7 @@ def test_pdfinfo_status_invalid(testdir, monkeypatch):
 
 def test_pdfinfo_stdout(testdir, monkeypatch, capsys):
     root = testdir.tmpdir
-    source = power.DOCU27_PDF
+    source = power.DOCU027_PDF
     with utilatest.increased_filecount(root, mindiff=0, maxdiff=0):
         tests.pdfinfo_.run(f'-i {source}', monkeypatch=monkeypatch)
     stdout = utilatest.stdout(capsys)

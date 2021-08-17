@@ -13,7 +13,7 @@ import pdfinfo.version
 
 
 def test_pdfinfo_parse_version():
-    resource = power.DOCU27_PDF
+    resource = power.DOCU027_PDF
     parsed = pdfinfo.version.parse(resource)
 
     assert parsed == pdfinfo.version.Version(1, 5), str(parsed)

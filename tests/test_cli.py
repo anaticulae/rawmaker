@@ -23,8 +23,8 @@ from tests.resources import HELLO_WORLD
 @pytest.mark.parametrize('command', [
     ['--help'],
     ['-i', HELLO_WORLD, '-o', 'output', '-j', '5'],
-    ['-i', power.DOCU27_PDF, '-o', 'output'],
-    ['-i', power.DOCU35_PDF, '-o', 'output'],
+    ['-i', power.DOCU027_PDF, '-o', 'output'],
+    ['-i', power.DOCU035_PDF, '-o', 'output'],
 ])
 @pytest.mark.usefixtures('testdir')
 @utilatest.nightly
@@ -56,7 +56,7 @@ def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):
     'command',
     [
         # DO NOT REMOVE A SINGLE SOURCE OF THIS TEST
-        ['-i', power.DOCU09_PDF, '-o', 'output'],
+        ['-i', power.DOCU009_PDF, '-o', 'output'],
     ])
 @pytest.mark.usefixtures('testdir')
 @utilatest.nightly
@@ -74,7 +74,7 @@ def test_run_rawmaker_for_regression(command, monkeypatch):
 @utilatest.longrun
 def test_run_rawmaker_with_pages(monkeypatch, pages):
     """Extract special pages"""
-    cmd = ['-i', power.DOCU27_PDF, '-o', 'output', '--pages', pages, '-VVV']
+    cmd = ['-i', power.DOCU027_PDF, '-o', 'output', '--pages', pages, '-VVV']
     run(cmd, monkeypatch=monkeypatch)
 
 
@@ -96,7 +96,7 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
 @utilatest.longrun
 def test_rawmaker_cli_run_file_without_extention(testdir, monkeypatch):
     source = os.path.join(testdir.tmpdir, 'hello')
-    utila.file_copy(power.DOCU27_PDF, source)
+    utila.file_copy(power.DOCU027_PDF, source)
     tests.run(f'-i {source}', monkeypatch=monkeypatch)
 
 

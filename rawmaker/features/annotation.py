@@ -137,50 +137,38 @@ def parse_label(pageobject, getobj=None) -> iamraw.PageLink:
     if isinstance(annotated, pdfminer.pdftypes.PDFObjRef):
         # TODO: add layer to automatically convert reference to object.
         annotated = getobj(annotated.objid)
-    coords = list(pageobject['Rect'])
-    bounds = iamraw.BoundingBox.from_list(coords)
-    with contextlib.suppress(KeyError):
-        try:
-            pagelink = annotated['D'].decode(utila.UTF8)
-        except AttributeError:
-            # TODO: don't know what this element means
-            #{'Type': /'Annot', 'Border': [0, 0, 0], 'H': /'I', 'C': [0,
-            #0.5, 0.5], 'Rect': [348.517, 428.927, 431.794, 439.831],
-            #'Subtype': /'Link', 'A': {'F': b'distributions.pdf', 'S':
-            #/'GoToR', 'D': [0, /'Fit']}} [0, /'Fit']
-            pagelink = annotated['D']
-            if isinstance(pagelink, list):
-                if isinstance(pagelink[0], pdfminer.pdftypes.PDFObjRef):
-                    # internal link to pdf page
-                    # resolve objid
-                    pagelink[0] = f'objid: {pagelink[0].objid}'
-                pagelink = [str(item) for item in pagelink]
-            else:
-                pagelink = str(pagelink)
-        return iamraw.PageLink(bounds=bounds, goal=pagelink)
-    return None
+    try:
+        pagelink = annotated['D']
+    except KeyError:
+        return None
+    bounds = iamraw.BoundingBox.from_list(pageobject['Rect'])
+    if isinstance(pagelink, bytes):
+        pagelink = pagelink.decode(utila.UTF8)
+    else:
+        pagelink = parse_pagelink(pagelink)
+    return iamraw.PageLink(bounds=bounds, goal=pagelink)
 
 
 def parse_link(pageobject) -> iamraw.PageLink:
+    # TODO: don't know what this element means
+    #{'Type': /'Annot', 'Border': [0, 0, 0], 'H': /'I', 'C': [0,
+    #0.5, 0.5], 'Rect': [348.517, 428.927, 431.794, 439.831],
+    #'Subtype': /'Link', 'A': {'F': b'distributions.pdf', 'S':
+    #/'GoToR', 'D': [0, /'Fit']}} [0, /'Fit']
     try:
         typ = pageobject['Subtype'].name
         assert typ == 'Link'
     except KeyError:
         return None
-    coords = list(pageobject['Rect'])
-    bounds = iamraw.BoundingBox.from_list(coords)
     try:
         pagelink = pageobject['Dest']
     except KeyError:
         return None
-    if isinstance(pagelink, list):
-        if isinstance(pagelink[0], pdfminer.pdftypes.PDFObjRef):
-            # internal link to pdf page
-            # resolve objid
-            pagelink[0] = f'objid: {pagelink[0].objid}'
-        pagelink = [str(item) for item in pagelink]
+    bounds = iamraw.BoundingBox.from_list(pageobject['Rect'])
+    if isinstance(pagelink, bytes):
+        pagelink = pagelink.decode(utila.UTF8)
     else:
-        pagelink = str(pagelink)
+        pagelink = parse_pagelink(pagelink)
     return iamraw.PageLink(bounds=bounds, goal=pagelink)
 
 
@@ -192,9 +180,20 @@ def parse_external(pageobject, getobj=None) -> iamraw.HyperLink:
     if isinstance(annotated, pdfminer.pdftypes.PDFObjRef):
         # TODO: add layer to automatically convert reference to object.
         annotated = getobj(annotated.objid)
-    coords = list(pageobject['Rect'])
-    bounds = iamraw.BoundingBox.from_list(coords)
+    bounds = iamraw.BoundingBox.from_list(pageobject['Rect'])
     with contextlib.suppress(KeyError):
         hyperlink = annotated['URI'].decode(utila.UTF8)
         return iamraw.HyperLink(bounds=bounds, goal=hyperlink)
     return None
+
+
+def parse_pagelink(pagelink):
+    if isinstance(pagelink, list):
+        if isinstance(pagelink[0], pdfminer.pdftypes.PDFObjRef):
+            # internal link to pdf page
+            # resolve objid
+            pagelink[0] = f'objid: {pagelink[0].objid}'
+        pagelink = [str(item) for item in pagelink]
+    else:
+        pagelink = str(pagelink)
+    return pagelink

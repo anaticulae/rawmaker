@@ -142,10 +142,7 @@ def parse_label(pageobject, getobj=None) -> iamraw.PageLink:
     except KeyError:
         return None
     bounds = iamraw.BoundingBox.from_list(pageobject['Rect'])
-    if isinstance(pagelink, bytes):
-        pagelink = pagelink.decode(utila.UTF8)
-    else:
-        pagelink = parse_pagelink(pagelink)
+    pagelink = parse_pagelink(pagelink)
     return iamraw.PageLink(bounds=bounds, goal=pagelink)
 
 
@@ -165,10 +162,7 @@ def parse_link(pageobject) -> iamraw.PageLink:
     except KeyError:
         return None
     bounds = iamraw.BoundingBox.from_list(pageobject['Rect'])
-    if isinstance(pagelink, bytes):
-        pagelink = pagelink.decode(utila.UTF8)
-    else:
-        pagelink = parse_pagelink(pagelink)
+    pagelink = parse_pagelink(pagelink)
     return iamraw.PageLink(bounds=bounds, goal=pagelink)
 
 
@@ -188,6 +182,17 @@ def parse_external(pageobject, getobj=None) -> iamraw.HyperLink:
 
 
 def parse_pagelink(pagelink):
+    r"""\
+    >>> parse_pagelink(b'glo:glos:Glas\xfcbergangstemperatur')
+    'glo:glos:Glasübergangstemperatur'
+    """
+    if isinstance(pagelink, bytes):
+        for encoding in ['utf8', 'ascii', 'cp1252']:
+            try:
+                pagelink = pagelink.decode(encoding)
+            except UnicodeDecodeError:
+                continue
+            return pagelink
     if isinstance(pagelink, list):
         if isinstance(pagelink[0], pdfminer.pdftypes.PDFObjRef):
             # internal link to pdf page

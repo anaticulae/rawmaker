@@ -127,9 +127,10 @@ def parse_reference(pageobject, getobj=None) -> iamraw.PageLink:
 def parse_label(pageobject, getobj=None) -> iamraw.PageLink:
     try:
         typ = pageobject['Type'].name
+        if typ != ANNOTATION_LABEL:
+            return None
     except KeyError:
         return None
-    assert typ == ANNOTATION_LABEL, typ
     try:
         annotated = pageobject['A']
     except KeyError:
@@ -154,6 +155,8 @@ def parse_link(pageobject) -> iamraw.PageLink:
     #/'GoToR', 'D': [0, /'Fit']}} [0, /'Fit']
     try:
         typ = pageobject['Subtype'].name
+        if typ != 'Link':
+            return None
         assert typ == 'Link'
     except KeyError:
         return None

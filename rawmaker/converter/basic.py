@@ -70,8 +70,8 @@ def flip_object(item, page):
     try:
         item.bbox = iamraw.BoundingBox(*box)
     except AssertionError:
-        utila.error(f'invalid bounding on page {page}: {box}')
-        utila.error(item)
+        utila.debug(f'invalid bounding on page {page}: {box}')
+        utila.debug(item)
     item.x0, item.y0, item.x1, item.y1 = box
     with contextlib.suppress(AttributeError):
         for obj in item._objs:  # pylint:disable=W0212

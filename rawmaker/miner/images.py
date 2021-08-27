@@ -372,6 +372,7 @@ def extention(image) -> str:
         'Default': 'png',
         'FlateDecode': 'png',
         'JBIG2Decode': 'jbig2',
+        'RunLengthDecode':'png',
     }
     try:
         filters = image.stream['Filter']

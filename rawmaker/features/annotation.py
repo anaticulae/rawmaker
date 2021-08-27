@@ -142,7 +142,7 @@ def parse_label(pageobject, getobj=None) -> iamraw.PageLink:
         pagelink = annotated['D']
     except KeyError:
         return None
-    bounds = iamraw.BoundingBox.from_list(pageobject['Rect'])
+    bounds = determine_bounding(pageobject['Rect'])
     pagelink = parse_pagelink(pagelink)
     return iamraw.PageLink(bounds=bounds, goal=pagelink)
 
@@ -164,7 +164,7 @@ def parse_link(pageobject) -> iamraw.PageLink:
         pagelink = pageobject['Dest']
     except KeyError:
         return None
-    bounds = iamraw.BoundingBox.from_list(pageobject['Rect'])
+    bounds = determine_bounding(pageobject['Rect'])
     pagelink = parse_pagelink(pagelink)
     return iamraw.PageLink(bounds=bounds, goal=pagelink)
 
@@ -177,7 +177,7 @@ def parse_external(pageobject, getobj=None) -> iamraw.HyperLink:
     if isinstance(annotated, pdfminer.pdftypes.PDFObjRef):
         # TODO: add layer to automatically convert reference to object.
         annotated = getobj(annotated.objid)
-    bounds = iamraw.BoundingBox.from_list(pageobject['Rect'])
+    bounds = determine_bounding(pageobject['Rect'])
     with contextlib.suppress(KeyError):
         hyperlink = annotated['URI'].decode(utila.UTF8)
         return iamraw.HyperLink(bounds=bounds, goal=hyperlink)
@@ -205,3 +205,9 @@ def parse_pagelink(pagelink):
     else:
         pagelink = str(pagelink)
     return pagelink
+
+
+def determine_bounding(bounding):
+    bounding = utila.rectangle_ensure_bounding(bounding)
+    result = iamraw.BoundingBox.from_list(bounding)
+    return result

@@ -71,19 +71,18 @@ def superfast(
         pagecount = pdfinfo.pages.determine(document)
         pages = utila.make_tuple(pagecount)
     chunks = utila.chunks(pages, size=10)
-
     parameter = config.cmdline()
     todo = []
     for index, chunk in enumerate(chunks):
-        joined_pages = ','.join([str(item) for item in chunk])
+        joined_pages = utila.from_tuple(chunk, separator=',')
         cmd = (f'rawmaker -i {document} -o {result} --prefix {index}'
                f' --text --pages {joined_pages} {parameter}')
         utila.log(cmd)
         todo.append(cmd)
-
+    # run in parallel
     completed = utila.run_parallel(todo, result, worker=12)
     assert completed == utila.SUCCESS, completed
-
+    # merge document
     document = merge_document(result, len(chunks))
     return document
 

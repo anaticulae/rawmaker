@@ -116,12 +116,10 @@ def extract_content(
     if config is None:
         config = rawmaker.parameter.ParsingConfiguration()
     utila.asserts(config, rawmaker.parameter.ParsingConfiguration)
-
     # prepare parser
     device = converter(config=config)
     device.new_document()
     interpreter = pdfminer.pdfinterp.PDFPageInterpreter(device.rsrcmgr, device)
-
     # Processing layout
     create_pages = pdfminer.pdfpage.PDFPage.create_pages
     with utila.SkipCollector(pages) as collector:
@@ -130,7 +128,6 @@ def extract_content(
                 continue
             interpreter.process_page(page)
     result = device.finish_document()
-
     # upgrade page number
     pages = page_selection(result, pages)
     # TODO: REPLACE PAGE WITH ENDLESS ITER AND CHANGE ZIP TO ZIP_LONGEST

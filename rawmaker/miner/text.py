@@ -127,7 +127,7 @@ def render_char(
     except AttributeError:
         # VirtualChar has no `iamraw.BoundingBox`
         bounding = None
-
+    # recive text
     value = item.get_text()
     # controlling chars
     if not bounding:
@@ -136,7 +136,6 @@ def render_char(
         return virtual
     # chars with content
     fontsize = utila.roundme(item.fontsize)
-
     # distance to bottom y-coodinate
     fontrise = utila.roundme(baseline - bounding.y1)
     if math.fabs(fontsize) <= MIN_FONT_RISE:

@@ -64,7 +64,10 @@ def extract_images(
     """
     # ensure that page computation works correct
     if pages:
-        pages = sorted(pages)
+        if isinstance(pages, int):
+            pages = (pages,)
+        else:
+            pages = sorted(pages)
 
     collect = CollectAndMerge(outputfolder)
 

@@ -204,11 +204,16 @@ def group_rectangles(rectangles):
         return []
     # merge neighbors which are huger than bucket size
     result = [list(grouped[0])]
-    for item in grouped[1:]:
-        if utila.near(result[-1][-1][3], item[0][1], diff=5.0):
-            result[-1].extend(item)
+    for current in grouped[1:]:
+        before = result[-1][-1]
+        if utila.near(before[3], current[0][1], diff=5.0):
+            result[-1].extend(current)
+        elif any(utila.rectangles_intersecting(result[-1], item) for item in current): # yapf:disable
+            # verify if any rectangle intersects to detect rectangles
+            # inside each other
+            result[-1].extend(current)
         else:
-            result.append(list(item))
+            result.append(list(current))
     return result
 
 

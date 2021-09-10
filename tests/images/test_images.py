@@ -157,6 +157,7 @@ def test_images_export_document_complete(
 @pytest.mark.parametrize('source, pages, expected', [
     pytest.param(power.BACHELOR090_PDF, (18, 58), 2, id='bachelor90'),
     pytest.param(power.MASTER116_PDF, (2, 3), 2, id='master116'),
+    pytest.param(power.DISS233_PDF, 61, 1, id='diss233'),
 ])
 def test_images_export_x(source, pages, expected, testdir):
     root = testdir.tmpdir

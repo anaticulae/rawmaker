@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v2.25.0
+
+### Feature
+
+* improve image merger (a8fc53b13ea0)
+* add option to pass pages as int (95615e29e384)
+* reduce verbosity (ef36422b4445)
+
+### Fix
+
+* add missing RunLengthDecoder (d341c30cd151)
+* ensure valid annotation bounding (f32c10872381)
+* skip unhandled annotation (dde182a6b8e8)
+* add different encodings (a27a70d5903c)
+* do not dump any python object (1089e81cafef)
+
 ## v2.24.6
 
 ### Fix

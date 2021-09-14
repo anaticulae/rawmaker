@@ -30,14 +30,15 @@ class ParsingConfiguration:
         parameter = []
         for item, value in vars(self).items():
             if item == 'strip':
-                if value is False:
+                if not value:
                     parameter.append('--nostrip')
-            elif isinstance(value, bool):
+                continue
+            if isinstance(value, bool):
                 if value:
                     parameter.append(f'--{item}')
-            else:
-                parameter.append(f'--{item}={value}')
-        return ' '.join(parameter)
+                continue
+            parameter.append(f'--{item}={value}')
+        return utila.from_tuple(parameter)
 
     def laparams(self) -> pdfminer.layout.LAParams:
         result = pdfminer.layout.LAParams(

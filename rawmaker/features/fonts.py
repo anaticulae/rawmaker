@@ -44,7 +44,7 @@ def work(  # pylint:disable=W9015,W0613
     line_margin: float = 0.5,
     line_overlap: float = 0.5,
     word_margin: float = 0.1,
-    nostrip: bool = rawmaker.parameter.STRIP is False,
+    nostrip: bool = not rawmaker.parameter.STRIP,
     detect_vertical: bool = False,
     pages: list = None,
 ) -> typing.Tuple[str, str]:

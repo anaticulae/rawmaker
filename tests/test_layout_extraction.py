@@ -27,7 +27,7 @@ def test_layout_extraction_mine_mini_numbers(strip):
         boxes_flow=1.0,
         char_margin=10.0,
         line_margin=1.0,
-        nostrip=strip is False,
+        nostrip=not strip,
     )
 
     text = serializeraw.load_document(text)

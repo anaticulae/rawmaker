@@ -73,7 +73,7 @@ def test_minining_fonts_rise():
         document = rawmaker.features.extract_content(pdf)
     first_page = document[0]
     no_rise = first_page[0][0][-2]
-    assert no_rise.rise == 0.0, str(no_rise)
+    assert no_rise.rise == 0.0, str(no_rise)  # pylint:disable=C2001
 
 
 def test_mining_increasing_fonts():

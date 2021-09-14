@@ -22,4 +22,4 @@ def test_fontrise_bachelor90_page3(testdir, monkeypatch):
     riseline = loaded[1]
     assert len(riseline.style.content) == 1
     style = riseline.style.content[0]
-    assert style.rise == 0.0
+    assert style.rise == 0.0  # pylint:disable=C2001

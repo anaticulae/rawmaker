@@ -22,9 +22,9 @@ import rawmaker.fonts.parser
 
 PROCESS = 'rawmaker_cleanup'
 DESCRIPTION = """\
-Load PageTextNavigators, figures and tables.
+Load PageTextNavigators, codes, figures and tables.
 
-It removes text which is inside figures and or tables and writes
+It removes text which is inside codes, figures and or tables and writes
 PageTextNavigators afterwards.
 """
 
@@ -98,12 +98,14 @@ def cleanup(  # pylint:disable=R0914
             )
     ptns = ptn_frompath(inpaths, prefix, pages)
     horizontals, lines = lines_frompath(inpaths, prefix, pages)
+    codes = codes_frompath(inpaths, prefix, pages)
     # remove content here
     ptns, horizontals, lines = remove_skip_area(
         ptns,
         horizontals,
         lines,
-        inpaths,
+        codes=codes,
+        inpaths=inpaths,
         pages=pages,
     )
     fontstore = fontstore_frompath(inpaths, prefix, pages)
@@ -133,6 +135,18 @@ def ptn_frompath(inpaths, prefix, pages):
         if ptns:
             return ptns
     return None
+
+
+def codes_frompath(inpaths, prefix, pages):  # pylint:disable=W0613
+    result = []
+    for inpath in inpaths:
+        utila.debug(f'ptn: {inpath}')
+        # TODO: CHANGE LATER: codero__result_result.yaml
+        path = os.path.join(inpath, 'codero__text_text.yaml')
+        if os.path.exists(path):
+            loaded = serializeraw.load_codes(path, pages=pages)
+            result.extend(loaded)
+    return result
 
 
 def lines_frompath(inpaths: list, prefix: str, pages: tuple) -> tuple:
@@ -194,6 +208,7 @@ def remove_skip_area(
     ptns,
     horizontals,
     lines,
+    codes,
     inpaths: list,
     pages: tuple = None,
 ):

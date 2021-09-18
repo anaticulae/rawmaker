@@ -8,6 +8,7 @@
 # =============================================================================
 
 import collections
+import os
 
 import iamraw
 import serializeraw
@@ -25,6 +26,10 @@ def cleanup(  # pylint:disable=R0914
     pages=None,
     backup: bool = False,
 ):
+    if not inpaths:
+        inpaths = [os.getcwd()]
+    if not outpath:
+        outpath = inpaths[0]
     if backup:
         prefixed = f'{prefix}_' if prefix else ''
         raw = f'rawmaker__{prefixed}'

@@ -16,6 +16,8 @@ import serializeraw
 import serializeraw.fonts
 import utila
 
+import rawmaker.cleanup.dump
+import rawmaker.cleanup.load
 import rawmaker.features.fonts
 import rawmaker.fonts.parser
 
@@ -95,9 +97,13 @@ def cleanup(  # pylint:disable=R0914
                 pattern=pattern,
                 rename=rename_backup,
             )
-    ptns = ptn_frompath(inpaths, prefix, pages)
-    horizontals, lines = lines_frompath(inpaths, prefix, pages)
-    codes = codes_frompath(inpaths, prefix, pages)
+    ptns = rawmaker.cleanup.load.ptn_frompath(inpaths, prefix, pages)
+    horizontals, lines = rawmaker.cleanup.load.lines_frompath(
+        inpaths,
+        prefix,
+        pages,
+    )
+    codes = rawmaker.cleanup.load.codes_frompath(inpaths, prefix, pages)
     # remove content here
     ptns, horizontals, lines = remove_skip_area(
         ptns,
@@ -107,7 +113,7 @@ def cleanup(  # pylint:disable=R0914
         inpaths=inpaths,
         pages=pages,
     )
-    fontstore = fontstore_frompath(inpaths, prefix, pages)
+    fontstore = rawmaker.cleanup.load.fontstore_frompath(inpaths, prefix, pages)
     document, textpositions, fontheader, fontcontent = rawmaker.cleanup.dump.dump_ptn(
         ptns,
         fontstore,
@@ -123,87 +129,6 @@ def cleanup(  # pylint:disable=R0914
         prefix=prefix,
         postfix=postfix,
     )
-
-
-def ptn_frompath(inpaths, prefix, pages):
-    for inpath in inpaths:
-        utila.debug(f'ptn: {inpath}')
-        ptns = serializeraw.ptn_frompath(
-            inpath,
-            prefix=prefix,
-            pages=pages,
-            sort=False,
-        )
-        if ptns:
-            return ptns
-    return None
-
-
-def codes_frompath(inpaths, prefix, pages):  # pylint:disable=W0613
-    result = []
-    for inpath in inpaths:
-        utila.debug(f'ptn: {inpath}')
-        # TODO: CHANGE LATER: codero__result_result.yaml
-        path = os.path.join(inpath, 'codero__text_text.yaml')
-        if os.path.exists(path):
-            loaded = serializeraw.load_codes(path, pages=pages)
-            result.extend(loaded)
-    return result
-
-
-def lines_frompath(inpaths: list, prefix: str, pages: tuple) -> tuple:
-    """\
-    Args:
-        inpaths(list): list of possible sources
-        prefix(str): prefix inpath data
-        pages(tuple): selected pages
-    Returns:
-        Filtered horizontals and lines
-
-    Hint: It is only required to write the result file if the source
-    file exists. We have to destingush between non existing, empty
-    source file and empty remove source file.
-    It is enough to have two groups, we only want to know if we must
-    write the empty file.
-    """
-    prefix = ''  # DISABLE PREFIX
-    horizontals, lines = None, None
-    for inpath in inpaths:
-        utila.debug(f'lines: {inpath}')
-        if utila.exists(iamraw.path.horizontals(inpath)):
-            # if utila.exists(iamraw.path.horizontals(inpath, prefix)):
-            # use list, to signal that line source file exists.
-            horizontals = horizontals or []
-            horizontals.extend(
-                serializeraw.load_horizontals(
-                    inpath,
-                    prefix=prefix,
-                    pages=pages,
-                ))
-        if utila.exists(iamraw.path.line(inpath)):
-            # if utila.exists(iamraw.path.line(inpath, prefix)):
-            # use list, to signal that line source file exists.
-            lines = lines or []
-            lines.extend(
-                serializeraw.load_lines(
-                    inpath,
-                    prefix=prefix,
-                    pages=pages,
-                ))
-    return horizontals, lines
-
-
-def fontstore_frompath(inpaths, prefix, pages):
-    for inpath in inpaths:
-        utila.debug(f'fontstore: {inpath}')
-        fontstore = serializeraw.create_fontstore_frompath(
-            inpath,
-            prefix=prefix,
-            pages=pages,
-        )
-        if fontstore:
-            return fontstore
-    return None
 
 
 def remove_skip_area(

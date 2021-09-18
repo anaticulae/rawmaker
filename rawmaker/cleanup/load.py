@@ -32,8 +32,7 @@ def codes_frompath(inpaths, prefix, pages):  # pylint:disable=W0613
     result = []
     for inpath in inpaths:
         utila.debug(f'ptn: {inpath}')
-        # TODO: CHANGE LATER: codero__result_result.yaml
-        path = os.path.join(inpath, 'codero__text_text.yaml')
+        path = os.path.join(inpath, 'codero__result_result.yaml')
         if os.path.exists(path):
             loaded = serializeraw.load_codes(path, pages=pages)
             result.extend(loaded)

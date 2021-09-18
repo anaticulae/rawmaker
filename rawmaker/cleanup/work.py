@@ -150,7 +150,10 @@ def create_invalid_area(images, tables, codes) -> dict:
     for page in tables:
         invalid[page.page].extend([item.bounding for item in page.content])
     for page in codes:
-        invalid[page.page].extend([item.bounding for item in page.content])
+        tokens = utila.flatten([it.tokens_bounding for it in page.content])
+        invalid[page.page].extend(tokens)
+        caption = utila.flatten([it.caption_bounding for it in page.content])
+        invalid[page.page].extend(caption)
     # reduce rectangle count
     result = {
         key: utila.rectangle_merge(value) for key, value in invalid.items()

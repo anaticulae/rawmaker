@@ -13,7 +13,7 @@ import pytest
 import serializeraw
 import utila
 
-import rawmaker.cli_cleanup
+import rawmaker.cli_cleanup.cli
 import tests.cleanup
 
 
@@ -142,6 +142,6 @@ def test_cleanup_backup(testdir, monkeypatch):
     # four backup files written
     backupfiles = utila.file_list(
         testdir.tmpdir,
-        include=rawmaker.cli_cleanup.BACKUP_EXT,
+        include=rawmaker.cli_cleanup.cli.BACKUP_EXT,
     )
     assert len(backupfiles) == 6

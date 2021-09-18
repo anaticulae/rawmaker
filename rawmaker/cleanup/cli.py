@@ -213,7 +213,7 @@ def remove_skip_area(
     pages: tuple = None,
 ):
     images, tables = load_images_tables(inpaths, pages=pages)
-    invalids = create_invalid_area(images, tables)
+    invalids = create_invalid_area(images, tables, codes)
 
     def valid_bounding(bounding, page: int) -> bool:
         try:
@@ -260,11 +260,13 @@ def remove_skip_area(
     return ptns, horizontals, lines
 
 
-def create_invalid_area(images, tables) -> dict:
+def create_invalid_area(images, tables, codes) -> dict:
     invalid = collections.defaultdict(list)
     for page in images:
         invalid[page.page].extend([item.bounding for item in page.content])
     for page in tables:
+        invalid[page.page].extend([item.bounding for item in page.content])
+    for page in codes:
         invalid[page.page].extend([item.bounding for item in page.content])
     # reduce rectangle count
     result = {

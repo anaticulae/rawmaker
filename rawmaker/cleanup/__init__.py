@@ -6,25 +6,3 @@
 # use or distribution is an offensive act against international law and may
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
-
-import functools
-
-import utilatest
-
-import rawmaker
-import rawmaker.cleanup.cli
-
-#pylint: disable=invalid-name
-run = functools.partial(
-    utilatest.run_command,
-    main=rawmaker.cleanup.cli.main,
-    process=rawmaker.cleanup.cli.PROCESS,
-    success=True,
-)
-
-failure = functools.partial(
-    utilatest.run_command,
-    main=rawmaker.cleanup.cli.main,
-    process=rawmaker.cleanup.cli.PROCESS,
-    success=False,
-)

@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.26.0
+
+### Feature
+
+* use codero result as code input (b18ec368aa76)
+* load extracted code from path (ba9f81eb4d27)
+
+### Fix
+
+* use codero bounding to skip invalid elements (b383ba8bc233)
+* use cwd if no inpath/outpath is given (d4281d4571a4)
+
 ## v2.25.0
 
 ### Feature

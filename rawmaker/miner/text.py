@@ -260,17 +260,17 @@ def fix_fontrise(items):
 
     In some cases the layout is extracted with font rises which are not
     necessary. There is a single char without font rise and the other
-    are layouted with different y1 position and a font rise."""
+    are layouted with different y1 position and a font rise.
+    """
     if not items:
         return items
     non_virtual = [
         item for item in items if not isinstance(item, iamraw.VirtualChar)
     ]
-
     rises = [item for item in non_virtual if item.rise]
     if not rises:
+        # no fix is required
         return items
-
     zero, non_zero = utila.partition(
         key=lambda item: utila.near(item.rise, 0.0, diff=0.5),
         items=non_virtual,
@@ -290,7 +290,8 @@ def fix_fontrise(items):
 
 def ensure_leftright(items):
     """Fix layout parser miss detection. Ensure that more left x0
-    coordinates comes before higher x0 coordinate."""
+    coordinates comes before higher x0 coordinate.
+    """
     # TODO: ENSURE TOP TO DOWN, LOOK AT FONT RISE PROBLEM
     # map bounding cause virtual chars has no bounding
     if not items:

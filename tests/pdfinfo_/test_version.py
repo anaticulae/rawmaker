@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import iamraw
 import power
 
 import pdfinfo.version
@@ -15,5 +16,4 @@ import pdfinfo.version
 def test_pdfinfo_parse_version():
     resource = power.DOCU027_PDF
     parsed = pdfinfo.version.parse(resource)
-
-    assert parsed == pdfinfo.version.Version(1, 5), str(parsed)
+    assert parsed == iamraw.PDFVersion(1, 5), str(parsed)

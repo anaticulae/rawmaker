@@ -8,6 +8,7 @@
 # =============================================================================
 
 import power
+import serializeraw
 
 import pdfinfo.data
 
@@ -15,8 +16,8 @@ import pdfinfo.data
 def test_pdfinfo_data_jsonify():
     resource = power.DOCU027_PDF
     info = pdfinfo.data.parse(resource)
-
-    jsoned = pdfinfo.data.dump(info)
+    # dump it
+    jsoned = serializeraw.dump_pdfinfo(info)
     assert isinstance(jsoned, str), str(jsoned)
     assert 'latex' in jsoned
     assert 'version' in jsoned

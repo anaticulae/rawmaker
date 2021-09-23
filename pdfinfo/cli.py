@@ -9,6 +9,7 @@
 
 import os
 
+import serializeraw
 import utila
 import utila.cli
 
@@ -99,7 +100,7 @@ def validate(inpath, outpath, ext='json', strict: bool = False) -> int:
         return pdfinfo.INVALID_PDF
     raw = '{}'
     if parsed is not None:
-        raw = pdfinfo.data.dump(parsed, ext)
+        raw = serializeraw.dump_pdfinfo(parsed, ext)
     if outpath is None:
         # print to stdout
         utila.log(raw)

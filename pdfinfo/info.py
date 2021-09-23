@@ -7,27 +7,18 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import enum
+import iamraw
 
 import rawmaker.reader
 
 
-class Generator(enum.Enum):
-    UNDEFINED = enum.auto()
-    LATEX = enum.auto()
-    MSWORD = enum.auto()
-
-    def __str__(self):
-        return str(self.name).lower()
-
-
-def generator(path: str) -> Generator:
+def generator(path: str) -> iamraw.Generator:
     with rawmaker.reader.read(path) as document:
         try:
             info = document.info[0]
         except IndexError:
             # no editor information provided
-            return Generator.UNDEFINED
+            return iamraw.Generator.UNDEFINED
     result = parse_generator(info)
     return result
 
@@ -42,9 +33,9 @@ def parse_generator(info):
     try:
         producer = str(info['Producer']).lower()
     except KeyError:
-        return Generator.UNDEFINED
+        return iamraw.Generator.UNDEFINED
     if 'latex' in producer or 'tex' in producer:
-        return Generator.LATEX
+        return iamraw.Generator.LATEX
     if 'msword' in producer or 'word' in producer:
-        return Generator.MSWORD
-    return Generator.UNDEFINED
+        return iamraw.Generator.MSWORD
+    return iamraw.Generator.UNDEFINED

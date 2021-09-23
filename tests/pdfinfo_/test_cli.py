@@ -9,13 +9,14 @@
 
 import os
 
+import iamraw
 import power
 import pytest
+import serializeraw
 import utila
 import utilatest
 
 import pdfinfo
-import pdfinfo.data
 import pdfinfo.info
 import pdfinfo.version
 import tests.pdfinfo_
@@ -48,12 +49,12 @@ def test_pdfinfo_run_invalid(command, testdir, monkeypatch):  #pylint: disable=W
 
 def test_pdfinfo_status_valid(testdir, monkeypatch):
     workspace = str(testdir)
-    valid = pdfinfo.data.PdfInfo(
+    valid = iamraw.PDFInfo(
         pages=42,
-        generator=pdfinfo.info.Generator.MSWORD,
-        version=pdfinfo.version.Version(1, 5),
+        generator=iamraw.Generator.MSWORD,
+        version=iamraw.PDFVersion(1, 5),
     )
-    raw = pdfinfo.data.dump(valid)
+    raw = serializeraw.dump_pdfinfo(valid)
     path = os.path.join(workspace, 'pdfinfo.json')
     utila.file_create(path, raw)
 

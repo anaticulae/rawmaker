@@ -7,12 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import collections
-
-Version = collections.namedtuple('Version', 'major minor')
+import iamraw
 
 
-def parse(path: str) -> Version:
+def parse(path: str) -> iamraw.PDFVersion:
     with open(path, mode='rb') as fp:
         loaded = fp.read(8)
         if not loaded[0:5] == b'%PDF-':
@@ -20,4 +18,4 @@ def parse(path: str) -> Version:
         loaded = str(loaded, encoding='ascii')
         major = int(loaded[5])
         minor = int(loaded[7:])
-    return Version(major, minor)
+    return iamraw.PDFVersion(major, minor)

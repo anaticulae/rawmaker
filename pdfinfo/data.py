@@ -7,10 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import dataclasses
-import json
-
-import yaml
+import iamraw
 
 import pdfinfo.info
 import pdfinfo.meta
@@ -18,42 +15,7 @@ import pdfinfo.pages
 import pdfinfo.version
 
 
-@dataclasses.dataclass
-class PdfInfo:
-    pages: int = None
-    generator: pdfinfo.info.Generator = None
-    version: pdfinfo.version.Version = None
-    meta: dict = None
-
-
-# TODO: MOVE TO SERIALIZERAW
-
-
-def dump(info: PdfInfo, ext: str = 'json') -> str:
-    assert ext in ('yaml', 'json'), ext
-    simple = raw(info)
-    if ext == 'yaml':
-        return yaml.dump(simple)
-    if ext == 'json':
-        return json.dumps(simple)
-    return None
-
-
-def raw(info: PdfInfo) -> dict:
-    result = {
-        'pages': info.pages,
-        'generator': str(info.generator),
-        'version': {
-            'major': info.version.major,
-            'minor': info.version.minor,
-        }
-    }
-    if info.meta:
-        result['meta'] = info.meta
-    return result
-
-
-def parse(path: str) -> PdfInfo:
+def parse(path: str) -> iamraw.PDFInfo:
     version = pdfinfo.version.parse(path)
     if not version:
         # invalid file
@@ -61,7 +23,7 @@ def parse(path: str) -> PdfInfo:
     pages = pdfinfo.pages.determine(path)
     generator = pdfinfo.info.generator(path)
     meta = pdfinfo.meta.determine(path)
-    info = PdfInfo(
+    info = iamraw.PDFInfo(
         pages=pages,
         version=version,
         generator=generator,

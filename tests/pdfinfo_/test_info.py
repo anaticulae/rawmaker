@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import iamraw
 import power
 
 import pdfinfo.info
@@ -16,4 +17,4 @@ def test_pdfinfo_info_generator():
     resource = power.DOCU027_PDF
     generator = pdfinfo.info.generator(resource)
 
-    assert generator == pdfinfo.info.Generator.LATEX, str(generator)
+    assert generator == iamraw.Generator.LATEX, str(generator)

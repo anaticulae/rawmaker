@@ -14,6 +14,12 @@ import utila
 
 STRIP = True
 
+ONELINE = pdfminer.layout.LAParams(
+    boxes_flow=1.0,
+    char_margin=100.0,
+    line_margin=0.001,
+)
+
 
 @dataclasses.dataclass
 class ParsingConfiguration:

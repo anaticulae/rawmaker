@@ -14,14 +14,14 @@ Hint: Pay attention to the public API on this file!
 
 import os
 
+# pylint:disable=W0613
 import rawmaker.__patch__
+from rawmaker.parameter import ONELINE
 
 __version__ = '2.26.1'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-
 FEATURE_PATH = os.path.join(ROOT, 'rawmaker/features')
+assert os.path.exists(FEATURE_PATH)
 
 PROCESS = 'rawmaker'
-
-assert os.path.exists(FEATURE_PATH)

@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.26.2
+
+### Feature
+
+* add ONELINE config (21681a6ceebf)
+
 ## v2.26.1
 
 ## v2.26.0

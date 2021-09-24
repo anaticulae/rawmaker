@@ -18,7 +18,7 @@ import os
 import rawmaker.__patch__
 from rawmaker.parameter import ONELINE
 
-__version__ = '2.26.1'
+__version__ = '2.26.2'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 FEATURE_PATH = os.path.join(ROOT, 'rawmaker/features')

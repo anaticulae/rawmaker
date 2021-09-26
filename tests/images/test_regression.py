@@ -16,13 +16,19 @@ import tests
 import tests.resources
 
 
+def extract(source, pages, testdir, monkeypatch) -> list:
+    cmd = f'-i {source} --images --pages={pages}'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    extracted = utila.file_list('rawmaker__images_images', include='png')
+    return extracted
+
+
 @utilatest.longrun
 def test_image_extract_with_pages_offset(testdir, monkeypatch):
     """This test ensures that the image information is stored correctly
     even if only a part of --pages=10:20 is extracted."""
     cmd = f'-i {power.MASTER116_PDF} --images --pages=16:20'
     tests.run(cmd, monkeypatch=monkeypatch)
-
     images = serializeraw.images.load_image_informations_frompath(
         testdir.tmpdir)
     pages = {image.page for image in images}
@@ -35,11 +41,9 @@ def test_render_master75_page0_10_28(monkeypatch, testdir):
     name. Before this fix, these images where ignored cause of the same
     name. After adding the page number to image name, these images are
     extracted correctly."""
-    cmd = f'-i {power.MASTER075_PDF} --pages=0:10,28 --images'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    written = utila.file_list('rawmaker__images_images')
-    expected = 8
-    assert len(written) == expected, str(written)
+    extracted = extract(power.MASTER075_PDF, '0:10,28', testdir, monkeypatch)
+    expected = 4
+    assert len(extracted) == expected, str(extracted)
 
     # ensure to define pages correctly
     images = serializeraw.images.load_image_informations_frompath('.')
@@ -50,11 +54,8 @@ def test_render_master75_page0_10_28(monkeypatch, testdir):
 
 def test_render_master127page32(monkeypatch, testdir):
     """Ensure that multi-line-image is merged correctly."""
-    cmd = f'-i {power.MASTER127_PDF} --pages=32 --images'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    written = utila.file_list('rawmaker__images_images')
-    expected = 2
-    assert len(written) == expected, str(written)
+    extracted = extract(power.MASTER127_PDF, 32, testdir, monkeypatch)
+    assert len(extracted) == 1, str(extracted)
 
 
 def test_skip_huge_image(monkeypatch, testdir, capsys):
@@ -66,15 +67,11 @@ def test_skip_huge_image(monkeypatch, testdir, capsys):
 
 
 def test_image_write_error(monkeypatch, testdir):
-    cmd = f'-i {power.DISS143_PDF} --images --pages=85'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    extracted = utila.file_list('rawmaker__images_images', include='png')
+    extracted = extract(power.DISS143_PDF, 85, testdir, monkeypatch)
     assert len(extracted) == 1
 
 
 def test_image_master31page10(monkeypatch, testdir):
     """Chinese character should be the only image."""
-    cmd = f'-i {power.MASTER031_PDF} --images --pages=10'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    extracted = utila.file_list('rawmaker__images_images', include='png')
+    extracted = extract(power.MASTER031_PDF, 10, testdir, monkeypatch)
     assert len(extracted) == 1

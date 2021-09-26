@@ -12,6 +12,7 @@ import power
 import pytest
 import serializeraw
 import utila
+import utilatest
 
 import rawmaker.cleanup.work
 import tests.cleanup
@@ -53,6 +54,7 @@ def test_cleanup_source_compare_reduction(
     """Ensure that resource is loaded and dumped correctly. This is
     required before we can test that cleanup reduces some data out of
     ptn."""
+    utilatest.fixture_requires(source)
     source = power.link(source)
     utila.copy_content(
         source,
@@ -87,6 +89,7 @@ def test_cleanup_source_compare_reduction(
     assert fontstore_dumped.header == fontstore.header
 
 
+@utilatest.requires(power.BACHELOR051_PDF)
 def test_cleanup_figures(testdir, monkeypatch):
     """Remove text in figure area."""
     source = power.link(power.BACHELOR051_PDF)
@@ -103,6 +106,7 @@ def test_cleanup_figures(testdir, monkeypatch):
     assert len(clean) + 4 == len(before)
 
 
+@utilatest.requires(power.BACHELOR051_PDF)
 def test_cleanup_tables(testdir, monkeypatch):
     """Verify multiple input soruces and tablero cleanup."""
     source = power.link(power.BACHELOR051_PDF)
@@ -132,6 +136,7 @@ def test_cleanup_tables(testdir, monkeypatch):
     assert len(clean) == 42
 
 
+@utilatest.requires(power.BACHELOR051_PDF)
 def test_cleanup_backup(testdir, monkeypatch):
     """Copy source files as backup files(change data type)."""
     source = power.link(power.BACHELOR051_PDF)

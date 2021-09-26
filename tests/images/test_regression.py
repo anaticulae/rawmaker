@@ -7,6 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import os
+
 import power
 import serializeraw.images
 import utila
@@ -19,6 +21,8 @@ import tests.resources
 def extract(source, pages, testdir, monkeypatch) -> list:
     cmd = f'-i {source} --images --pages={pages}'
     tests.run(cmd, monkeypatch=monkeypatch)
+    if not os.path.exists(testdir.tmpdir.join('rawmaker__images_images')):
+        return []
     extracted = utila.file_list('rawmaker__images_images', include='png')
     return extracted
 
@@ -75,3 +79,9 @@ def test_image_master31page10(monkeypatch, testdir):
     """Chinese character should be the only image."""
     extracted = extract(power.MASTER031_PDF, 10, testdir, monkeypatch)
     assert len(extracted) == 1
+
+
+def test_image_master31page4(monkeypatch, testdir):
+    """Do not detect anything as image"""
+    extracted = extract(power.MASTER031_PDF, 4, testdir, monkeypatch)
+    assert not extracted

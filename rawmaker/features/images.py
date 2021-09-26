@@ -67,7 +67,6 @@ def extract_pages(
     # TODO: REPLACE AFTER UPGRADING UTILA
     if outputfolder is None:
         outputfolder = utila.tmpfile(rawmaker.ROOT)
-
     with rawmaker.reader.read(document) as loaded:
         extracted = rawmaker.miner.images.extract_images(
             loaded,

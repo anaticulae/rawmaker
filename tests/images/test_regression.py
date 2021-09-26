@@ -70,3 +70,11 @@ def test_image_write_error(monkeypatch, testdir):
     tests.run(cmd, monkeypatch=monkeypatch)
     extracted = utila.file_list('rawmaker__images_images', include='png')
     assert len(extracted) == 1
+
+
+def test_image_master31page10(monkeypatch, testdir):
+    """Chinese character should be the only image."""
+    cmd = f'-i {power.MASTER031_PDF} --images --pages=10'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    extracted = utila.file_list('rawmaker__images_images', include='png')
+    assert len(extracted) == 1

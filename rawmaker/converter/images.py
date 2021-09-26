@@ -71,7 +71,22 @@ class ImageConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         assert len(images) == 1, str(images)
         # TODO: Investigate with list
         image = images[0]  # pylint:disable=W0212
+        if skipme(image):
+            return
         self.render_result_image(image, pageid)
+
+
+def skipme(image) -> bool:
+    """\
+    Master31Page10 Black/White image is printed under figure caption.
+    """
+    # TODO: INVESTIGATE THIS HACK
+    stream_raw = image.stream.rawdata
+    counted = stream_raw.count(b'\x00')
+    rate = counted / len(stream_raw)
+    if rate >= 0.5:  # TODO: HOLY VALUE
+        return True
+    return False
 
 
 class FastImageInterpreter(pdfminer.pdfinterp.PDFPageInterpreter):

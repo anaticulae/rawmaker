@@ -314,7 +314,7 @@ def image_fromlt(image) -> PIL.Image:
     else:
         try:
             current = PIL.Image.frombytes(mode, size, data)
-        except ValueError as error:
+        except ValueError:
             utila.error(f'could not decode: {image}')
             return None
     # convert to bitmap

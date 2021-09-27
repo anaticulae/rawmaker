@@ -85,3 +85,24 @@ def extract_scaled(resources):
 def validate_scaled(_):  # pylint:disable=W0613
     # disable page number validation
     pass
+
+
+RESOURCES_SHORTEN = [
+    (power.MASTER105_PDF, '86 87'),
+]
+
+
+def extract_shorten(resources):
+    dest = power.generated(folder='shorten')
+    if os.path.exists(dest):
+        return
+    os.makedirs(dest)
+    for source, pages in resources:
+        filename = utila.file_name(source)
+        outpath = os.path.join(dest, f'{filename}.pdf')
+        utila.run(f'pdfcat {source} {pages} > {outpath}')
+
+
+def validate_shorten(_):  # pylint:disable=W0613
+    # disable page number validation
+    pass

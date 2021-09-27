@@ -64,29 +64,25 @@ def extract_images(
     """
     # ensure that page computation works correct
     if pages:
-        if isinstance(pages, int):
-            pages = (pages,)
-        else:
-            pages = sorted(pages)
-
-    collect = CollectAndMerge(outputfolder)
-
+        pages = utila.ensure_tuple(pages)
+        pages = sorted(pages)
     # Processing layout
     content = pdfminer.pdfpage.PDFPage.create_pages(document)
-
+    # setup collector
+    collect = CollectAndMerge(outputfolder)
     firstpage = pages[0] if pages else 0
     interpreter = rawmaker.converter.images.create_fastimageextractor(
         collect.imagereciver,
         firstpage=firstpage,
     )
-
+    # iterate pages
     with utila.SkipCollector(pages) as collector:
         for number, page in enumerate(content):
             if collector.skip(number):
                 continue
             page.pageid = number
             interpreter.process_page(page)
-
+    # determine result
     result = collect.merge_and_write()
     return result
 

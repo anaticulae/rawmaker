@@ -10,6 +10,7 @@
 import os
 
 import power
+import pytest
 import serializeraw.images
 import utila
 import utilatest
@@ -84,4 +85,12 @@ def test_image_master31page10(monkeypatch, testdir):
 def test_image_master31page4(monkeypatch, testdir):
     """Do not detect anything as image"""
     extracted = extract(power.MASTER031_PDF, 4, testdir, monkeypatch)
+    assert not extracted
+
+
+@pytest.mark.skip(reason='investigate bounding behavior')
+def test_image_master105(monkeypatch, testdir):
+    # extracted = extract(power.MASTER105_PDF, '89,90,91', testdir, monkeypatch)
+    path = os.path.join(power.generated('shorten'), 'master105.pdf')
+    extracted = extract(path, ':', testdir, monkeypatch)
     assert not extracted

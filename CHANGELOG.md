@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.26.4
+
+### Fix
+
+* skip very small boxes (621ee3b74cba)
+
 ## v2.26.3
 
 ## v2.26.2

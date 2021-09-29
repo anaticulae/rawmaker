@@ -41,7 +41,12 @@ def test_determine_boxes(linecluster):  # pylint:disable=W0621
     linecluster, _ = linecluster
     result = []
     for index, page in enumerate(linecluster):
-        boxes = rawmaker.features.boxes.determine_pageboxes(page, index)
+        boxes = rawmaker.features.boxes.determine_pageboxes(
+            page,
+            index,
+            rectangle_width_min=25,
+            rectangle_height_min=25,
+        )
         result.extend(boxes.content)
     # single raw box in document, the rest is rect
     assert len(result) == tests.resources.HOW_TO_CPORTING_BOX_COUNT
@@ -101,7 +106,11 @@ def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
 def test_determine_textboxes():
     lines = iamraw.path.line(power.link(power.DOCU009_PDF))
     lines = serializeraw.load_lines(lines)
-    boxes = rawmaker.features.boxes.determine_boxes(lines)
+    boxes = rawmaker.features.boxes.determine_boxes(
+        lines,
+        rectangle_width_min=25,
+        rectangle_height_min=25,
+    )
     # flatten boxes to compute box count of document
     boxes = [page.content for page in boxes]
     count = sum([len(item) for item in boxes])

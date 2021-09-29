@@ -10,6 +10,7 @@
 =====
 """
 
+import functools
 import operator
 import typing
 
@@ -19,6 +20,8 @@ import serializeraw
 import utila
 
 MAX_ENDING_DISTANCE = 3  # TODO: HOLY VALUE
+RECTANGLE_WIDTH_MIN = 50.0  # TODO: HOLY VALUE
+RECTANGLE_HEIGHT_MIN = 50.0
 
 
 def work(lines: str, pages: tuple) -> str:
@@ -37,8 +40,17 @@ def work(lines: str, pages: tuple) -> str:
     return dumped_boxes
 
 
-def determine_boxes(lines):
-    boxes = determine_clusteritem(lines, determine_pageboxes)
+def determine_boxes(
+    lines,
+    rectangle_width_min=RECTANGLE_WIDTH_MIN,
+    rectangle_height_min=RECTANGLE_HEIGHT_MIN,
+):
+    collect = functools.partial(
+        determine_pageboxes,
+        rectangle_width_min=rectangle_width_min,
+        rectangle_height_min=rectangle_height_min,
+    )
+    boxes = determine_clusteritem(lines, collect)
     return boxes
 
 
@@ -64,18 +76,25 @@ def determine_clusteritem(
 def determine_pageboxes(
     clusters: typing.List[pdfminer.layout.LTLine],
     page: int,
+    rectangle_width_min=RECTANGLE_WIDTH_MIN,
+    rectangle_height_min=RECTANGLE_HEIGHT_MIN,
 ) -> iamraw.PageContentBoxes:
     result = []
     for cluster in clusters:
         count = len(cluster)
         if count != 4:
             continue
-
         x0 = min([line[0] for line in cluster] + [line[2] for line in cluster])
         x1 = max([line[0] for line in cluster] + [line[2] for line in cluster])
         y0 = min([line[1] for line in cluster] + [line[3] for line in cluster])
         y1 = max([line[1] for line in cluster] + [line[3] for line in cluster])
-
+        width, height = x1 - x0, y1 - y0
+        if width < rectangle_width_min:
+            # small boxes are mostly a result of bad parsed figures or
+            # tables, we do not want them.
+            continue
+        if height < rectangle_height_min:
+            continue
         box = iamraw.Box(box=iamraw.BoundingBox(x0, y0, x1, y1))
         result.append(box)
         # ensure to sort items top to bottom and left to right
@@ -87,7 +106,6 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
     # TODO: REPLACE THIS CODE
     if not items:
         return []
-
     # a single element is a cluster
     result = [[item] for item in items]
 

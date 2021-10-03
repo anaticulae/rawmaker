@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.26.5
+
+### Feature
+
+* add default image dpi (5f2232058e39)
+
 ## v2.26.4
 
 ### Fix

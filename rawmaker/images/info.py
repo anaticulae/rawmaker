@@ -11,6 +11,8 @@ import iamraw
 import PIL.Image
 import utila
 
+DEFAULT_DPI = (96, 96)
+
 
 def imageinfo(path: str, page: int, bounding: tuple) -> iamraw.ImageInformation:
     assert isinstance(bounding, (iamraw.BoundingBox, tuple)), type(bounding)
@@ -21,8 +23,8 @@ def imageinfo(path: str, page: int, bounding: tuple) -> iamraw.ImageInformation:
         utila.error(err)
         return None
     width, height = image.size
-    dpi = image.info.get('dpi', None)
-
+    # add default DPI to distinguish images and figures
+    dpi = image.info.get('dpi', DEFAULT_DPI)
     result = iamraw.ImageInformation(
         width=width,
         height=height,

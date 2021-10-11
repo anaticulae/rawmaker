@@ -214,13 +214,24 @@ def accept_figure_as_line(figure: pdfminer.layout.LTFigure) -> bool:
 
 def accept_curve_as_line(curve: pdfminer.layout.LTCurve) -> bool:
     pts = curve.pts
+    if not curve.linewidth and not curve.fill:
+        # invisible line
+        return False
+    if curve.stroke:
+        if curve.stroking_color is None and curve.non_stroking_color is None:
+            # TODO: DONT KNOW WHY
+            return False
+    if curve.fill:
+        # polygon?
+        if curve.height < 5.0 or curve.width < 5.0:
+            return True
     if len(pts) == 2:
         # start and end point
         return True
     # more than two points in a row, check if point are on a line
     # [(437.04645, 259.38056), (437.04645, 293.26655), (437.04645, 269.60483999999997)]
     items = [(*first, *second) for first, second in zip(pts[:-1], pts[1:])]
-    merged = utila.merge_lines(items)
+    merged = utila.merge_lines(items, diff=1.5)
     if len(merged) == 1:
         # all lines in a row
         return True

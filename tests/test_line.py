@@ -74,3 +74,11 @@ def test_curve_lines_bachelor90_page39():
         lines = rawmaker.features.line.determine_lines(pdf, pages=39)
     lines = utila.flatten([item.content for item in lines])
     assert len(lines) == 8
+
+
+def test_lines_master100page29():
+    """Ignore splined lines as part of a figure."""
+    with rawmaker.reader.read(power.MASTER110_PDF) as pdf:
+        lines = rawmaker.features.line.determine_lines(pdf, pages=29)
+    lines = utila.flatten_content(lines)
+    assert len(lines) == 12

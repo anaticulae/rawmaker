@@ -61,7 +61,7 @@ def test_line_dump_load():
     assert loaded == content_only
 
 
-def test_line_merge_horizontals_bachelor90(testdir):
+def test_line_merge_horizontals_bachelor90():
     pages = (13, 14)
     with rawmaker.reader.read(power.BACHELOR090_PDF) as pdf:
         lines = rawmaker.features.line.determine_lines(pdf, pages=pages)
@@ -69,7 +69,7 @@ def test_line_merge_horizontals_bachelor90(testdir):
     assert len(lines) == 2
 
 
-def test_curve_lines_bachelor90_page39(testdir):
+def test_curve_lines_bachelor90_page39():
     with rawmaker.reader.read(power.BACHELOR090_PDF) as pdf:
         lines = rawmaker.features.line.determine_lines(pdf, pages=39)
     lines = utila.flatten([item.content for item in lines])

@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.26.6
+
+### Fix
+
+* decrease tolerance to avoid detecting spline as line (92911494848e)
+
 ## v2.26.5
 
 ### Feature

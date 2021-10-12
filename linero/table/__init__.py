@@ -9,8 +9,8 @@
 
 import configo
 
-TABLE_HORIZONTAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=4.0).value
-TABLE_VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=4.0).value
+TABLE_HORIZONTAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=4.0)
+TABLE_VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=4.0)
 
 # tables are buld ouf long lines. The average line length is used to
 # exclude figures etc.

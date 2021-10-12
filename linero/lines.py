@@ -12,9 +12,9 @@ import statistics
 import configo
 import utila
 
-HORIZONTAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=0.01).value
+HORIZONTAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=0.01)
 
-VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=0.01).value
+VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=0.01)
 
 
 def horizontal(item: tuple, maxdiff=HORIZONTAL_DIFF_MAX) -> bool:

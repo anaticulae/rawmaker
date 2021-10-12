@@ -29,11 +29,11 @@ import utila
 import rawmaker.reader
 
 # maximal difference in y-component
-HORIZONTAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=2.0).value
+HORIZONTAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=2.0)
 # maximal difference in x-component
-VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=2.0).value
+VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=2.0)
 # minimal number of minus signs which build a horizontal line
-REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(default=40).value
+REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(default=40)
 
 
 def work(document: str, annotation: str, pages: tuple = None) -> str:

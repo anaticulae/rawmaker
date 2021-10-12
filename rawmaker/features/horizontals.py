@@ -37,9 +37,9 @@ import rawmaker.reader
 LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]
 
 # minimal length of a horizontal line
-HORIZONTAL_WIDTH_MIN = configo.HV_FLOAT(default=0.2).value
+HORIZONTAL_WIDTH_MIN = configo.HV_FLOAT(default=0.2)
 # maximal difference in x-component
-HORIZONTAL_VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=5.0).value
+HORIZONTAL_VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=5.0)
 
 
 def work(lines: str, pages: tuple) -> str:

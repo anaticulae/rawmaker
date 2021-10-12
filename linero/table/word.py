@@ -16,11 +16,11 @@ import linero.lines
 import linero.table
 
 # a table must have at least this amount of lines
-TABLE_MIN_LINE_COUNT = configo.HV_INT_PLUS(default=10)
+TABLE_LINE_COUNT_MIN = configo.HV_INT_PLUS(default=10)
 
 # tables are build out of vertical and horizontal lines, but only a few
 # cross lines.
-TABLE_MIN_HORIZONTAL_VERTICAL_LINE = configo.HV_PERCENT_PLUS(default=0.9)
+TABLE_HORIZONTAL_VERTICAL_LINE_MIN = configo.HV_PERCENT_PLUS(default=0.9)
 
 
 @utila.profile('strategy:word')
@@ -50,13 +50,13 @@ def judge_tables(grouped):
     for page, clusters in grouped:
         pageresult = iamraw.PageContentTableBounding(page=page)
         for item in clusters:
-            if len(item) < TABLE_MIN_LINE_COUNT:
+            if len(item) < TABLE_LINE_COUNT_MIN:
                 continue
             percentage = linero.lines.horiverti_percentage(item)
-            if percentage < TABLE_MIN_HORIZONTAL_VERTICAL_LINE:
+            if percentage < TABLE_HORIZONTAL_VERTICAL_LINE_MIN:
                 continue
             avg = linero.lines.length_avg(item)
-            if avg < linero.table.TABLE_MIN_AVG_LINE_LENGTH:
+            if avg < linero.table.TABLE_LINE_LENGTH_AVG_MIN:
                 continue
             bounding = utila.rectangle_max(item)
             pageresult.append(

@@ -14,9 +14,9 @@ import utila
 import linero.lines
 import linero.table
 
-TABLE_MIN_HEIGHT = 50  # TODO: HOLY VALUE
+TABLE_HEIGHT_MIN = 50  # TODO: HOLY VALUE
 # TODO: USE TABLE APROACH
-MAX_SINGLE_LINE_QUOTE = 0.4  # TODO: HOLY VALUE
+SINGLE_LINE_QUOTE_MAX = 0.4  # TODO: HOLY VALUE
 
 TABLE_MERGE_DISTANCE = 20  # TODO: HOLY VALUE
 
@@ -26,7 +26,7 @@ def valid_table(bounding, navigator) -> bool:
     utila.debug(f'validate table: {bounding} on page {navigator.page}')
 
     height = utila.roundme(bottom - top)
-    if height < TABLE_MIN_HEIGHT:
+    if height < TABLE_HEIGHT_MIN:
         # remove to small tables
         utila.debug(f'table to small: {height}')
         return False
@@ -48,7 +48,7 @@ def valid_table(bounding, navigator) -> bool:
     singles = len([item for item in clustered if len(item) == 1])
     single_quote = utila.roundme(singles / len(clustered))
 
-    if singles >= 2 and single_quote > MAX_SINGLE_LINE_QUOTE:
+    if singles >= 2 and single_quote > SINGLE_LINE_QUOTE_MAX:
         # invalid table content
         utila.debug(f'single quote: {single_quote}')
         return False
@@ -104,7 +104,7 @@ def determine_verticals(lines):
     result = [
         item for item in lines if linero.lines.vertical(
             item,
-            maxdiff=linero.table.TABLE_VERTICAL_MAX_DIFF,
+            maxdiff=linero.table.TABLE_VERTICAL_DIFF_MAX,
         )
     ]
     return result
@@ -114,7 +114,7 @@ def determine_horizontals(lines):
     result = [
         item for item in lines if linero.lines.horizontal(
             item,
-            maxdiff=linero.table.TABLE_HORIZONTAL_MAX_DIFF,
+            maxdiff=linero.table.TABLE_HORIZONTAL_DIFF_MAX,
         )
     ]
     return result

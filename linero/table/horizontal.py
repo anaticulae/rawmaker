@@ -53,7 +53,7 @@ def cluster_page(navigator, lines) -> iamraw.TableBoundings:
     horizontals = [
         item for item in lines if linero.lines.horizontal(
             item,
-            maxdiff=linero.table.TABLE_HORIZONTAL_MAX_DIFF,
+            maxdiff=linero.table.TABLE_HORIZONTAL_DIFF_MAX,
         )
     ]
 

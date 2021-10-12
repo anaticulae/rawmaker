@@ -13,7 +13,7 @@ import utila
 import rawmaker.text.chars
 import rawmaker.text.data
 
-MAX_DIFF = configo.HolyTable(
+DIFF_MAX = configo.HolyTable(
     items=[
         (6, 1.0),
         (12, 1.0),
@@ -31,7 +31,7 @@ def parses(
     source: str,
     pages: tuple,
     word_length_min: int = 1,
-    difftable: configo.HolyTable = MAX_DIFF,
+    difftable: configo.HolyTable = DIFF_MAX,
 ) -> rawmaker.text.data.WordBoxPages:
     extracted = rawmaker.text.chars.extract_chars(source, pages)
     pages = [
@@ -52,7 +52,7 @@ def parses(
 def extract_page(
     page,
     word_length_min: int = 1,
-    difftable: configo.HolyTable = MAX_DIFF,
+    difftable: configo.HolyTable = DIFF_MAX,
 ) -> rawmaker.text.data.PageLines:
     # remove white space
     page = [item for item in page if item.get_text().strip()]

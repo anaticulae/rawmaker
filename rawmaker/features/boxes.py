@@ -19,7 +19,7 @@ import pdfminer.layout
 import serializeraw
 import utila
 
-MAX_ENDING_DISTANCE = 3  # TODO: HOLY VALUE
+ENDING_DISTANCE_MAX = 3  # TODO: HOLY VALUE
 RECTANGLE_WIDTH_MIN = 50.0  # TODO: HOLY VALUE
 RECTANGLE_HEIGHT_MIN = 50.0
 
@@ -116,7 +116,7 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
                     if utila.intersecting_ending(  # pylint:disable=E1101
                             clusteritem,
                             test,
-                            tol=MAX_ENDING_DISTANCE,
+                            tol=ENDING_DISTANCE_MAX,
                     ):
                         return clusterindex
         return None

@@ -29,9 +29,9 @@ import utila
 import rawmaker.reader
 
 # maximal difference in y-component
-HORIZONTAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=2.0).value
+HORIZONTAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=2.0).value
 # maximal difference in x-component
-VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=2.0).value
+VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=2.0).value
 # minimal number of minus signs which build a horizontal line
 REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(default=40).value
 
@@ -179,8 +179,8 @@ def accept_ltrect(item: pdfminer.layout.LTRect):
 
 def accept_ltline(
     item: pdfminer.layout.LTLine,
-    vertical_max_diff=VERTICAL_MAX_DIFF,
-    horizontal_max_diff=HORIZONTAL_MAX_DIFF,
+    vertical_max_diff=VERTICAL_DIFF_MAX,
+    horizontal_max_diff=HORIZONTAL_DIFF_MAX,
 ) -> bool:
     """Accept horizontal or vertical lines
 

@@ -37,9 +37,9 @@ import rawmaker.reader
 LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]
 
 # minimal length of a horizontal line
-HORIZONTAL_MIN_WIDTH = configo.HV_FLOAT(default=0.2).value
+HORIZONTAL_WIDTH_MIN = configo.HV_FLOAT(default=0.2).value
 # maximal difference in x-component
-HORIZONTAL_VERTICAL_MAX_DIFF = configo.HV_FLOAT_PLUS(default=5.0).value
+HORIZONTAL_VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=5.0).value
 
 
 def work(lines: str, pages: tuple) -> str:
@@ -73,8 +73,8 @@ def determine_pagehorizontals(
     page: int,
     *,
     page_width: float,
-    vertical_maxerror: float = HORIZONTAL_VERTICAL_MAX_DIFF,
-    horizontal_minwidth: float = HORIZONTAL_MIN_WIDTH,
+    vertical_maxerror: float = HORIZONTAL_VERTICAL_DIFF_MAX,
+    horizontal_minwidth: float = HORIZONTAL_WIDTH_MIN,
 ) -> iamraw.PageContentHorizontals:
     """Collect single line which are expanded horizontal
 

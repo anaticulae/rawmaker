@@ -16,11 +16,11 @@ import linero.lines
 import linero.table
 
 # a table must have at least this amount of lines
-TABLE_MIN_LINE_COUNT = configo.HV_INT_PLUS(10)
+TABLE_MIN_LINE_COUNT = configo.HV_INT_PLUS(default=10)
 
 # tables are build out of vertical and horizontal lines, but only a few
 # cross lines.
-TABLE_MIN_HORIZONTAL_VERTICAL_LINE = configo.HV_PERCENT_PLUS(0.9)
+TABLE_MIN_HORIZONTAL_VERTICAL_LINE = configo.HV_PERCENT_PLUS(default=0.9)
 
 
 @utila.profile('strategy:word')

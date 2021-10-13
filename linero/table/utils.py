@@ -16,11 +16,11 @@ import linero.lines
 import linero.table
 
 # min height of a table
-TABLE_HEIGHT_MIN = configo.HV_INT_PLUS(default=50.0)
+TABLE_HEIGHT_MIN = configo.HV_INT_PLUS(default=50)
 # maximum numbers of single rectangles in a table
 SINGLE_LINE_QUOTE_MAX = configo.HV_PERCENT_PLUS(default=40.0)
 # merge two tables if y-distance is smaller than
-TABLE_MERGE_DISTANCE = configo.HV_INT_PLUS(default=20.0)
+TABLE_MERGE_DISTANCE = configo.HV_INT_PLUS(default=20)
 # group two horizontals if x-distance is smaller than
 HORIZONTALS_XDIFF_MAX = configo.HV_FLOAT_PLUS(default=30.0)
 

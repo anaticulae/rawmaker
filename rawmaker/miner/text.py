@@ -30,7 +30,7 @@ import rawmaker.parameter
 import rawmaker.patch.ltchar
 
 # all rises lower this threshold are treated as noise, therefore zero.
-FONT_RISE_MIN = configo.HV_INT_PLUS(default=0.05)
+FONT_RISE_MIN = configo.HV_FLOAT_PLUS(default=0.05)
 
 
 class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):

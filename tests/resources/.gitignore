@@ -1,2 +1,3 @@
 # ignore generated test resource
 *.pdf
+*.hv

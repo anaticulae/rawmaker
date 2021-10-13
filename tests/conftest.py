@@ -9,6 +9,7 @@
 
 import os
 
+import configo
 import genex
 import power
 import pytest
@@ -42,6 +43,7 @@ RESOURCES = [
 
 @pytest.mark.usefixtures('session')
 def pytest_sessionstart():
+    setup_configo()
     power.run(tests.resources.REQUIRED_RESOURCES)
 
 
@@ -106,3 +108,21 @@ def extract_shorten(resources):
 def validate_shorten(_):  # pylint:disable=W0613
     # disable page number validation
     pass
+
+
+CONFIGO = os.path.join(rawmaker.ROOT, 'tests/resources/configo')
+
+NAMES = ['rawmaker']
+
+
+def setup_configo():
+    os.makedirs(CONFIGO, exist_ok=True)
+    for name in NAMES:
+        config = os.path.join(CONFIGO, f'{name}.hv')
+        if not os.path.exists(config):
+            utila.log(f'generate hv config: {name}')
+            source = os.path.join(rawmaker.ROOT, name)
+            utila.run(f'configo --generate -i {source} >> {config}')
+    configo.init(CONFIGO)
+    for name in NAMES:
+        configo.load(name)

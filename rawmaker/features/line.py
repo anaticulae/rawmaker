@@ -238,18 +238,25 @@ def accept_curve_as_line(curve: pdfminer.layout.LTCurve) -> bool:
     return False
 
 
+# horizontal line which is rendered as a figure
+HORIZONTAL_FIGURE_LINE_WIDTH_MIN = configo.HV_FLOAT_PLUS(default=350.0)
+# the object have to be more width than height with this ratio
+HORIZONTAL_FIGURE_LINE_RATIO_MIN = configo.HV_FLOAT_PLUS(default=45.0)
+
+
 def figure_special_line(figure: pdfminer.layout.LTFigure) -> bool:
     """Detect special line and update figure box if figure is special line."""
+    # TODO: THIS IS ONLY A HORIZONTAL?
     # EXAMPLE: MASTER155
     #  'width': 413.96, 'height': 8.54
     # TODO: ANALYZE IMAGE
     image = figure._objs[0]  # pylint:disable=W0212
-    height = image.bbox[3] - image.bbox[1]
-    width = image.bbox[2] - image.bbox[0]
+    height = utila.rectangle_height(image.bbox)
+    width = utila.rectangle_width(image.bbox)
     ratio = width / height
-    if width <= 350:  # TODO: HOLY VALUE
+    if width <= HORIZONTAL_FIGURE_LINE_WIDTH_MIN:
         return False
-    if ratio <= 45.0:  # TODO: HOLY VALUE
+    if ratio <= HORIZONTAL_FIGURE_LINE_RATIO_MIN:
         return False
     # adjust bounding of figure to middle line
     # TODO: USE IMAGE INFORMATION

@@ -20,7 +20,7 @@ TABLE_LINE_COUNT_MIN = configo.HV_INT_PLUS(default=10)
 
 # tables are build out of vertical and horizontal lines, but only a few
 # cross lines.
-TABLE_HORIZONTAL_VERTICAL_LINE_MIN = configo.HV_PERCENT_PLUS(default=0.9)
+TABLE_HORIZONTAL_VERTICAL_LINE_MIN = configo.HV_PERCENT_PLUS(default=90.0)
 
 
 @utila.profile('strategy:word')

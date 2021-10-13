@@ -9,28 +9,30 @@
 
 import math
 
+import configo
 import utila
 
 import linero.lines
 import linero.table
 
-TABLE_HEIGHT_MIN = 50  # TODO: HOLY VALUE
-# TODO: USE TABLE APROACH
-SINGLE_LINE_QUOTE_MAX = 0.4  # TODO: HOLY VALUE
-
-TABLE_MERGE_DISTANCE = 20  # TODO: HOLY VALUE
+# min height of a table
+TABLE_HEIGHT_MIN = configo.HV_INT_PLUS(default=50.0)
+# maximum numbers of single rectangles in a table
+SINGLE_LINE_QUOTE_MAX = configo.HV_PERCENT_PLUS(default=40.0)
+# merge two tables if y-distance is smaller than
+TABLE_MERGE_DISTANCE = configo.HV_INT_PLUS(default=20.0)
+# group two horizontals if x-distance is smaller than
+HORIZONTALS_XDIFF_MAX = configo.HV_FLOAT_PLUS(default=30.0)
 
 
 def valid_table(bounding, navigator) -> bool:
     top, bottom = bounding[1], bounding[3]
     utila.debug(f'validate table: {bounding} on page {navigator.page}')
-
     height = utila.roundme(bottom - top)
     if height < TABLE_HEIGHT_MIN:
         # remove to small tables
         utila.debug(f'table to small: {height}')
         return False
-
     table_content = navigator.between(
         top / navigator.height,
         bottom / navigator.height,
@@ -39,7 +41,6 @@ def valid_table(bounding, navigator) -> bool:
         # no content in table
         utila.debug('no table content')
         return False
-
     boundings = [item.bounding for item in table_content]
     clustered = utila.same_line_cluster(
         boundings,
@@ -71,7 +72,10 @@ def merge_tables(boundings):
     return result
 
 
-def group_horizontals(items, xdiff: float = 30.0):  # TODO: HOLY VALUE
+def group_horizontals(
+    items,
+    xdiff: float = HORIZONTALS_XDIFF_MAX,
+):
     """\
     >>> group_horizontals([(100, 50, 500, 50),
     ...                    (98, 150, 510, 150),

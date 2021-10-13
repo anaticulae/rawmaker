@@ -14,14 +14,18 @@ import functools
 import operator
 import typing
 
+import configo
 import iamraw
 import pdfminer.layout
 import serializeraw
 import utila
 
-ENDING_DISTANCE_MAX = 3  # TODO: HOLY VALUE
-RECTANGLE_WIDTH_MIN = 50.0  # TODO: HOLY VALUE
-RECTANGLE_HEIGHT_MIN = 50.0
+# width of box
+RECTANGLE_WIDTH_MIN = configo.HV_FLOAT_PLUS(default=50.0)
+# height of box
+RECTANGLE_HEIGHT_MIN = configo.HV_FLOAT_PLUS(default=50.0)
+# distance of two merging boxes/rectangles
+ENDING_DISTANCE_MAX = configo.HV_FLOAT_PLUS(default=3)
 
 
 def work(lines: str, pages: tuple) -> str:
@@ -113,7 +117,7 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
         for clusterindex, cluster in enumerate(result):
             for clusteritem in cluster:
                 for test in current:
-                    if utila.intersecting_ending(  # pylint:disable=E1101
+                    if utila.intersecting_ending(
                             clusteritem,
                             test,
                             tol=ENDING_DISTANCE_MAX,

@@ -18,6 +18,9 @@ import rawmaker.features
 import rawmaker.miner.char
 import rawmaker.reader
 
+# two chars differ less than this to be merged to the same line
+CHAR_SAME_LINE_DIFF_MAX = configo.HV_FLOAT_PLUS(default=10.0)
+
 
 def work(source: str, pages: tuple = None) -> typing.Tuple[str, str]:
     wordspaces, words = extract(source, pages=pages)
@@ -110,8 +113,8 @@ def diffme(fontsize: float) -> tuple:
 
 
 def sameline(
-        chars,
-        diff_max=10.0,  # TODO: HOLY VALUE
+    chars,
+    diff_max=CHAR_SAME_LINE_DIFF_MAX,
 ):
     # sort by x0
     chars = sorted(chars, key=lambda x: x.bbox[0])
@@ -121,7 +124,8 @@ def sameline(
     clusterd = utila.same_line_cluster(
         chars,
         min_elements=1,
-        max_diff=diff_max,
+        max_diff=diff_max.
+        value,  # TODO: FIX ACCESS LATER, SEE RUNTIME PROBLEM IN NEAR
         matcher=lambda x: x.bbox[3],
     )
     # sort top down

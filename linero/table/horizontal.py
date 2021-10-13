@@ -10,6 +10,7 @@
 import functools
 import operator
 
+import configo
 import iamraw
 import utila
 
@@ -17,6 +18,9 @@ import linero.lines
 import linero.table
 import linero.table.utils
 import linero.utils
+
+# maximum numbers of single rectangles in a table
+SINGLE_LINE_B_QUOTE_MAX = configo.HV_PERCENT_PLUS(default=40.0)
 
 
 @utila.profile('strategy:horizontal')
@@ -56,14 +60,11 @@ def cluster_page(navigator, lines) -> iamraw.TableBoundings:
             maxdiff=linero.table.TABLE_HORIZONTAL_DIFF_MAX,
         )
     ]
-
     if len(horizontals) <= 2:
         # TODO: SINGLE LINE TABLE?
         return []
-
     boundings = [item.bounding for item in navigator]
     boundings = linero.utils.sort_leftright_topdown(boundings)
-
     result = []
     grouped_horizontals = linero.table.utils.group_horizontals(horizontals)
     for group in grouped_horizontals:
@@ -74,29 +75,23 @@ def cluster_page(navigator, lines) -> iamraw.TableBoundings:
             group,
             min_elements=2,
         )
-
         single_table = extract_potential_table(
             boundings,
             group,
             min_elements=1,
         )
-
         tables = double_table
         if len(single_table) > len(double_table):
             tables = single_table
-
         tables = [
             # judge tables
             item
             for item in tables
             if linero.table.utils.valid_table(item, navigator)
         ]
-
         # merge connected tables
         tables = linero.table.utils.merge_tables(tables)
-
         result.extend(tables)
-
     # TODO: ADD LINES
     result = [iamraw.TableBounding(bounding=item) for item in result]
     return result
@@ -107,16 +102,12 @@ def extract_potential_table(boundings, horizontals, min_elements=2):
         boundings,
         min_elements=min_elements,
     )
-
     if not clustered:
         return []
-
     singles = [item for item in clustered if len(item) == 1]
     singlequote = len(singles) / len(boundings)
-
-    if singlequote > 0.4:  # TODO: HOLY VALUE
+    if singlequote > SINGLE_LINE_B_QUOTE_MAX:
         return []
-
     buckets = utila.Buckets(
         horizontals,
         selector=operator.itemgetter(3),  # y1
@@ -124,10 +115,8 @@ def extract_potential_table(boundings, horizontals, min_elements=2):
     for cluster in clustered:
         for item in cluster:
             buckets.add(item)
-
     merged = [index if item else None for index, item in enumerate(buckets)]
     merged = utila.groupby_none(merged)
-
     tables = []
     for group in merged:
         if len(group) < 2:

@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.27.0
+
+### Feature
+
+* enable live holy values (810c8cf25789)
+
+### Fix
+
+* fix holy value data type (e791b3d369db)
+* add default var names (8a36e328f397)
+
 ## v2.26.6
 
 ### Fix

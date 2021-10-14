@@ -21,7 +21,4 @@ from rawmaker.parameter import ONELINE
 __version__ = '2.26.6'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-FEATURE_PATH = os.path.join(ROOT, 'rawmaker/features')
-assert os.path.exists(FEATURE_PATH)
-
 PROCESS = 'rawmaker'

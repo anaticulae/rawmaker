@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.27.1
+
+### Feature
+
+* use rawmaker holy values if given (63d2175bf577)
+
 ## v2.27.0
 
 ### Feature

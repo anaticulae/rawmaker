@@ -445,7 +445,9 @@ def split_container(
     grouped = [[]]
     for line in item:
         split = not line.get_text().strip() and strip
-        vertical_change = vertical(grouped[-1]) != vertical(line) if grouped[-1] else False # yapf:disable
+        vertical_change = False
+        if grouped[-1]:
+            vertical_change = vertical(grouped[-1]) != vertical(line)
         if split or vertical_change:
             grouped.append([])
         else:
@@ -577,10 +579,8 @@ def ensure_bounding(textcontainer: iamraw.TextContainer):
     indexed = [[0]]
     for index, item in enumerate(textcontainer[1:], start=1):
         before = textcontainer[indexed[-1][0]].box
-        current = item.box
-
-        if (utila.near(before[0], current[0]) and
-                utila.near(before[2], current[2])):
+        cur = item.box
+        if (utila.near(before[0], cur[0]) and utila.near(before[2], cur[2])):
             indexed[-1].append(index)
         else:
             indexed.append([index])

@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.27.2
+
+### Feature
+
+* use holy values (bfc3a1bfdb37)
+
+### Fix
+
+* skip very long font rises (9a9b0b325b5c)
+
 ## v2.27.1
 
 ### Feature

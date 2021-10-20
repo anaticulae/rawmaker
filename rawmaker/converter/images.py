@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import configo
 import pdfminer.converter
 import pdfminer.image
 import pdfminer.layout
@@ -76,6 +77,9 @@ class ImageConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         self.render_result_image(image, pageid)
 
 
+SKIPME_RATE_MIN = configo.HV_PERCENT_PLUS(default=50.0)
+
+
 def skipme(image) -> bool:
     """\
     Master31Page10 Black/White image is printed under figure caption.
@@ -84,7 +88,7 @@ def skipme(image) -> bool:
     stream_raw = image.stream.rawdata
     counted = stream_raw.count(b'\x00')
     rate = counted / len(stream_raw)
-    if rate >= 0.5:  # TODO: HOLY VALUE
+    if rate >= SKIPME_RATE_MIN:
         return True
     return False
 

@@ -402,8 +402,6 @@ def merge_small_whitespaces(items):
             continue
         if before_x0 <= after_x0 <= before_x1:
             # ensure to overlap and not merge hthan required
-            # TODO: is 0.01 required?
-            # if utila.near(before_x1, after_x0, diff=2.5):  # TODO: HOLY VALUE
             # remove unnecessary virtual char
             continue
         # add required virtual char
@@ -651,7 +649,6 @@ def merge_neighbors(
     for item in children[1:]:
         before = result[-1]
         # TODO: MAKE THIS SIZE DEPENDENT
-        # TODO: HOLY VALUE
         ynear = utila.near(item.box[3], before.box[3], diff=ydiff)
         xnear = utila.near(item.box[0], before.box[2], diff=xdiff)
         if ynear and xnear:

@@ -30,7 +30,9 @@ import rawmaker.parameter
 import rawmaker.patch.ltchar
 
 # all rises lower this threshold are treated as noise, therefore zero.
-FONT_RISE_MIN = configo.HV_FLOAT_PLUS(default=0.05)
+FONT_RISE_MIN = configo.HV_FLOAT_PLUS(default=0.5)
+
+FIX_FONTRISE_OCCURENCE_MAX = configo.HV_INT_PLUS(default=5)
 
 
 class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
@@ -96,7 +98,6 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
 def page_size(document: iamraw.Document) -> iamraw.PageSize:
     """Determine maximum bounding of document. Iterate throw the page and
     determine the largest page"""
-
     # TODO ?support multiple page sizes in document?
     width, height = -utila.INF, -utila.INF
     for page in document.pages:
@@ -272,15 +273,22 @@ def fix_fontrise(items):
         # no fix is required
         return items
     zero, non_zero = utila.partition(
-        key=lambda item: utila.near(item.rise, 0.0, diff=0.5),
+        key=lambda item: utila.near(
+            item.rise,
+            0.0,
+            diff=FONT_RISE_MIN,
+        ),
         items=non_virtual,
     )
-
+    if len(non_zero) > FIX_FONTRISE_OCCURENCE_MAX:
+        # disable font rise for too many false detection?
+        # TODO: VERIFY LATER
+        for item in items:
+            item.rise = 0.0
     if len(zero) != 1:
         return items
     if not non_zero:
         return items
-
     mode = utila.mode(item.rise for item in non_zero)
     for item in non_zero:
         item.rise = item.rise - mode

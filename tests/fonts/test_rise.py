@@ -23,3 +23,36 @@ def test_fontrise_bachelor90_page3(testdir, monkeypatch):
     assert len(riseline.style.content) == 1
     style = riseline.style.content[0]
     assert style.rise == 0.0  # pylint:disable=C2001
+
+
+def test_regression_font_rise_bachelor75page16(testdir, monkeypatch):
+    """Obviously, this page does not contain any valid font rise."""
+    cmd = f'-i {power.BACHELOR075_PDF} -o {testdir.tmpdir} --text --pages=16'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    ptn = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)[0]
+    norise, rises = 0, 0
+    for item in ptn:
+        for style in item.style:
+            width = style.end - style.start
+            if style.rise:
+                rises += width
+            else:
+                norise += width
+    assert norise == 2161
+    assert not rises
+
+
+def test_regression_font_rise_bachelor75page1718(testdir, monkeypatch):
+    cmd = f'-i {power.BACHELOR075_PDF} -o {testdir.tmpdir} --text --pages=17,18'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    ptn = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)[0]
+    norise, rises = 0, 0
+    for item in ptn:
+        for style in item.style:
+            width = style.end - style.start
+            if style.rise:
+                rises += width
+            else:
+                norise += width
+    assert norise == 2145
+    assert not rises

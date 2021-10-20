@@ -9,6 +9,7 @@
 
 import dataclasses
 
+import configo
 import pdfminer.layout
 import utila
 
@@ -79,7 +80,9 @@ class ParsingConfiguration:
         return str(self)
 
 
-LAYOUT = ParsingConfiguration(char_margin=1.1)
+LAYOUT_CHAR_MARGIN = configo.HV_FLOAT_PLUS(default=1.1)
+
+LAYOUT = ParsingConfiguration(char_margin=LAYOUT_CHAR_MARGIN)
 
 
 def from_config(config: ParsingConfiguration) -> pdfminer.layout.LAParams:

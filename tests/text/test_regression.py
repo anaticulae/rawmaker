@@ -10,6 +10,7 @@
 import power
 import serializeraw
 
+import rawmaker
 import tests
 
 
@@ -35,3 +36,14 @@ def test_text_diss274_negative_bounding(testdir, monkeypatch):
     # TODO: CHANGES AFTER INVESTIGATING PROBLEM WITH NEGATIVE TEXT CONTENT
     # ON LEFT BORDER.
     assert len(navigator) == 28
+
+
+def test_text_bachelor67page63(testdir, monkeypatch):
+    # layout is required to invoke error
+    config = rawmaker.LAYOUT
+    cmd = f'-i {power.BACHELOR067_PDF} --text --pages=63 {config}'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    navigators = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    text = [item.text.strip() for item in navigators]
+    assert text[1] == '[AM14]'
+    assert text[13] == '[Arm+15]'

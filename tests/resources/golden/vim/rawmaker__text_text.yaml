@@ -427,7 +427,7 @@ pages:
   - - TextContainer
     - - - "\u02D3\u2192Vundle.vim\n"
         - - 0 2 4.98 0.00
-          - 2 13 8.97 0.97
+          - 2 13 8.97 0.00
   - - TextContainer
     - - - "\u2022 Copy and paste the .vimrc file in the home directory.\n"
         - - 0 56 9.96 0.00

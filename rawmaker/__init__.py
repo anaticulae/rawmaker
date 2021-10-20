@@ -18,6 +18,7 @@ import configo
 
 # pylint:disable=W0613
 import rawmaker.__patch__
+from rawmaker.parameter import LAYOUT
 from rawmaker.parameter import ONELINE
 
 __version__ = '2.27.2'

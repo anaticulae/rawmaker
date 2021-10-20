@@ -78,6 +78,10 @@ class ParsingConfiguration:
     def __repr__(self):
         return str(self)
 
+
+LAYOUT = ParsingConfiguration(char_margin=1.1)
+
+
 def from_config(config: ParsingConfiguration) -> pdfminer.layout.LAParams:
     boxes_flow: float = 0.5
     char_margin: float = 2.0

@@ -11,6 +11,7 @@ import contextlib
 
 import iamraw
 import pdfminer.converter
+import pdfminer.layout
 import pdfminer.pdfinterp
 import utila
 
@@ -27,6 +28,8 @@ class FlippedLayoutAnalyzer(pdfminer.converter.PDFLayoutAnalyzer):
     def receive_layout(self, ltpage):
         for item in ltpage:
             flip_object(item, ltpage)
+        for item in ltpage:
+            item.bbox = figure_bounding(item)
 
     def handle_undefined_char(self, font, cid) -> str:
         # TODO: CHECK AFTER UPGRADING PDFMINER
@@ -90,3 +93,35 @@ class PageAggregator(FlippedLayoutAnalyzer):
 
     def get_result(self):
         return self.result
+
+
+def figure_bounding(figure) -> tuple:
+    """Bounding of some bad printed figures where too large, we strip
+    this bounding to real content."""
+    if not isinstance(figure, pdfminer.layout.LTFigure):
+        return figure.bbox
+    figure = [item for item in figure if visible(item)]
+    boundings = []
+    for item in figure:
+        if isinstance(item, pdfminer.layout.LTFigure):
+            # figure inside a figure
+            bounding = figure_bounding(item)
+        else:
+            bounding = item.bbox
+        boundings.append(bounding)
+    result = utila.rectangle_max(boundings)
+    return result
+
+
+def visible(item) -> bool:
+    with contextlib.suppress(AttributeError):
+        # TODO: INVESTIGATE THIS
+        if item.linewidth:
+            return True
+        if item.fill:
+            if not item.evenodd:
+                return True
+            return False
+        if not item.stroking_color and not item.non_stroking_color:
+            return False
+    return True

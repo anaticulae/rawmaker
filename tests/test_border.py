@@ -100,3 +100,16 @@ def test_border_pagesize_bachelor76_top_regression():
         )
     first = sizeandborders[0].border
     assert first.top > 70.0
+
+
+def test_boundingbox_figure_bounding_too_large():
+    """Rectangle of some bad printed figures where too large, we strip
+    this bounding to real content."""
+    with rawmaker.reader.read(power.BACHELOR067_PDF) as pdf:
+        boundings = rawmaker.features.border.determine_boundingboxes(
+            pdf,
+            pages=(52,),
+        )[1][0].boundings
+        boundings = [item[1] for item in boundings]
+    rectangle = utila.rectangle_max(boundings)
+    assert rectangle[1] >= 80.0  # positive y0

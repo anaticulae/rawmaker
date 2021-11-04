@@ -49,6 +49,7 @@ if __name__ == "__main__":
             'pdfinfo',
             'rawmaker',
             'rawmaker.cleanup',
+            'rawmaker.cleanup.features',
             'rawmaker.cleanup.translate',
             'rawmaker.converter',
             'rawmaker.features',

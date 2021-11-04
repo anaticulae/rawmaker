@@ -56,6 +56,7 @@ if __name__ == "__main__":
             'rawmaker.miner',
             'rawmaker.patch',
             'rawmaker.text',
+            'rawmaker.translate',
             'spacestation',
             'spacestation.features',
         ],

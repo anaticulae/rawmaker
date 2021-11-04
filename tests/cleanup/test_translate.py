@@ -8,11 +8,11 @@
 # =============================================================================
 
 import power
+import serializeraw
 import utila
 import utilatest
 
-import rawmaker.translate.lines
-import serializeraw
+import rawmaker.cleanup.translate.lines
 import tests
 
 
@@ -33,6 +33,6 @@ def test_translate_lines(testdir, monkeypatch):
     ptn = serializeraw.ptn_frompath(testdir.tmpdir)
     backup = serializeraw.ptn_frompath(testdir.tmpdir, backup=True)
     assert ptn != backup, 'cached load_documents? check backup=False'
-    translated = rawmaker.translate.lines.translates(backup, ptn)
+    translated = rawmaker.cleanup.translate.lines.translates(backup, ptn)
     # changes on two pages, no change on page 22
     assert len(translated) == 3

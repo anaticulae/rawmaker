@@ -14,6 +14,7 @@ import serializeraw
 import utila
 import utilatest
 
+import rawmaker.cleanup.cli
 import rawmaker.cleanup.work
 import tests.cleanup
 
@@ -142,6 +143,24 @@ def test_cleanup_backup(testdir, monkeypatch):
     source = power.link(power.BACHELOR051_PDF)
     tests.cleanup.run(
         f'-i {source} -o {testdir.tmpdir} --backup',
+        monkeypatch=monkeypatch,
+    )
+    # four backup files written
+    backupfiles = utila.file_list(
+        testdir.tmpdir,
+        include=rawmaker.cleanup.work.BACKUP_EXT,
+    )
+    assert len(backupfiles) == 6
+
+
+@utilatest.requires(power.BACHELOR051_PDF)
+def test_cleanup_backup_new(testdir, monkeypatch):
+    source = power.link(power.BACHELOR051_PDF)
+    utilatest.run_command(
+        cmd=f'-i {source} -o {testdir.tmpdir} --backup',
+        process='rawmaker_cleanup',
+        main=rawmaker.cleanup.cli.main_new,
+        success=True,
         monkeypatch=monkeypatch,
     )
     # four backup files written

@@ -11,6 +11,7 @@ import sys
 
 import utila
 
+import rawmaker
 import rawmaker.cleanup.work
 
 PROCESS = 'rawmaker_cleanup'
@@ -59,3 +60,23 @@ def user_input() -> tuple:
         args['backup'],
     )
     return choice
+
+
+WORKPLAN = [
+    utila.create_step('backup'),
+]
+
+
+def main_new():
+    utila.featurepack(
+        root=rawmaker.ROOT,
+        workplan=WORKPLAN,
+        featurepackage='rawmaker.cleanup.features',
+        config=utila.FeaturePackConfig(
+            description=DESCRIPTION,
+            multiprocessed=False,
+            name=PROCESS,
+            pages=True,
+            version=rawmaker.__version__,
+        ),
+    )

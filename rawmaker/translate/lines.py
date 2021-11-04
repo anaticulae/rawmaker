@@ -27,6 +27,17 @@ src      dest       translation
 import texmex
 
 
+def translates(sources, destinations):
+    result = []
+    for src, dest in zip(sources, destinations):
+        assert src.page == dest.page, f'{src.page} == {dest.page}'
+        translated = translate(src, dest)
+        if not translated:
+            continue
+        result.append((src.page, translated))
+    return result
+
+
 def translate(
     src: texmex.PageTextNavigator,
     dest: texmex.PageTextNavigator,

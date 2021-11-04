@@ -64,6 +64,12 @@ def user_input() -> tuple:
 
 WORKPLAN = [
     utila.create_step('backup'),
+    utila.create_step(
+        'cleanup',
+        inputs=[
+            utila.Value('postfix', str, defaultvar=''),
+        ],
+    ),
 ]
 
 

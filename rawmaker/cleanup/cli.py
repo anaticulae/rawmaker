@@ -53,10 +53,7 @@ WORKPLAN = [
                 optional=True,
             ),
         ],
-        output=[
-            'text',
-            'oneline',
-        ],
+        output=('text',),
     ),
 ]
 

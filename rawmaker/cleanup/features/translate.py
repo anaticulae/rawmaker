@@ -7,8 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import typing
-
 import serializeraw
 import utila
 
@@ -20,23 +18,22 @@ def work(
     text_baml: str,
     oneline_text: str,
     oneline_text_baml: str,
+    prefix: str = '',
     pages: tuple = None,
-) -> typing.Tuple[str, str]:
-    text = determine_translation(
-        source=text_baml,
-        destination=text,
-        pages=pages,
-    )
-    text_oneline = determine_translation(
-        source=oneline_text_baml,
-        destination=oneline_text,
-        pages=pages,
-    )
-    result = (
-        text,
-        text_oneline,
-    )
-    return result
+) -> str:
+    if prefix == 'oneline':
+        text = determine_translation(
+            source=oneline_text_baml,
+            destination=oneline_text,
+            pages=pages,
+        )
+    else:
+        text = determine_translation(
+            source=text_baml,
+            destination=text,
+            pages=pages,
+        )
+    return text
 
 
 def determine_translation(source, destination, pages: tuple = None) -> str:

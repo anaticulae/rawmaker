@@ -94,23 +94,14 @@ def remove_skip_area(
         pages=pages,
     )
     invalids = create_invalid_area(images, tables, codes)
-
-    def valid_bounding(bounding, page: int) -> bool:
-        try:
-            invalid_area = invalids[page]
-        except KeyError:
-            return True
-        if utila.rectangles_intersecting(invalid_area, bounding):
-            return False
-        return True
-
     for ptn in ptns:
         if ptn.page not in invalids:
             # no invalid possible
             continue
         # line intersects with invalid area
         invalid_lines = [
-            item for item in ptn if not valid_bounding(item.bounding, ptn.page)
+            item for item in ptn
+            if not valid_bounding(item.bounding, invalids, ptn.page)
         ]
         for line in invalid_lines:
             ptn.remove(line)
@@ -121,7 +112,7 @@ def remove_skip_area(
                 content=[
                     item
                     for item in page.content
-                    if valid_bounding(item.box, page.page)
+                    if valid_bounding(item.box, invalids, page.page)
                 ])
             for page in horizontals
         ]
@@ -132,12 +123,22 @@ def remove_skip_area(
                 content=[
                     item
                     for item in page.content
-                    if valid_bounding(item, page.page)
+                    if valid_bounding(item, invalids, page.page)
                 ],
             )
             for page in lines
         ]
     return ptns, horizontals, lines
+
+
+def valid_bounding(bounding, invalids, page: int) -> bool:
+    try:
+        invalid_area = invalids[page]
+    except KeyError:
+        return True
+    if utila.rectangles_intersecting(invalid_area, bounding):
+        return False
+    return True
 
 
 def create_invalid_area(images, tables, codes) -> dict:

@@ -7,8 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import rawmaker.cleanup.work
 import utila
+
+import rawmaker.cleanup.work
 
 
 def work(

@@ -31,7 +31,7 @@ def test_cleanup_bachelor56(testdir, monkeypatch):
         pattern='(rawmaker__text|rawmaker__fonts)_*.yaml',
     )
     tests.cleanup.run(
-        '-i . -o . --postfix=cleaned --pages=0',
+        '-i . -o . --cleanup --postfix=cleaned --pages=0',
         monkeypatch=monkeypatch,
     )
     assert len(utila.file_list(testdir.tmpdir)) == 8
@@ -159,7 +159,7 @@ def test_cleanup_backup_new(testdir, monkeypatch):
     utilatest.run_command(
         cmd=f'-i {source} -o {testdir.tmpdir} --backup',
         process='rawmaker_cleanup',
-        main=rawmaker.cleanup.cli.main_new,
+        main=rawmaker.cleanup.cli.main,
         success=True,
         monkeypatch=monkeypatch,
     )
@@ -182,7 +182,7 @@ def test_cleanup_bachelor56_new(testdir, monkeypatch):
         cmd='--cleanup --postfix=cleaned --pages=0 '
         f'-i {testdir.tmpdir} -o {testdir.tmpdir}',
         process='rawmaker_cleanup',
-        main=rawmaker.cleanup.cli.main_new,
+        main=rawmaker.cleanup.cli.main,
         success=True,
         monkeypatch=monkeypatch,
     )

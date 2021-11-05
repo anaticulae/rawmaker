@@ -20,14 +20,14 @@ import tests
 def test_translate_lines(testdir, monkeypatch):
     prepare(testdir, monkeypatch)
     # do not cache load_documents, do not use tests.cleanup.run
-    utila.run('rawmaker_cleanup --backup '
+    utila.run('rawmaker_cleanup --cleanup --backup '
               f'-i {testdir.tmpdir} -o {testdir.tmpdir}')
     ptn = serializeraw.ptn_frompath(testdir.tmpdir)
     backup = serializeraw.ptn_frompath(testdir.tmpdir, backup=True)
     assert ptn != backup, 'cached load_documents? check backup=False'
     translated = rawmaker.cleanup.translate.lines.translates(backup, ptn)
     # changes on two pages, no change on page 22
-    assert len(translated) == 3
+    assert len(translated) == 2
 
 
 def prepare(testdir, monkeypatch):

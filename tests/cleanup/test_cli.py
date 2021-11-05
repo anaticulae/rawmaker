@@ -151,39 +151,3 @@ def test_cleanup_backup(testdir, monkeypatch):
         include=rawmaker.cleanup.work.BACKUP_EXT,
     )
     assert len(backupfiles) == 6
-
-
-@utilatest.requires(power.BACHELOR051_PDF)
-def test_cleanup_backup_new(testdir, monkeypatch):
-    source = power.link(power.BACHELOR051_PDF)
-    utilatest.run_command(
-        cmd=f'-i {source} -o {testdir.tmpdir} --backup',
-        process='rawmaker_cleanup',
-        main=rawmaker.cleanup.cli.main,
-        success=True,
-        monkeypatch=monkeypatch,
-    )
-    # four backup files written
-    backupfiles = utila.file_list(
-        testdir.tmpdir,
-        include=rawmaker.cleanup.work.BACKUP_EXT,
-    )
-    assert len(backupfiles) == 6
-
-
-def test_cleanup_bachelor56_new(testdir, monkeypatch):
-    source = power.link(power.BACHELOR056_PDF)
-    utila.copy_content(
-        source,
-        testdir.tmpdir,
-        pattern='(rawmaker__text|rawmaker__fonts)_*.yaml',
-    )
-    utilatest.run_command(
-        cmd='--cleanup --postfix=cleaned --pages=0 '
-        f'-i {testdir.tmpdir} -o {testdir.tmpdir}',
-        process='rawmaker_cleanup',
-        main=rawmaker.cleanup.cli.main,
-        success=True,
-        monkeypatch=monkeypatch,
-    )
-    assert len(utila.file_list(testdir.tmpdir)) == 8

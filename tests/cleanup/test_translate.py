@@ -30,6 +30,19 @@ def test_translate_lines(testdir, monkeypatch):
     assert len(translated) == 2
 
 
+def test_cleanup_translate(testdir, monkeypatch):
+    prepare(testdir, monkeypatch)
+    tests.cleanup.run(
+        f'-i {testdir.tmpdir} -o {testdir.tmpdir}',
+        monkeypatch=monkeypatch,
+    )
+    done = utila.file_list(
+        testdir.tmpdir,
+        recursive=False,
+    )
+    assert len(done) == 8
+
+
 def prepare(testdir, monkeypatch):
     source = power.BACHELOR037_PDF
     pages = '--pages=22,23,24'

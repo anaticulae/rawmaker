@@ -28,6 +28,37 @@ WORKPLAN = [
             utila.Value('postfix', str, defaultvar=''),
         ],
     ),
+    utila.create_step(
+        'translate',
+        inputs=[
+            utila.ResultFile(
+                producer='rawmaker',
+                name='text_text',
+                optional=True,
+            ),
+            utila.ResultFile(
+                producer='rawmaker',
+                name='text_text',
+                ext='baml',
+                optional=True,
+            ),
+            utila.ResultFile(
+                producer='rawmaker',
+                name='oneline_text_text',
+                optional=True,
+            ),
+            utila.ResultFile(
+                producer='rawmaker',
+                name='oneline_text_text',
+                ext='baml',
+                optional=True,
+            ),
+        ],
+        output=[
+            'text',
+            'oneline',
+        ],
+    ),
 ]
 
 

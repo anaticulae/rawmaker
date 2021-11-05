@@ -2,6 +2,25 @@
 
 Every noteable change is logged here.
 
+## v2.28.0
+
+### Feature
+
+* do not remove caption code (552af0db85ff)
+* add translate step (7fded3d01374)
+* connect modern cleanup step (9706d2888705)
+* use features increase modularity (9cec9d051a24)
+* add feature package (1f6669638733)
+* add method to translate multiple pages (394e81af04b7)
+* add method to create index transformation (53b490a8c6bf)
+* use holy value to change layout configuration (3ea183c775e7)
+* add layout parsing config (fee6846c9b54)
+* add option to use config in cmd (ec5f6f7dddb8)
+
+### Fix
+
+* strip figures to real content (0701a436c17b)
+
 ## v2.27.2
 
 ### Feature

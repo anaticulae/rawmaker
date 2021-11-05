@@ -27,14 +27,18 @@ src      dest       translation
 import texmex
 
 
-def translates(sources, destinations):
+def translates(sources, destinations) -> texmex.Translations:
     result = []
     for src, dest in zip(sources, destinations):
         assert src.page == dest.page, f'{src.page} == {dest.page}'
         translated = translate(src, dest)
         if not translated:
             continue
-        result.append((src.page, translated))
+        table = texmex.Translation(page=src.page)
+        for now, before in translated:
+            # TODO: IMPROVE BAD NAMING
+            table.add(now, before)
+        result.append(table)
     return result
 
 

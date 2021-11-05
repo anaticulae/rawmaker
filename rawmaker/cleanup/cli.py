@@ -10,7 +10,6 @@
 import utila
 
 import rawmaker
-import rawmaker.cleanup.work
 
 PROCESS = 'rawmaker_cleanup'
 DESCRIPTION = """\

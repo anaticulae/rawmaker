@@ -15,7 +15,7 @@ import utila
 import utilatest
 
 import rawmaker.cleanup.cli
-import rawmaker.cleanup.work
+import rawmaker.cleanup.features.backup
 import tests.cleanup
 
 
@@ -148,6 +148,6 @@ def test_cleanup_backup(testdir, monkeypatch):
     # four backup files written
     backupfiles = utila.file_list(
         testdir.tmpdir,
-        include=rawmaker.cleanup.work.BACKUP_EXT,
+        include=rawmaker.cleanup.features.backup.BACKUP_EXT,
     )
     assert len(backupfiles) == 6

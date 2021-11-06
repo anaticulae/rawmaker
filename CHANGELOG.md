@@ -2,6 +2,13 @@
 
 Every noteable change is logged here.
 
+## v2.28.1
+
+### Fix
+
+* use more sophisticated data structure (6bd8d661334b)
+* fix oneline behavior (b3dd99e6b986)
+
 ## v2.28.0
 
 ### Feature

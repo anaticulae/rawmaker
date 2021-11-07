@@ -30,6 +30,8 @@ class FlippedLayoutAnalyzer(pdfminer.converter.PDFLayoutAnalyzer):
             flip_object(item, ltpage)
         for item in ltpage:
             item.bbox = figure_bounding(item)
+        # remove invisible objects
+        ltpage._objs = [item for item in ltpage if item.bbox is not None]  # pylint:disable=W0212
 
     def handle_undefined_char(self, font, cid) -> str:
         # TODO: CHECK AFTER UPGRADING PDFMINER
@@ -97,7 +99,12 @@ class PageAggregator(FlippedLayoutAnalyzer):
 
 def figure_bounding(figure) -> tuple:
     """Bounding of some bad printed figures where too large, we strip
-    this bounding to real content."""
+    this bounding to real content.
+
+    Empty figures must return None
+    >>> assert figure_bounding(pdfminer.layout.LTFigure('empty', (10, 10, 50, 50),
+    ... (1, 1, 1, 1, 1, 1))) is None
+    """
     if not isinstance(figure, pdfminer.layout.LTFigure):
         return figure.bbox
     figure = [item for item in figure if visible(item)]
@@ -108,7 +115,12 @@ def figure_bounding(figure) -> tuple:
             bounding = figure_bounding(item)
         else:
             bounding = item.bbox
+        if bounding is None:
+            # hidden item
+            continue
         boundings.append(bounding)
+    if not boundings:
+        return None
     result = utila.rectangle_max(boundings)
     return result
 

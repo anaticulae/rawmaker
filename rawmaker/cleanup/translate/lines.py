@@ -25,12 +25,17 @@ src      dest       translation
 """
 
 import texmex
+import utila
 
 
 def translates(sources, destinations) -> texmex.Translations:
     result = []
-    for src, dest in zip(sources, destinations):
+    for src, dest in utila.sync_pages((sources, destinations), numbers=False):
+        if src is None or dest is None:
+            # could not compute diff for empty page
+            continue
         assert src.page == dest.page, f'{src.page} == {dest.page}'
+        # sync pages to avoid asyncs with empty pages
         translated = translate(src, dest)
         if not translated:
             continue

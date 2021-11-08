@@ -73,4 +73,12 @@ def test_diss264_text_extraction_vertical_text_page21(testdir, monkeypatch):
         item for item in document[0]
         if isinstance(item, iamraw.VerticalTextContainer)
     ]
-    assert len(vertical_container) == 5
+    assert len(vertical_container) == 6
+
+
+def test_all_single_container(testdir, monkeypatch):
+    source = power.DISS143_PDF
+    cmd = f'-i {source} --text --pages=25'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    document = serializeraw.load_document(testdir.tmpdir)[0]
+    assert len(document) == 22

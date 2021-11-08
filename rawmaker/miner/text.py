@@ -479,10 +479,22 @@ def render_textcontainer(
     strip: bool = False,
 ) -> iamraw.TextContainer:
     splitted = split_container(item, strip=strip)
-    result = [
+    rendered = [
         render_vertical_textcontainer(item, strip=strip) if vertical(item) else
         render_horizontal_textcontainer(item, strip=strip) for item in splitted
     ]
+    # Ensure that all TextContainer have only one line. Prepare to remove
+    # lines concept and handle everything as a single line.
+    result = []
+    for container in rendered:
+        if len(container) == 1:
+            result.append(container)
+            continue
+        splitted = [
+            container.__class__(box=line.box, lines=[line])
+            for line in container
+        ]
+        result.extend(splitted)
     return result
 
 

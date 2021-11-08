@@ -14,11 +14,13 @@ import utilatest
 
 import rawmaker.cleanup.translate.lines
 import tests
+import tests.cleanup.utils
 
 
 @utilatest.longrun
 def test_translate_lines(testdir, monkeypatch):
-    prepare(testdir, monkeypatch)
+    source, pages = power.BACHELOR037_PDF, '22,23,24'
+    tests.cleanup.utils.prepare(source, pages, testdir, monkeypatch)
     # do not cache load_documents, do not use tests.cleanup.run
     utila.run('rawmaker_cleanup --cleanup --backup '
               f'-i {testdir.tmpdir} -o {testdir.tmpdir}')
@@ -31,7 +33,8 @@ def test_translate_lines(testdir, monkeypatch):
 
 
 def test_cleanup_translate(testdir, monkeypatch):
-    prepare(testdir, monkeypatch)
+    source, pages = power.BACHELOR037_PDF, '22,23,24'
+    tests.cleanup.utils.prepare(source, pages, testdir, monkeypatch)
     tests.cleanup.run(
         f'-i {testdir.tmpdir} -o {testdir.tmpdir}',
         monkeypatch=monkeypatch,
@@ -41,15 +44,3 @@ def test_cleanup_translate(testdir, monkeypatch):
         recursive=False,
     )
     assert len(done) == 8
-
-
-def prepare(testdir, monkeypatch):
-    source = power.BACHELOR037_PDF
-    pages = '--pages=22,23,24'
-    # run rawmaker
-    tests.run(
-        f'-i {source} {pages} --text --fonts --images',
-        monkeypatch=monkeypatch,
-    )
-    utila.run(f'figureo -i {source} '
-              f'-i {testdir.tmpdir} -o {testdir.tmpdir} {pages}')

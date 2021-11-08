@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.29.0
+
+### Feature
+
+* split multi line container to single line container (6167927a0f98)
+* add debugging information (1617e84c3490)
+
+### Fix
+
+* sync empty pages correctly (eab269dee985)
+* remove invisible objects (b4a21bce184b)
+
 ## v2.28.1
 
 ### Fix

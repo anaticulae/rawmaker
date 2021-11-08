@@ -21,7 +21,7 @@ import rawmaker.__patch__
 from rawmaker.parameter import LAYOUT
 from rawmaker.parameter import ONELINE
 
-__version__ = '2.28.1'
+__version__ = '2.29.0'
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PROCESS = 'rawmaker'

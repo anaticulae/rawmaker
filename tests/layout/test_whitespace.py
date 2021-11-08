@@ -14,7 +14,7 @@ import serializeraw
 import tests
 
 
-def test_whitespace_extractor_bachelor56_page49(testdir, monkeypatch):
+def test_whitespace_extractor_bachelor56page49(testdir, monkeypatch):
     root = testdir.tmpdir
     source = power.BACHELOR056_PDF
     # oneline

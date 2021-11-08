@@ -33,7 +33,7 @@ def test_wordbox_extract_pagelines_helloworld():
     assert len(pagelines[1]) == 2
 
 
-def test_wordbox_bachelor90_page12():
+def test_wordbox_bachelor90page12():
     page = rawmaker.text.chars.extract_chars(
         power.BACHELOR090_PDF,
         pages=(12,),

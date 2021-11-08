@@ -13,7 +13,7 @@ import serializeraw
 import tests
 
 
-def test_fontrise_bachelor90_page3(testdir, monkeypatch):
+def test_fontrise_bachelor90page3(testdir, monkeypatch):
     """See: text.fix_fontrise"""
     source = power.BACHELOR090_PDF
     tests.run(f'-i {source} --pages=3 --text', monkeypatch=monkeypatch)

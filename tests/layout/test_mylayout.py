@@ -17,7 +17,7 @@ import utilatest
 import tests
 
 
-def test_mylayout_bachelor90_page53(testdir, monkeypatch):
+def test_mylayout_bachelor90page53(testdir, monkeypatch):
     source = power.BACHELOR090_PDF
     cmd = f'-i {source} --text --pages=53'
     tests.run(cmd, monkeypatch=monkeypatch)

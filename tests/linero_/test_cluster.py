@@ -32,7 +32,7 @@ def extract_tables(source, page):
 
 
 @utilatest.requires(power.BACHELOR090_PDF)
-def test_table_bachelor90_page76_extract_table():
+def test_table_bachelor90page76_extract_table():
     source = power.link(power.BACHELOR090_PDF)
     page = 76
     tables = extract_tables(source, page)
@@ -41,7 +41,7 @@ def test_table_bachelor90_page76_extract_table():
 
 @pytest.mark.xfail(reason='layout parameter changed')
 @utilatest.requires(power.BACHELOR090_PDF)
-def test_table_bachelor90_page77_extract_table():
+def test_table_bachelor90page77_extract_table():
     source = power.link(power.BACHELOR090_PDF)
     page = 77
     tables = extract_tables(source, page)

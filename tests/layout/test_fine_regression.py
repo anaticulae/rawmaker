@@ -15,7 +15,7 @@ import utila
 import tests
 
 
-def test_layout_fine_master72_page3_horizontal_problem(testdir, monkeypatch):
+def test_layout_fine_master72page3_horizontal_problem(testdir, monkeypatch):
     """Ensure that horizontal line is parsed before first footer text
     line. There was a problem, cause the position of the first line was
     parsed with a to low y0 coordinate."""
@@ -35,7 +35,7 @@ def test_layout_fine_master72_page3_horizontal_problem(testdir, monkeypatch):
 
 
 @pytest.mark.xfail(reason='improve layout extraction')
-def test_layout_fine_bachelor111_page9_horizontal_problem(testdir, monkeypatch):
+def test_layout_fine_bachelor111page9_horizontal_problem(testdir, monkeypatch):
     source = testdir.tmpdir
     cmd = f'-i {power.BACHELOR111_PDF} --text --boxes --pages=9'
     tests.run(cmd, monkeypatch=monkeypatch)

@@ -41,7 +41,7 @@ def test_image_extract_with_pages_offset(testdir, monkeypatch):
 
 
 @utilatest.longrun
-def test_render_master75_page0_10_28(monkeypatch, testdir):
+def test_render_master75page0_10_28(monkeypatch, testdir):
     """This document contains images on different pages with the same
     name. Before this fix, these images where ignored cause of the same
     name. After adding the page number to image name, these images are

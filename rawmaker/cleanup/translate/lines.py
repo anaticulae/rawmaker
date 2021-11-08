@@ -61,14 +61,23 @@ def translate(
     >>> translate(('A', 'B', 'C', 'D', 'E'), ('A', 'C', 'D', 'F', 'G'))
     Traceback (most recent call last):
     ...
-    ValueError: src and dest does not match together: 3 F
+    ValueError: src and dest does not match: **index:3** **F**
     """
     result = []
     left = 0
     for right, dest_item in enumerate(dest):
         collected = find(src, start=left, search=dest_item)
         if collected == -1:
-            error = f'src and dest does not match together: {right} {dest_item}'
+            if hasattr(src, 'page'):
+                utila.error(src.page)
+                utila.error('SOURCE')
+                for item in src:
+                    utila.log(f'{hash(str(item))}:   {str(item).strip()}')
+                utila.error('=======================')
+                utila.error('DEST')
+                for item in dest:
+                    utila.log(f'{hash(str(item))}:   {str(item).strip()}')
+            error = f'src and dest does not match: **index:{right}** **{dest_item}**'
             raise ValueError(error)
         if not result and collected == right:
             left = collected + 1

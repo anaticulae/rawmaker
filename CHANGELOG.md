@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.29.1
+
+### Fix
+
+* do not use magic parameter (80b7a3af0218)
+
 ## v2.29.0
 
 ### Feature

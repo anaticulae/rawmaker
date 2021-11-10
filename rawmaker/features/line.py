@@ -36,15 +36,15 @@ VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=2.0)
 REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(default=40)
 
 
-def work(document: str, annotation: str, pages: tuple = None) -> str:
-    if utila.exists(annotation):
-        annotation = serializeraw.load_annotations(annotation, pages=pages)
+def work(document: str, annotations: str, pages: tuple = None) -> str:
+    if utila.exists(annotations):
+        annotations = serializeraw.load_annotations(annotations, pages=pages)
     else:
-        utila.error(f'missing {annotation} could not skip underlines')
-        annotation = []
+        utila.error(f'missing {annotations} could not skip underlines')
+        annotations = []
     with rawmaker.reader.read(document) as pdf:
         extracted = determine_lines(pdf, pages=pages)
-    extracted = skip_lines(extracted, annotation)
+    extracted = skip_lines(extracted, annotations)
     dumped = serializeraw.dump_lines(extracted)
     return dumped
 

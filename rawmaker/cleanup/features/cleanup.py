@@ -89,11 +89,12 @@ def remove_skip_area(
     pages: tuple = None,
 ):
     codes = rawmaker.cleanup.load.codes_frompath(inpaths, prefix, pages)
+    formulas = rawmaker.cleanup.load.formulas_frompath(inpaths, prefix, pages)
     images, tables = rawmaker.cleanup.load.load_images_tables(
         inpaths,
         pages=pages,
     )
-    invalids = create_invalid_area(images, tables, codes)
+    invalids = create_invalid_area(images, tables, codes, formulas)
     for ptn in ptns:
         if ptn.page not in invalids:
             # no invalid possible
@@ -141,7 +142,7 @@ def valid_bounding(bounding, invalids, page: int) -> bool:
     return True
 
 
-def create_invalid_area(images, tables, codes) -> dict:
+def create_invalid_area(images, tables, codes, formulas) -> dict:
     invalid = collections.defaultdict(list)
     for page in images:
         invalid[page.page].extend([item.bounding for item in page.content])
@@ -152,6 +153,8 @@ def create_invalid_area(images, tables, codes) -> dict:
         invalid[page.page].extend(tokens)
         # caption = utila.flatten([it.caption_bounding for it in page.content])
         # invalid[page.page].extend(caption)
+    for page in formulas:
+        invalid[page.page].extend([item.bounding for item in page.content])
     # reduce rectangle count
     result = {
         key: utila.rectangle_merge(value) for key, value in invalid.items()

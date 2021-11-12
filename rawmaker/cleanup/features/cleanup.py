@@ -53,14 +53,13 @@ def cleanup(  # pylint:disable=R0914
         prefix,
         pages,
     )
-    codes = rawmaker.cleanup.load.codes_frompath(inpaths, prefix, pages)
     # remove content here
     ptns, horizontals, lines = remove_skip_area(
         ptns,
         horizontals,
         lines,
-        codes=codes,
         inpaths=inpaths,
+        prefix=prefix,
         pages=pages,
     )
     fontstore = rawmaker.cleanup.load.fontstore_frompath(inpaths, prefix, pages)
@@ -85,10 +84,11 @@ def remove_skip_area(
     ptns,
     horizontals,
     lines,
-    codes,
     inpaths: list,
+    prefix,
     pages: tuple = None,
 ):
+    codes = rawmaker.cleanup.load.codes_frompath(inpaths, prefix, pages)
     images, tables = rawmaker.cleanup.load.load_images_tables(
         inpaths,
         pages=pages,

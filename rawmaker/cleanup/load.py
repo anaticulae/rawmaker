@@ -31,10 +31,21 @@ def ptn_frompath(inpaths, prefix, pages):
 def codes_frompath(inpaths, prefix, pages):  # pylint:disable=W0613
     result = []
     for inpath in inpaths:
-        utila.debug(f'ptn: {inpath}')
         path = iamraw.path.codero_result(inpath)
         if os.path.exists(path):
+            utila.debug(f'codes: {path}')
             loaded = serializeraw.load_codes(path, pages=pages)
+            result.extend(loaded)
+    return result
+
+
+def formulas_frompath(inpaths, prefix, pages):  # pylint:disable=W0613
+    result = []
+    for inpath in inpaths:
+        path = iamraw.path.formula(inpath)
+        if os.path.exists(path):
+            utila.debug(f'formulas: {path}')
+            loaded = serializeraw.load_rawformulas(path, pages=pages)
             result.extend(loaded)
     return result
 

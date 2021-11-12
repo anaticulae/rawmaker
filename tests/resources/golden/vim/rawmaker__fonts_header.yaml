@@ -1,44 +1,55 @@
 - font:
     flags: 4
     name: SFBX2488
+    pdfref: ZCQZOE+SFBX2488
     scale: 18.5
 - font:
     flags: 4
     name: SFBX1000
+    pdfref: VOIZNY+SFBX1000
     scale: 7.43
 - font:
     flags: 4
     name: SFRM1000
+    pdfref: GGNDAV+SFRM1000
     scale: 7.43
 - font:
     flags: 4
     name: SFBX2074
+    pdfref: LYNCJF+SFBX2074
     scale: 15.42
 - font:
     flags: 4
     name: SFTT0900
+    pdfref: ACVYUM+SFTT0900
     scale: 6.69
 - font:
     flags: 4
     name: CMMI5
+    pdfref: GCJXHR+CMMI5
     scale: 3.72
 - font:
     flags: 4
     name: CMSY5
+    pdfref: AXXKPS+CMSY5
     scale: 3.72
 - font:
     flags: 4
     name: SFBX1440
+    pdfref: ZDVGPI+SFBX1440
     scale: 10.71
 - font:
     flags: 4
     name: SFSS1000
+    pdfref: PDDXDS+SFSS1000
     scale: 7.43
 - font:
     flags: 4
     name: SFRM0900
+    pdfref: OGWJIV+SFRM0900
     scale: 6.69
 - font:
     flags: 4
     name: SFRM0500
+    pdfref: EFUEEO+SFRM0500
     scale: 3.72

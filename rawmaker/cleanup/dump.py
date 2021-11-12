@@ -100,8 +100,7 @@ def create_line(item, fontstore: iamraw.fontstore) -> iamraw.line:
         (item.end - item.start) * [item.rise] for item in style
     ])
     fonts = utila.flatten([
-        (item.end - item.start) *
-        [rawmaker.fonts.parser.font_toraw(fontstore[item.font])]
+        (item.end - item.start) * [fontstore[item.font].pdfref]
         for item in style
     ])
     flags = utila.flatten([

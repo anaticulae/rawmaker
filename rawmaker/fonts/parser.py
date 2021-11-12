@@ -102,8 +102,9 @@ def font_fromraw(font: str, scale: float = 0.0, flags: int = 0) -> iamraw.Font:
         returns internal `Font` object with detected style and scale
 
     >>> font_fromraw('Times-RomanRegularLight')
-    Font(name='Times-Roman',...)
+    Font(pdfref='Times-RomanRegularLight',...)
     """
+    pdfref = font
     utila.call('rawmaker.fonts.parser.font_fromraw')
     utila.debug('%s %.2f' % (str(font), scale))
     flags = serializeraw.load_flags(flags)
@@ -143,6 +144,7 @@ def font_fromraw(font: str, scale: float = 0.0, flags: int = 0) -> iamraw.Font:
         style=style,
         weight=weight,
         flags=flags,
+        pdfref=pdfref,
     )
     return font
 
@@ -267,7 +269,7 @@ def named(font: str):
 
 def font_toraw(font: iamraw.Font) -> str:
     """\
-    >>> font_toraw(iamraw.Font('Times-Roman', scale=8.95, weight=LIGHT, stretch=REGULAR))
+    >>> font_toraw(iamraw.Font(name='Times-Roman', scale=8.95, weight=LIGHT, stretch=REGULAR))
     'Times-RomanRegularLight'
     """
     result = font.name

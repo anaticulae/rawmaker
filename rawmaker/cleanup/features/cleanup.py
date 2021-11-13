@@ -105,7 +105,12 @@ def remove_skip_area(
             if not valid_bounding(item.bounding, invalids, ptn.page)
         ]
         for line in invalid_lines:
-            ptn.remove(line)
+            try:
+                ptn.remove(line)
+            except KeyError as msg:
+                # TODO: INVESTIGATE WHY THIS CAN HAPPEN
+                utila.error(f'could not remove line: {msg} on page: {ptn.page}')
+                utila.error(list(invalid_lines))
     if horizontals:
         horizontals = [
             iamraw.PageContentHorizontals(

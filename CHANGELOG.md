@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.30.0
+
+### Feature
+
+* use pdfref to access font header (6968dd132c14)
+* use formulas to cleanup formulas (568546c6da25)
+* add method to load raw formulas from path (569bcf8ccf1a)
+
+### Fix
+
+* do not fail on error while deleting line (fc9726c6d3f0)
+
 ## v2.29.1
 
 ### Fix

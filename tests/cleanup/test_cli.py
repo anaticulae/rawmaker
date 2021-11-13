@@ -138,6 +138,28 @@ def test_cleanup_tables(testdir, monkeypatch):
     assert len(clean) == 42
 
 
+@utilatest.requires(power.DISS143_PDF)
+def test_cleanup_formulas(testdir, monkeypatch):
+    source = power.link(power.DISS143_PDF)
+    outdir = testdir.tmpdir
+    page = 27
+    utila.run(f'formulero -i {power.DISS143_PDF} -o {outdir} --pages={page}')
+    # run cleanup
+    tests.cleanup.run(
+        f'-i {source} -i {testdir.tmpdir} -o {outdir} --pages={page}',
+        monkeypatch=monkeypatch,
+    )
+    # load result
+    ptn = serializeraw.ptn_frompath(source)
+    ptn_dumped = serializeraw.ptn_frompath(testdir.tmpdir)
+    assert ptn_dumped != ptn
+    before = utila.select_page(ptn, page=page)
+    clean = utila.select_page(ptn_dumped, page=page)
+    # remove some lines due formulero
+    assert len(before) == 38
+    assert len(clean) == 31
+
+
 @utilatest.requires(power.BACHELOR051_PDF)
 def test_cleanup_backup(testdir, monkeypatch):
     """Copy source files as backup files(change data type)."""

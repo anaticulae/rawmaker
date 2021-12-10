@@ -62,7 +62,7 @@ def test_diss264_text_extraction_position_page17(testdir, monkeypatch, capsys):
     assert stdout.count('could not convert:') >= 6, stdout
 
 
-def test_diss264_text_extraction_vertical_text_page21(testdir, monkeypatch):
+def test_vertical_text_diss264page21(testdir, monkeypatch):
     source = power.DISS264_PDF
     cmd = f'-i {source} --text --pages=21'
     tests.run(cmd, monkeypatch=monkeypatch)

@@ -26,7 +26,7 @@ def test_text_master110_bounding_x0_x1(testdir, monkeypatch):
     assert loaded
 
 
-def test_text_diss274_negative_bounding(testdir, monkeypatch):
+def test_negative_text_bounding_diss274page0(testdir, monkeypatch):
     # layout is required to invoke error
     layout = '--char_margin=3.1 --boxes_flow=1.0 --line_margin=0.25'
     cmd = f'-i {power.DISS274_PDF} --text --pages=0 {layout}'
@@ -35,7 +35,7 @@ def test_text_diss274_negative_bounding(testdir, monkeypatch):
     navigator = navigators[0]
     # TODO: CHANGES AFTER INVESTIGATING PROBLEM WITH NEGATIVE TEXT CONTENT
     # ON LEFT BORDER.
-    assert len(navigator) == 28
+    assert len(navigator) == 10
 
 
 def test_text_bachelor67page63(testdir, monkeypatch):

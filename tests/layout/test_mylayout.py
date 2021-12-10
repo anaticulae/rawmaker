@@ -8,8 +8,6 @@
 # =============================================================================
 
 import hardcore
-import iamraw
-import iamraw.path
 import power
 import serializeraw
 import utilatest
@@ -21,9 +19,9 @@ def test_mylayout_bachelor90page53(testdir, monkeypatch):
     source = power.BACHELOR090_PDF
     cmd = f'-i {source} --text --pages=53'
     tests.run(cmd, monkeypatch=monkeypatch)
-
-    document = serializeraw.load_document(iamraw.path.text(testdir.tmpdir))
-
+    # load
+    document = serializeraw.load_document(testdir.tmpdir)
+    # verify
     page53_second_line = document[0][1].text.strip()
     assert page53_second_line == '4.3. Übersicht der praktischen Entwicklung'
 

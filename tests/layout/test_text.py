@@ -73,7 +73,7 @@ def test_vertical_text_diss264page21(testdir, monkeypatch):
         item for item in document[0]
         if isinstance(item, iamraw.VerticalTextContainer)
     ]
-    assert len(vertical_container) == 6
+    assert len(vertical_container) == 1
 
 
 def test_all_single_container(testdir, monkeypatch):

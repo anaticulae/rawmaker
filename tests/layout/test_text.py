@@ -66,9 +66,9 @@ def test_vertical_text_diss264page21(testdir, monkeypatch):
     source = power.DISS264_PDF
     cmd = f'-i {source} --text --pages=21'
     tests.run(cmd, monkeypatch=monkeypatch)
-
-    document = serializeraw.load_document(iamraw.path.text(testdir.tmpdir))
-
+    # load result
+    document = serializeraw.load_document(testdir.tmpdir)
+    # count vertical container
     vertical_container = [
         item for item in document[0]
         if isinstance(item, iamraw.VerticalTextContainer)

@@ -57,6 +57,9 @@ def work(  # pylint:disable=W9015,W0613
     Returns:
         parsed document as yaml output
     """
+    # TODO: CHANGE BEHAVIOR OF --detect_vertical. Convert to PARAMETER
+    # with True as default.
+    detect_vertical = True
     assert isinstance(document, str), str(document)
     config = rawmaker.parameter.ParsingConfiguration.from_dict(**locals())
     document = rawmaker.features.text.extract_document(

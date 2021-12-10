@@ -45,6 +45,9 @@ def work(  # pylint:disable=W9015,W0613
         parsed document as yaml output
         parsed positions of text container
     """
+    # TODO: CHANGE BEHAVIOR OF --detect_vertical. Convert to PARAMETER
+    # with True as default.
+    detect_vertical = True
     config = rawmaker.parameter.ParsingConfiguration.from_dict(**locals())
 
     if rawmaker.cli.superfast():

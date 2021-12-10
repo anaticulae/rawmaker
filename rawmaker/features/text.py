@@ -13,15 +13,14 @@ import typing
 
 import iamraw
 import serializeraw
-import utila
 
-import pdfinfo.pages
 import rawmaker.cli
 import rawmaker.features
 import rawmaker.miner.position
 import rawmaker.miner.text
 import rawmaker.parameter
 import rawmaker.reader
+import rawmaker.text.superfast
 
 
 def work(  # pylint:disable=W9015,W0613
@@ -51,8 +50,12 @@ def work(  # pylint:disable=W9015,W0613
     config = rawmaker.parameter.ParsingConfiguration.from_dict(**locals())
 
     if rawmaker.cli.superfast():
-        result = os.getcwd()
-        document = superfast(document, config, result, pages)
+        document = rawmaker.text.superfast.superfast(
+            document,
+            config,
+            workdir=os.getcwd(),
+            pages=pages,
+        )
     else:
         document = extract_document(source=document, config=config, pages=pages)
 
@@ -60,82 +63,7 @@ def work(  # pylint:disable=W9015,W0613
 
     dumped_text = serializeraw.dump_document(document)
     dumped_positions = serializeraw.dump_textpositions(positions)
-
     return dumped_text, dumped_positions
-
-
-def superfast(
-    document: str,
-    config: rawmaker.parameter.ParsingConfiguration,
-    result: str,
-    pages: list = None,
-) -> iamraw.Document:
-    if pages is None:
-        pagecount = pdfinfo.pages.determine(document)
-        pages = utila.make_tuple(pagecount)
-    chunks = utila.chunks(pages, size=10)
-    parameter = config.cmdline()
-    todo = []
-    for index, chunk in enumerate(chunks):
-        joined_pages = utila.from_tuple(chunk, separator=',')
-        cmd = (f'rawmaker -i {document} -o {result} --prefix {index}'
-               f' --text --pages {joined_pages} {parameter}')
-        utila.log(cmd)
-        todo.append(cmd)
-    # run in parallel
-    completed = utila.run_parallel(todo, result, worker=12)
-    assert completed == utila.SUCCESS, completed
-    # merge document
-    document = merge_document(result, len(chunks))
-    return document
-
-
-def merge_document(path: str, size: int) -> iamraw.Document:
-    """Merge chunks of extract document.
-
-    A little bit diry, but ok for now. XXX
-    """
-    text_files = [
-        os.path.join(path, f'rawmaker__{item}_text_text.yaml')
-        for item in range(size)
-    ]
-    posi_files = [
-        os.path.join(path, f'rawmaker__{item}_text_positions.yaml')
-        for item in range(size)
-    ]
-
-    text = [serializeraw.load_document(item) for item in text_files]
-    positions = [serializeraw.load_textpositions(item) for item in posi_files]
-
-    for item in text_files + posi_files:
-        utila.info(f'remove {item}')
-        utila.file_remove(item)
-
-    for docs, pos in zip(text, positions):
-        for page in docs:
-            index = 0
-            for item in page:
-                if not isinstance(item, iamraw.TextContainer):
-                    continue
-                # bounding, mean
-                bounding, mean = utila.select_page(pos, page.page).content[index] # yapf:disable
-                fake_text_mean_height(item, bounding, mean)
-                item.box = bounding
-                index += 1
-
-    document = iamraw.Document(dimension=text[0].dimension)
-    for chunk in text:
-        for page in chunk:
-            document.append(page)
-    return document
-
-
-def fake_text_mean_height(item, bounding, mean):
-    # TODO: REMOVE THIS HACK LATER
-    for line in item.lines:
-        for char in line:
-            # Fake mean char height
-            char.box = iamraw.BoundingBox(0, bounding.y1 - mean, 0, bounding.y1)
 
 
 def extract_document(

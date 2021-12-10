@@ -57,7 +57,8 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
                                           and lines.
             imagewriter(callable): listener to recive extract images
         """
-        super().__init__(laparams=rawmaker.parameter.from_config(config))
+        super().__init__()
+        self.laparams, self.second = configure_layout_processor(config)
         self.imagewriter = imagewriter
         self.strip = config.strip if config else rawmaker.parameter.STRIP
         self.page = 0
@@ -79,6 +80,15 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         self.document = None
         return document
 
+    def end_page(self, page):
+        self.cur_item = run_layout(  # pylint:disable=attribute-defined-outside-init
+            self.cur_item,
+            self.laparams,
+            self.second,
+        )
+        self.pageno += 1
+        self.receive_layout(self.cur_item)
+
     def receive_layout(self, ltpage):
         super().receive_layout(ltpage)
         page = render(ltpage, strip=self.strip)
@@ -93,6 +103,51 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         if self.done.contains(hashed):
             return
         super().render_string(textstate, seq, ncs, graphicstate)
+
+
+def run_layout(page, layout, layout_vertical):
+    if not layout:
+        # no layout analyzation
+        return page
+    if not layout_vertical:
+        page.analyze(layout)
+        return page
+    horizontals, verticals, rest = [], [], []
+    for item in page._objs:  # pylint:disable=W0212
+        with contextlib.suppress(AttributeError):
+            # process horizontal and vertical chars separately
+            if item.upright:
+                horizontals.append(item)
+            else:
+                verticals.append(item)
+            continue
+        rest.append(item)
+    # pylint:disable=W0212
+    # horizontal
+    page._objs = horizontals
+    page.analyze(layout)
+    horizontals = page._objs
+    # vertical
+    page._objs = verticals
+    page.analyze(layout_vertical)
+    verticals = page._objs
+    # unite result
+    page._objs = horizontals + verticals + rest
+    return page
+
+
+def configure_layout_processor(config):
+    """Detecting horizonal and vertical text container requires to
+    layout object twice. In further releases of pdfminer this is may not
+    required anymore.
+    """
+    laparams = rawmaker.parameter.from_config(config)
+    if not laparams.detect_vertical:
+        return laparams, None
+    layout_vertical = rawmaker.parameter.from_config(config)
+    # disable vertical a first layout processing
+    laparams.detect_vertical = False
+    return laparams, layout_vertical
 
 
 def page_size(document: iamraw.Document) -> iamraw.PageSize:

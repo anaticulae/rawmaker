@@ -209,12 +209,9 @@ def parse_pagelink(pagelink):
     'glo:glos:Glasübergangstemperatur'
     """
     if isinstance(pagelink, bytes):
-        for encoding in ['utf8', 'ascii', 'cp1252']:
-            try:
-                pagelink = pagelink.decode(encoding)
-            except UnicodeDecodeError:
-                continue
-            return pagelink
+        decoded = rawmaker.utils.guess_decoding(pagelink)
+        if decoded:
+            return decoded
     if isinstance(pagelink, list):
         if isinstance(pagelink[0], pdfminer.pdftypes.PDFObjRef):
             # internal link to pdf page

@@ -24,6 +24,7 @@ objects are ignored.
 """
 
 import functools
+import math
 import typing
 
 import iamraw
@@ -208,5 +209,10 @@ def scale_fromchar(char) -> float:
     # Calibri.
     scale = utila.roundme(char.size / 1.34005)
     if scale < 0:
+        rotated = not char.ltchar.upright
+        absolute = math.fabs(scale)
+        if rotated and absolute > 4.0:  # TODO: HOLY VALUE
+            # rotated char which is printed top down
+            return absolute
         utila.error(f'negative font size: {scale} {char}')
     return scale

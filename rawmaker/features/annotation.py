@@ -18,6 +18,7 @@ import utila
 
 import rawmaker.features
 import rawmaker.reader
+import rawmaker.utils
 
 
 def work(document: str, pages=None) -> str:
@@ -179,9 +180,27 @@ def parse_external(pageobject, getobj=None) -> iamraw.HyperLink:
         annotated = getobj(annotated.objid)
     bounds = determine_bounding(pageobject['Rect'])
     with contextlib.suppress(KeyError):
-        hyperlink = annotated['URI'].decode(utila.UTF8)
+        hyperlink = annotated['URI']
+        hyperlink = hyperlink_decode(hyperlink)
         return iamraw.HyperLink(bounds=bounds, goal=hyperlink)
     return None
+
+
+def hyperlink_decode(text: bytes) -> str:
+    r""""
+    text(bytes): 7-bit ASCII, see 12.6.4.7
+
+    Hint: ASCII must not always be correct cause of bad programmed printer.?
+    TODO: MAY A PDFMINER CONVERTION ERROR?
+    TODO: VERIFY LINUX/WIN DUE CP1252
+
+    >>> hyperlink_decode(b'http://road.cc/measure-\x96-smart-street')
+    'http://road.cc/measure-–-smart-street'
+    """
+    result = rawmaker.utils.guess_decoding(text)
+    if result is None:
+        utila.error(f'annotation: could not decode: {text}')
+    return result
 
 
 def parse_pagelink(pagelink):

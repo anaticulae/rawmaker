@@ -9,6 +9,7 @@
 
 import iamraw
 import power
+import pytest
 import serializeraw
 import utila
 import utilatest
@@ -82,3 +83,17 @@ def test_all_single_container(testdir, monkeypatch):
     tests.run(cmd, monkeypatch=monkeypatch)
     document = serializeraw.load_document(testdir.tmpdir)[0]
     assert len(document) == 22
+
+
+@pytest.mark.xfail(reason='improve layout parser')
+def test_regression_number(testdir, monkeypatch):
+    """Last line on page 127 produces '10 2' instead of '102' as last line.
+
+    TODO: Check where this space token comes from.
+    """
+    source = power.DISS406_PDF
+    cmd = f'-i {source} --text --pages=127'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    document = serializeraw.load_document(testdir.tmpdir)[0]
+    lastline = document[-1].text.strip()
+    assert lastline == '102'

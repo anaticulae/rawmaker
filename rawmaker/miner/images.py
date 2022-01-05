@@ -291,6 +291,9 @@ def image_fromlt(image) -> PIL.Image:
     except ValueError as error:
         utila.error(error)
         return None
+    except pdfminer.pdftypes.PDFNotImplementedError as error:
+        utila.error(error)
+        return None
 
     if colorspace == 'DeviceGray':
         mode = BITMAP

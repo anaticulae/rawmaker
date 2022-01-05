@@ -47,3 +47,8 @@ def test_text_bachelor67page63(testdir, monkeypatch):
     text = [item.text.strip() for item in navigators]
     assert text[1] == '[AM14]'
     assert text[13] == '[Arm+15]'
+
+
+def test_text_master099b_zero_bounding_char(testdir, monkeypatch):
+    cmd = f'-i {power.MASTER099B_PDF} --text --pages=42'
+    tests.run(cmd, monkeypatch=monkeypatch)

@@ -288,7 +288,8 @@ def render_textline(
             x1 = result.chars[-2].box.x1
         result.box.x0 = x0
         result.box.x1 = x1
-        assert result.box.x0 < result.box.x1, str(result.box)
+        # TODO: VERIFY <=
+        assert result.box.x0 <= result.box.x1, str(vars(result))
     return result
 
 

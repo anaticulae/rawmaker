@@ -159,6 +159,7 @@ def test_images_export_document_complete(
     pytest.param(power.MASTER116_PDF, (2, 3), 2, id='master116'),
     pytest.param(power.DISS233_PDF, 61, 1, id='diss233'),
     pytest.param(power.DISS218_PDF, 24, 1, id='diss218JPXregression'),
+    pytest.param(power.DISS218_PDF, 43, 1, id='diss218BitmapRegression'),
 ])
 def test_images_export_x(source, pages, expected, testdir):
     root = testdir.tmpdir

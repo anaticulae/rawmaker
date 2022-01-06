@@ -36,6 +36,7 @@ import pdfminer.psparser
 import PIL.Image
 import PIL.ImageDraw
 import PIL.ImageDraw2
+import PIL.PngImagePlugin
 import utila
 
 import rawmaker.converter.images
@@ -249,10 +250,17 @@ def raw_images_merge(images: LTImages) -> MergedImage:
         if not current:
             continue
         # render to common image
+        current = ensure_bitmap(current)
         renderer.bitmap((image.x0 - x00, image.y0 - y00), bitmap=current)
     # update bottom bounding of merged rectangle
     multi_bounding = (x00, y00, x11, y11)
     return MergedImage(result, ext, multi_bounding)
+
+
+def ensure_bitmap(image):
+    if isinstance(image, PIL.PngImagePlugin.PngImageFile):
+        image = image.convert(mode=BITMAP, colors=1024, palette='1')
+    return image
 
 
 def jbig2(image):

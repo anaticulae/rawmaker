@@ -274,27 +274,29 @@ def jbig2(image):
     return result
 
 
-def image_fromlt(image) -> PIL.Image:
+def image_fromlt(image) -> PIL.Image:  # pylint:disable=R0912
     try:
         colorspace = rawmaker.miner.colorspace.parse(image.colorspace)
     except AttributeError as error:
         utila.log_stacktrace()
         utila.error(error)
         colorspace = 'DeviceRGB'
-
-    mode = '1'  # default mode
-    size = image.srcsize
-    bits = image.bits
-
     try:
         data = image.stream.get_data()
     except ValueError as error:
         utila.error(error)
         return None
     except pdfminer.pdftypes.PDFNotImplementedError as error:
+        if 'JPXDecode' in str(error):
+            utila.debug(error)
+            utila.debug('use own png converter')
+            return png_load(image.stream.get_rawdata())
         utila.error(error)
         return None
-
+    # try to load images
+    mode = '1'  # default mode
+    size = image.srcsize
+    bits = image.bits
     if colorspace == 'DeviceGray':
         mode = BITMAP
     elif colorspace:
@@ -328,6 +330,19 @@ def image_fromlt(image) -> PIL.Image:
     except OSError:
         current = PIL.Image.new(mode, size, color=0)
     return current
+
+
+def png_load(rawdata) -> PIL.Image:
+    """Convert JPEG2000 to png data."""
+    # TODO: MOVE THIS CODE TO PDFMINER
+    buffer = io.BytesIO(rawdata)
+    buffer.seek(0)
+    with PIL.Image.open(buffer) as fp:
+        converted = io.BytesIO()
+        fp.save(converted, 'png')
+        converted.seek(0)
+    loaded = PIL.Image.open(converted)
+    return loaded
 
 
 def rgb256_decoder(data, dataspace, bits=8):
@@ -374,7 +389,7 @@ def extention(image) -> str:
     """
     decoder = {
         'DCTDecode': 'jpg',
-        'JPXDecode': 'jp2',
+        'JPXDecode': 'png',
         'CCITTFaxDecode': 'tiff',
         'Default': 'png',
         'FlateDecode': 'png',

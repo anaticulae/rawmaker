@@ -38,9 +38,10 @@ def test_outlines_from_document_no_outlines(monkeypatch, capsys):
 def test_outlines_without_outlines():
     source = power.MASTER072_PDF
     extracted = rawmaker.features.outlines.work(source)
-
     # no toc extraction
-    assert len(extracted) < 10, str(extracted)
+    # level: 0
+    # numbered: true
+    assert len(extracted) == 24, str(extracted)
 
 
 def present_inerror(*items, captured):

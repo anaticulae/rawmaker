@@ -16,7 +16,6 @@ import pytest
 import serializeraw
 import utila
 import utilatest
-import yaml
 
 import rawmaker
 import rawmaker.features
@@ -30,10 +29,8 @@ import tests.resources
 @utilatest.longrun
 def test_mining_fonts(testdir):
     header, content = rawmaker.features.fonts.work(power.DOCU035_PDF)
-
     assert len(header) > 100
     assert len(content) > 300
-
     utila.file_create('header.yaml', header)
     utila.file_create('content.yaml', content)
 
@@ -81,7 +78,7 @@ def test_mining_increasing_fonts():
     result = rawmaker.features.fonts.work(tests.resources.INCREASING_FONT_A4)
     header, _ = result
 
-    font_sizes = [item['font']['scale'] for item in yaml.safe_load(header)]
+    font_sizes = [item['font']['scale'] for item in utila.yaml_load(header)]
     font_sizes = font_sizes[0:-1]  # remove the last one(page number)
 
     increases = [

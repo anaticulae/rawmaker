@@ -32,6 +32,7 @@ def test_translate_lines(testdir, monkeypatch):
     assert len(translated) == 2
 
 
+@utilatest.longrun
 def test_cleanup_translate(testdir, monkeypatch):
     source, pages = power.BACHELOR037_PDF, '22,23,24'
     tests.cleanup.utils.prepare(source, pages, testdir, monkeypatch)

@@ -8,11 +8,13 @@
 # =============================================================================
 
 import power
+import utilatest
 
 import letty.quality.whitespace
 import tests
 
 
+@utilatest.longrun
 def test_whitespaces_count(testdir, monkeypatch):
     root = testdir.tmpdir
     path = power.MASTER072_PDF

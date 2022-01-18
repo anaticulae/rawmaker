@@ -57,6 +57,7 @@ def test_render_master75page0_10_28(monkeypatch, testdir):
     assert pages == [0, 8, 28, 28]
 
 
+@utilatest.longrun
 def test_render_master127page32(monkeypatch, testdir):
     """Ensure that multi-line-image is merged correctly."""
     extracted = extract(power.MASTER127_PDF, 32, testdir, monkeypatch)
@@ -71,11 +72,13 @@ def test_skip_huge_image(monkeypatch, testdir, capsys):
     assert 'skip image size:' in utilatest.stdout(capsys)
 
 
+@utilatest.longrun
 def test_image_write_error(monkeypatch, testdir):
     extracted = extract(power.DISS143_PDF, 85, testdir, monkeypatch)
     assert len(extracted) == 1
 
 
+@utilatest.longrun
 def test_image_master31page10(monkeypatch, testdir):
     """Chinese character should be the only image."""
     extracted = extract(power.MASTER031_PDF, 10, testdir, monkeypatch)

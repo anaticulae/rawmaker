@@ -48,6 +48,7 @@ def test_cleanup_bachelor56(testdir, monkeypatch):
     pytest.param(power.HOME040_PDF, ':', id='home40'),
     pytest.param(power.DISS143_PDF, '27', id='diss143'),
 ])
+@utilatest.longrun
 def test_cleanup_source_compare_reduction(
     source,
     pages,
@@ -92,6 +93,7 @@ def test_cleanup_source_compare_reduction(
     assert fontstore_dumped.header == fontstore.header
 
 
+@utilatest.longrun
 @utilatest.requires(power.BACHELOR051_PDF)
 def test_cleanup_figures(testdir, monkeypatch):
     """Remove text in figure area."""
@@ -109,6 +111,7 @@ def test_cleanup_figures(testdir, monkeypatch):
     assert len(clean) + 4 == len(before)
 
 
+@utilatest.longrun
 @utilatest.requires(power.BACHELOR051_PDF)
 def test_cleanup_tables(testdir, monkeypatch):
     """Verify multiple input soruces and tablero cleanup."""
@@ -140,6 +143,7 @@ def test_cleanup_tables(testdir, monkeypatch):
 
 
 @utilatest.requires(power.DISS143_PDF)
+@utilatest.longrun
 def test_cleanup_formulas(testdir, monkeypatch):
     source = power.link(power.DISS143_PDF)
     outdir = testdir.tmpdir

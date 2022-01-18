@@ -8,10 +8,12 @@
 # =============================================================================
 
 import power
+import utilatest
 
 import tests.cleanup.utils
 
 
+@utilatest.longrun
 def test_translate_diss143page25(testdir, monkeypatch):
     """Regression test to ensure that all lines are matched together.
 

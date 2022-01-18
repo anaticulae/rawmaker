@@ -52,6 +52,7 @@ def test_bachelor37_text_extraction_position_page4(testdir, monkeypatch):
     assert utila.near(371.04, second.x0), second.x0
 
 
+@utilatest.longrun
 def test_diss264_text_extraction_position_page17(testdir, monkeypatch, capsys):
     """Log non correct char conversion as an error."""
     # TODO: CHECK THIS TEST AFTER UPGRADING PDFMINER

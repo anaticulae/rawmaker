@@ -35,6 +35,7 @@ def test_mining_fonts(testdir):
     utila.file_create('content.yaml', content)
 
 
+@utilatest.longrun
 def test_mining_fonts_cporting():
     header, content = rawmaker.features.fonts.work(power.DOCU009_PDF)
     # XXX: Define good numbers
@@ -42,6 +43,7 @@ def test_mining_fonts_cporting():
     assert len(content) > 200
 
 
+@utilatest.longrun
 def test_minining_fonts_cporting_first_page():
     """Mine the first font of the document at the first page"""
     # TODO: Test mining last font of document
@@ -92,6 +94,7 @@ def test_mining_increasing_fonts():
     assert font_sizes == expected_fontsizes
 
 
+@utilatest.longrun
 def test_mining_fonts_restruct_page_5():
     """Mine the fifths page, compare only `Weight` for not being to
     specific."""

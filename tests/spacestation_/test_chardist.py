@@ -23,6 +23,7 @@ import tests.spacestation_
     pytest.param(power.MASTER116_PDF, '20:50', (10.91, -0.022), id='master116', marks=utilatest.nightly),
     pytest.param(power.MASTER116_PDF, '8', (10.91, -0.022), id='shormaster116'),
 ])
+@utilatest.longrun
 # yapf:enable
 def test_chardist(source, pages, expected, testdir, monkeypatch):
     cmd = f'-i {source} --pages={pages} --wspace --chardist'

@@ -11,6 +11,7 @@ import iamraw.path
 import power
 import serializeraw
 import utila
+import utilatest
 
 import tests
 
@@ -33,6 +34,7 @@ def test_horizontals_master155page1(testdir, monkeypatch):
     assert len(horizontals) == 1, str(horizontals)
 
 
+@utilatest.longrun
 def test_lines_bachelor63page10(testdir, monkeypatch):
     cmd = f'-i {power.BACHELOR063_PDF} --pages=10 --line --annotation'
     tests.run(cmd, monkeypatch=monkeypatch)

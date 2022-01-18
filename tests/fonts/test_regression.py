@@ -18,6 +18,7 @@ import tests
 
 
 @pytest.mark.xfail(reason='incomplete font detection implementation')
+@utilatest.longrun
 def test_leftright_book_font_name(testdir, monkeypatch, capsys):
     tests.run(
         f'-i {power.BOOK007_PDF} --fonts',
@@ -28,6 +29,7 @@ def test_leftright_book_font_name(testdir, monkeypatch, capsys):
 
 
 @pytest.mark.xfail(reason='support ROMA')
+@utilatest.longrun
 def test_bachelor90_fontname(testdir, monkeypatch, capsys):
     """\
     TODO: VERIFY WHAT ROMAN MEANS
@@ -66,7 +68,6 @@ def test_porting_module_font_index(strip, testdir, monkeypatch):
     tests.run(cmd, monkeypatch=monkeypatch)
     source = iamraw.path.fontcontent(testdir.tmpdir)
     position = serializeraw.load_font_content(source)
-
     for page in position:
         content = page.content
         if len(content) < 2:

@@ -66,6 +66,7 @@ def test_dump_and_load_pdf(pdf_path):
                 assert line.text == lineexpe.text
 
 
+@utilatest.longrun
 def test_text_mine_pdf_page_0():
     selected_pages = [3, 4, 5]
     parsed = rawmaker.features.text.work(

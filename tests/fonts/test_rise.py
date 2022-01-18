@@ -9,6 +9,7 @@
 
 import power
 import serializeraw
+import utilatest
 
 import tests
 
@@ -42,6 +43,7 @@ def test_regression_font_rise_bachelor75page16(testdir, monkeypatch):
     assert not rises
 
 
+@utilatest.longrun
 def test_regression_font_rise_bachelor75page1718(testdir, monkeypatch):
     cmd = f'-i {power.BACHELOR075_PDF} -o {testdir.tmpdir} --text --pages=17,18'
     tests.run(cmd, monkeypatch=monkeypatch)

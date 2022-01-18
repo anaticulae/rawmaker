@@ -16,6 +16,7 @@ import linero.camelox.fork
 import linero.table.camelox
 
 
+@utilatest.longrun
 def test_camelot_run():
     source = power.DOCU013_PDF
     parsed = linero.table.camelox.run(source, pages=2)
@@ -31,6 +32,7 @@ def test_camelot_forked():
     assert len(flatten) == 38
 
 
+@utilatest.longrun
 def test_camelot_latex():
     source = power.BACHELOR090_PDF
     parsed = linero.table.camelox.run(source, pages=76)

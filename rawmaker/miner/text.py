@@ -261,12 +261,15 @@ def render_textline(
     result.chars = merge_small_whitespaces(result.chars)
     result.chars = merge_special_char(result.chars)
     result.chars = fix_fontrise(result.chars)
-
     if remove_horizontals and ishorizontal(result.text):
         return None
-
     if not strip:
         return result
+    result = textline_strip(result)
+    return result
+
+
+def textline_strip(result):
     # remove left
     lstrip = len(result.text) - len(result.text.lstrip())
     result.chars = result.chars[lstrip:]
@@ -515,7 +518,6 @@ def split_container(
         else:
             grouped[-1].append(line)
     grouped = [item for item in grouped if item]
-
     # add bounding
     result = []
     for index, group in enumerate(grouped):

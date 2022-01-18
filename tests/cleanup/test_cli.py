@@ -23,6 +23,7 @@ def test_run_cleanup(monkeypatch):
     tests.cleanup.run('--help', monkeypatch=monkeypatch)
 
 
+@utilatest.requires(power.BACHELOR056_PDF)
 def test_cleanup_bachelor56(testdir, monkeypatch):
     source = power.link(power.BACHELOR056_PDF)
     utila.copy_content(

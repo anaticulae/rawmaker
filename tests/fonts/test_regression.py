@@ -118,3 +118,11 @@ def test_arabic_fonts(testdir, monkeypatch):
     # TODO: CHECK INFLUENCE OF RIGHT TO LEFT WRITING
     cmd = f'-i {power.DISS272_PDF} --fonts --pages=246:251'
     tests.run(cmd, monkeypatch=monkeypatch)
+
+
+@pytest.mark.xfail(reason='verify font size')
+def test_font_size_huge_master193(testdir, monkeypatch):
+    cmd = f'-i {power.MASTER193_PDF} --fonts --text --pages=2'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    # TODO: INVESTIGATE FONT SIZE PROBLEM
+    assert 0

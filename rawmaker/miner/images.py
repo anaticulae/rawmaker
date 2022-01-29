@@ -323,7 +323,11 @@ def image_fromlt(image) -> PIL.Image:  # pylint:disable=R0912
             buffer = io.BytesIO(data)
             current = PIL.Image.open(buffer)
         except IOError:
-            current = PIL.Image.frombytes(mode, size, data)
+            try:
+                current = PIL.Image.frombytes(mode, size, data)
+            except ValueError:
+                # TODO: REMOVE THIS DIRTY SHIT
+                current = PIL.Image.frombytes('1', size, data)
     else:
         try:
             current = PIL.Image.frombytes(mode, size, data)

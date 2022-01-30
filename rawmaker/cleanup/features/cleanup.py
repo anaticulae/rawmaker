@@ -142,8 +142,10 @@ def valid_bounding(bounding, invalids, page: int) -> bool:
         invalid_area = invalids[page]
     except KeyError:
         return True
-    if utila.rectangles_intersecting(invalid_area, bounding):
-        return False
+    for invalid in invalid_area:
+        overlapping_rate = utila.rectangle_overlapping(invalid, bounding)
+        if overlapping_rate > 0.9:  # TODO: HOLY VALUE
+            return False
     return True
 
 

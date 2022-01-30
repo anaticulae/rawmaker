@@ -8,6 +8,7 @@
 # =============================================================================
 
 import power
+import serializeraw
 import utilatest
 
 import tests.cleanup.utils
@@ -31,3 +32,16 @@ def test_translate_diss143page25(testdir, monkeypatch):
     tests.cleanup.utils.prepare(source, '25', testdir, monkeypatch)
     # fails before
     tests.cleanup.run('', monkeypatch=monkeypatch)
+
+
+@utilatest.longrun
+def test_master116p18table(testdir, monkeypatch):
+    """Do not remove very near caption line in table."""
+    source = power.MASTER116_PDF
+    tests.cleanup.utils.prepare(source, '18', testdir, monkeypatch)
+    tests.cleanup.run('', monkeypatch=monkeypatch)
+    serializeraw.load_document.cache_clear()
+    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    raw = ptn.debug
+    # ensure that caption line in table is not cleaned
+    assert 'Tab. 2.1.: Übersicht Hybridlokomotiven [Kon13]' in raw

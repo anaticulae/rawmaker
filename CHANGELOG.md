@@ -2,6 +2,29 @@
 
 Every noteable change is logged here.
 
+## v2.31.0
+
+### Feature
+
+* use overlapping rate to skip lines (98cb53132236)
+* add method to guess encoding (feb889d2fe77)
+* run layout twice to improve results (50886d57b7f8)
+* analyze vertical text boxes as default (0af56a366c43)
+
+### Fix
+
+* parse image with color space, device or table (07273c536c99)
+* ensure to merge bitmaps (d1032680b5cf)
+* support missing pdfminer JPXDecode (b22bfdcaaf9d)
+* do not fail on unsupported image decoder (e2eb485b95d1)
+* do not fail on empty width character (e61ea7639764)
+* fix rotated font size (36fb7dfaaff2)
+* do not fail on bad pdf printer (b8e078001399)
+
+### Documentation
+
+* Happy New Year! (ecbd691adb27)
+
 ## v2.30.1
 
 ## v2.30.0

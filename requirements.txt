@@ -14,8 +14,8 @@ Pillow>=8.2.0<9.0.0
 camelot_py[cv]>=0.8.2<0.9.0
 
 # Internal packages
-utila>=2.63.0<3.0.0
-configo>=0.17.0<1.0.0
-iamraw>=4.47.0<5.0.0
-protocol>=3.16.1<4.0.0
+utila>=2.66.0<3.0.0
+configo>=0.18.0<1.0.0
+iamraw>=4.51.1<5.0.0
+protocol>=3.17.1<4.0.0
 ghost>=0.3.2<1.0.0

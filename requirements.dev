@@ -8,15 +8,15 @@
 # =============================================================================
 
 # test data provider
-power==2.3.0
+power==2.4.0
 hardcore==0.4.0
 
 jam==0.4.0
 
-utilatest==0.11.0
+utilatest==0.12.1
 
 optimo==0.3.0
 genex==0.21.3
 genref>=1.3.2<2.0.0
 
-figureo>=0.16.0<1.0.0
+figureo>=0.17.0<1.0.0

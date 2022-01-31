@@ -54,7 +54,7 @@ def cleanup(  # pylint:disable=R0914
         pages,
     )
     # remove content here
-    ptns, horizontals, lines = remove_skip_area(
+    ptns, horizontals, lines, images = remove_skip_area(
         ptns,
         horizontals,
         lines,
@@ -75,6 +75,7 @@ def cleanup(  # pylint:disable=R0914
         fontcontent,
         horizontals,
         lines,
+        images=images,
         prefix=prefix,
         postfix=postfix,
     )
@@ -98,7 +99,14 @@ def remove_skip_area(
     ptns = cleanup_ptn(ptns, invalids)
     horizontals = cleanup_horizontals(horizontals, invalids)
     lines = cleanup_lines(lines, invalids)
-    return ptns, horizontals, lines
+    noimages = create_invalid_area(
+        images=[],
+        tables=tables,
+        codes=codes,
+        formulas=formulas,
+    )
+    images = cleanup_images(images, noimages)
+    return ptns, horizontals, lines, images
 
 
 def cleanup_ptn(ptns, invalids):
@@ -154,6 +162,24 @@ def cleanup_lines(lines, invalids):
     return lines
 
 
+def cleanup_images(images, invalids):
+    """Skip images which are overlapped by table, formula, code or
+    something else.
+
+    We prefare these extraction over image extraction.
+    """
+    if not images:
+        return images
+    for page in images:
+        for image in page.content:
+            if valid_bounding(image.bounding, invalids, page.page):
+                continue
+            # image is overlapped by table, formula, code or something,
+            # skip image
+            image.hidden = True
+    return images
+
+
 def valid_bounding(bounding, invalids, page: int) -> bool:
     try:
         invalid_area = invalids[page]
@@ -194,6 +220,7 @@ def write_result(
     fontcontent: list,
     horizontals: list,
     lines: list,
+    images: list,
     prefix: str = '',
     postfix: str = '',
 ):
@@ -217,6 +244,7 @@ def write_result(
         iamraw.path.fontcontent(outpath, prefix=prefix + postfix),
         fontcontent,
     )
+    write_images(outpath, images)
     # write lines
     if horizontals is not None:
         # None signals that the source does not contain any horizontal file
@@ -230,3 +258,18 @@ def write_result(
             iamraw.path.line(outpath, prefix=postfix),
             serializeraw.dump_lines(lines),
         )
+
+
+def write_images(outpath, images):
+    if not images:
+        return
+    # TODO: REMOVE ftype later
+    baseimage = iamraw.path.images(outpath, ftype='')
+    os.makedirs(baseimage, exist_ok=True)
+    for page in images:
+        for image in page.content:
+            if not image.hidden:
+                continue
+            imagepath = utila.join(baseimage, f'{image.hashedimage}.yaml')
+            dumped = serializeraw.dump_image_info(image)
+            utila.file_replace(imagepath, dumped)

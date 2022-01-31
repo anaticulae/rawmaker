@@ -41,7 +41,8 @@ def test_outlines_without_outlines():
     # no toc extraction
     # level: 0
     # numbered: true
-    assert len(extracted) == 24, str(extracted)
+    # style: null
+    assert len(extracted) == 36, str(extracted)
 
 
 def present_inerror(*items, captured):

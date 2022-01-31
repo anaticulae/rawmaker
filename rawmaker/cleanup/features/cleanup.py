@@ -95,6 +95,13 @@ def remove_skip_area(
         pages=pages,
     )
     invalids = create_invalid_area(images, tables, codes, formulas)
+    ptns = cleanup_ptn(ptns, invalids)
+    horizontals = cleanup_horizontals(horizontals, invalids)
+    lines = cleanup_lines(lines, invalids)
+    return ptns, horizontals, lines
+
+
+def cleanup_ptn(ptns, invalids):
     for ptn in ptns:
         if ptn.page not in invalids:
             # no invalid possible
@@ -111,30 +118,40 @@ def remove_skip_area(
                 # TODO: INVESTIGATE WHY THIS CAN HAPPEN
                 utila.error(f'could not remove line: {msg} on page: {ptn.page}')
                 utila.error(list(invalid_lines))
-    if horizontals:
-        horizontals = [
-            iamraw.PageContentHorizontals(
-                page=page.page,
-                content=[
-                    item
-                    for item in page.content
-                    if valid_bounding(item.box, invalids, page.page)
-                ])
-            for page in horizontals
-        ]
-    if lines:
-        lines = [
-            iamraw.PageContentLine(
-                page=page.page,
-                content=[
-                    item
-                    for item in page.content
-                    if valid_bounding(item, invalids, page.page)
-                ],
-            )
-            for page in lines
-        ]
-    return ptns, horizontals, lines
+    return ptns
+
+
+def cleanup_horizontals(horizontals, invalids):
+    if not horizontals:
+        return horizontals
+    horizontals = [
+        iamraw.PageContentHorizontals(
+            page=page.page,
+            content=[
+                item
+                for item in page.content
+                if valid_bounding(item.box, invalids, page.page)
+            ])
+        for page in horizontals
+    ]
+    return horizontals
+
+
+def cleanup_lines(lines, invalids):
+    if not lines:
+        return lines
+    lines = [
+        iamraw.PageContentLine(
+            page=page.page,
+            content=[
+                item
+                for item in page.content
+                if valid_bounding(item, invalids, page.page)
+            ],
+        )
+        for page in lines
+    ]
+    return lines
 
 
 def valid_bounding(bounding, invalids, page: int) -> bool:

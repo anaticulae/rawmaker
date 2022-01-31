@@ -156,7 +156,7 @@ def create_invalid_area(images, tables, codes, formulas) -> dict:
     for page in tables:
         invalid[page.page].extend([item.bounding for item in page.content])
     for page in codes:
-        tokens = utila.flatten([it.tokens_bounding for it in page.content])
+        tokens = utila.flatten([item.tokens_bounding for item in page.content])
         invalid[page.page].extend(tokens)
         # caption = utila.flatten([it.caption_bounding for it in page.content])
         # invalid[page.page].extend(caption)

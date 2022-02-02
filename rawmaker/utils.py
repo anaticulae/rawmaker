@@ -26,6 +26,7 @@ def guess_decoding(text: bytes) -> str:
     >>> guess_decoding(b'http://road.cc/measure-\x96-smart-street')
     'http://road.cc/measure-–-smart-street'
     """
+    text = resolve(text)
     for encoding in ENCODINGS:
         try:
             text = text.decode(encoding)

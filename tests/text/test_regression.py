@@ -52,3 +52,16 @@ def test_text_bachelor67page63(testdir, monkeypatch):
 def test_text_master099b_zero_bounding_char(testdir, monkeypatch):
     cmd = f'-i {power.MASTER099B_PDF} --text --pages=42'
     tests.run(cmd, monkeypatch=monkeypatch)
+
+
+def test_text_master089_outside_char(testdir, monkeypatch):
+    cmd = f'-i {power.MASTER089_PDF} --text --pages=1'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    navigator = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    raw = navigator.debug
+    # ensure that hidden character which are produced by user, skip them
+    # to improve extraction
+    assert 'A     Audiovisuelle Medien' not in raw
+    assert 'm     Mythen und Spielfilme' not in raw
+    assert '   Mythen und Spielfilme' not in raw
+    assert '   Audiovisuelle Medien' not in raw

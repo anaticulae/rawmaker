@@ -225,6 +225,24 @@ def render_char(
     return char
 
 
+WHITE = (1, 1, 1)
+BLACK = (0, 0, 0)
+
+
+def transparent(char) -> bool:
+    try:
+        char = char.ltchar
+    except AttributeError:
+        # VirtualChar
+        return False
+    colorspace = char.graphicstate
+    stroking = colorspace.scolor
+    non_storking = colorspace.ncolor
+    if stroking == non_storking == WHITE:
+        return True
+    return False
+
+
 def render_textline(
     item: pdfminer.layout.LTTextBox,
     strip: bool = False,
@@ -246,6 +264,10 @@ def render_textline(
     for char in item._objs:  # pylint: disable=protected-access
         # pylint:disable=E1101
         character = render_char(char, baseline=baseline)
+        if transparent(character):
+            # TODO: WRITE TO DEBUG FILE TO INFORM USER ABOUT BAD PRINTED PDF
+            utila.debug(f'white char, skip: {character}')
+            continue
         if len(character.value) == 1:
             result.chars.append(character)
         else:

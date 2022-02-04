@@ -117,7 +117,8 @@ def parse_simple(item) -> NamedDestination:
     if not item['S'].name == 'GoTo':
         # 12.6.4.2 Go-To Actions
         return None
-    reference = item['D'].decode('ascii')
+    reference = item['D']
+    reference = reference.decode('ascii')
     return NamedDestination(reference=reference)
 
 

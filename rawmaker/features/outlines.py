@@ -96,7 +96,11 @@ def pagenumber(action, dest, pdf) -> rawmaker.destination.ExplicitDestination:
     if action:
         parsed = rawmaker.destination.parse(action)
         if isinstance(parsed, rawmaker.destination.NamedDestination):
-            resolved = pdf.get_dest(parsed.pdf_reference)
+            try:
+                resolved = pdf.get_dest(parsed.pdf_reference)
+            except pdfminer.pdfdocument.PDFDestinationNotFound:
+                utila.error(f'invald pdf reference: {parsed.pdf_reference}')
+                return -1
             resolved = rawmaker.utils.resolve(resolved)
             parsed = rawmaker.destination.parse(resolved)
     if dest:

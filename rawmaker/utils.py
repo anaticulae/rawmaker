@@ -9,8 +9,6 @@
 
 import contextlib
 
-import utila
-
 
 def resolve(reference):
     with contextlib.suppress(AttributeError):
@@ -18,7 +16,7 @@ def resolve(reference):
     return reference
 
 
-ENCODINGS = utila.splititems('utf8 ascii cp1252')
+ENCODINGS = 'ascii cp1252 utf8 '.split()
 
 
 def guess_decoding(text: bytes) -> str:
@@ -31,6 +29,16 @@ def guess_decoding(text: bytes) -> str:
         try:
             text = text.decode(encoding)
         except UnicodeDecodeError:
+            continue
+        return text
+    return None
+
+
+def guess_encoding(text: bytes) -> str:
+    for encoding in ENCODINGS:
+        try:
+            text = text.encode(encoding)
+        except UnicodeEncodeError:
             continue
         return text
     return None

@@ -63,7 +63,8 @@ class NamedDestination(DestinationMixin):
         >>> NamedDestination('Kapitel 1').pdf_reference
         b'Kapitel 1'
         """
-        return self.reference.encode('ascii')
+        encoded = rawmaker.utils.guess_encoding(self.reference)
+        return encoded
 
 
 def parse(item) -> DestinationMixin:  # pylint:disable=R1260
@@ -118,7 +119,7 @@ def parse_simple(item) -> NamedDestination:
         # 12.6.4.2 Go-To Actions
         return None
     reference = item['D']
-    reference = reference.decode('ascii')
+    reference = rawmaker.utils.guess_decoding(reference)
     return NamedDestination(reference=reference)
 
 

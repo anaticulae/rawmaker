@@ -147,3 +147,21 @@ def test_text_no_char_horizontals_in_text():
     document = serializeraw.load_document(parsed[0])
     counted = document.text.count('_')
     assert not counted
+
+
+@pytest.mark.xfail(reason='bad layout parser, no text content in the moment')
+def test_no_text_bachelor085():
+    parsed = rawmaker.features.text.work(
+        power.BACHELOR085_PDF,
+        pages=(2,),
+        boxes_flow=0.0,
+        char_margin=0.0,
+        line_margin=0.0,
+        line_overlap=0.0,
+        word_margin=0.0,
+        detect_vertical=True,
+        nostrip=True,
+    )
+    document = serializeraw.load_document(parsed[0])
+    page_first = list(document[0])
+    assert page_first

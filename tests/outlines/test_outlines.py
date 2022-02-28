@@ -40,9 +40,8 @@ def test_outlines_without_outlines():
     extracted = rawmaker.features.outlines.work(source)
     # no toc extraction
     # level: 0
-    # numbered: true
     # style: null
-    assert len(extracted) == 36, str(extracted)
+    assert len(extracted) == 21, str(extracted)
 
 
 def present_inerror(*items, captured):

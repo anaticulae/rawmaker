@@ -88,12 +88,17 @@ def diss264(toc):
     assert len(toc) == 14
 
 
+def book173(toc):
+    assert len(toc) == 18
+
+
 @pytest.mark.parametrize('source, validate', [
     pytest.param(power.DOCU013_PDF, vim, id='vim'),
     pytest.param(power.BACHELOR037_PDF, bachelor37, id='bachelor37'),
     pytest.param(power.MASTER116_PDF, master116, id='master116'),
     pytest.param(power.BACHELOR111_PDF, bachelor111, id='bachelor111'),
     pytest.param(power.DISS264_PDF, diss264, id='diss264'),
+    pytest.param(power.BOOK173_PDF, book173, id='book173'),
 ])
 @utilatest.nightly
 def test_outlines_validate(source, validate):
@@ -110,7 +115,6 @@ def test_outlines_howto_argparse():
     source = power.DOCU014_PDF
     extracted = rawmaker.features.outlines.work(source)
     toc = serializeraw.load_toc(extracted)
-
     first_level = [(item.page, item.title) for item in toc]
     expected = [
         (1, 'Concepts'),

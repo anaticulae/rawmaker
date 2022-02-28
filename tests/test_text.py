@@ -45,8 +45,10 @@ def test_mine_hello_world_pdf():
 )
 @utilatest.longrun
 def test_dump_and_load_pdf(pdf_path):
-    """Parse text from pdf file and write the result. Load the result after
-    and compare with item to save"""
+    """Parse text from pdf file and write the result.
+
+    Load the result after and compare with item to save.
+    """
     text = rawmaker.features.text.extract_document(pdf_path)
     assert text
     dumped = serializeraw.dump_document(text)

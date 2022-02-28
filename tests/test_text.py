@@ -27,29 +27,21 @@ def test_miner_pdf():
 def test_mine_hello_world_pdf():
     text, _ = rawmaker.features.text.work(tests.resources.HELLO_WORLD_PDF)
     loaded = serializeraw.load_document(text)
-
     assert loaded
     assert len(loaded) == tests.resources.HELLO_WORLD_PAGES
 
 
-@pytest.mark.parametrize(
-    'pdf_path',
-    [
-        tests.resources.HELLO_WORLD_PDF,
-        power.DOCU013_PDF,
-    ],
-    ids=[
-        'hello_world.pdf',
-        'vimguide.pdf',
-    ],
-)
+@pytest.mark.parametrize('source', (
+    pytest.param(tests.resources.HELLO_WORLD_PDF, id='helloword'),
+    pytest.param(power.DOCU013_PDF, id='docu013'),
+))
 @utilatest.longrun
-def test_dump_and_load_pdf(pdf_path):
+def test_dump_and_load_pdf(source):
     """Parse text from pdf file and write the result.
 
     Load the result after and compare with item to save.
     """
-    text = rawmaker.features.text.extract_document(pdf_path)
+    text = rawmaker.features.text.extract_document(source)
     assert text
     dumped = serializeraw.dump_document(text)
     loaded = serializeraw.load_document(dumped)
@@ -63,7 +55,6 @@ def test_dump_and_load_pdf(pdf_path):
             # itemloaded.box = itemexpected.box
             if not isinstance(itemloaded, iamraw.TextContainer):
                 continue
-
             for line, lineexpe in zip(itemloaded.lines, itemexpected.lines):
                 assert line.text == lineexpe.text
 

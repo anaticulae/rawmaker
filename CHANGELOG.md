@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.33.0
+
+### Feature
+
+* do not end text container with newline (ea7a16c4db85)
+
 ## v2.32.0
 
 ### Feature

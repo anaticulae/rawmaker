@@ -2,6 +2,23 @@
 
 Every noteable change is logged here.
 
+## v2.32.0
+
+### Feature
+
+* use default page on missing reference (4ce1a2212da7)
+* hide images which are overlapped by table, formula etc (e3cf5d4b5ca8)
+
+### Fix
+
+* use backup encoding if required (21c4247feea0)
+* skip hidden character (818e13012a89)
+* resolve reference if required (f8507c841be4)
+
+### Documentation
+
+* fix modules path (fd42629411c7)
+
 ## v2.31.0
 
 ### Feature

@@ -22,7 +22,7 @@ def test_text_mining_convert_special_chars():
     document = serializeraw.load_document(parsed[0])
     # first page, fourth line
     text = document[0][3].text
-    expected = 'für die Anwendung auf einem Embedded System\n'
+    expected = 'für die Anwendung auf einem Embedded System'
     assert text == expected
 
 

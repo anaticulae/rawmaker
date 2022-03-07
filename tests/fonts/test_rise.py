@@ -39,7 +39,7 @@ def test_regression_font_rise_bachelor75page16(testdir, monkeypatch):
                 rises += width
             else:
                 norise += width
-    assert norise == 2161
+    assert norise == 2132
     assert not rises
 
 
@@ -56,5 +56,5 @@ def test_regression_font_rise_bachelor75page1718(testdir, monkeypatch):
                 rises += width
             else:
                 norise += width
-    assert norise == 2145
+    assert norise == 2108
     assert not rises

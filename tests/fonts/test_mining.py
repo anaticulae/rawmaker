@@ -65,13 +65,16 @@ def test_minining_fonts_cporting_first_page():
 
 
 def test_minining_fonts_rise():
-    """Ensure that that flip works correctly. There was a problem that
-    only the chars till the first VirtualChar was flipped correctly.
-    This was an effect cause VirtualChars have no BoundingBox."""
+    """Ensure that that flip works correctly.
+
+    There was a problem that only the chars till the first VirtualChar
+    was flipped correctly. This was an effect cause VirtualChars have no
+    BoundingBox.
+    """
     with rawmaker.reader.read(power.DOCU009_PDF) as pdf:
         document = rawmaker.features.extract_content(pdf)
     first_page = document[0]
-    no_rise = first_page[0][0][-2]
+    no_rise = first_page[0][0][-1]
     assert no_rise.rise == 0.0, str(no_rise)  # pylint:disable=C2001
 
 

@@ -95,7 +95,7 @@ def lines_frompath(inpaths: list, prefix: str, pages: tuple) -> tuple:
 def fontstore_frompath(inpaths, prefix, pages):
     for inpath in inpaths:
         utila.debug(f'fontstore: {inpath}')
-        fontstore = serializeraw.create_fontstore_frompath(
+        fontstore = serializeraw.fs_frompath(
             inpath,
             prefix=prefix,
             pages=pages,

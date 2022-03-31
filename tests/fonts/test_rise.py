@@ -30,7 +30,7 @@ def test_regression_font_rise_bachelor75p16(testdir, monkeypatch):
     """Obviously, this page does not contain any valid font rise."""
     cmd = f'-i {power.BACHELOR075_PDF} -o {testdir.tmpdir} --text --pages=16'
     tests.run(cmd, monkeypatch=monkeypatch)
-    ptn = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)[0]
+    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
     norise, rises = 0, 0
     for item in ptn:
         for style in item.style:
@@ -47,7 +47,7 @@ def test_regression_font_rise_bachelor75p16(testdir, monkeypatch):
 def test_regression_font_rise_bachelor75p1718(testdir, monkeypatch):
     cmd = f'-i {power.BACHELOR075_PDF} -o {testdir.tmpdir} --text --pages=17,18'
     tests.run(cmd, monkeypatch=monkeypatch)
-    ptn = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)[0]
+    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
     norise, rises = 0, 0
     for item in ptn:
         for style in item.style:

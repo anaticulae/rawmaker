@@ -80,11 +80,11 @@ def test_cleanup_source_compare_reduction(
         pages=pages,
     )
     assert ptn_dumped == ptn
-    fontstore = serializeraw.create_fontstore_frompath(
+    fontstore = serializeraw.fs_frompath(
         testdir.tmpdir,
         pages=pages,
     )
-    fontstore_dumped = serializeraw.create_fontstore_frompath(
+    fontstore_dumped = serializeraw.fs_frompath(
         testdir.tmpdir,
         prefix='cleaned',
         pages=pages,

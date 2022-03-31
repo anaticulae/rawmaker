@@ -22,7 +22,7 @@ import tests
     (7, True, True),
 ])
 @utilatest.longrun
-def test_parse_howtoread_vertically(
+def test_parse_docu009_vertically(
     page,
     vertical,
     expected_empty,

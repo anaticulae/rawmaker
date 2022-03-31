@@ -14,7 +14,7 @@ import utilatest
 import tests
 
 
-def test_fontrise_bachelor90page3(testdir, monkeypatch):
+def test_fontrise_bachelor90p3(testdir, monkeypatch):
     """See: text.fix_fontrise"""
     source = power.BACHELOR090_PDF
     tests.run(f'-i {source} --pages=3 --text', monkeypatch=monkeypatch)
@@ -26,7 +26,7 @@ def test_fontrise_bachelor90page3(testdir, monkeypatch):
     assert style.rise == 0.0  # pylint:disable=C2001
 
 
-def test_regression_font_rise_bachelor75page16(testdir, monkeypatch):
+def test_regression_font_rise_bachelor75p16(testdir, monkeypatch):
     """Obviously, this page does not contain any valid font rise."""
     cmd = f'-i {power.BACHELOR075_PDF} -o {testdir.tmpdir} --text --pages=16'
     tests.run(cmd, monkeypatch=monkeypatch)
@@ -44,7 +44,7 @@ def test_regression_font_rise_bachelor75page16(testdir, monkeypatch):
 
 
 @utilatest.longrun
-def test_regression_font_rise_bachelor75page1718(testdir, monkeypatch):
+def test_regression_font_rise_bachelor75p1718(testdir, monkeypatch):
     cmd = f'-i {power.BACHELOR075_PDF} -o {testdir.tmpdir} --text --pages=17,18'
     tests.run(cmd, monkeypatch=monkeypatch)
     ptn = serializeraw.create_pagetextnavigators_frompath(testdir.tmpdir)[0]

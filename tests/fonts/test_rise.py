@@ -58,3 +58,13 @@ def test_regression_font_rise_bachelor75p1718(testdir, monkeypatch):
                 norise += width
     assert norise == 2108
     assert not rises
+
+
+def test_regression_diss273p38_footer_rise(testdir, monkeypatch):
+    cmd = f'-i {power.DISS273_PDF} -o {testdir.tmpdir} --text --pages=38'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    line = ptn[36]
+    expected = '[75]  Für Übersichtsartikel zur kupferkatalysierten'
+    assert line.text.startswith(expected)
+    assert line.style.content[0].rise

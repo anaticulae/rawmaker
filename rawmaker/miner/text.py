@@ -32,7 +32,12 @@ import rawmaker.patch.ltchar
 # all rises lower this threshold are treated as noise, therefore zero.
 FONT_RISE_MIN = configo.HV_FLOAT_PLUS(default=0.5)
 
-FIX_FONTRISE_OCCURENCE_MAX = configo.HV_INT_PLUS(default=5)
+FIX_FONTRISE_OCCURENCE_MAX = configo.HolyTable(items=[
+    (1, 1),
+    (20, 5),
+    (40, 10),
+    (60, 15),
+])
 
 
 class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
@@ -363,7 +368,8 @@ def fix_fontrise(items):
         ),
         items=non_virtual,
     )
-    if len(non_zero) > FIX_FONTRISE_OCCURENCE_MAX:
+    fix_fontrise_occurence_max = FIX_FONTRISE_OCCURENCE_MAX(len(items))
+    if len(non_zero) > fix_fontrise_occurence_max:
         # disable font rise for too many false detection?
         # TODO: VERIFY LATER
         for item in items:

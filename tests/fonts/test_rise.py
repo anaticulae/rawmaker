@@ -68,3 +68,13 @@ def test_regression_diss273p38_footer_rise(testdir, monkeypatch):
     expected = '[75]  Für Übersichtsartikel zur kupferkatalysierten'
     assert line.text.startswith(expected)
     assert line.style.content[0].rise
+
+
+def test_regression_master72page14_footer_rise(testdir, monkeypatch):
+    cmd = f'-i {power.MASTER072_PDF} -o {testdir.tmpdir} --text --pages=14'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    line = ptn[30]
+    expected = '35 ebd.'
+    assert line.text.startswith(expected)
+    assert line.style.content[0].rise

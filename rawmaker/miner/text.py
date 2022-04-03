@@ -34,6 +34,10 @@ FONT_RISE_MIN = configo.HV_FLOAT_PLUS(default=0.5)
 
 FIX_FONTRISE_OCCURENCE_MAX = configo.HolyTable(items=[
     (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
     (20, 5),
     (40, 10),
     (60, 15),

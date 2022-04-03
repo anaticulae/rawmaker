@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.33.1
+
+### Fix
+
+* make font size fixer line length dependent (04387f44e618)
+
 ## v2.33.0
 
 ### Feature

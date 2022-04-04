@@ -78,3 +78,13 @@ def test_regression_master72page14_footer_rise(testdir, monkeypatch):
     expected = '35 ebd.'
     assert line.text.startswith(expected)
     assert line.style.content[0].rise
+
+
+def test_regression_hcdiss171p134(testdir, monkeypatch):
+    cmd = f'-i {power.HC_DISS171} -o {testdir.tmpdir} --text --pages=134'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    line = ptn[61]
+    expected = '2Notation:'
+    assert line.text.startswith(expected)
+    assert line.style.content[0].rise

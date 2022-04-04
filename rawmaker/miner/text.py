@@ -205,7 +205,7 @@ def render_char(
     fontrise = utila.roundme(baseline - bounding.y1)
     if math.fabs(fontsize) <= FONT_RISE_MIN:
         # add threshold to avoid noise in char-fontrise
-        fontrise = 0.0  # pylint:disable=R0204
+        fontrise: float = 0.0
     char = None
     replaced = rawmaker.miner.rawchar.special_char(
         value,

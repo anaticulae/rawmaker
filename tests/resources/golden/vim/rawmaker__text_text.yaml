@@ -200,7 +200,7 @@ pages:
       - - 0 86 8.97 0.00
   - - - "\u02D3\u2192Vundle.vim"
       - - 0 2 4.98 0.00
-        - 2 12 8.97 0.00
+        - 2 12 8.97 0.97
   - - - "\u2022 Copy and paste the .vimrc file in the home directory."
       - - 0 55 9.96 0.00
   - - - "\u2022 In Windows, paste in the .vimrc file at C:/Users/<Username>/; and change the line \u201Cset rtp+= . . . \u201D in .vimrc"

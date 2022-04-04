@@ -30,7 +30,7 @@ import rawmaker.parameter
 import rawmaker.patch.ltchar
 
 # all rises lower this threshold are treated as noise, therefore zero.
-FONT_RISE_MIN = configo.HV_FLOAT_PLUS(default=0.5)
+FONT_RISE_MIN = configo.HV_FLOAT_PLUS(default=1.0)
 
 FIX_FONTRISE_OCCURENCE_MAX = configo.HolyTable(items=[
     (1, 1),

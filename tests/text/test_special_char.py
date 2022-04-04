@@ -57,3 +57,16 @@ def test_special_chars_bachelor241():
     )
     document = serializeraw.load_document(parsed[0])
     assert 'Ludwig-Maximilians-Universität München' in document.text
+
+
+def test_special_chars_hcdiss171_toc():
+    """Before this test, special chars where not converted correctly."""
+    parsed = rawmaker.features.text.work(
+        power.HC_DISS171,
+        pages=(9,),
+    )
+    document = serializeraw.load_document(parsed[0])
+    raw = document[0].text
+    assert '4 Analyse der OH*-Chemilumineszenz' in raw
+    # TODO: CHECK CHAR ORDER TIEFFREQUENT
+    assert 'auf tiefrfequent-modulierten' in raw

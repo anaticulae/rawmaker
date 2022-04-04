@@ -42,6 +42,8 @@ def special_char(item: str, fontname: str = None) -> str:
     'e'
     >>> special_char('∗')
     '*'
+    >>> special_char('ﬀ')
+    'ff'
     """
     if not item:
         return None
@@ -50,6 +52,9 @@ def special_char(item: str, fontname: str = None) -> str:
     if fontname and 'LMMath' in fontname:
         with contextlib.suppress(KeyError):
             return SPECIAL_CHARS_LMMath[item]
+    if fontname and 'NPPQGQ' in fontname:
+        with contextlib.suppress(KeyError):
+            return SPECIAL_CHARS_NPPQGQ[item]
     with contextlib.suppress(KeyError):
         return SPECIAL_CHARS_TABLE[item]
     return None
@@ -103,6 +108,13 @@ SPECIAL_CHARS_LMMath = parse_special_chars("""
 # \u03c6          o
 # \u03c9          w
 """)
+
+# TODO: HC_DISS_171_P9
+# TODO: CHECK CRAZY FONT
+SPECIAL_CHARS_NPPQGQ = parse_special_chars("""
+""")
+# 11 is VT VERTICAL TAB
+SPECIAL_CHARS_NPPQGQ['\x0b'] = 'ff'
 
 # TODO: REQUIRE BETTER APPROACH OF REPLACING `LEGATURES`
 SPECIAL_CHARS_TABLE = parse_special_chars("""

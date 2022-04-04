@@ -65,3 +65,14 @@ def test_text_master089_outside_char(testdir, monkeypatch):
     assert 'm     Mythen und Spielfilme' not in raw
     assert '   Mythen und Spielfilme' not in raw
     assert '   Audiovisuelle Medien' not in raw
+
+
+def test_text_hidden_chars_hcdiss193(testdir, monkeypatch):
+    cmd = f'-i {power.HC_DISS193} --text --pages=11'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    navigator = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    raw = navigator.debug
+    assert '9292' not in raw
+    assert '1120' not in raw
+    # replace white chars due spaces
+    assert 'its characteristics                                        134' in raw

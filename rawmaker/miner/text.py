@@ -249,6 +249,8 @@ def transparent(char) -> bool:
     non_storking = colorspace.ncolor
     if stroking == non_storking == WHITE:
         return True
+    if stroking is None and non_storking == 1:
+        return True
     return False
 
 
@@ -276,6 +278,7 @@ def render_textline(
         if transparent(character):
             # TODO: WRITE TO DEBUG FILE TO INFORM USER ABOUT BAD PRINTED PDF
             utila.debug(f'white char, skip: {character}')
+            result.chars.append(iamraw.VirtualChar(value=' '))
             continue
         if len(character.value) == 1:
             result.chars.append(character)

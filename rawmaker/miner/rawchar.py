@@ -40,8 +40,12 @@ def special_char(item: str, fontname: str = None) -> str:
     's'
     >>> special_char('é')
     'e'
+    >>> special_char('∗')
+    '*'
     """
-    if item and ord(item[0]) <= 128:
+    if not item:
+        return None
+    if 27 <= ord(item[0]) <= 128:
         return item
     if fontname and 'LMMath' in fontname:
         with contextlib.suppress(KeyError):
@@ -107,6 +111,9 @@ SPECIAL_CHARS_TABLE = parse_special_chars("""
 \uFB01      fi
 \uFB02      fl
 \uFB03      ffi
+
+\u2217      *        # hcdiss171p9
+\x03        *        # hcdiss171p9
 
 \xA8        ¨
 

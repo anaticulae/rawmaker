@@ -55,3 +55,10 @@ def test_lines_master75_hyperlinks_as_line(testdir, monkeypatch):
     tests.run(cmd, monkeypatch=monkeypatch)
     lines = serializeraw.load_lines(testdir.tmpdir)[0].content
     assert len(lines) == 2, 'header and footer line, but no underline'
+
+
+def test_lines_bachelor028p2_hyperlinks_as_line(testdir, monkeypatch):
+    cmd = f'-i {power.BACHELOR028_PDF} --pages=2 --line --annotation'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    lines = serializeraw.load_lines(testdir.tmpdir)[0].content
+    assert len(lines) == 1, 'footer line, but no underline'

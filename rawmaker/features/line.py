@@ -195,7 +195,23 @@ def accept_ltline(
 
     if horizontal_error and vertical_error:
         return False
+
+    if vertical_error:
+        # HACK: WORKAROUND TODO:
+        # horizontal lines: There are lines in bachelor028 which are
+        try:
+            blueline = BLUE in (item.stroking_color, item.non_stroking_color)
+        except AttributeError:
+            blueline = False
+        if blueline:
+            utila.debug('skip horizontal blue line which is may part of a '
+                        'hyperlink and destroys footnote detection')
+            utila.debug(item)
+            return False
     return True
+
+
+BLUE = [0, 0, 1]
 
 
 def accept_figure_as_line(figure: pdfminer.layout.LTFigure) -> bool:

@@ -9,6 +9,7 @@
 
 import iamraw.path
 import power
+import pytest
 import serializeraw
 import utila
 import utilatest
@@ -62,3 +63,14 @@ def test_lines_bachelor028p2_hyperlinks_as_line(testdir, monkeypatch):
     tests.run(cmd, monkeypatch=monkeypatch)
     lines = serializeraw.load_lines(testdir.tmpdir)[0].content
     assert len(lines) == 1, 'footer line, but no underline'
+
+
+@pytest.mark.xfail(reason='no feasible in the moment')
+def test_lines_bachelor032p3(testdir, monkeypatch):
+    """Black line under black hyperlink is not feasible with current
+    technique.
+    """
+    cmd = f'-i {power.BACHELOR032_PDF} --pages=3 --line'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    lines = serializeraw.load_lines(testdir.tmpdir)[0].content
+    assert len(lines) == 2, 'footer line, and marked error line from teacher'

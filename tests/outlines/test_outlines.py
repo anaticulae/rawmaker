@@ -108,7 +108,7 @@ def test_outlines_validate(source, validate):
     validate(toc)
 
 
-def test_outlines_howto_argparse():
+def test_outlines_docu009_argparse():
     """Some NamedDestinations are store as hexadecimal numbers. This test
     ensures, that parsing, lookup in pdf dest dict and converting the
     page number works correctly."""

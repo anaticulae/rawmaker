@@ -49,7 +49,7 @@ def test_determine_boxes(linecluster):  # pylint:disable=W0621
         )
         result.extend(boxes.content)
     # single raw box in document, the rest is rect
-    assert len(result) == tests.resources.HOW_TO_CPORTING_BOX_COUNT
+    assert len(result) == tests.resources.DOCU009_BOX_COUNT
 
 
 @utilatest.longrun
@@ -99,7 +99,7 @@ def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
             page_width=pagewidth,
         )
         lines.extend(horizontal.content)
-    assert len(lines) == tests.resources.HOW_TO_CPORTING_HORIZONTAL_COUNT
+    assert len(lines) == tests.resources.DOCU009_HORIZONTAL_COUNT
 
 
 @utilatest.requires(power.DOCU009_PDF)
@@ -114,7 +114,7 @@ def test_determine_textboxes():
     # flatten boxes to compute box count of document
     boxes = [page.content for page in boxes]
     count = sum([len(item) for item in boxes])
-    assert count == tests.resources.HOW_TO_CPORTING_BOX_COUNT
+    assert count == tests.resources.DOCU009_BOX_COUNT
 
 
 @utilatest.requires(power.MASTER072_PDF)

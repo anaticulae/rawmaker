@@ -54,3 +54,17 @@ linero
 
 * box matching is very slow, split into multiple core? Replace with
   better algo approach.
+
+hyperlink lines
+---------------
+
+See bachelor028
+
+<</S/URI/URI(http://www.europarl.europa.eu/factsheets/de/sheet/92/allgemeine-steuerpolitik)>>
+endobj
+109 0 obj
+<</A 110 0 R /Border[ 0 0 0]/F 4/Rect[ 141 545 602 562]/Subtype/Link>>
+endobj
+
+The link and border is blue RGB (0,0,1) we have to investigate more
+about Subtype/Link.

@@ -88,3 +88,13 @@ def test_regression_hcdiss171p134(testdir, monkeypatch):
     expected = '2Notation:'
     assert line.text.startswith(expected)
     assert line.style.content[0].rise
+
+
+def test_regression_master127p20(testdir, monkeypatch):
+    cmd = f'-i {power.MASTER127_PDF} -o {testdir.tmpdir} --text --pages=20'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    line = ptn[-2]
+    expected = '19 Fendt (2004)'
+    assert line.text.startswith(expected)
+    assert line.style.content[0].rise

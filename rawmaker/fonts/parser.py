@@ -103,6 +103,8 @@ def font_fromraw(font: str, scale: float = 0.0, flags: int = 0) -> iamraw.Font:
 
     >>> font_fromraw('Times-RomanRegularLight')
     Font(pdfref='Times-RomanRegularLight',...)
+    >>> font_fromraw('CFSJNQ+LinBiolinumTB')
+    Font(pdfref='CFSJNQ+LinBiolinumTB',...weight=iamraw.fonts.Weight.BOLD,...)
     """
     pdfref = font
     utila.call('rawmaker.fonts.parser.font_fromraw')
@@ -344,7 +346,9 @@ STYLES = [
     ('Regu', None, None, REGULAR),
     ('Rg', None, None, REGULAR),
     ('Light', LIGHT, None, None),
+    ('TB', BOLD, None, None),
 ]
+# LinBiolinumTB: TODO CHECK TB
 #  TODO: Roman converts TimesNewRoman to TimesNew. I could not verify if
 #  that is a smart necessary option or it will introduce more problems?
 # ('Roman', None, None, None),

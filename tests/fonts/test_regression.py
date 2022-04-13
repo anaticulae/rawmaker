@@ -126,3 +126,17 @@ def test_font_size_huge_master193(testdir, monkeypatch):
     tests.run(cmd, monkeypatch=monkeypatch)
     # TODO: INVESTIGATE FONT SIZE PROBLEM
     assert 0
+
+
+def test_font_bold_bachelor067page59(testdir, monkeypatch):
+    cmd = f'-i {power.BACHELOR067_PDF} --text --fonts  --pages=59'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    fontstore = serializeraw.fs_frompath(testdir.tmpdir)
+    ptcn = serializeraw.ptn_frompath(testdir.tmpdir)
+    page59 = ptcn[0][0:5]
+    firstline = page59[0].style.fontid
+    assert fontstore[firstline].weight == iamraw.fonts.Weight.BOLD
+    secondline = page59[1].style.fontid
+    assert fontstore[secondline].weight == iamraw.fonts.Weight.BOLD
+    thirdline = page59[2].style.fontid
+    assert fontstore[thirdline].weight == iamraw.fonts.Weight.MEDIUM

@@ -2,6 +2,21 @@
 
 Every noteable change is logged here.
 
+## v2.34.0
+
+### Feature
+
+* add bold style shortcut (4044e8b69c07)
+* replace white printed chars due whitespace to improve layout extraction (accae29014ea)
+* convert more special chars to ease using regex (3876bc14a598)
+* increase font rise noise to improve bad printing behavior (01e0bde02c07)
+
+### Fix
+
+* skip horizontal blue lines which are mostly part of hyperlink (5221c93ae0b3)
+* convert special char, introduce crazy font (49b64df3ec75)
+* adjust holy table (beb02df05c21)
+
 ## v2.33.1
 
 ### Fix

@@ -86,7 +86,7 @@ def merge_neighbors(lines, positions):
     return container, textpositions
 
 
-def create_line(item, fontstore: iamraw.fontstore) -> iamraw.line:
+def create_line(item, fontstore: iamraw.FontStore) -> iamraw.Line:
     rotation = item.style.rotation
     if rotation:
         line = iamraw.VerticalTextContainer(box=item.bounding)

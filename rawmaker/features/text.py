@@ -46,9 +46,8 @@ def work(  # pylint:disable=W9015,W0613
     """
     # TODO: CHANGE BEHAVIOR OF --detect_vertical. Convert to PARAMETER
     # with True as default.
-    detect_vertical = True
+    detect_vertical = True  # TODO: REMOVE?
     config = rawmaker.parameter.ParsingConfiguration.from_dict(**locals())
-
     if rawmaker.cli.superfast():
         document = rawmaker.text.superfast.superfast(
             document,
@@ -58,9 +57,8 @@ def work(  # pylint:disable=W9015,W0613
         )
     else:
         document = extract_document(source=document, config=config, pages=pages)
-
     positions = rawmaker.miner.position.hash_positions(document, pages=pages)
-
+    # dump result
     dumped_text = serializeraw.dump_document(document)
     dumped_positions = serializeraw.dump_textpositions(positions)
     return dumped_text, dumped_positions

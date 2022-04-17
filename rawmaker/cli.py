@@ -40,7 +40,6 @@ DETECT_VERTICAL = utila.Bool('detect_vertical')
 PDF_INPUT = [PDF]
 
 CONFIG_INPUTS = [
-    PDF,
     BOXES_FLOW,
     CHAR_MARGIN,
     LINE_MARGIN,
@@ -91,7 +90,7 @@ WORKPLAN = [
     ),
     utila.create_step(
         'fonts',
-        inputs=CONFIG_INPUTS,
+        inputs=[PDF] + CONFIG_INPUTS,
         output=(
             'header',
             'content',
@@ -120,7 +119,7 @@ WORKPLAN = [
     ),
     utila.create_step(
         'text',
-        inputs=CONFIG_INPUTS,
+        inputs=[PDF] + CONFIG_INPUTS,
         output=(
             'text',
             'positions',

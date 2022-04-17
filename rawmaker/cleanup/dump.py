@@ -93,22 +93,16 @@ def create_line(item, fontstore: iamraw.FontStore) -> iamraw.Line:
     else:
         line = iamraw.TextContainer(box=item.bounding)
     style = item.style.content
-    sizes = utila.flatten([
-        (item.end - item.start) * [item.size] for item in style
-    ])
-    rises = utila.flatten([
-        (item.end - item.start) * [item.rise] for item in style
-    ])
+    sizes = utila.flatten([item.width * [item.size] for item in style])
+    rises = utila.flatten([item.width * [item.rise] for item in style])
     underlines = utila.flatten([
-        (item.end - item.start) * [item.underline] for item in style
+        (item.width) * [item.underline] for item in style
     ])
     fonts = utila.flatten([
-        (item.end - item.start) * [fontstore[item.font].pdfref]
-        for item in style
+        (item.width) * [fontstore[item.font].pdfref] for item in style
     ])
     flags = utila.flatten([
-        (item.end - item.start) *
-        [serializeraw.fonts.toflag(fontstore[item.font].flags)]
+        item.width * [serializeraw.fonts.toflag(fontstore[item.font].flags)]
         for item in style
     ])
     chars = [

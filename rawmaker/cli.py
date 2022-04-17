@@ -119,7 +119,12 @@ WORKPLAN = [
     ),
     utila.create_step(
         'text',
-        inputs=[PDF] + CONFIG_INPUTS,
+        inputs=[PDF] + [
+            utila.ResultFile(
+                producer='rawmaker',
+                name='horizontals_horizontals',
+            ),
+        ] + CONFIG_INPUTS,
         output=(
             'text',
             'positions',

@@ -25,6 +25,7 @@ import rawmaker.text.superfast
 
 def work(  # pylint:disable=W9015,W0613
     document: str,
+    xhorizontals: str = None,
     boxes_flow: float = 0.5,
     char_margin: float = 2.0,
     line_margin: float = 0.5,

@@ -101,10 +101,12 @@ def determine_pagehorizontals(
         height = abs(y1 - y0)
         width = abs(x1 - x0)
         if height > vertical_maxerror:
-            utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}')
+            utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}'
+                        f' vertical error: {height} > {vertical_maxerror}')
             continue
         if width < horizontal_minwidth:
-            utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}')
+            utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}'
+                        f' too short: {width} < {horizontal_minwidth}')
             continue
         y0 = utila.roundme((y0 + y1) / 2)
         y1 = y0

@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.35.0
+
+### Feature
+
+* add method to underline chars (271cc4ce294b)
+* increase debugging information (1c1baffaa7d4)
+* add horizontals as text input to determine underlined text (f59d921044f9)
+
+### Fix
+
+* add underline to ptn dumper (17a9c1bf34cb)
+
 ## v2.34.0
 
 ### Feature

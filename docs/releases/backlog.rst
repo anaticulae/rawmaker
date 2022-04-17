@@ -55,6 +55,13 @@ linero
 * box matching is very slow, split into multiple core? Replace with
   better algo approach.
 
+underlines
+----------
+
+* Decrease min horizontal line to detect very short underlined chars, may
+  provide different horizontals loader for different approaches, introduce
+  min_length while loading horizontals?
+
 hyperlink lines
 ---------------
 

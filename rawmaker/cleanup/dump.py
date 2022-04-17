@@ -99,6 +99,9 @@ def create_line(item, fontstore: iamraw.FontStore) -> iamraw.Line:
     rises = utila.flatten([
         (item.end - item.start) * [item.rise] for item in style
     ])
+    underlines = utila.flatten([
+        (item.end - item.start) * [item.underline] for item in style
+    ])
     fonts = utila.flatten([
         (item.end - item.start) * [fontstore[item.font].pdfref]
         for item in style
@@ -115,12 +118,14 @@ def create_line(item, fontstore: iamraw.FontStore) -> iamraw.Line:
             rise=rise,
             font=font,
             flags=flag,
-        ) for value, size, rise, font, flag in zip(
+            underline=underline,
+        ) for value, size, rise, font, flag, underline in zip(
             item.text,
             sizes,
             rises,
             fonts,
             flags,
+            underlines,
         )
     ]
     line.append(iamraw.Line(chars=chars, box=item.bounding))

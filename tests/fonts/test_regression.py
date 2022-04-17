@@ -140,3 +140,17 @@ def test_font_bold_bachelor067page59(testdir, monkeypatch):
     assert fontstore[secondline].weight == iamraw.fonts.Weight.BOLD
     thirdline = page59[2].style.fontid
     assert fontstore[thirdline].weight == iamraw.fonts.Weight.MEDIUM
+
+
+def test_font_underline_bachelor28p16(testdir, monkeypatch):
+    cmd = f'-i {power.BACHELOR028_PDF} --text --line --horizontals --pages=16'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    ptcn = serializeraw.ptn_frompath(testdir.tmpdir)
+    assert not ptcn[0][0].style.underlined
+    assert not ptcn[0][1].style.underlined
+    page28headline = ptcn[0][2]
+    underlined = page28headline.style.underlined
+    assert underlined
+    assert not ptcn[0][3].style.underlined
+    # ensure that footer line does not invoke any underlines
+    assert all(not item.style.underlined for item in ptcn[0][3:])

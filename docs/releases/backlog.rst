@@ -25,8 +25,6 @@ Math detector
 * add feature to merge different layout analysis: normal and char based
   for example
 
-* Tabelero (planned)
-
 * add step hidden_whitespace to extract list of hidden white spaces
 
 * add method to handle undefined character/ pdfminer. This is a source of

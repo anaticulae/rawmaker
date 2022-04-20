@@ -116,11 +116,9 @@ def flip_bounding(box, pageheight):
 
 
 def parse_reference(pageobject, getobj=None) -> iamraw.PageLink:
-    link = parse_link(pageobject)
-    if link:
+    if link := parse_link(pageobject):
         return link
-    label = parse_label(pageobject, getobj)
-    if label:
+    if label := parse_label(pageobject, getobj):
         return label
     return None
 

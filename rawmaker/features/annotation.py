@@ -169,6 +169,8 @@ def parse_link(pageobject) -> iamraw.PageLink:
 
 
 def parse_external(pageobject, getobj=None) -> iamraw.HyperLink:
+    # {'S': /'URI', 'URI': b'http://www.europarl.europa.eu/factsheets/de/sheet/92/allgemeine-steuerpolitik'}
+    # {'F': b'/C/Users/user/Downloads/MEMO-16-2265_DE.pdf', 'S': /'Launch'}
     try:
         annotated = pageobject['A']
     except KeyError:
@@ -177,9 +179,11 @@ def parse_external(pageobject, getobj=None) -> iamraw.HyperLink:
         # TODO: add layer to automatically convert reference to object.
         annotated = getobj(annotated.objid)
     bounds = determine_bounding(pageobject['Rect'])
-    with contextlib.suppress(KeyError):
-        hyperlink = annotated['URI']
-        hyperlink = hyperlink_decode(hyperlink)
+    if 'URI' in annotated:
+        hyperlink = hyperlink_decode(annotated['URI'])
+        return iamraw.HyperLink(bounds=bounds, goal=hyperlink)
+    if 'F' in annotated:
+        hyperlink = hyperlink_decode(annotated['F'])
         return iamraw.HyperLink(bounds=bounds, goal=hyperlink)
     return None
 

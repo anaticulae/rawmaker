@@ -55,9 +55,11 @@ def test_cleanup_source_compare_reduction(
     testdir,
     monkeypatch,
 ):
-    """Ensure that resource is loaded and dumped correctly. This is
-    required before we can test that cleanup reduces some data out of
-    ptn."""
+    """Ensure that resource is loaded and dumped correctly.
+
+    This is required before we can test that cleanup reduces some data
+    out of ptn.
+    """
     utilatest.fixture_requires(source)
     source = power.link(source)
     utila.copy_content(

@@ -50,13 +50,14 @@ def test_annotation_dump_and_load(vim_guide_annotation):  #pylint:disable=W0621
 
 
 @pytest.mark.parametrize('source', [
+    pytest.param(power.BACHELOR028_PDF, id='bachelor028'),
     pytest.param(power.BACHELOR076_PDF, id='bachelor076'),
-    pytest.param(power.MASTER075_PDF, id='master075'),
-    pytest.param(power.MASTER155_PDF, id='master155'),
-    pytest.param(power.DOCU013_PDF, id='docu013'),
     pytest.param(power.BACHELOR085_PDF, id='bachelor85'),
     pytest.param(power.DISS143_PDF, id='diss143'),
     pytest.param(power.DISS264_PDF, id='diss264'),
+    pytest.param(power.DOCU013_PDF, id='docu013'),
+    pytest.param(power.MASTER075_PDF, id='master075'),
+    pytest.param(power.MASTER155_PDF, id='master155'),
 ])
 def test_annotation_x(source, capsys):
     with rawmaker.reader.read(source) as pdf:

@@ -10,6 +10,7 @@
 import power
 import pytest
 import serializeraw
+import utila
 import utilatest
 
 import rawmaker.features.annotation
@@ -49,16 +50,11 @@ def test_annotation_dump_and_load(vim_guide_annotation):  #pylint:disable=W0621
     assert loaded == without_none
 
 
-@pytest.mark.parametrize('source', [
-    pytest.param(power.BACHELOR028_PDF, id='bachelor028'),
-    pytest.param(power.BACHELOR076_PDF, id='bachelor076'),
-    pytest.param(power.BACHELOR085_PDF, id='bachelor85'),
-    pytest.param(power.DISS143_PDF, id='diss143'),
-    pytest.param(power.DISS264_PDF, id='diss264'),
-    pytest.param(power.DOCU013_PDF, id='docu013'),
-    pytest.param(power.MASTER075_PDF, id='master075'),
-    pytest.param(power.MASTER155_PDF, id='master155'),
-])
+TODO = [pytest.param(pdf, id=utila.file_name(pdf)) for pdf in power.PDF]
+
+
+@pytest.mark.parametrize('source', TODO)
+@utilatest.longrun
 def test_annotation_x(source, capsys):
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.features.annotation.extract_annotations(pdf)

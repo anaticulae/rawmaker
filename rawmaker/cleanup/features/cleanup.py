@@ -120,12 +120,7 @@ def cleanup_ptn(ptns, invalids):
             if not valid_bounding(item.bounding, invalids, ptn.page)
         ]
         for line in invalid_lines:
-            try:
-                ptn.remove(line)
-            except KeyError as msg:
-                # TODO: INVESTIGATE WHY THIS CAN HAPPEN
-                utila.error(f'could not remove line: {msg} on page: {ptn.page}')
-                utila.error(list(invalid_lines))
+            line.hide()
     return ptns
 
 

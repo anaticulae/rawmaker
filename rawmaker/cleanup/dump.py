@@ -88,10 +88,11 @@ def merge_neighbors(lines, positions):
 
 def create_line(item, fontstore: iamraw.FontStore) -> iamraw.Line:
     rotation = item.style.rotation
-    if rotation:
-        line = iamraw.VerticalTextContainer(box=item.bounding)
-    else:
-        line = iamraw.TextContainer(box=item.bounding)
+    ctor = iamraw.VerticalTextContainer if rotation else iamraw.TextContainer
+    line = ctor(
+        box=item.bounding,
+        state=item.state,
+    )
     style = item.style.content
     sizes = utila.flatten([item.width * [item.size] for item in style])
     rises = utila.flatten([item.width * [item.rise] for item in style])

@@ -65,7 +65,8 @@ def translate(
     """
     result = []
     left = 0
-    for right, dest_item in enumerate(dest):
+    vdest = [item for item in dest if isinstance(item, str) or item.visible]
+    for right, dest_item in enumerate(vdest):
         collected = find(src, start=left, search=dest_item)
         if collected == -1:
             if hasattr(src, 'page'):
@@ -75,7 +76,7 @@ def translate(
                     utila.log(f'{hash(str(item))}:   {str(item).strip()}')
                 utila.error('=======================')
                 utila.error('DEST')
-                for item in dest:
+                for item in vdest:
                     utila.log(f'{hash(str(item))}:   {str(item).strip()}')
             error = f'src and dest does not match: **index:{right}** **{dest_item}**'
             raise ValueError(error)

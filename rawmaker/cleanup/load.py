@@ -50,6 +50,17 @@ def formulas_frompath(inpaths, prefix, pages):  # pylint:disable=W0613
     return result
 
 
+def captions_frompath(inpaths, prefix, pages):  # pylint:disable=W0613
+    result = []
+    for inpath in inpaths:
+        path = iamraw.path.caption_result(inpath)
+        if os.path.exists(path):
+            utila.debug(f'formulas: {path}')
+            loaded = serializeraw.load_captions(path, pages=pages)
+            result.extend(loaded)
+    return result
+
+
 def lines_frompath(inpaths: list, prefix: str, pages: tuple) -> tuple:
     """\
     Args:

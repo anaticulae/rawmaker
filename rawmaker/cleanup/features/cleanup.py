@@ -91,11 +91,12 @@ def remove_skip_area(
 ):
     codes = rawmaker.cleanup.load.codes_frompath(inpaths, prefix, pages)
     formulas = rawmaker.cleanup.load.formulas_frompath(inpaths, prefix, pages)
+    captions = rawmaker.cleanup.load.captions_frompath(inpaths, prefix, pages)
     images, tables = rawmaker.cleanup.load.load_images_tables(
         inpaths,
         pages=pages,
     )
-    invalids = create_invalid_area(images, tables, codes, formulas)
+    invalids = create_invalid_area(images, tables, codes, formulas, captions)
     ptns = cleanup_ptn(ptns, invalids)
     horizontals = cleanup_horizontals(horizontals, invalids)
     lines = cleanup_lines(lines, invalids)
@@ -104,6 +105,7 @@ def remove_skip_area(
         tables=tables,
         codes=codes,
         formulas=formulas,
+        captions=captions,
     )
     images = cleanup_images(images, noimages)
     return ptns, horizontals, lines, images
@@ -187,7 +189,7 @@ def valid_bounding(bounding, invalids, page: int) -> bool:
     return True
 
 
-def create_invalid_area(images, tables, codes, formulas) -> dict:
+def create_invalid_area(images, tables, codes, formulas, captions) -> dict:
     invalid = collections.defaultdict(list)
     for page in images:
         invalid[page.page].extend([item.bounding for item in page.content])
@@ -199,6 +201,8 @@ def create_invalid_area(images, tables, codes, formulas) -> dict:
         # caption = utila.flatten([it.caption_bounding for it in page.content])
         # invalid[page.page].extend(caption)
     for page in formulas:
+        invalid[page.page].extend([item.bounding for item in page.content])
+    for page in captions:
         invalid[page.page].extend([item.bounding for item in page.content])
     # reduce rectangle count
     result = {

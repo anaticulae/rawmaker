@@ -9,8 +9,6 @@
 """Add parser to parse non annotated links to inform user about
 broken/malformated links."""
 
-import contextlib
-
 import iamraw
 import pdfminer.pdfdocument
 import serializeraw
@@ -91,6 +89,9 @@ def parse_page(
         if reference:
             pagelinks.append(reference)
             continue
+        if annotation := parse_appereance_strean(pageobject):
+            pagelinks.append(annotation)
+            continue
         external = parse_external(pageobject, getobj)
         if external:
             hyperlinks.append(external)
@@ -166,6 +167,27 @@ def parse_link(pageobject) -> iamraw.PageLink:
     bounds = determine_bounding(pageobject['Rect'])
     pagelink = parse_pagelink(pagelink)
     return iamraw.PageLink(bounds=bounds, goal=pagelink)
+
+
+def parse_appereance_strean(pageobject) -> iamraw.PageLink:
+    # 12.5.5 Appereance Stream
+    # TODO: IMPROVE
+    try:
+        typ = pageobject['Type'].name
+    except KeyError:
+        return None
+    if typ != ANNOTATION_LABEL:
+        return None
+    try:
+        stream = rawmaker.utils.resolve(pageobject['AP']['N'])  # pylint:disable=W0612
+    except KeyError:
+        return None
+    bounds = determine_bounding(pageobject['Rect'])
+    result = iamraw.PageLink(
+        bounds=bounds,
+        goal='STREAM',
+    )
+    return result
 
 
 def parse_external(pageobject, getobj=None) -> iamraw.HyperLink:

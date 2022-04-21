@@ -2,6 +2,15 @@
 
 Every noteable change is logged here.
 
+## v2.36.0
+
+### Feature
+
+* parse appearance stream (398f4942652d)
+* use captions to cleanup rawmaker (47223b6dd2c0)
+* use hide method to remove data from ptn (d67092c360ba)
+* extend hyperlink parser (64a138586c01)
+
 ## v2.35.0
 
 ### Feature

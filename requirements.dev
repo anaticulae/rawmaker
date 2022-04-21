@@ -16,7 +16,7 @@ jam==0.4.0
 utilatest==0.12.3
 
 optimo==0.3.0
-genex==0.24.5
+genex==0.25.0
 genref>=1.3.2<2.0.0
 
 figureo>=0.17.2<1.0.0

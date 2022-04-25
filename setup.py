@@ -68,7 +68,7 @@ if __name__ == "__main__":
                 'pdfinfo = pdfinfo.cli:main',
                 'rawmaker = rawmaker.cli:main',
                 'rawmaker_automate = rawmaker.cli_automate:main',
-                'rawmaker_cleanup = rawmaker.cleanup.cli:main',
+                'rawmaker_cleanup = cleanup.cli:main',
                 'spacestation = spacestation.cli:main',
             ],
         },

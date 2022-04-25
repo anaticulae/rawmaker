@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.37.0
+
+### Feature
+
+* use moved approach (0fbd7f22137c)
+
 ## v2.36.0
 
 ### Feature

@@ -393,8 +393,10 @@ def fix_fontrise(items):
 
 
 def ensure_leftright(items):
-    """Fix layout parser miss detection. Ensure that more left x0
-    coordinates comes before higher x0 coordinate.
+    """Fix layout parser miss detection.
+
+    Ensure that more left x0 coordinates comes before higher x0
+    coordinate.
     """
     # TODO: ENSURE TOP TO DOWN, LOOK AT FONT RISE PROBLEM
     # map bounding cause virtual chars has no bounding

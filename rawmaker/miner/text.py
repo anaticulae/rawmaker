@@ -425,7 +425,7 @@ def ensure_leftright(items):
             boundings.append((current, item))
             # more than one virtual char in a row, don't know if possible
             current += 0.1
-            current = utila.roundme(current)
+            current: float = utila.roundme(current)
     # sort from left to right
     boundings = sorted(boundings, key=lambda x: x[0])
     # remove mapped coordiante

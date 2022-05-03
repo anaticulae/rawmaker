@@ -179,7 +179,8 @@ def parse_appereance_strean(pageobject) -> iamraw.PageLink:
     if typ != ANNOTATION_LABEL:
         return None
     try:
-        stream = rawmaker.utils.resolve(pageobject['AP']['N'])  # pylint:disable=W0612
+        stream = rawmaker.utils.resolve(pageobject['AP'])  # pylint:disable=W0612
+        stream = rawmaker.utils.resolve(stream['N'])
     except KeyError:
         return None
     bounds = determine_bounding(pageobject['Rect'])

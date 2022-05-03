@@ -352,7 +352,12 @@ def png_load(rawdata) -> PIL.Image:
     buffer.seek(0)
     with PIL.Image.open(buffer) as fp:
         converted = io.BytesIO()
-        fp.save(converted, 'png')
+        try:
+            fp.save(converted, 'png')
+        except OSError:
+            utila.error('invalid png file, maybe an other type')
+            utila.error(rawdata[0:50])
+            return None
         converted.seek(0)
     loaded = PIL.Image.open(converted)
     return loaded

@@ -404,6 +404,8 @@ def ensure_leftright(items):
         return items
 
     def first_box(items):
+        if not items:
+            return None
         with contextlib.suppress(AttributeError):
             return items[0].box[2]  # x1
         # TODO: WHY X1 AND NOT X0?
@@ -411,6 +413,9 @@ def ensure_leftright(items):
         return first_box(items[1:])
 
     current = first_box(items)
+    if current is None:
+        # VirtualChars only
+        return items
     boundings = []
     for item in items:
         try:

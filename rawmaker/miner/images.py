@@ -298,7 +298,8 @@ def image_fromlt(image) -> PIL.Image:  # pylint:disable=R0912
         if 'JPXDecode' in str(error):
             utila.debug(error)
             utila.debug('use own png converter')
-            return png_load(image.stream.get_rawdata())
+            rawdata = image.stream.get_rawdata()
+            return png_load(rawdata)
         utila.error(error)
         return None
     # try to load images

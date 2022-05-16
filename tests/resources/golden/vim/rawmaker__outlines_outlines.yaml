@@ -2,215 +2,299 @@ children:
 - level: 1
   page: 1
   raw: toc outline page
+  raw_level: null
   raw_location: -1
+  raw_page: null
   title: Table of contents
 - children:
   - level: 2
     page: 2
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Starting Vim
   - level: 2
     page: 3
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Undo/Redo
   - level: 2
     page: 3
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Insert
   - level: 2
     page: 3
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Copy/Paste/Delete
   - level: 2
     page: 4
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Paste in search or colon commands
   - level: 2
     page: 4
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Search
   - level: 2
     page: 4
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Replace
   - level: 2
     page: 5
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Indentation
   - level: 2
     page: 5
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Mouse settings
   - level: 2
     page: 5
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Command/Visual Mode
   - level: 2
     page: 5
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Cursor movement
   - level: 2
     page: 6
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Screen movements
   - level: 2
     page: 7
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Unix Shell
   - level: 2
     page: 7
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Registers
   - level: 2
     page: 7
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Multiple Files
   - level: 2
     page: 7
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Mark
   - level: 2
     page: 7
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Sorting
   - level: 2
     page: 8
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Printing the code
   - children:
     - level: 3
       page: 8
       raw: toc outline page
+      raw_level: null
       raw_location: -1
+      raw_page: null
       title: Copy/paste from clip board
     - level: 3
       page: 8
       raw: toc outline page
+      raw_level: null
       raw_location: -1
+      raw_page: null
       title: Disable arraow keys
     - level: 3
       page: 8
       raw: toc outline page
+      raw_level: null
       raw_location: -1
+      raw_page: null
       title: Code execution
     level: 2
     page: 8
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Mapping
   - level: 2
     page: 9
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Buffer
   - level: 2
     page: 9
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Split windows
   - level: 2
     page: 9
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Auto completion
   - level: 2
     page: 9
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Text files
   - level: 2
     page: 10
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Macros
   - level: 2
     page: 10
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: More commands
   - level: 2
     page: 10
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Block Visual Mode
   - level: 2
     page: 10
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Zoom Screen
   - level: 2
     page: 10
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Save session
   - level: 2
     page: 11
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Folding
   - children:
     - level: 3
       page: 11
       raw: toc outline page
+      raw_level: null
       raw_location: -1
+      raw_page: null
       title: NERDTree
     - level: 3
       page: 11
       raw: toc outline page
+      raw_level: null
       raw_location: -1
+      raw_page: null
       title: Surround
     - level: 3
       page: 11
       raw: toc outline page
+      raw_level: null
       raw_location: -1
+      raw_page: null
       title: NerdCommenter
     - level: 3
       page: 12
       raw: toc outline page
+      raw_level: null
       raw_location: -1
+      raw_page: null
       title: vim-table-mode
     - level: 3
       page: 12
       raw: toc outline page
+      raw_level: null
       raw_location: -1
+      raw_page: null
       title: vim-extline
     - level: 3
       page: 12
       raw: toc outline page
+      raw_level: null
       raw_location: -1
+      raw_page: null
       title: ConqureShell
     - level: 3
       page: 12
       raw: toc outline page
+      raw_level: null
       raw_location: -1
+      raw_page: null
       title: Airline
     level: 2
     page: 11
     raw: toc outline page
+    raw_level: null
     raw_location: -1
+    raw_page: null
     title: Plugins
   level: 1
   page: 2
   raw: toc outline page
+  raw_level: null
   raw_location: -1
+  raw_page: null
   title: Vim Commands
 level: 0
 style: null

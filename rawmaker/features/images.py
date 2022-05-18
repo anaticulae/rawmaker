@@ -98,9 +98,11 @@ def extract_pages(
 
 
 def convert_pages(page: int, pages: tuple) -> int:
-    """Pdfminer produces directly ascending pages. If we select
-    pages=('0:5,28') pdfminer produces 0, 1, 2, 3, 4, 5. This method
-    convert this to 0, 1, 2, 3, 4, 28."""
+    """Pdfminer produces directly ascending pages.
+
+    If we select pages=('0:5,28') pdfminer produces 0, 1, 2, 3, 4, 5.
+    This method convert this to 0, 1, 2, 3, 4, 28.
+    """
     # TODO: INVESTIGATE HERE
     if pages is None:
         return page

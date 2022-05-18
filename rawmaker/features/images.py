@@ -46,19 +46,6 @@ def work(document: str, pages: tuple = None) -> DumpedImageInformations:
     return result
 
 
-def beautify_images(images, path: str):
-    """Use ghost to render pdf and crop image area."""
-    result = []
-    for page in images:
-        boundings = [item[0] for item in page.content]
-        extracted = ghost.images(path, boundings)
-        content = []
-        for raw, bounding in zip(extracted, boundings):
-            content.append((bounding, (raw, 'png')))
-        result.append(PageContentImages(content=content, page=page.page))
-    return result
-
-
 def extract_pages(
     document: str,
     outputfolder: str = None,
@@ -94,6 +81,19 @@ def extract_pages(
             pagecontent.append((info, (loaded, ext)))
         if pagecontent:
             result.append(PageContentImages(page=page, content=pagecontent))
+    return result
+
+
+def beautify_images(images, path: str):
+    """Use ghost to render pdf and crop image area."""
+    result = []
+    for page in images:
+        boundings = [item[0] for item in page.content]
+        extracted = ghost.images(path, boundings)
+        content = []
+        for raw, bounding in zip(extracted, boundings):
+            content.append((bounding, (raw, 'png')))
+        result.append(PageContentImages(content=content, page=page.page))
     return result
 
 

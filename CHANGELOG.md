@@ -2,6 +2,14 @@
 
 Every noteable change is logged here.
 
+## v2.37.1
+
+### Fix
+
+* catch invalid png dump (2573a0ab7ae9)
+* resolve object correctly (b8b54ac2c7eb)
+* skip lines with VirtualChars only (15b52e476e33)
+
 ## v2.37.0
 
 ### Feature

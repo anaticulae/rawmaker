@@ -36,7 +36,7 @@ DumpedImageInformations = typing.List[typing.Tuple[str, bytes]]
 
 
 def work(document: str, pages: tuple = None) -> DumpedImageInformations:
-    extracted = extract_pages(document, pages=pages)
+    extracted = extract_images(document, pages=pages)
     extracted = beautify_images(extracted, document)
     result = []
     for page in extracted:
@@ -46,7 +46,7 @@ def work(document: str, pages: tuple = None) -> DumpedImageInformations:
     return result
 
 
-def extract_pages(
+def extract_images(
     document: str,
     outputfolder: str = None,
     pages=None,
@@ -60,6 +60,19 @@ def extract_pages(
             outputfolder=outputfolder,
             pages=pages,
         )
+    result = convert_images(
+        extracted,
+        outputfolder,
+        pages=pages,
+    )
+    return result
+
+
+def convert_images(
+    extracted: dict,
+    outputfolder: str,
+    pages: tuple = None,
+) -> list:
     result = []
     for page, images in extracted.items():
         # convert selected pages to global pages
@@ -79,8 +92,9 @@ def extract_pages(
                 continue
             ext = utila.file_ext(path)
             pagecontent.append((info, (loaded, ext)))
-        if pagecontent:
-            result.append(PageContentImages(page=page, content=pagecontent))
+        if not pagecontent:
+            continue
+        result.append(PageContentImages(page=page, content=pagecontent))
     return result
 
 

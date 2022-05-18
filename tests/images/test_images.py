@@ -161,6 +161,7 @@ def test_images_export_document_complete(
     pytest.param(power.DISS218_PDF, 43, 1, id='diss218BitmapRegression'),
     pytest.param(power.DISS233_PDF, 61, 1, id='diss233'),
     pytest.param(power.MASTER099_PDF, 21, 1, id='master099'),
+    pytest.param(power.MASTER105_PDF, 34, 1, id='master105'),
     pytest.param(power.MASTER116_PDF, (2, 3), 2, id='master116'),
 ])
 def test_images_export_x(source, pages, expected, testdir):

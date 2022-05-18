@@ -118,7 +118,8 @@ class CollectAndMerge:
                 self.written[page].append(written)
         self.to_merge.clear()
         # convert defaultdict to normal dict, remove empty pages
-        return {key: value for key, value in self.written.items() if value}
+        result = {key: value for key, value in self.written.items() if value}
+        return result
 
 
 IMAGE_WIDTH_MAX = 2048

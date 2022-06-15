@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.37.2
+
+### Fix
+
+* do not merge horizontals and text (d913deb894b8)
+
 ## v2.37.1
 
 ### Fix

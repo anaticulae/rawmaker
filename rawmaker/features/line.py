@@ -22,6 +22,7 @@ import typing
 
 import configo
 import iamraw
+import pdfminer.layout
 import pdfminer.pdfdocument
 import serializeraw
 import utila
@@ -84,6 +85,10 @@ def skip_lines(linex, annotation) -> list:
     return result
 
 
+# do not merge near horizontal: '_______________' to text container below.
+LAYOUT_LINES = pdfminer.layout.LAParams(line_margin=0.0000001)
+
+
 def lines(
     pdf: pdfminer.pdfdocument.PDFDocument,
     pages: tuple = None,
@@ -111,6 +116,7 @@ def lines(
             pdfminer.layout.LTFigure,
             pdfminer.layout.LTCurve,
         ),
+        layout=LAYOUT_LINES,
         pages=pages,
     )
     strategy = {
@@ -284,6 +290,7 @@ def figure_special_line(figure: pdfminer.layout.LTFigure) -> bool:
 def type_in_document(
     document: pdfminer.pdfdocument.PDFDocument,
     datatype: object,
+    layout=None,
     pages: tuple = None,
 ) -> typing.List[typing.Tuple[pdfminer.layout.LTPage, int]]:
     """Extract defined `datatype` out of `PDFDocument`
@@ -291,13 +298,18 @@ def type_in_document(
     Args:
         document(PDFDocument): pdf document to extract all types
         datatype: selected item type
+        layout(Param): process with different layout
         pages(tuple): select pages
     Returns:
         List with selected `datatype`.
     """
     utila.asserts(document, pdfminer.pdfdocument.PDFDocument)
     result = []
-    for page in rawmaker.features.process_pagecontent(document, pages=pages):
+    for page in rawmaker.features.process_pagecontent(
+            document,
+            layout=layout,
+            pages=pages,
+    ):
         data = [item for item in page.content if isinstance(item, datatype)]
         result.append((data, page.page))
     return result

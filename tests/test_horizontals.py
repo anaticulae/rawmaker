@@ -65,6 +65,27 @@ def test_lines_bachelor028p2_hyperlinks_as_line(testdir, monkeypatch):
     assert len(lines) == 1, 'footer line, but no underline'
 
 
+def test_lines_master099c(testdir, monkeypatch):
+    """Ensure that text and horizontals are not merged together."""
+    cmd = f'-i {power.MASTER099C_PDF} --pages=7,8,9,10,80,81,82 --line --horizontals'
+    tests.run(cmd, monkeypatch=monkeypatch)
+    lines = serializeraw.load_horizontals(testdir.tmpdir)
+    boundings = []
+    for page in lines:
+        boundings.append((page.page, page.content[0].box[3]))
+    # page, horizontal y1 bounding
+    expected = [
+        (7, 618.6),
+        (8, 630.12),
+        (9, 590.34),
+        (10, 709.44),
+        (80, 699.12),
+        (81, 728.22),
+        (82, 641.64),
+    ]
+    assert boundings == expected
+
+
 @pytest.mark.xfail(reason='not feasible in the moment')
 def test_lines_bachelor032p3(testdir, monkeypatch):
     """Black line under black hyperlink is not feasible with current

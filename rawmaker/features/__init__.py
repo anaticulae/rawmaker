@@ -61,6 +61,7 @@ def process_pdfpages(
 
 def process_document(
     document: pdfminer.pdfdocument.PDFDocument,
+    layout=None,
     pages=None,
 ) -> typing.Tuple[int, pdfminer.layout.LTPage]:
     """Yield (pagenumber, LTPage) for every selected page of `PDFDocument`"""
@@ -68,7 +69,7 @@ def process_document(
         document,
         pdfminer.pdfdocument.PDFDocument,
     ), type(document)
-    interpreter, device = create_interpreter()
+    interpreter, device = create_interpreter(layout=layout)
     for content, number in process_pdfpages(document, pages=pages):
         interpreter.process_page(content)
         pagecontent = PageContent(content=device.get_result(), page=number)
@@ -77,10 +78,11 @@ def process_document(
 
 def process_pagecontent(
     document: pdfminer.pdfdocument.PDFDocument,
+    layout=None,
     pages=None,
 ) -> pdfminer.layout.LTPage:
     utila.asserts(document, pdfminer.pdfdocument.PDFDocument)
-    for _, content in process_document(document, pages=pages):
+    for _, content in process_document(document, layout=layout, pages=pages):
         yield content
 
 

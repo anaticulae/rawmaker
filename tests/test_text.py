@@ -82,7 +82,7 @@ def test_text_mine_bachelor37_holy_whitespaces_remove(remove_whitespace):
 
 def validate_master116(firstpage):
     lastline = firstpage[-1].text
-    assert lastline == 'Berlin, 19. April 2016\n', lastline
+    assert lastline == 'Berlin, 19. April 2016', lastline
 
 
 @pytest.mark.parametrize('source, remove_whitespace, validate', [

@@ -45,7 +45,7 @@ def test_images_export_bachelor63_complete(testdir):
     source = power.BACHELOR063_PDF
     root = testdir.tmpdir
     pages = None
-    expected = 38  # NOT VALIDATED
+    expected = 41  # NOT VALIDATED
     with utilatest.increased_filecount(
             root,
             mindiff=expected,
@@ -132,7 +132,8 @@ def test_images_export_bachelor63_extract_images(
             marks=pytest.mark.xfail(reason='not fully supported'),
         ),
         # pytest.param(power.DOCU035_PDF, 0, id='twine'),
-        pytest.param(power.TECH024_PDF, 8, id='technical24'),
+        # pytest.param(power.TECH024_PDF, 8, id='technical24'),
+        pytest.param(power.TECH024_PDF, 6, id='technical24'),
         # pytest.param(tests.resources.REPORT19, 6, id='report19'),
         pytest.param(power.PAPER18_PDF, 12, id='paper18'),  # NOT VALIDATED
     ])

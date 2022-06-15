@@ -65,7 +65,7 @@ def test_lines_bachelor028p2_hyperlinks_as_line(testdir, monkeypatch):
     assert len(lines) == 1, 'footer line, but no underline'
 
 
-@pytest.mark.xfail(reason='no feasible in the moment')
+@pytest.mark.xfail(reason='not feasible in the moment')
 def test_lines_bachelor032p3(testdir, monkeypatch):
     """Black line under black hyperlink is not feasible with current
     technique.

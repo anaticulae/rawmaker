@@ -81,3 +81,9 @@ def test_text_hidden_chars_hcdiss193(testdir, monkeypatch):
     assert '1120' not in raw
     # replace white chars due spaces
     assert 'its characteristics                                        134' in raw
+
+
+def test_text_rsign(testdir, monkeypatch):
+    """Ensure to covert r-signs correctly."""
+    raw = rawpage(power.BACHELOR090_PDF, '88', testdir, monkeypatch)
+    assert raw.count('®') == 2

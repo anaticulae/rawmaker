@@ -440,7 +440,12 @@ MERGES = {
     'o': 'ö',
     'U': 'Ü',
     'u': 'ü',
+    # bachelor090:page88  \x0d '\r' R
+    'R': '®',
 }
+
+# \x0d => \r
+SPECIALS = {'¨', '\x0d'}
 
 
 def merge_special_char(items):  # pylint:disable=R1260
@@ -452,7 +457,7 @@ def merge_special_char(items):  # pylint:disable=R1260
         return []
     result = [items[0]]
     for item in items[1:]:
-        if result[-1].value == '¨':
+        if result[-1].value in SPECIALS:
             # try merge
             try:
                 replaced = MERGES[item.value]
@@ -467,7 +472,7 @@ def merge_special_char(items):  # pylint:disable=R1260
             special = item.special
         except AttributeError:
             special = None
-        if special != '¨':
+        if special not in SPECIALS:
             result.append(item)
             continue
         # merge with before

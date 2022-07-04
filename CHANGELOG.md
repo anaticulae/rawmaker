@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.37.3
+
+### Fix
+
+* handle rsign correctly (8f44466877aa)
+
 ## v2.37.2
 
 ### Fix

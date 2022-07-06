@@ -9,6 +9,7 @@
 
 import sys
 
+import pdfminer.glyphlist
 import pdfminer.pdfpage
 import utila
 
@@ -27,3 +28,9 @@ def create_pages(document):
 
 
 pdfminer.pdfpage.PDFPage.create_pages = create_pages
+
+# TODO HACK HACK HACK
+# bachelor090  REGISTERED SIGN
+# circlecopyrt
+# pdfminer.glyphlist.glyphname2unicode['circlecopyrt'] = '\u25CF'
+pdfminer.glyphlist.glyphname2unicode['circlecopyrt'] = '\r'

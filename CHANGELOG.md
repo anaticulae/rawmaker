@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.37.4
+
+### Feature
+
+* increase replacement table (d8338d6ededa)
+
+### Fix
+
+* adjust umlaut converter (ac8788e5740e)
+* hack glyph converter (839b4e67f669)
+* adjust invalid char logging (026dc226f5e5)
+
 ## v2.37.3
 
 ### Fix

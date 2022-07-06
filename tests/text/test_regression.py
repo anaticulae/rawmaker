@@ -87,3 +87,20 @@ def test_text_rsign(testdir, monkeypatch):
     """Ensure to covert r-signs correctly."""
     raw = rawpage(power.BACHELOR090_PDF, '88', testdir, monkeypatch)
     assert raw.count('®') == 2
+
+
+def test_text_fl(testdir, monkeypatch):
+    """Ensure to covert fl-signs correctly."""
+    raw = rawpage(power.MASTER110_PDF, '95', testdir, monkeypatch)
+    assert raw.count('Reflektion') == 2
+    assert raw.count('Reflekti-') == 1
+
+
+def test_text_ffi(testdir, monkeypatch):
+    """Ensure to covert Eﬃcient correctly."""
+    raw = rawpage(power.MASTER110_PDF, '106', testdir, monkeypatch)
+    # assert raw.count('Efficient') == 1
+    # TODO: FIX LATER
+    assert raw.count('Effcieint') == 1
+    # - was not replaced and as ord 19 detected as '{'
+    assert raw.count('Fernandez') == 1

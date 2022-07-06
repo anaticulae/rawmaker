@@ -59,6 +59,12 @@ MAPPING = {
     0: '−',
     1: '·',
     12: 'fi',
+    13: 'fl',
+    14: 'ffi',
+    # -Fern´andez,  ´Ecole  may support later, for now removing is a good match
+    # for more infos see master110p106
+    # 19: '´',
+    19: '',
     20: '≤',
     25: 'ß',
     127: '',  # Umlaute, oe, ae, ue

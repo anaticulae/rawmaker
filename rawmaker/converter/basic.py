@@ -41,8 +41,10 @@ class FlippedLayoutAnalyzer(pdfminer.converter.PDFLayoutAnalyzer):
             utila.debug(f'could not convert: {font!r}, {cid!r} use backup: '
                         f'{char} on page: {self.pageno}')
         except KeyError:
-            utila.debug(f'could not convert: {font!r}, {cid!r} '
-                        f'on page: {self.pageno}')
+            utila.error(f'could not convert: {font!r}, {cid!r} '
+                        f'on page: {self.pageno} no backup char defined')
+            # use warning to log only once
+            utila.warning(str(vars(font)))
             char = chr(cid)
         return char
 

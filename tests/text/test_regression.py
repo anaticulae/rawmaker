@@ -104,3 +104,9 @@ def test_text_ffi(testdir, monkeypatch):
     assert raw.count('Effcieint') == 1
     # - was not replaced and as ord 19 detected as '{'
     assert raw.count('Fernandez') == 1
+
+
+def test_text_umlaute(testdir, monkeypatch):
+    """Ensure that umlaute are converted correctly."""
+    raw = rawpage(power.MASTER110_PDF, '106', testdir, monkeypatch)
+    assert raw.count('für') == 2

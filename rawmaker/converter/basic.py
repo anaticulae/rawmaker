@@ -67,7 +67,8 @@ MAPPING = {
     19: '',
     20: '≤',
     25: 'ß',
-    127: '',  # Umlaute, oe, ae, ue
+    127: '¨',  # Umlaute, oe, ae, ue, use already implemented replace to
+    # support umlaute
 }
 
 

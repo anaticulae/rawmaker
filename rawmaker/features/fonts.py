@@ -34,6 +34,7 @@ import utila
 import rawmaker.features
 import rawmaker.features.text
 import rawmaker.fonts.parser
+import rawmaker.miner.rawchar
 import rawmaker.parameter
 import rawmaker.reader
 
@@ -203,13 +204,21 @@ def flags_fromchar(char) -> tuple:
     return flags
 
 
+def upright_fromchar(char) -> bool:
+    try:
+        upright = char.ltchar.upright
+    except AttributeError:
+        upright = True
+    return upright
+
+
 def scale_fromchar(char) -> float:
     # TODO: INVESTIGATE 1.34??
     # NOTE: This works for POSTSCRIPT_14_DEFAULT's but not for
     # Calibri.
     scale = utila.roundme(char.size / 1.34005)
     if scale < 0:
-        rotated = not char.ltchar.upright
+        rotated = not upright_fromchar(char)
         absolute = math.fabs(scale)
         if rotated and absolute > 4.0:  # TODO: HOLY VALUE
             # rotated char which is printed top down

@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.37.6
+
+### Fix
+
+* introduce hack to dump rotated char correctly (61dc39302ef7)
+
 ## v2.37.5
 
 ### Feature

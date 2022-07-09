@@ -127,6 +127,7 @@ def process_page(  # pylint:disable=R0914
     textcontainer = utila.select_type(page.children, iamraw.TextContainer)
     result = []
     for container_index, container in enumerate(textcontainer):
+        rotated = isinstance(container, iamraw.VerticalTextContainer)
         for line_index, line in enumerate(container.lines):
             for char_index, char in enumerate(line):
                 try:
@@ -136,7 +137,7 @@ def process_page(  # pylint:disable=R0914
                     # of font definition.
                     position = (container_index, line_index, char_index)
                     continue
-                scale = scale_fromchar(char)
+                scale = scale_fromchar(char, vertical=rotated)
                 flags = flags_fromchar(char)
                 # No font type or size is selected
                 if current_font is None:
@@ -212,13 +213,15 @@ def upright_fromchar(char) -> bool:
     return upright
 
 
-def scale_fromchar(char) -> float:
+def scale_fromchar(char, vertical: bool = False) -> float:
     # TODO: INVESTIGATE 1.34??
     # NOTE: This works for POSTSCRIPT_14_DEFAULT's but not for
     # Calibri.
     scale = utila.roundme(char.size / 1.34005)
+    # TODO: THINK ABOUT VERTICAL HACK
     if scale < 0:
         rotated = not upright_fromchar(char)
+        rotated |= vertical
         absolute = math.fabs(scale)
         if rotated and absolute > 4.0:  # TODO: HOLY VALUE
             # rotated char which is printed top down

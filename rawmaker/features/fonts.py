@@ -223,5 +223,5 @@ def scale_fromchar(char) -> float:
         if rotated and absolute > 4.0:  # TODO: HOLY VALUE
             # rotated char which is printed top down
             return absolute
-        utila.error(f'negative font size: {scale} {char}')
+        utila.debug(f'negative font size: {scale} {char}')
     return scale

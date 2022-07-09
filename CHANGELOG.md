@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.37.5
+
+### Feature
+
+* reduce verbosity (1f4c800a4f62)
+
+### Fix
+
+* do not scale already detected char (f6c2fd52d4f5)
+
 ## v2.37.4
 
 ### Feature

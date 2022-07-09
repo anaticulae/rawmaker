@@ -33,11 +33,11 @@ Sammelmappe2.pdf
         pytest.param(hardcore.P0_DRUCKSACHE1900302, None, id='drucksache19302'),
     ],
 )
-def test_imagetext_outlines(source, expected, testdir, monkeypatch):
+def test_imagetext_outlines(source, expected, td, mp):
     """Regression test to load outlines `FitH` correctly."""
     cmd = f'-i {source} --outlines'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    source = os.path.join(testdir.tmpdir, 'rawmaker__outlines_outlines.yaml')
+    tests.run(cmd, mp=mp)
+    source = os.path.join(td.tmpdir, 'rawmaker__outlines_outlines.yaml')
     assert os.path.exists(source)
     loaded = serializeraw.load_toc(source)
     assert any((

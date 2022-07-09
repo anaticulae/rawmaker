@@ -25,12 +25,12 @@ import tests.spacestation_
 ])
 @utilatest.longrun
 # yapf:enable
-def test_chardist(source, pages, expected, testdir, monkeypatch):
+def test_chardist(source, pages, expected, td, mp):
     cmd = f'-i {source} --pages={pages} --wspace --chardist'
     # run
-    tests.spacestation_.run(cmd, monkeypatch=monkeypatch)
+    tests.spacestation_.run(cmd, mp=mp)
     # load
-    loaded = serializeraw.load_document_chardist(testdir.tmpdir)
+    loaded = serializeraw.load_document_chardist(td.tmpdir)
     # verify
     fontsize, chardist = expected
     assert utila.near(loaded.mean[fontsize], chardist, diff=0.01), str(loaded)

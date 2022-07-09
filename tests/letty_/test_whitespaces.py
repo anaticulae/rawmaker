@@ -15,13 +15,13 @@ import tests
 
 
 @utilatest.longrun
-def test_whitespaces_count(testdir, monkeypatch):
-    root = testdir.tmpdir
+def test_whitespaces_count(td, mp):
+    root = td.tmpdir
     path = power.MASTER072_PDF
     pages = (3, 4, 5)
     pages_raw = ','.join([str(item) for item in pages])
     cmd = f'-i {path} --pages={pages_raw} --text'
-    tests.run(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, mp=mp)
     determined = letty.quality.whitespace.determine(root, pages)
     assert determined
     # more than hundred double white spaces

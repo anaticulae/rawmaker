@@ -19,19 +19,19 @@ import tests.pdfinfo_
 
 @utilatest.nightly
 @pytest.mark.security
-def test_badguy_longpdf_rawmaker(testdir, monkeypatch):
-    very_long = os.path.join(testdir.tmpdir, 'balong.pdf')
+def test_badguy_longpdf_rawmaker(td, mp):
+    very_long = os.path.join(td.tmpdir, 'balong.pdf')
     jam.write_blank_pdf(1000, very_long)
 
-    tests.run(f'-i {very_long} -j=8', monkeypatch=monkeypatch)
+    tests.run(f'-i {very_long} -j=8', mp=mp)
 
 
 @utilatest.nightly
 @pytest.mark.security
-def test_badguy_longpdf_pdfinfo(testdir, monkeypatch):
+def test_badguy_longpdf_pdfinfo(td, mp):
     """Test that program success on very long, empty pdf file. Long
     files with content are excluded by file size limit."""
-    very_long = os.path.join(testdir.tmpdir, 'mejabalong.pdf')
+    very_long = os.path.join(td.tmpdir, 'mejabalong.pdf')
     jam.write_blank_pdf(100000, very_long)
 
-    tests.pdfinfo_.run(f'-i {very_long}', monkeypatch=monkeypatch)
+    tests.pdfinfo_.run(f'-i {very_long}', mp=mp)

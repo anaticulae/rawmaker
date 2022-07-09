@@ -28,9 +28,9 @@ from tests.resources import HELLO_WORLD
 ])
 @pytest.mark.usefixtures('testdir')
 @utilatest.nightly
-def test_run_rawmaker(command, monkeypatch):
+def test_run_rawmaker(command, mp):
     """Run help and version and format command to reach basic test coverage"""
-    run(command, monkeypatch=monkeypatch)
+    run(command, mp=mp)
 
 
 @pytest.mark.parametrize('command', [
@@ -38,16 +38,16 @@ def test_run_rawmaker(command, monkeypatch):
     ['-i', '.', '-o', 'output'],
 ])
 @pytest.mark.usefixtures('testdir')
-def test_run_rawmaker_failed_empty_folder(command, monkeypatch):
+def test_run_rawmaker_failed_empty_folder(command, mp):
     """Run help and version and format command to reach basic test coverage"""
-    failure(command, monkeypatch=monkeypatch)
+    failure(command, mp=mp)
 
 
-def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):
+def test_run_rawmaker_empty_input(td, capsys, mp):
     """Run help and version and format command to reach basic test coverage"""
-    testdir.mkdir('empty')
+    td.mkdir('empty')
     command = ['-i', 'empty', '-o', 'output']  # no pdf input
-    failure(command, monkeypatch=monkeypatch)
+    failure(command, mp=mp)
     stderr = utilatest.stderr(capsys)
     assert '[ERROR]' in stderr
 
@@ -60,10 +60,10 @@ def test_run_rawmaker_empty_input(testdir, capsys, monkeypatch):
     ])
 @pytest.mark.usefixtures('testdir')
 @utilatest.nightly
-def test_run_rawmaker_for_regression(command, monkeypatch):
+def test_run_rawmaker_for_regression(command, mp):
     """This test run the rawmaker with problematic resources which led to an
     error on parsing/converting the document in the past."""
-    run(command, monkeypatch=monkeypatch)
+    run(command, mp=mp)
 
 
 @pytest.mark.parametrize('pages', [
@@ -72,20 +72,20 @@ def test_run_rawmaker_for_regression(command, monkeypatch):
 ])
 @pytest.mark.usefixtures('testdir')
 @utilatest.longrun
-def test_run_rawmaker_with_pages(monkeypatch, pages):
+def test_run_rawmaker_with_pages(mp, pages):
     """Extract special pages"""
     cmd = ['-i', power.DOCU027_PDF, '-o', 'output', '--pages', pages, '-VVV']
-    run(cmd, monkeypatch=monkeypatch)
+    run(cmd, mp=mp)
 
 
-def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
+def test_run_rawmaker_with_broken_resource(td, mp):
     """Create broken pdf resource, run reader and check that error is
     handled correctly."""
-    root = testdir.tmpdir
+    root = td.tmpdir
     brokenpath = os.path.join(root, 'broken.pdf')
     utila.file_create(brokenpath, 'content = non valid pdf document')
     command = f'-i {root} --linter'
-    failure(command, monkeypatch=monkeypatch)
+    failure(command, mp=mp)
     # check that result is written
     files_written = list(os.scandir(root))
     # broken file + developer.lin and user.lin
@@ -94,16 +94,17 @@ def test_run_rawmaker_with_broken_resource(testdir, monkeypatch):
 
 
 @utilatest.longrun
-def test_rawmaker_cli_run_file_without_extention(testdir, monkeypatch):
-    source = os.path.join(testdir.tmpdir, 'hello')
+def test_rawmaker_cli_run_file_without_extention(td, mp):
+    source = os.path.join(td.tmpdir, 'hello')
     utila.file_copy(power.DOCU027_PDF, source)
-    tests.run(f'-i {source}', monkeypatch=monkeypatch)
+    tests.run(f'-i {source}', mp=mp)
 
 
+@pytest.mark.usefixtures('testdir')
 @utilatest.nightly
-def test_rawmaker_with_prefix(testdir, monkeypatch):
+def test_rawmaker_with_prefix(mp):
     """Regression test to ensure that horizontal step loads the correct
     lines when using prefix."""
     source = power.BACHELOR037_PDF
     cmd = f'-i {source} --pages=0:5 --prefix=oneline --line --horizontals'
-    tests.run(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, mp=mp)

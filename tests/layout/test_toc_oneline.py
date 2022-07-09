@@ -35,14 +35,14 @@ ONELINE = ('--prefix=oneline '
            '--boxes_flow=1.0 --char_margin=100.0 --line_margin=0.0001')
 
 
-def test_regression_oneline_master078_toc(testdir, monkeypatch):
+def test_regression_oneline_master078_toc(td, mp):
     """Do not skip chars which are detected as duplicated but the
     checker was not specific enough."""
     cmd = f'-i {power.MASTER078_PDF} --pages=2 ' + ONELINE
-    tests.run(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, mp=mp)
 
     loaded = serializeraw.ptn_frompath(
-        testdir.tmpdir,
+        td.tmpdir,
         prefix='oneline',
     )[0]
     # the 4 was skipped in 2.2.1. because the state of 2.2 marked it as

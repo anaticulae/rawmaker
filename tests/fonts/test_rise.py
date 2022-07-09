@@ -14,23 +14,23 @@ import utilatest
 import tests
 
 
-def test_fontrise_bachelor90p3(testdir, monkeypatch):
+def test_fontrise_bachelor90p3(td, mp):
     """See: text.fix_fontrise"""
     source = power.BACHELOR090_PDF
-    tests.run(f'-i {source} --pages=3 --text', monkeypatch=monkeypatch)
+    tests.run(f'-i {source} --pages=3 --text', mp=mp)
 
-    loaded = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    loaded = serializeraw.ptn_frompath(td.tmpdir)[0]
     riseline = loaded[1]
     assert len(riseline.style.content) == 1
     style = riseline.style.content[0]
     assert style.rise == 0.0  # pylint:disable=C2001
 
 
-def test_regression_font_rise_bachelor75p16(testdir, monkeypatch):
+def test_regression_font_rise_bachelor75p16(td, mp):
     """Obviously, this page does not contain any valid font rise."""
-    cmd = f'-i {power.BACHELOR075_PDF} -o {testdir.tmpdir} --text --pages=16'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    cmd = f'-i {power.BACHELOR075_PDF} -o {td.tmpdir} --text --pages=16'
+    tests.run(cmd, mp=mp)
+    ptn = serializeraw.ptn_frompath(td.tmpdir)[0]
     norise, rises = 0, 0
     for item in ptn:
         for style in item.style:
@@ -44,10 +44,10 @@ def test_regression_font_rise_bachelor75p16(testdir, monkeypatch):
 
 
 @utilatest.longrun
-def test_regression_font_rise_bachelor75p1718(testdir, monkeypatch):
-    cmd = f'-i {power.BACHELOR075_PDF} -o {testdir.tmpdir} --text --pages=17,18'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+def test_regression_font_rise_bachelor75p1718(td, mp):
+    cmd = f'-i {power.BACHELOR075_PDF} -o {td.tmpdir} --text --pages=17,18'
+    tests.run(cmd, mp=mp)
+    ptn = serializeraw.ptn_frompath(td.tmpdir)[0]
     norise, rises = 0, 0
     for item in ptn:
         for style in item.style:
@@ -60,40 +60,40 @@ def test_regression_font_rise_bachelor75p1718(testdir, monkeypatch):
     assert not rises
 
 
-def test_regression_diss273p38_footer_rise(testdir, monkeypatch):
-    cmd = f'-i {power.DISS273_PDF} -o {testdir.tmpdir} --text --pages=38'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+def test_regression_diss273p38_footer_rise(td, mp):
+    cmd = f'-i {power.DISS273_PDF} -o {td.tmpdir} --text --pages=38'
+    tests.run(cmd, mp=mp)
+    ptn = serializeraw.ptn_frompath(td.tmpdir)[0]
     line = ptn[36]
     expected = '[75]  Für Übersichtsartikel zur kupferkatalysierten'
     assert line.text.startswith(expected)
     assert line.style.content[0].rise
 
 
-def test_regression_master72page14_footer_rise(testdir, monkeypatch):
-    cmd = f'-i {power.MASTER072_PDF} -o {testdir.tmpdir} --text --pages=14'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+def test_regression_master72page14_footer_rise(td, mp):
+    cmd = f'-i {power.MASTER072_PDF} -o {td.tmpdir} --text --pages=14'
+    tests.run(cmd, mp=mp)
+    ptn = serializeraw.ptn_frompath(td.tmpdir)[0]
     line = ptn[30]
     expected = '35 ebd.'
     assert line.text.startswith(expected)
     assert line.style.content[0].rise
 
 
-def test_regression_hcdiss171p134(testdir, monkeypatch):
-    cmd = f'-i {power.HC_DISS171} -o {testdir.tmpdir} --text --pages=134'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+def test_regression_hcdiss171p134(td, mp):
+    cmd = f'-i {power.HC_DISS171} -o {td.tmpdir} --text --pages=134'
+    tests.run(cmd, mp=mp)
+    ptn = serializeraw.ptn_frompath(td.tmpdir)[0]
     line = ptn[61]
     expected = '2Notation:'
     assert line.text.startswith(expected)
     assert line.style.content[0].rise
 
 
-def test_regression_master127p20(testdir, monkeypatch):
-    cmd = f'-i {power.MASTER127_PDF} -o {testdir.tmpdir} --text --pages=20'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    ptn = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+def test_regression_master127p20(td, mp):
+    cmd = f'-i {power.MASTER127_PDF} -o {td.tmpdir} --text --pages=20'
+    tests.run(cmd, mp=mp)
+    ptn = serializeraw.ptn_frompath(td.tmpdir)[0]
     line = ptn[-2]
     expected = '19 Fendt (2004)'
     assert line.text.startswith(expected)

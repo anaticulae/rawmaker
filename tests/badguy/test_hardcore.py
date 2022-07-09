@@ -14,6 +14,6 @@ import tests
 
 
 @utilatest.nightly
-def test_book636(testdir, monkeypatch):
-    cmd = f'-i {power.HC_BOOK636} -o {testdir.tmpdir} -j1'
-    tests.run(cmd, monkeypatch=monkeypatch)
+def test_book636(td, mp):
+    cmd = f'-i {power.HC_BOOK636} -o {td.tmpdir} -j1'
+    tests.run(cmd, mp=mp)

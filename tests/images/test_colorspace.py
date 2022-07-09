@@ -15,7 +15,7 @@ import rawmaker.miner.images
 import tests
 
 
-def test_reg_image_colorspace_four_items(testdir):
+def test_reg_image_colorspace_four_items(td):
     """First page with colorspace:
 
     [/'Indexed', /'DeviceRGB', 255, <PDFObjRef:16>] on page zero.
@@ -23,21 +23,22 @@ def test_reg_image_colorspace_four_items(testdir):
     with rawmaker.reader.read(power.MASTER091A_PDF) as pdf:
         extracted = rawmaker.miner.images.extract_images(
             pdf,
-            outputfolder=testdir.tmpdir,
+            outputfolder=td.tmpdir,
             pages=(0,),
         )
     assert len(extracted) == 1
 
 
+@pytest.mark.usefixtures('testdir')
 @pytest.mark.parametrize('source', [
     pytest.param(power.ORDER044_PDF, id='order44'),
     pytest.param((power.MASTER083_PDF, '83'), id='master83'),
 ])
 @utilatest.longrun
-def test_reg_images_colorspace(source, testdir, monkeypatch):
+def test_reg_images_colorspace(source, mp):
     try:
         source, page = source
     except ValueError:
         page = ':'
     cmd = f'-i {source} --images --pages={page}'
-    tests.run(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, mp=mp)

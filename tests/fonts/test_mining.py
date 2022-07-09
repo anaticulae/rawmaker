@@ -26,8 +26,9 @@ import tests
 import tests.resources
 
 
+@pytest.mark.usefixtures('testdir')
 @utilatest.longrun
-def test_mining_fonts(testdir):
+def test_mining_fonts():
     header, content = rawmaker.features.fonts.work(power.DOCU035_PDF)
     assert len(header) > 100
     assert len(content) > 300
@@ -190,7 +191,7 @@ def test_convert_font_from_raw_pdf_naming_problem(font, expected_name):
     assert parsed.name == expected_name, str(expected_name)
 
 
-def test_strip_correct_bounding_box(testdir, monkeypatch):
+def test_strip_correct_bounding_box(td, mp):
     """This is an table like example. We have two columns. On the left side
     there is a shortcut column and on the right side there is the
     description of the shortcut. Two item must have a near y-coordinate
@@ -198,9 +199,9 @@ def test_strip_correct_bounding_box(testdir, monkeypatch):
     source = power.BACHELOR037_PDF
     config = rawmaker.parameter.ParsingConfiguration(line_margin=0.25)
     cmd = f'-i {source} --text --pages=1 {config.cmdline()}'
-    tests.run(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, mp=mp)
 
-    navigators = serializeraw.ptn_frompath(testdir.tmpdir)
+    navigators = serializeraw.ptn_frompath(td.tmpdir)
     navigator = navigators[0]
     parsed = sorted(
         navigator,
@@ -221,13 +222,13 @@ def test_strip_correct_bounding_box(testdir, monkeypatch):
         ), f'{first}: {bounding[first].y1} {second}: {bounding[second].y1}'
 
 
-def test_strip_correct_bounding_box_master116(testdir, monkeypatch):
+def test_strip_correct_bounding_box_master116(td, mp):
     source = power.MASTER116_PDF
     config = rawmaker.parameter.ParsingConfiguration(line_margin=0.25)
     cmd = f'-i {source} --text --pages=96 {config.cmdline()}'
-    tests.run(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, mp=mp)
 
-    navigators = serializeraw.ptn_frompath(testdir.tmpdir)
+    navigators = serializeraw.ptn_frompath(td.tmpdir)
     navigator = navigators[0]
     parsed = sorted(
         navigator,
@@ -254,10 +255,10 @@ def test_strip_correct_bounding_box_master116(testdir, monkeypatch):
         ), f'{first}: {bounding[first].y1} {second}: {bounding[second].y1}'
 
 
-def test_mining_fonts_bachelor37(testdir, monkeypatch):
+def test_mining_fonts_bachelor37(td, mp):
     source = power.BACHELOR037_PDF
-    tests.run(f'-i {source} --pages=5 --text --font', monkeypatch=monkeypatch)
-    navigators = serializeraw.ptn_frompath(testdir.tmpdir)
+    tests.run(f'-i {source} --pages=5 --text --font', mp=mp)
+    navigators = serializeraw.ptn_frompath(td.tmpdir)
     page5 = navigators[0]
     firstline = page5[1]
     assert firstline.style.content[0].size == 11.04

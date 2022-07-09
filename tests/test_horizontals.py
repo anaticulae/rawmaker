@@ -17,59 +17,59 @@ import utilatest
 import tests
 
 
-def test_horizontals_master110page19(testdir, monkeypatch):
+def test_horizontals_master110page19(td, mp):
     """Ensure that lines in figures are accepted as correct horizontal
     lines."""
     cmd = f'-i {power.MASTER110_PDF} --pages=19 --line --horizontals --annotation'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    horizontals = serializeraw.load_horizontals(testdir.tmpdir)
+    tests.run(cmd, mp=mp)
+    horizontals = serializeraw.load_horizontals(td.tmpdir)
     horizontals = utila.select_content(horizontals, page=19)
     assert len(horizontals) == 2, str(horizontals)
 
 
-def test_horizontals_master155page1(testdir, monkeypatch):
+def test_horizontals_master155page1(td, mp):
     cmd = f'-i {power.MASTER155_PDF} --pages=1 --line --horizontals --annotation'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    horizontals = serializeraw.load_horizontals(testdir.tmpdir)
+    tests.run(cmd, mp=mp)
+    horizontals = serializeraw.load_horizontals(td.tmpdir)
     horizontals = utila.select_content(horizontals, page=1)
     assert len(horizontals) == 1, str(horizontals)
 
 
 @utilatest.longrun
-def test_lines_bachelor63page10(testdir, monkeypatch):
+def test_lines_bachelor63page10(td, mp):
     cmd = f'-i {power.BACHELOR063_PDF} --pages=10 --line --annotation'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    lines = serializeraw.load_lines(iamraw.path.line(testdir.tmpdir))
+    tests.run(cmd, mp=mp)
+    lines = serializeraw.load_lines(iamraw.path.line(td.tmpdir))
     lines = utila.select_content(lines, page=10)
     assert len(lines) == 46
 
 
-def test_lines_master72_hyperlinks_as_line(testdir, monkeypatch):
+def test_lines_master72_hyperlinks_as_line(td, mp):
     cmd = f'-i {power.MASTER072_PDF} --pages=65 --line --annotation'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    lines = serializeraw.load_lines(testdir.tmpdir)
+    tests.run(cmd, mp=mp)
+    lines = serializeraw.load_lines(td.tmpdir)
     assert not lines, 'hyperlink underlines missparsed as lines'
 
 
-def test_lines_master75_hyperlinks_as_line(testdir, monkeypatch):
+def test_lines_master75_hyperlinks_as_line(td, mp):
     cmd = f'-i {power.MASTER075_PDF} --pages=6 --line --annotation'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    lines = serializeraw.load_lines(testdir.tmpdir)[0].content
+    tests.run(cmd, mp=mp)
+    lines = serializeraw.load_lines(td.tmpdir)[0].content
     assert len(lines) == 2, 'header and footer line, but no underline'
 
 
-def test_lines_bachelor028p2_hyperlinks_as_line(testdir, monkeypatch):
+def test_lines_bachelor028p2_hyperlinks_as_line(td, mp):
     cmd = f'-i {power.BACHELOR028_PDF} --pages=2 --line --annotation'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    lines = serializeraw.load_lines(testdir.tmpdir)[0].content
+    tests.run(cmd, mp=mp)
+    lines = serializeraw.load_lines(td.tmpdir)[0].content
     assert len(lines) == 1, 'footer line, but no underline'
 
 
-def test_lines_master099c(testdir, monkeypatch):
+def test_lines_master099c(td, mp):
     """Ensure that text and horizontals are not merged together."""
     cmd = f'-i {power.MASTER099C_PDF} --pages=7,8,9,10,80,81,82 --line --horizontals'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    lines = serializeraw.load_horizontals(testdir.tmpdir)
+    tests.run(cmd, mp=mp)
+    lines = serializeraw.load_horizontals(td.tmpdir)
     boundings = []
     for page in lines:
         boundings.append((page.page, page.content[0].box[3]))
@@ -87,11 +87,11 @@ def test_lines_master099c(testdir, monkeypatch):
 
 
 @pytest.mark.xfail(reason='not feasible in the moment')
-def test_lines_bachelor032p3(testdir, monkeypatch):
+def test_lines_bachelor032p3(td, mp):
     """Black line under black hyperlink is not feasible with current
     technique.
     """
     cmd = f'-i {power.BACHELOR032_PDF} --pages=3 --line'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    lines = serializeraw.load_lines(testdir.tmpdir)[0].content
+    tests.run(cmd, mp=mp)
+    lines = serializeraw.load_lines(td.tmpdir)[0].content
     assert len(lines) == 2, 'footer line, and marked error line from teacher'

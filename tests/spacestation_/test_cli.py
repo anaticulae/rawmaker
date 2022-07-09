@@ -16,6 +16,6 @@ import tests.spacestation_
     '--help',
 ])
 @pytest.mark.usefixtures('testdir')
-def test_spacestation_cli_run(cmd, monkeypatch):
+def test_spacestation_cli_run(cmd, mp):
     """Run help and version and format command to reach basic test coverage"""
-    tests.spacestation_.run(cmd, monkeypatch=monkeypatch)
+    tests.spacestation_.run(cmd, mp=mp)

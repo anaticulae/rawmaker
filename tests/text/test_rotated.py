@@ -13,9 +13,9 @@ import serializeraw
 import tests
 
 
-def test_text_rotated_master116page103(testdir, monkeypatch):
+def test_text_rotated_master116page103(td, mp):
     cmd = f'-i {power.MASTER116_PDF} --text --pages=103'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    loaded = serializeraw.load_document(testdir.tmpdir)[0]
+    tests.run(cmd, mp=mp)
+    loaded = serializeraw.load_document(td.tmpdir)[0]
     assert loaded
     assert len(loaded) == 3

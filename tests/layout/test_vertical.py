@@ -26,15 +26,15 @@ def test_parse_docu009_vertically(
     page,
     vertical,
     expected_empty,
-    testdir,
-    monkeypatch,
+    td,
+    mp,
 ):
-    root = testdir.tmpdir
+    root = td.tmpdir
     source = power.ORDER009_PDF
     flag = '--detect_vertical' if vertical else ''
     config = '--char_margin=2.0 --word_margin=0.1 --line_margin=0.001'
     cmd = f'-i {source} --text --pages={page} {flag} {config}'
-    tests.run(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, mp=mp)
 
     if vertical:
         mode = texmex.PageTextNavigatorMode.VERTICAL

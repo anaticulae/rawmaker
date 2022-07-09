@@ -24,22 +24,22 @@ ARCHIVE = utila.join(rawmaker.ROOT, 'tests/images/expected', exist=True)
 @pytest.mark.parametrize('source, pages', [
     pytest.param(power.MASTER105_PDF, '30:40', id='master105'),
 ])
-def test_validate_images(source, pages, testdir, monkeypatch):
+def test_validate_images(source, pages, td, mp):
     Evaluate(
         source=source,
         pages=pages,
         expected=utila.file_name(source),
-        workdir=testdir.tmpdir,
-        monkeypatch=monkeypatch,
+        workdir=td.tmpdir,
+        mp=mp,
     ).evaluate()
 
 
 class Evaluate(utilatest.BaseLiner):
 
-    def __init__(self, source, pages, expected, workdir, monkeypatch):
+    def __init__(self, source, pages, expected, workdir, mp):
         super().__init__(
             step=f'images -i {source}',
-            program=functools.partial(tests.run, monkeypatch=monkeypatch),
+            program=functools.partial(tests.run, mp=mp),
             pages=pages,
             source=source,
             workdir=workdir,

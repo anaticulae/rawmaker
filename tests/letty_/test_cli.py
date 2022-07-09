@@ -17,22 +17,22 @@ import tests.letty_
 @pytest.mark.parametrize('command', [
     '--help',
 ])
-def test_letty_cli_run(command, testdir, monkeypatch):  #pylint: disable=W0613
+def test_letty_cli_run(command, td, mp):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
-    tests.letty_.run(command, monkeypatch=monkeypatch)
+    tests.letty_.run(command, mp=mp)
 
 
 @pytest.mark.parametrize('command', [
     '',
 ])
-def test_letty_cli_failure(command, testdir, monkeypatch):  #pylint: disable=W0613
-    tests.letty_.failure(command, monkeypatch=monkeypatch)
+def test_letty_cli_failure(command, td, mp):  #pylint: disable=W0613
+    tests.letty_.failure(command, mp=mp)
 
 
 @utilatest.requires(power.DOCU013_PDF)
-def test_letty_whitespaces(monkeypatch, capsys):  #pylint: disable=W0613
+def test_letty_whitespaces(mp, capsys):  #pylint: disable=W0613
     cmd = f'-i {power.link(power.DOCU013_PDF)} --whitespace'
-    tests.letty_.run(cmd, monkeypatch=monkeypatch)
+    tests.letty_.run(cmd, mp=mp)
 
     stdout = utilatest.stdout(capsys)
     number_of_whitespaces = int(stdout.strip())

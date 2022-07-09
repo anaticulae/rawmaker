@@ -18,11 +18,11 @@ import rawmaker.reader
 import tests
 
 
-def test_line_run_cli(testdir, monkeypatch):  #pylint: disable=W0613
-    root = str(testdir)
+def test_line_run_cli(td, mp):  #pylint: disable=W0613
+    root = str(td)
     cmd = f'-i {power.BOOK007_PDF} --line --annotation'
     with utilatest.increased_filecount(root, ext='yaml'):
-        tests.run(cmd, monkeypatch=monkeypatch)
+        tests.run(cmd, mp=mp)
 
 
 @utilatest.longrun

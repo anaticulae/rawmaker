@@ -32,8 +32,8 @@ import tests.resources
     pytest.param(f'-i {power.MASTER089_PDF}', id='master89'),
     pytest.param(f'-i {power.MASTER098_PDF}', id='master98'),
 ])
-def test_pdfinfo_run(command, testdir, monkeypatch):  #pylint: disable=W0613
-    tests.pdfinfo_.run(command, monkeypatch=monkeypatch)
+def test_pdfinfo_run(command, td, mp):  #pylint: disable=W0613
+    tests.pdfinfo_.run(command, mp=mp)
 
 
 @pytest.mark.parametrize(
@@ -43,12 +43,12 @@ def test_pdfinfo_run(command, testdir, monkeypatch):  #pylint: disable=W0613
         pytest.param(f'-i {__file__} --strict', id='no_pdf_file'),
     ],
 )
-def test_pdfinfo_run_invalid(command, testdir, monkeypatch):  #pylint: disable=W0613
-    tests.pdfinfo_.failure(command, monkeypatch=monkeypatch)
+def test_pdfinfo_run_invalid(command, td, mp):  #pylint: disable=W0613
+    tests.pdfinfo_.failure(command, mp=mp)
 
 
-def test_pdfinfo_status_valid(testdir, monkeypatch):
-    workspace = str(testdir)
+def test_pdfinfo_status_valid(td, mp):
+    workspace = str(td)
     valid = iamraw.PDFInfo(
         pages=42,
         generator=iamraw.Generator.MSWORD,
@@ -58,23 +58,23 @@ def test_pdfinfo_status_valid(testdir, monkeypatch):
     path = os.path.join(workspace, 'pdfinfo.json')
     utila.file_create(path, raw)
 
-    tests.pdfinfo_.run('--status', monkeypatch=monkeypatch)
+    tests.pdfinfo_.run('--status', mp=mp)
 
 
-def test_pdfinfo_status_invalid(testdir, monkeypatch):
-    workspace = str(testdir)
+def test_pdfinfo_status_invalid(td, mp):
+    workspace = str(td)
     path = os.path.join(workspace, 'pdfinfo.json')
     utila.file_create(path, '{}')
 
-    returncode = tests.pdfinfo_.failure('--status', monkeypatch=monkeypatch)
+    returncode = tests.pdfinfo_.failure('--status', mp=mp)
     assert returncode == pdfinfo.INVALID_PDF
 
 
-def test_pdfinfo_stdout(testdir, monkeypatch, capsys):
-    root = testdir.tmpdir
+def test_pdfinfo_stdout(td, mp, capsys):
+    root = td.tmpdir
     source = power.DOCU027_PDF
     with utilatest.increased_filecount(root, mindiff=0, maxdiff=0):
-        tests.pdfinfo_.run(f'-i {source}', monkeypatch=monkeypatch)
+        tests.pdfinfo_.run(f'-i {source}', mp=mp)
     stdout = utilatest.stdout(capsys)
     expected = (
         '{"pages": 27, "generator": "latex", "version": {"major": 1, '

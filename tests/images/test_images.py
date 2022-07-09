@@ -18,10 +18,10 @@ import tests
 
 
 @utilatest.nightly
-def test_images_export_bachelor56(testdir):
+def test_images_export_bachelor56(td):
     """Extract seven images out of four pages."""
     source = power.BACHELOR056_PDF
-    root = testdir.tmpdir
+    root = td.tmpdir
     pages = None
     expected = 5  # NOT VALIDATED
     with utilatest.increased_filecount(
@@ -40,10 +40,10 @@ def test_images_export_bachelor56(testdir):
 
 
 @utilatest.nightly
-def test_images_export_bachelor63_complete(testdir):
+def test_images_export_bachelor63_complete(td):
     """Extract seven images out of four pages."""
     source = power.BACHELOR063_PDF
-    root = testdir.tmpdir
+    root = td.tmpdir
     pages = None
     expected = 41  # NOT VALIDATED
     with utilatest.increased_filecount(
@@ -61,9 +61,9 @@ def test_images_export_bachelor63_complete(testdir):
 
 
 @utilatest.nightly
-def test_images_export_master116(testdir):
+def test_images_export_master116(td):
     source = power.MASTER116_PDF
-    root = testdir.tmpdir
+    root = td.tmpdir
     pages = None
     # master116 contains **9?** extractable images, but on page 50 the png
     # extraction is broken. After fix this issue we have to increase
@@ -98,10 +98,10 @@ def test_images_export_bachelor63_extract_images(
     expected,
     ext,
     expected_bounding_height,
-    testdir,
+    td,
 ):
     source = power.BACHELOR063_PDF
-    root = testdir.tmpdir
+    root = td.tmpdir
     pages = (page,)
     with utilatest.increased_filecount(
             root,
@@ -141,18 +141,18 @@ def test_images_export_bachelor63_extract_images(
 def test_images_export_document_complete(
     source,
     expected,
-    testdir,
-    monkeypatch,
+    td,
+    mp,
 ):
     # for every image an additional image info file is extracted.
-    root = testdir.tmpdir
+    root = td.tmpdir
     with utilatest.increased_filecount(
             root,
             mindiff=expected,
             maxdiff=expected,
     ):
         cmd = f'-i {source} --images'
-        tests.run(cmd, monkeypatch=monkeypatch)
+        tests.run(cmd, mp=mp)
 
 
 @pytest.mark.parametrize('source, pages, expected', [
@@ -165,8 +165,8 @@ def test_images_export_document_complete(
     pytest.param(power.MASTER105_PDF, 34, 1, id='master105'),
     pytest.param(power.MASTER116_PDF, (2, 3), 2, id='master116'),
 ])
-def test_images_export_x(source, pages, expected, testdir):
-    root = testdir.tmpdir
+def test_images_export_x(source, pages, expected, td):
+    root = td.tmpdir
     with utilatest.increased_filecount(
             root,
             mindiff=expected,

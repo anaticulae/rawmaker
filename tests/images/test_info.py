@@ -17,10 +17,10 @@ import rawmaker.miner.images
 import rawmaker.reader
 
 
-def test_image_information(testdir):
+def test_image_information(td):
     """Extract image information for one image on first page of
     Bachelor56 example."""
-    root = testdir.tmpdir
+    root = td.tmpdir
     source = power.BACHELOR056_PDF
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.miner.images.extract_images(

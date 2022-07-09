@@ -18,14 +18,14 @@ import rawmaker.error
 import rawmaker.features.outlines
 
 
-def test_outlines_from_document_no_outlines(monkeypatch, capsys):
+def test_outlines_from_document_no_outlines(mp, capsys):
     """Test that no outlines produces an error log"""
 
     def get_outlines(self):
         raise rawmaker.error.MissingOutlines()
 
-    with monkeypatch.context():
-        monkeypatch.setattr(
+    with mp.context():
+        mp.setattr(
             pdfminer.pdfdocument.PDFDocument,
             'get_outlines',
             get_outlines,

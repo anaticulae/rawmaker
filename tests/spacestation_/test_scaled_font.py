@@ -37,9 +37,9 @@ import tests.spacestation_
 @utilatest.requires(tests.resources.FONTS_SCALED_PERCENT033)
 @utilatest.requires(tests.resources.FONTS_SCALED_PERCENT050)
 @utilatest.requires(tests.resources.FONTS_SCALED_PERCENT200)
-def test_scaled_font_chardist(source, expected, testdir, monkeypatch):
+def test_scaled_font_chardist(source, expected, td, mp):
     cmd = f'-i {source}'
-    tests.spacestation_.run(cmd, monkeypatch=monkeypatch)
-    worddist = serializeraw.load_document_worddist(testdir.tmpdir)
+    tests.spacestation_.run(cmd, mp=mp)
+    worddist = serializeraw.load_document_worddist(td.tmpdir)
     current = worddist.minn, worddist.mean, worddist.maxx
     assert current == expected

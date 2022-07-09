@@ -16,13 +16,13 @@ import tests.resources
 
 
 @utilatest.longrun
-def test_master_compare_vim(testdir, monkeypatch):
+def test_master_compare_vim(td, mp):
     """Update test data with `cmd` below. Copy from generated test."""
     cmd = f'-i {power.DOCU013_PDF} --images! --figures! -j8 --pages=1:4'
-    tests.run(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, mp=mp)
 
     golden = tests.resources.GOLDEN_VIM
-    current = testdir.tmpdir
+    current = td.tmpdir
     diff = f'diff -rd --suppress-common-lines -y {golden} {current}'
 
     completed = utila.run(diff)

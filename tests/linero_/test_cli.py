@@ -15,6 +15,6 @@ import tests.linero_
 @pytest.mark.parametrize('command', [
     '--help',
 ])
-def test_linero_cli_run(command, testdir, monkeypatch):  #pylint: disable=W0613
+def test_linero_cli_run(command, td, mp):  #pylint: disable=W0613
     """Run help and version and format command to reach basic test coverage"""
-    tests.linero_.run(command, monkeypatch=monkeypatch)
+    tests.linero_.run(command, mp=mp)

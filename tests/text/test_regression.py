@@ -8,56 +8,58 @@
 # =============================================================================
 
 import power
+import pytest
 import serializeraw
 
 import rawmaker
 import tests
 
 
-def test_text_master110_bounding_x0_x1(testdir, monkeypatch):
+def test_text_master110_bounding_x0_x1(td, mp):
     """There was the case that merging two chars/lines results in
     malformed bounding box. Skip merging bounding boxes solves this
     issue."""
     # layout is required to invoke error
     layout = '--char_margin=3.1 --boxes_flow=1.0 --line_margin=0.25'
     cmd = f'-i {power.MASTER110_PDF} --text --pages=60 {layout}'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    loaded = serializeraw.load_textpositions(testdir.tmpdir)
+    tests.run(cmd, mp=mp)
+    loaded = serializeraw.load_textpositions(td.tmpdir)
     assert loaded
 
 
-def test_negative_text_bounding_diss274page0(testdir, monkeypatch):
+def test_negative_text_bounding_diss274page0(td, mp):
     # layout is required to invoke error
     layout = '--char_margin=3.1 --boxes_flow=1.0 --line_margin=0.25'
     cmd = f'-i {power.DISS274_PDF} --text --pages=0 {layout}'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    navigators = serializeraw.ptn_frompath(testdir.tmpdir)
+    tests.run(cmd, mp=mp)
+    navigators = serializeraw.ptn_frompath(td.tmpdir)
     navigator = navigators[0]
     # TODO: CHANGES AFTER INVESTIGATING PROBLEM WITH NEGATIVE TEXT CONTENT
     # ON LEFT BORDER.
     assert len(navigator) == 10
 
 
-def test_text_bachelor67page63(testdir, monkeypatch):
+def test_text_bachelor67page63(td, mp):
     # layout is required to invoke error
     config = rawmaker.LAYOUT
     cmd = f'-i {power.BACHELOR067_PDF} --text --pages=63 {config}'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    navigators = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    tests.run(cmd, mp=mp)
+    navigators = serializeraw.ptn_frompath(td.tmpdir)[0]
     text = [item.text.strip() for item in navigators]
     assert text[1] == '[AM14]'
     assert text[13] == '[Arm+15]'
 
 
-def test_text_master099b_zero_bounding_char(testdir, monkeypatch):
+@pytest.mark.usefixtures('testdir')
+def test_text_master099b_zero_bounding_char(mp):
     cmd = f'-i {power.MASTER099B_PDF} --text --pages=42'
-    tests.run(cmd, monkeypatch=monkeypatch)
+    tests.run(cmd, mp=mp)
 
 
-def test_text_master089_outside_char(testdir, monkeypatch):
+def test_text_master089_outside_char(td, mp):
     cmd = f'-i {power.MASTER089_PDF} --text --pages=1'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    navigator = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    tests.run(cmd, mp=mp)
+    navigator = serializeraw.ptn_frompath(td.tmpdir)[0]
     raw = navigator.debug
     # ensure that hidden character which are produced by user, skip them
     # to improve extraction
@@ -67,38 +69,38 @@ def test_text_master089_outside_char(testdir, monkeypatch):
     assert '   Audiovisuelle Medien' not in raw
 
 
-def rawpage(source, pages: str, testdir, monkeypatch):
+def rawpage(source, pages: str, td, mp):
     cmd = f'-i {source} --text --pages={pages}'
-    tests.run(cmd, monkeypatch=monkeypatch)
-    navigator = serializeraw.ptn_frompath(testdir.tmpdir)[0]
+    tests.run(cmd, mp=mp)
+    navigator = serializeraw.ptn_frompath(td.tmpdir)[0]
     raw = navigator.debug
     return raw
 
 
-def test_text_hidden_chars_hcdiss193(testdir, monkeypatch):
-    raw = rawpage(power.HC_DISS193, '11', testdir, monkeypatch)
+def test_text_hidden_chars_hcdiss193(td, mp):
+    raw = rawpage(power.HC_DISS193, '11', td, mp)
     assert '9292' not in raw
     assert '1120' not in raw
     # replace white chars due spaces
     assert 'its characteristics                                        134' in raw
 
 
-def test_text_rsign(testdir, monkeypatch):
+def test_text_rsign(td, mp):
     """Ensure to covert r-signs correctly."""
-    raw = rawpage(power.BACHELOR090_PDF, '88', testdir, monkeypatch)
+    raw = rawpage(power.BACHELOR090_PDF, '88', td, mp)
     assert raw.count('®') == 2
 
 
-def test_text_fl(testdir, monkeypatch):
+def test_text_fl(td, mp):
     """Ensure to covert fl-signs correctly."""
-    raw = rawpage(power.MASTER110_PDF, '95', testdir, monkeypatch)
+    raw = rawpage(power.MASTER110_PDF, '95', td, mp)
     assert raw.count('Reflektion') == 2
     assert raw.count('Reflekti-') == 1
 
 
-def test_text_ffi(testdir, monkeypatch):
+def test_text_ffi(td, mp):
     """Ensure to covert Eﬃcient correctly."""
-    raw = rawpage(power.MASTER110_PDF, '106', testdir, monkeypatch)
+    raw = rawpage(power.MASTER110_PDF, '106', td, mp)
     # assert raw.count('Efficient') == 1
     # TODO: FIX LATER
     assert raw.count('Effcieint') == 1
@@ -106,7 +108,7 @@ def test_text_ffi(testdir, monkeypatch):
     assert raw.count('Fernandez') == 1
 
 
-def test_text_umlaute(testdir, monkeypatch):
+def test_text_umlaute(td, mp):
     """Ensure that umlaute are converted correctly."""
-    raw = rawpage(power.MASTER110_PDF, '106', testdir, monkeypatch)
+    raw = rawpage(power.MASTER110_PDF, '106', td, mp)
     assert raw.count('für') == 2

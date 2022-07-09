@@ -22,12 +22,12 @@ import tests.spacestation_
     pytest.param(power.BACHELOR056_PDF, '3:40', (12.0, 7.481), id='bachelor56', marks=utilatest.longrun),
 ])
 # yapf:enable
-def test_worddist(source, pages, expected, testdir, monkeypatch):
+def test_worddist(source, pages, expected, td, mp):
     cmd = f'-i {source} --pages={pages} --wspace --worddist'
     # run
-    tests.spacestation_.run(cmd, monkeypatch=monkeypatch)
+    tests.spacestation_.run(cmd, mp=mp)
     # load
-    loaded = serializeraw.load_document_worddist(testdir.tmpdir)
+    loaded = serializeraw.load_document_worddist(td.tmpdir)
     # verify
     fontsize, chardist = expected
     # TODO: REPLACE WITH VERY NEAR

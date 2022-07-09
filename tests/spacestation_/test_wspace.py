@@ -36,9 +36,9 @@ def test_wspace_extract_diss266pagex(page, expected):
 
 
 @utilatest.nightly
-def test_wspace_cli_bachelor56(testdir, monkeypatch):
+def test_wspace_cli_bachelor56(td, mp):
     source = power.BACHELOR056_PDF
     cmd = f'-i {source}'
-    tests.spacestation_.run(cmd, monkeypatch=monkeypatch)
-    loaded = serializeraw.load_wspaces(testdir.tmpdir)
+    tests.spacestation_.run(cmd, mp=mp)
+    loaded = serializeraw.load_wspaces(td.tmpdir)
     assert loaded

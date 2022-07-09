@@ -79,9 +79,9 @@ def sources():
 @utilatest.nightly
 @pytest.mark.usefixtures('testdir')
 @pytest.mark.parametrize('source', sources())
-def test_pdfinfo(source, monkeypatch):
+def test_pdfinfo(source, mp):
     cmd = f'-i {source}'
-    tests.pdfinfo_.run(cmd, monkeypatch=monkeypatch)
+    tests.pdfinfo_.run(cmd, mp=mp)
 
 
 def test_locate_test_resources():

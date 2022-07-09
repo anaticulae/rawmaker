@@ -17,9 +17,9 @@ import tests.resources
 
 
 @utilatest.nightly
-def test_cli_automate(testdir, monkeypatch):
+def test_cli_automate(td, mp):
     source = os.path.join(tests.resources.RESOURCES, 'increasing_fonts')
-    cmd = f'-i {source} -o {testdir.tmpdir} -n3'
+    cmd = f'-i {source} -o {td.tmpdir} -n3'
     assert os.path.exists(source)
-    tests.rawmaker_automate_.run(cmd, monkeypatch=monkeypatch)
-    assert len(utila.directory_list(testdir.tmpdir)) == 3
+    tests.rawmaker_automate_.run(cmd, mp=mp)
+    assert len(utila.directory_list(td.tmpdir)) == 3

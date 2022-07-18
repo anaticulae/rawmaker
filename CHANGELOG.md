@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.37.7
+
+### Feature
+
+* fix text line merger (16ad811c796e)
+
 ## v2.37.6
 
 ### Fix

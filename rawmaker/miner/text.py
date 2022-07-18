@@ -570,9 +570,10 @@ def split_container(
     # add bounding
     result = []
     for index, group in enumerate(grouped):
-        item = pdfminer.layout.LTTextBoxHorizontal()
+        ctor = pdfminer.layout.LTTextBoxHorizontal
         if vertical(group):
-            item = pdfminer.layout.LTTextBoxVertical()  # pylint:disable=R0204
+            ctor = pdfminer.layout.LTTextBoxVertical
+        item = ctor()
         for line in group:
             item.add(line)
         item.index = index

@@ -98,3 +98,18 @@ def test_regression_number(td, mp):
     document = serializeraw.load_document(td.tmpdir)[0]
     lastline = document[-1].text.strip()
     assert lastline == '102'
+
+
+def test_text_double_text_detection(td, mp):
+    """The page number are bad printed as 1 1; 4 4 instead of 1 or 4."""
+    source = power.HOME016A_PDF
+    cmd = f'-i {source} --text --pages=3,15'
+    with utila.capture_stderr() as error:
+        tests.run(cmd, mp=mp)
+    document = serializeraw.load_document(td.tmpdir)
+    page3last = document[0][-1]
+    assert page3last.text.count('4') == 1
+    page15last = document[1][-1]
+    # after a patch, may only one 16 last
+    assert page15last.text.count('16') == 1
+    assert 'duplicated bounding' in error()

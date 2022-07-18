@@ -768,10 +768,12 @@ def merge_neighbors(
     result = [children[0]]
     for item in children[1:]:
         before = result[-1]
-        # TODO: MAKE THIS SIZE DEPENDENT
-        ynear = utila.near(item.box[3], before.box[3], diff=ydiff)
-        xnear = utila.near(item.box[0], before.box[2], diff=xdiff)
-        if ynear and xnear:
+        if required := require_merge(
+                item.box,
+                before=before.box,
+                xdiff=xdiff,
+                ydiff=ydiff,
+        ):
             # merge before
             # add virtual char
             before.lines[-1].chars.append(iamraw.VirtualChar(value=' '))
@@ -791,6 +793,41 @@ def merge_neighbors(
             else:
                 utila.debug('HINT: no bounding box update required')
             before.box = iamraw.BoundingBox(*before.box)
+            continue
+        if required is None:
+            utila.error('duplicated bounding, bad printed layout')
+            utila.error(vars(before))
+            utila.error(vars(item))
         else:
             result.append(item)
     return result
+
+
+def require_merge(
+    current: tuple,
+    before: tuple,
+    xdiff: float,
+    ydiff: float,
+) -> bool:
+    """Should we merge two bounding boxes causes there are very near?
+
+    Problem:
+        Some pdf printer produces very bad boundings, sometimes object
+        completely covered by each other.
+    """
+    # TODO: MAKE THIS SIZE DEPENDENT
+    ynear = utila.near(current[3], before[3], diff=ydiff)
+    if not ynear:
+        return False
+    if utila.rect_overlapping(current, before) > 0.98:  # TODO: HOLY VALUE
+        # nearly equals objects
+        # power.HOME016A_PDF
+        # {'box': BoundingBox(x0=292.73, y0=789.45, x1=302.75, y1=799.41), 'lines': [Line(text="16")], 'state': None}
+        # {'box': BoundingBox(x0=292.73, y0=789.57, x1=302.75, y1=799.53), 'lines': [Line(text="16")], 'state': None}
+        # nearly equal bounding, we skip it. Bad printed pdf.
+        # TODO: XXX
+        return None
+    xnear = utila.near(current[0], before[2], diff=xdiff)
+    if xnear:
+        return True
+    return False

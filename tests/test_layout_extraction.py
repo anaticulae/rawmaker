@@ -15,10 +15,10 @@ import rawmaker.features.text
 import tests.examples.single
 
 
-@pytest.mark.parametrize('strip', [
-    pytest.param(True, marks=pytest.mark.xfail(reason='improve parser')),
+@pytest.mark.parametrize('strip', (
+    True,
     False,
-])
+))
 def test_layout_extraction_mine_mini_numbers(strip):
     example = tests.examples.single.HEADLINE_MOVINGFOOTER_FOOTNOTES_PDF
 
@@ -34,8 +34,7 @@ def test_layout_extraction_mine_mini_numbers(strip):
     firstpage = text[0]
     containers = utila.select_type(firstpage, iamraw.TextContainer)
     lines = utila.flatten([item.lines for item in containers])
-    footnotes = lines[-9:-2]
-
+    footnotes = lines[-8:-1]
     first_rises = [item[0].rise for item in footnotes]
     # skip second line of first foot note
     first_rises = [first_rises[0]] + first_rises[2:]

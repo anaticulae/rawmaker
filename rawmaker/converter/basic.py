@@ -13,6 +13,7 @@ import iamraw
 import pdfminer.converter
 import pdfminer.layout
 import pdfminer.pdfinterp
+import pdfminer.pdfpage
 import utila
 
 
@@ -26,6 +27,14 @@ class FlippedLayoutAnalyzer(pdfminer.converter.PDFLayoutAnalyzer):
         )
 
     def receive_layout(self, ltpage):
+        if content_inside_single_figure(ltpage):
+            # extract content out of a single figure container
+            ltpage._objs = ltpage._objs[0]._objs  # pylint:disable=W0212
+            params = self.laparams
+            if not params:
+                # use default layout for image extractor
+                params = pdfminer.layout.LAParams()
+            ltpage.analyze(params)
         for item in ltpage:
             flip_object(item, ltpage)
         for item in ltpage:
@@ -51,6 +60,23 @@ class FlippedLayoutAnalyzer(pdfminer.converter.PDFLayoutAnalyzer):
     @property
     def resources(self):
         return self.rsrcmgr
+
+
+def content_inside_single_figure(page) -> bool:
+    """Some pdf printer write all page content to a single figure.
+
+    If all content is in a single figure, no text extraction is possible.
+    """
+    objs = page._objs  # pylint:disable=W0212
+    if len(objs) != 1:
+        return False
+    figure = objs[0]
+    if not isinstance(figure, pdfminer.layout.LTFigure):
+        return False
+    if len(figure._objs) == 1:  # pylint:disable=W0212
+        # image container, see master116 page,2,3. This works fine.
+        return False
+    return True
 
 
 # REMOVE HACK LATER

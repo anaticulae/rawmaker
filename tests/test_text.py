@@ -162,8 +162,11 @@ def test_text_no_char_horizontals_in_text():
     assert not counted
 
 
-@pytest.mark.xfail(reason='bad layout parser, no text content in the moment')
 def test_no_text_bachelor085():
+    """As a result of bad pdf printer all content is stored in a single figure.
+
+    After a workaround this behavior is solved now.
+    """
     parsed = rawmaker.features.text.work(
         power.BACHELOR085_PDF,
         pages=(2,),

@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.38.1
+
+### Fix
+
+* remove single figure content container (96794b6673e4)
+
 ## v2.38.0
 
 ## v2.37.7

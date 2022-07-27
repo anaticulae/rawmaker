@@ -46,7 +46,6 @@ if __name__ == "__main__":
             'linero.camelox',
             'linero.features',
             'linero.table',
-            'pdfinfo',
             'rawmaker',
             'rawmaker.converter',
             'rawmaker.features',
@@ -62,7 +61,6 @@ if __name__ == "__main__":
             'console_scripts': [
                 'letty = letty.cli:main',
                 'linero = linero.cli:main',
-                'pdfinfo = pdfinfo.cli:main',
                 'rawmaker = rawmaker.cli:main',
                 'rawmaker_automate = rawmaker.cli_automate:main',
                 'rawmaker_cleanup = cleanup.cli:main',

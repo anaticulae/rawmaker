@@ -22,7 +22,6 @@ import utilatest
 
 import tests
 import tests.linero_
-import tests.pdfinfo_
 import tests.resources
 
 
@@ -74,14 +73,6 @@ def sources():
         ) for item in pdfs
     ]
     return result
-
-
-@utilatest.nightly
-@pytest.mark.usefixtures('testdir')
-@pytest.mark.parametrize('source', sources())
-def test_pdfinfo(source, mp):
-    cmd = f'-i {source}'
-    tests.pdfinfo_.run(cmd, mp=mp)
 
 
 def test_locate_test_resources():

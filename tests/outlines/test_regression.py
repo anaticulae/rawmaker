@@ -10,6 +10,7 @@
 import os
 
 import hardcore
+import iamraw.path
 import pytest
 import serializeraw
 
@@ -37,7 +38,7 @@ def test_imagetext_outlines(source, expected, td, mp):
     """Regression test to load outlines `FitH` correctly."""
     cmd = f'-i {source} --outlines'
     tests.run(cmd, mp=mp)
-    source = os.path.join(td.tmpdir, 'rawmaker__outlines_outlines.yaml')
+    source = iamraw.path.outlines(path=td.tmpdir)
     assert os.path.exists(source)
     loaded = serializeraw.load_toc(source)
     assert any((

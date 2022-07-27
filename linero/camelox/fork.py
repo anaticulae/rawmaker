@@ -46,7 +46,7 @@ def single(pdffile, page):
 def determine_pages(pdffile, pages: tuple = None):
     pagesmax = pdfinfo.pagecount(pdffile)
     if pages is None:
-        return list(range(pagesmax))
+        return utila.rlist(pagesmax)
     return [
         page for page in range(pagesmax) if not utila.should_skip(page, pages)
     ]

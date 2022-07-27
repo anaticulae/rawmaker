@@ -10,10 +10,10 @@
 import os
 
 import iamraw
+import pdfinfo
 import serializeraw
 import utila
 
-import pdfinfo.pages
 import rawmaker.parameter
 
 
@@ -24,7 +24,7 @@ def superfast(
     pages: list = None,
 ) -> iamraw.Document:
     if pages is None:
-        pagecount = pdfinfo.pages.determine(document)
+        pagecount = pdfinfo.pagecount(document)
         pages = utila.make_tuple(pagecount)
     chunks = utila.chunks(pages, size=10)
     parameter = config.cmdline()

@@ -12,9 +12,9 @@ import collections
 import camelot
 import camelot.core
 import iamraw
+import pdfinfo
 import utila
 
-import pdfinfo.pages
 import rawmaker.features.border
 
 
@@ -33,7 +33,7 @@ def run(pdffile: str, pages: tuple = None) -> iamraw.PageContentTableBoundings:
 
 def parse_tables(pdffile: str, pages: tuple = None):
     # convert internal page definition to camelot definition
-    pagesmax = pdfinfo.pages.determine(pdffile)
+    pagesmax = pdfinfo.pagecount(pdffile)
     pages = camelot_pages(pages, pagesmax)
     result = parse_page(pdffile, pages)
     return result

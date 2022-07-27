@@ -10,12 +10,12 @@
 import functools
 import os
 
+import pdfinfo
 import serializeraw
 import utila
 
 import linero
 import linero.table.camelox
-import pdfinfo.pages
 
 RUNTIME = os.path.join(linero.ROOT, 'linero/camelox/runtime.py')
 utila.exists_assert(RUNTIME)
@@ -44,7 +44,7 @@ def single(pdffile, page):
 
 
 def determine_pages(pdffile, pages: tuple = None):
-    pagesmax = pdfinfo.pages.determine(pdffile)
+    pagesmax = pdfinfo.pagecount(pdffile)
     if pages is None:
         return list(range(pagesmax))
     return [

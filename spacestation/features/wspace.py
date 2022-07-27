@@ -92,17 +92,13 @@ def extract_page(chars: list, maxdiff: callable = None) -> list:
     return result, chargroups
 
 
-MAXDIFF = configo.HolyTable(
-    items=[
-        (7.0, 1.4),
-        (10.0, 1.4),
-        (15.0, 3.0),
-        (20.0, 4.0),
-        (25.0, 5.0),
-    ],
-    right_outranges_none=False,
-    left_outranges_none=False,
-)
+MAXDIFF = configo.HolyTable(items=[
+    (7.0, 1.4),
+    (10.0, 1.4),
+    (15.0, 3.0),
+    (20.0, 4.0),
+    (25.0, 5.0),
+])
 
 
 def diffme(fontsize: float) -> tuple:

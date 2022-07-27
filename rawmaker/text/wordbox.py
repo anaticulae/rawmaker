@@ -13,18 +13,14 @@ import utila
 import rawmaker.text.chars
 import rawmaker.text.data
 
-DIFF_MAX = configo.HolyTable(
-    items=[
-        (6, 1.0),
-        (12, 1.0),
-        (16, 1.0),
-        (22, 10.0),
-        (24, 10.0),
-        (48, 15.0),
-    ],
-    left_outranges_none=False,
-    right_outranges_none=False,
-)
+DIFF_MAX = configo.HolyTable(items=[
+    (6, 1.0),
+    (12, 1.0),
+    (16, 1.0),
+    (22, 10.0),
+    (24, 10.0),
+    (48, 15.0),
+])
 
 
 def parses(

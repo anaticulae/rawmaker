@@ -28,7 +28,7 @@ if __name__ == "__main__":
     setuptools.setup(
         author='Helmut Konrad Fahrendholz',
         author_email='kiwi@derspanier.de',
-        description='Covert PDF to raw data',
+        description='Convert PDF to raw data',
         install_requires=REQUIRES,
         long_description=README,
         name='rawmaker',

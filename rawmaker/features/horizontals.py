@@ -68,7 +68,7 @@ def determine_horizontal(lines, pagewidth=500):
     return result
 
 
-def determine_pagehorizontals(
+def determine_pagehorizontals(  # pylint:disable=R0914
     cluster: LineClusters,
     page: int,
     *,
@@ -100,6 +100,10 @@ def determine_pagehorizontals(
         x0, y0, x1, y1 = utila.roundme(tuple(merged[0]))
         height = abs(y1 - y0)
         width = abs(x1 - x0)
+        rotated = height > width
+        # check roated
+        if rotated:
+            width, height = height, width  # flip
         if height > vertical_maxerror:
             utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}'
                         f' vertical error: {height} > {vertical_maxerror}')
@@ -108,8 +112,10 @@ def determine_pagehorizontals(
             utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}'
                         f' too short: {width} < {horizontal_minwidth}')
             continue
-        y0 = utila.roundme((y0 + y1) / 2)
-        y1 = y0
+        if not rotated:
+            y0 = y1 = utila.roundme((y0 + y1) / 2)
+        else:
+            x0 = x1 = utila.roundme((x0 + x1) / 2)
         box = iamraw.BoundingBox(x0, y0, x1, y1)
         horizontal = iamraw.HorizontalLine(box=box)
         result.append(horizontal)

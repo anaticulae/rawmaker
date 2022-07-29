@@ -10,7 +10,6 @@
 import operator
 
 import iamraw
-import iamraw.path
 import power
 import pytest
 import serializeraw

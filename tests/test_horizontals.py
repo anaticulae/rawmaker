@@ -35,6 +35,13 @@ def test_horizontals_master155page1(td, mp):
     assert len(horizontals) == 1, str(horizontals)
 
 
+def test_horizontals_rotated_master116(td, mp):
+    cmd = f'-i {power.MASTER116_PDF} --pages=102 --line --horizontals'
+    tests.run(cmd, mp=mp)
+    horizontals = serializeraw.load_horizontals(td.tmpdir, pages=(102,))
+    assert len(horizontals) == 1, str(horizontals)
+
+
 @utilatest.longrun
 def test_lines_bachelor63page10(td, mp):
     cmd = f'-i {power.BACHELOR063_PDF} --pages=10 --line --annotation'

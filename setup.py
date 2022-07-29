@@ -42,10 +42,6 @@ if __name__ == "__main__":
         packages=[
             'letty',
             'letty.quality',
-            'linero',
-            'linero.camelox',
-            'linero.features',
-            'linero.table',
             'rawmaker',
             'rawmaker.converter',
             'rawmaker.features',
@@ -60,7 +56,6 @@ if __name__ == "__main__":
         entry_points={
             'console_scripts': [
                 'letty = letty.cli:main',
-                'linero = linero.cli:main',
                 'rawmaker = rawmaker.cli:main',
                 'rawmaker_automate = rawmaker.cli_automate:main',
                 'rawmaker_cleanup = cleanup.cli:main',

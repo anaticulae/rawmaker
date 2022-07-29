@@ -41,7 +41,7 @@ def work(document: str, annotations: str, pages: tuple = None) -> str:
     if utila.exists(annotations):
         annotations = serializeraw.load_annotations(annotations, pages=pages)
     else:
-        utila.error(f'missing {annotations} could not skip underlines')
+        utila.debug(f'missing {annotations} could not skip underlines')
         annotations = []
     with rawmaker.reader.read(document) as pdf:
         extracted = determine_lines(pdf, pages=pages)

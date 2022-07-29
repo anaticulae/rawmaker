@@ -2,6 +2,12 @@
 
 Every noteable change is logged here.
 
+## v2.39.2
+
+### Fix
+
+* detect horizontals on rotated page (237feb0fbce5)
+
 ## v2.39.1
 
 ## v2.39.0

@@ -5,6 +5,3 @@ name = Convert PDF to raw data
 
 source = letty
     spacestation
-
-[release]
-fail_on_finding = true

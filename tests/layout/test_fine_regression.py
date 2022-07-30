@@ -16,14 +16,15 @@ import tests
 
 
 def test_layout_fine_master72page3_horizontal_problem(td, mp):
-    """Ensure that horizontal line is parsed before first footer text
-    line. There was a problem, cause the position of the first line was
-    parsed with a to low y0 coordinate."""
+    """Ensure that horizontal line is parsed before first footer text line.
+
+    There was a problem, cause the position of the first line was
+    parsed with a too low y0 coordinate.
+    """
     source = td.tmpdir
     cmd = (f'-i {power.MASTER072_PDF} --text --line '
            '--horizontals --annotation --pages=3')
     tests.run(cmd, mp=mp)
-
     navigators = serializeraw.ptn_frompath(source)
     horizontal = serializeraw.load_horizontals(source)[0].content[0]
     firstpage = navigators[0]

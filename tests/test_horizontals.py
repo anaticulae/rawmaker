@@ -39,7 +39,8 @@ def test_horizontals_rotated_master116(td, mp):
     cmd = f'-i {power.MASTER116_PDF} --pages=102 --line --horizontals'
     tests.run(cmd, mp=mp)
     horizontals = serializeraw.load_horizontals(td.tmpdir, pages=(102,))
-    assert len(horizontals) == 1, str(horizontals)
+    horizontals = horizontals[0].content
+    assert len(horizontals) == 2, str(horizontals)
 
 
 @utilatest.longrun

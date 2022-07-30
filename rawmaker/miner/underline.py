@@ -28,7 +28,8 @@ def underline_chars(
         underlinex,
         pages=pages,
     )
-    for underlines, pagenumber in underlinex:
+    for pdfpage in underlinex:
+        underlines, pagenumber = pdfpage.content, pdfpage.page
         current_page = utila.select_page(document.pages, page=pagenumber)
         if not current_page:
             continue

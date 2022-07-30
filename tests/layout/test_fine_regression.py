@@ -25,7 +25,7 @@ def test_layout_fine_master72page3_horizontal_problem(td, mp):
     tests.run(cmd, mp=mp)
 
     navigators = serializeraw.ptn_frompath(source)
-    horizontal = serializeraw.load_horizontals(source)[0][0][0]
+    horizontal = serializeraw.load_horizontals(source)[0].content[0]
     firstpage = navigators[0]
     first_footer_line = firstpage[32]
     text = utila.normalize_whitespaces(first_footer_line.text)

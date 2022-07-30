@@ -72,7 +72,11 @@ def determine_clusteritem(
         # remove duplicated lines
         lines_in_page = utila.unique_lines(lines_in_page)
         grouped = determine_cluster(lines_in_page)
-        collected = collector(grouped, page)
+        collected = collector(
+            grouped,
+            page,
+            rotated=paged.rotated,
+        )
         result.append(collected)
     return result
 
@@ -80,6 +84,7 @@ def determine_clusteritem(
 def determine_pageboxes(
     clusters: typing.List[pdfminer.layout.LTLine],
     page: int,
+    rotated: bool = False,  # pylint:disable=W0613
     rectangle_width_min=RECTANGLE_WIDTH_MIN,
     rectangle_height_min=RECTANGLE_HEIGHT_MIN,
 ) -> iamraw.PageContentBoxes:

@@ -73,6 +73,7 @@ def determine_pagehorizontals(  # pylint:disable=R0914
     page: int,
     *,
     page_width: float,
+    rotated: bool = False,
     vertical_maxerror: float = HORIZONTAL_VERTICAL_DIFF_MAX,
     horizontal_minwidth: float = HORIZONTAL_WIDTH_MIN,
 ) -> iamraw.PageContentHorizontals:
@@ -83,6 +84,7 @@ def determine_pagehorizontals(  # pylint:disable=R0914
         page(int): current analyzed page
 
         page_width(float): width of page page
+        rotated(bool): if True pdfpage is rotated
         vertical_maxerror(float): maximal vertical difference of the left and
                                   right y-component [0.0,1.0].
         horizontal_minwidth(float): minimum distance between left and right
@@ -91,7 +93,7 @@ def determine_pagehorizontals(  # pylint:disable=R0914
         list with horizontal line
     """
     horizontal_minwidth = horizontal_minwidth * page_width
-    result = []
+    collected = []
     for merged in cluster:
         if len(merged) != 1:
             # ignore boxed lines
@@ -100,7 +102,6 @@ def determine_pagehorizontals(  # pylint:disable=R0914
         x0, y0, x1, y1 = utila.roundme(tuple(merged[0]))
         height = abs(y1 - y0)
         width = abs(x1 - x0)
-        rotated = height > width
         # check roated
         if rotated:
             width, height = height, width  # flip
@@ -118,7 +119,15 @@ def determine_pagehorizontals(  # pylint:disable=R0914
             x0 = x1 = utila.roundme((x0 + x1) / 2)
         box = iamraw.BoundingBox(x0, y0, x1, y1)
         horizontal = iamraw.HorizontalLine(box=box)
-        result.append(horizontal)
+        collected.append(horizontal)
     # ensure to sort items top to bottom and left to right
-    result = sorted(result, key=operator.attrgetter('box.y0', 'box.x0'))
-    return iamraw.PageContentHorizontals(content=result, page=page)
+    collected = sorted(
+        collected,
+        key=operator.attrgetter('box.y0', 'box.x0'),
+    )
+    result = iamraw.PageContentHorizontals(
+        content=collected,
+        page=page,
+        rotated=rotated,
+    )
+    return result

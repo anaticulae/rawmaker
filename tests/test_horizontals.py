@@ -43,6 +43,15 @@ def test_horizontals_rotated_master116(td, mp):
     assert len(horizontals) == 2, str(horizontals)
 
 
+def test_horizontals_not_rotated_bachelor026p16(td, mp):
+    """Do not detect vertical lines as horizontals."""
+    cmd = f'-i {power.BACHELOR026_PDF} --pages=16 --line --horizontals'
+    tests.run(cmd, mp=mp)
+    horizontals = serializeraw.load_horizontals(td.tmpdir, pages=(16,))
+    # TODO: VERIFY WHY REAL HORIZONAL ARE NOT HANDELD AS HORIZONTAL
+    assert not horizontals
+
+
 @utilatest.longrun
 def test_lines_bachelor63page10(td, mp):
     cmd = f'-i {power.BACHELOR063_PDF} --pages=10 --line --annotation'

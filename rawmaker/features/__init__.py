@@ -56,6 +56,7 @@ def process_pdfpages(
         for number, page in enumerate(create_pages(document), start=0):
             if collector.skip(number):
                 continue
+            page.pageid = number
             yield (page, number)
 
 

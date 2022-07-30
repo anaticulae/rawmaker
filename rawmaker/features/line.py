@@ -55,6 +55,7 @@ def determine_lines(
     pages: tuple = None,
 ) -> iamraw.PageContentLines:
     lines_ = lines(document, pages=pages)
+    rotates = rotated(document, pages=pages)
     result = []
     for content, number in lines_:
         # left point is left above from right down point
@@ -63,7 +64,29 @@ def determine_lines(
         content.sort(key=operator.itemgetter(1, 0))
         # merge lines which are divided by pdf printer
         merged = utila.merge_lines(content)
-        result.append(iamraw.PageContentLine(content=merged, page=number))
+        contentline = iamraw.PageContentLine(
+            content=merged,
+            page=number,
+            rotated=number in rotates,
+        )
+        result.append(contentline)
+    return result
+
+
+def rotated(
+    document: pdfminer.pdfdocument.PDFDocument,
+    pages: tuple = None,
+) -> set:
+    """Determine rotated pages."""
+    result = set()
+    for page in rawmaker.features.process_pagecontent(
+            document,
+            pages=pages,
+    ):
+        width, height = page.content.width, page.content.height
+        if width < height:
+            continue
+        result.add(page.page)
     return result
 
 

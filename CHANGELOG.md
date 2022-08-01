@@ -2,6 +2,17 @@
 
 Every noteable change is logged here.
 
+## v2.39.3
+
+### Feature
+
+* add rotated flag to processed lines (0ef2156b9733)
+
+### Fix
+
+* use horizontal flag to extract horizontals correctly (55a9afbe05b3)
+* decrease verbosity (1645f401a1e5)
+
 ## v2.39.2
 
 ### Fix

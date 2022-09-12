@@ -167,16 +167,14 @@ def test_images_export_document_complete(
 ])
 def test_images_export_x(source, pages, expected, td):
     root = td.tmpdir
-    with utilatest.increased_filecount(
+    with rawmaker.reader.read(source) as pdf:
+        rawmaker.miner.images.extract_images(
+            pdf,
             root,
-            mindiff=expected,
-            maxdiff=expected,
-    ):
-        with rawmaker.reader.read(source) as pdf:
-            extracted = rawmaker.miner.images.extract_images(
-                pdf,
-                root,
-                pages=pages,
-            )
-    extracted: list = utila.flatten(extracted.values())
+            pages=pages,
+        )
+    extracted = utila.file_list(
+        root,
+        absolute=True,
+    )
     assert len(extracted) == expected

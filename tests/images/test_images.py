@@ -7,6 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import hardcore
 import power
 import pytest
 import utila
@@ -155,6 +156,12 @@ def test_images_export_document_complete(
         tests.run(cmd, mp=mp)
 
 
+# TODO: INVESTIGATE PAGE WRITING ERROR ON PAGE 51. DON'T KNOW WHY FILE
+# WRITING DOES NOT FAIL IF ONLY SINGLE PAGE IS SELECTED AND WHY NOT IF
+# MORE THAN ONE IS SELECTED
+AUDACITY = hardcore.single('audacity')
+
+
 @pytest.mark.parametrize('source, pages, expected', [
     pytest.param(power.BACHELOR063_PDF, 12, 1, id='bachelor063'),
     pytest.param(power.BACHELOR090_PDF, (18, 58), 2, id='bachelor90'),
@@ -164,6 +171,7 @@ def test_images_export_document_complete(
     pytest.param(power.MASTER099_PDF, 21, 1, id='master099'),
     pytest.param(power.MASTER105_PDF, 34, 1, id='master105'),
     pytest.param(power.MASTER116_PDF, (2, 3), 2, id='master116'),
+    pytest.param(AUDACITY, utila.rtuple(40, 100), 101, id='audacity'),
 ])
 def test_images_export_x(source, pages, expected, td):
     root = td.tmpdir

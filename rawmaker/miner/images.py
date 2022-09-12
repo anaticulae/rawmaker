@@ -151,7 +151,8 @@ def write_image(extracted, write_to, page, index) -> WrittenImage:
             if rawimage.width < IMAGE_WIDTH_MAX and rawimage.height < IMAGE_HEIGHT_MAX:
                 writer.export_image(rawimage)
             else:
-                utila.info(f'skip image size: {rawimage.srcsize} name: {rawimage.name}')  # yapf:disable
+                msg = f'skip image size: {rawimage.srcsize} name: {rawimage.name}'
+                utila.info(msg)
         except pdfminer.pdftypes.PDFNotImplementedError as error:
             utila.error(f'could not export: {error}')
         except TypeError:

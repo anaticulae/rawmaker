@@ -149,7 +149,11 @@ def write_image(extracted, write_to, page, index) -> WrittenImage:
             rawimage = extracted.image
             rawimage.name = f'{page}_{index}'
             if rawimage.width < IMAGE_WIDTH_MAX and rawimage.height < IMAGE_HEIGHT_MAX:
-                writer.export_image(rawimage)
+                raw_data = rawimage.stream.get_rawdata()
+                if not raw_data:
+                    utila.error(f'empty image data, {rawimage.name}')
+                else:
+                    writer.export_image(rawimage)
             else:
                 msg = f'skip image size: {rawimage.srcsize} name: {rawimage.name}'
                 utila.info(msg)

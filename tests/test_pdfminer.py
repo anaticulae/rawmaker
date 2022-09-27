@@ -13,6 +13,7 @@ import serializeraw
 import tests
 
 
+@tests.ghost
 def test_bachelor085_any_content(td, mp):
     """Remove single figure content container."""
     cmd = (f'-i {power.BACHELOR085_PDF} -o {td.tmpdir} --pages=0:5 --text '
@@ -27,6 +28,7 @@ def test_bachelor085_any_content(td, mp):
     assert images
 
 
+@tests.ghost
 def test_master116_any_content(td, mp):
     cmd = (f'-i {power.MASTER116_PDF} -o {td.tmpdir} --pages=0,1,2,3 --text '
            '--line --horizontal --images')

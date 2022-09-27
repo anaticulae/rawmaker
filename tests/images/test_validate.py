@@ -21,6 +21,7 @@ import tests
 ARCHIVE = utila.join(rawmaker.ROOT, 'tests/images/expected', exist=True)
 
 
+@tests.ghost
 @pytest.mark.parametrize('source, pages', [
     pytest.param(power.MASTER105_PDF, '30:40', id='master105'),
 ])

@@ -29,6 +29,7 @@ def test_reg_image_colorspace_four_items(td):
     assert len(extracted) == 1
 
 
+@tests.ghost
 @pytest.mark.usefixtures('testdir')
 @pytest.mark.parametrize('source', [
     pytest.param(power.ORDER044_PDF, id='order44'),

@@ -9,6 +9,8 @@
 
 import functools
 
+import ghost as gs
+import pytest
 import utilatest
 
 import rawmaker
@@ -31,3 +33,5 @@ failure = functools.partial(
 
 security = utilatest.register_marker('security')
 font = utilatest.register_marker('font')
+
+ghost = pytest.mark.skipif(not gs.HAS_GHOST, reason='require ghost')

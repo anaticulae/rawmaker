@@ -28,6 +28,7 @@ def extract(source, pages, td, mp) -> list:
     return extracted
 
 
+@tests.ghost
 @utilatest.longrun
 def test_image_extract_with_pages_offset(td, mp):
     """This test ensures that the image information is stored correctly
@@ -39,6 +40,7 @@ def test_image_extract_with_pages_offset(td, mp):
     assert pages == {16, 17}, pages
 
 
+@tests.ghost
 @utilatest.longrun
 def test_render_master75page0_10_28(mp, td):
     """This document contains images on different pages with the same
@@ -56,6 +58,7 @@ def test_render_master75page0_10_28(mp, td):
     assert pages == [0, 8, 28, 28]
 
 
+@tests.ghost
 @utilatest.longrun
 def test_render_master127page32(mp, td):
     """Ensure that multi-line-image is merged correctly."""
@@ -63,6 +66,7 @@ def test_render_master127page32(mp, td):
     assert len(extracted) == 1, str(extracted)
 
 
+@tests.ghost
 @pytest.mark.usefixtures('testdir')
 def test_skip_huge_image(mp, capsys):
     """Skip image which is able to overload infrastructure cause it is
@@ -72,12 +76,14 @@ def test_skip_huge_image(mp, capsys):
     assert 'skip image size:' in utilatest.stdout(capsys)
 
 
+@tests.ghost
 @utilatest.longrun
 def test_image_write_error(mp, td):
     extracted = extract(power.DISS143_PDF, 85, td, mp)
     assert len(extracted) == 1
 
 
+@tests.ghost
 @utilatest.longrun
 def test_image_master31page10(mp, td):
     """Chinese character should be the only image."""

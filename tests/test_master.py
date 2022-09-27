@@ -15,6 +15,7 @@ import tests
 import tests.resources
 
 
+@tests.ghost
 @utilatest.longrun
 def test_master_compare_vim(td, mp):
     """Update test data with `cmd` below. Copy from generated test."""

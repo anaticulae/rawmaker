@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.39.5 (2022-09-27)
+
+### Fix
+
+* skip extraction if ghost is not installed (86a2c7dcaa10)
+
+### Chore
+
+* add missing generator resource (0c8b5107906c)
+
 ## v2.39.4 (2022-09-27)
 
 ### Fix

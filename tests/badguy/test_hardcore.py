@@ -8,6 +8,7 @@
 # =============================================================================
 
 import power
+import pytest
 import utilatest
 
 import tests
@@ -15,5 +16,7 @@ import tests
 
 @utilatest.nightly
 def test_book636(td, mp):
+    pytest.skip('we require a weekly decorator')
+    # TODO: CONVERT TO WEEKLY
     cmd = f'-i {power.HC_BOOK636} -o {td.tmpdir} -j1'
     tests.run(cmd, mp=mp)

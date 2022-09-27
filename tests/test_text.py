@@ -106,14 +106,14 @@ def validate_master116(firstpage):
         validate_master116,
         id='master116_true',
     ),
-    pytest.param(power.MASTER072_PDF, False, None, id='master72_false'),
     pytest.param(
         power.MASTER072_PDF,
-        True,
+        False,
         None,
-        id='master72_true',
+        id='master72_false',
         marks=pytest.mark.xfail(reason='upgrade pdfminer 20220524'),
     ),
+    pytest.param(power.MASTER072_PDF, True, None, id='master72_true'),
 ])
 @utilatest.nightly
 def test_text_mine_holy_whitespaces_remove(source, remove_whitespace, validate):

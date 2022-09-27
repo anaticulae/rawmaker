@@ -123,6 +123,7 @@ def test_images_export_bachelor63_extract_images(
     assert height >= expected_bounding_height, str(bounding)
 
 
+@tests.ghost
 @pytest.mark.parametrize(
     'source, expected',
     [
@@ -139,12 +140,7 @@ def test_images_export_bachelor63_extract_images(
         pytest.param(power.PAPER18_PDF, 12, id='paper18'),  # NOT VALIDATED
     ])
 @utilatest.nightly
-def test_images_export_document_complete(
-    source,
-    expected,
-    td,
-    mp,
-):
+def test_images_export_document_complete(source, expected, td, mp):
     # for every image an additional image info file is extracted.
     root = td.tmpdir
     with utilatest.increased_filecount(

@@ -103,10 +103,13 @@ def beautify_images(images, path: str):
     result = []
     for page in images:
         boundings = [item[0] for item in page.content]
-        extracted = ghost.images(path, boundings)
-        content = []
-        for raw, bounding in zip(extracted, boundings):
-            content.append((bounding, (raw, 'png')))
+        if not ghost.HAS_GHOST:
+            content = []
+        else:
+            extracted = ghost.images(path, boundings)
+            content = []
+            for raw, bounding in zip(extracted, boundings):
+                content.append((bounding, (raw, 'png')))
         result.append(PageContentImages(content=content, page=page.page))
     return result
 

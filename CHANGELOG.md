@@ -2,6 +2,18 @@
 
 Every noteable change is logged here.
 
+## v2.39.4 (2022-09-27)
+
+### Fix
+
+* do not fail on exporting error (af8f3a4e174a)
+
+### Chore
+
+* add Jenkinsfile (1488ba063ff7)
+* upgrade requirements.txt (2cf1ac6f9163)
+* upgrade requirements.txt (793ab57ecd0e)
+
 ## v2.39.3
 
 ### Feature

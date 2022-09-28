@@ -71,6 +71,9 @@ def test_render_master127page32(mp, td):
 def test_skip_huge_image(mp, capsys):
     """Skip image which is able to overload infrastructure cause it is
     very huge."""
+    if not utila.exists(tests.resources.IMAGE_HUGEMONO):
+        pytest.skip(reason='no hugemono.pdf')
+    # TODO: IMAGE_HUGEMONO DOES NOT EXISTS
     cmd = f'-i {tests.resources.IMAGE_HUGEMONO} --images -VVV'
     tests.run(cmd, mp=mp)
     assert 'skip image size:' in utilatest.stdout(capsys)

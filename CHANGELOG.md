@@ -2,6 +2,16 @@
 
 Every noteable change is logged here.
 
+## v2.40.0 (2022-09-28)
+
+### Feature
+
+* use white backup image if ghost is not installed (e40883ba2334)
+
+### Chore
+
+* upgrade requirements.txt (4f51e7769839)
+
 ## v2.39.5 (2022-09-27)
 
 ### Fix

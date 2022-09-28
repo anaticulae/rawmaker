@@ -7,29 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-import functools
-
 import ghost as gs
 import pytest
 import utilatest
 
 import rawmaker
-import rawmaker.cli
 
-#pylint: disable=invalid-name
-run = functools.partial(
-    utilatest.run_command,
-    main=rawmaker.cli.main,
-    process=rawmaker.PROCESS,
-    success=True,
-)
-
-failure = functools.partial(
-    utilatest.run_command,
-    main=rawmaker.cli.main,
-    process=rawmaker.PROCESS,
-    success=False,
-)
+run, failure = utilatest.create_cli_runner(rawmaker)
 
 security = utilatest.register_marker('security')
 font = utilatest.register_marker('font')

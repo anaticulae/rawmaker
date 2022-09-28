@@ -8,6 +8,7 @@
 # =============================================================================
 
 import power
+import pytest
 import utila
 import utilatest
 
@@ -19,6 +20,8 @@ import tests.resources
 @utilatest.longrun
 def test_master_compare_vim(td, mp):
     """Update test data with `cmd` below. Copy from generated test."""
+    if not utila.hasprog('diff'):
+        pytest.skip(reason='require `diff` tool')
     cmd = f'-i {power.DOCU013_PDF} --images! --figures! -j8 --pages=1:4'
     tests.run(cmd, mp=mp)
 

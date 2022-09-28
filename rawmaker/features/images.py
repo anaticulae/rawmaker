@@ -17,10 +17,12 @@ Support formats:
 """
 
 import collections
+import io
 import os
 import typing
 
 import ghost
+import PIL.Image
 import serializeraw
 import utila
 
@@ -112,11 +114,32 @@ def beautify_images(images, path: str):
 
 
 def run_ghost(path: str, boundings: list) -> list:
+    """Extract images out of pdf.
+
+    If ghost is not installed, we return a empty white image.
+    """
     if ghost.HAS_GHOST:
         extracted = ghost.images(path, boundings)
         return extracted
     utila.error('could not beautify images: install ghost')
-    return []
+    result = []
+    for bounding in boundings:
+        size = (int(bounding.width), int(bounding.height))
+        # white image backup bock box
+        raw = PIL.Image.new('RGB', size, color=1)
+        png = convert_topng(raw)
+        result.append(png)
+    return result
+
+
+def convert_topng(image) -> bytes:
+    raw = io.BytesIO()
+    image.save(raw, format='png')
+    # rewind the buffer
+    raw.seek(0)
+    # convert to bytes
+    result = raw.getvalue()
+    return result
 
 
 def convert_pages(page: int, pages: tuple) -> int:

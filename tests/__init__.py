@@ -18,4 +18,5 @@ run, failure = utilatest.create_cli_runner(rawmaker)
 security = utilatest.register_marker('security')
 font = utilatest.register_marker('font')
 
-ghost = pytest.mark.skipif(not gs.HAS_GHOST, reason='require ghost')
+# do not skip ghost
+ghost = pytest.mark.skipif(False, reason='require ghost')

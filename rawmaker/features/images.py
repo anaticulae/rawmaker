@@ -103,15 +103,20 @@ def beautify_images(images, path: str):
     result = []
     for page in images:
         boundings = [item[0] for item in page.content]
-        if not ghost.HAS_GHOST:
-            content = []
-        else:
-            extracted = ghost.images(path, boundings)
-            content = []
-            for raw, bounding in zip(extracted, boundings):
-                content.append((bounding, (raw, 'png')))
+        extracted = run_ghost(path, boundings)
+        content = []
+        for raw, bounding in zip(extracted, boundings):
+            content.append((bounding, (raw, 'png')))
         result.append(PageContentImages(content=content, page=page.page))
     return result
+
+
+def run_ghost(path: str, boundings: list) -> list:
+    if ghost.HAS_GHOST:
+        extracted = ghost.images(path, boundings)
+        return extracted
+    utila.error('could not beautify images: install ghost')
+    return []
 
 
 def convert_pages(page: int, pages: tuple) -> int:

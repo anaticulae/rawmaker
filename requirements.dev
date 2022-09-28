@@ -13,10 +13,10 @@ hardcore==0.7.0
 
 jam==0.5.1
 
-utilatest==0.18.0
+utilatest==0.20.1
 
 optimo==0.3.0
-genex==0.34.1
+genex==0.35.1
 genref>=1.3.6<2.0.0
 
 figureo>=0.17.3<1.0.0

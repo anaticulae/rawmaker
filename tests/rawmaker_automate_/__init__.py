@@ -18,12 +18,12 @@ run = functools.partial(
     utilatest.run_command,
     main=rawmaker.cli_automate.main,
     process='rawmaker_automate',
-    success=True,
+    expect=True,
 )
 
 failure = functools.partial(
     utilatest.run_command,
     main=rawmaker.cli_automate.main,
     process='rawmaker_automate',
-    success=False,
+    expect=False,
 )

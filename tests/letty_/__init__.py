@@ -7,23 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import functools
-
 import utilatest
 
 import letty
-import letty.cli
 
-run = functools.partial(  # pylint:disable=C0103
-    utilatest.run_command,
-    main=letty.cli.main,
-    process=letty.PROCESS,
-    success=True,
-)
-
-failure = functools.partial(  # pylint:disable=C0103
-    utilatest.run_command,
-    main=letty.cli.main,
-    process=letty.PROCESS,
-    success=False,
-)
+run, failure = utilatest.create_cli_runner(letty)

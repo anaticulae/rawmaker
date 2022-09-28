@@ -18,12 +18,12 @@ run = functools.partial(  # pylint:disable=C0103
     utilatest.run_command,
     main=spacestation.cli.main,
     process=spacestation.PROCESS,
-    success=True,
+    expect=True,
 )
 
 failure = functools.partial(  # pylint:disable=C0103
     utilatest.run_command,
     main=spacestation.cli.main,
     process=spacestation.PROCESS,
-    success=False,
+    expect=False,
 )

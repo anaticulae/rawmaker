@@ -2,6 +2,20 @@
 
 Every noteable change is logged here.
 
+## v2.40.1 (2022-10-21)
+
+### Fix
+
+* adjust colorspace selector (2691d1a1b824)
+* ensure correct data type (4eaf90d5258c)
+
+### Chore
+
+* add separate generate step (0c8c908b1695)
+* upgrade baw (91369f9cdfbe)
+* do not run in privileged mode (b2c723269ce6)
+* upgrade requirements.txt (6bc721140f3f)
+
 ## v2.40.0 (2022-09-28)
 
 ### Feature

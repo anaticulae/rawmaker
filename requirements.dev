@@ -8,20 +8,19 @@
 # =============================================================================
 
 # test data provider
-power==2.14.1
+power==2.15.0
 hardcore==0.7.0
 
-jam==0.5.1
+jam==0.5.3
 
-utilatest==0.20.1
+utilatest==0.24.0
 
 optimo==0.3.0
-genex==0.35.1
-genref>=1.3.6<2.0.0
+genex==0.36.0
+genref>=1.3.8<2.0.0
 
-figureo>=0.17.3<1.0.0
-formulero>=0.6.1<1.0.0
+figureo>=0.18.1<1.0.0
+formulero>=0.7.0<1.0.0
 
 # TODO: REMOVE LATER?
-pdfinfo>=0.1.3<2.0.0
-utila>=2.87.2<3.0.0
+pdfinfo>=0.1.4<2.0.0

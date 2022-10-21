@@ -132,7 +132,7 @@ class FastImageInterpreter(pdfminer.pdfinterp.PDFPageInterpreter):
         except pdfminer.psparser.PSEOF:
             # empty page
             return
-        while 1:
+        while 1:  # pylint:disable=W0149
             try:
                 (_, obj) = parser.nextobject()
             except pdfminer.psparser.PSEOF:

@@ -8,7 +8,6 @@
 # =============================================================================
 
 import dataclasses
-import typing
 
 import iamraw
 import utila
@@ -27,7 +26,7 @@ class WordBoxPage:
         return len(self.content)  # pylint:disable=E1136
 
 
-WordBoxPages = typing.List[WordBoxPage]
+WordBoxPages = list[WordBoxPage]
 
 
 @dataclasses.dataclass
@@ -42,7 +41,7 @@ class PageLines:
         return len(self.lines)  # pylint:disable=E1136
 
     def __str__(self):
-        word = lambda x: ''.join([char.text for char in x])
-        line = lambda x: ' '.join([word(item) for item in x])
+        word = lambda x: ''.join([char.text for char in x])  # pylint:disable=C3001
+        line = lambda x: ' '.join([word(item) for item in x])  # pylint:disable=C3001
         lines = utila.NEWLINE.join(line(item) for item in self.lines)  # pylint:disable=E1133
         return f'PageLines: {len(self.lines)}\n{lines}'

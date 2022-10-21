@@ -32,8 +32,8 @@ class CharPDFConvert(rawmaker.miner.text.PrecisePDFConverter):
             char for char in ltpage
             if isinstance(char, rawmaker.patch.ltchar.PatchedLTChar)
         ]
-        chars = sorted(chars, key=lambda x: x.bbox[0])  # x0
-        chars = sorted(chars, key=lambda x: x.bbox[3])  # y1
+        chars = sorted(chars, key=lambda x: x.bbox[0])  # x0 # pylint:disable=C3001
+        chars = sorted(chars, key=lambda x: x.bbox[3])  # y1 # pylint:disable=C3001
 
         page = iamraw.Page(ltpage.pageid, iamraw.BoundingBox(*ltpage.bbox))
 

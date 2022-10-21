@@ -35,12 +35,10 @@ def test_parse_docu009_vertically(
     config = '--char_margin=2.0 --word_margin=0.1 --line_margin=0.001'
     cmd = f'-i {source} --text --pages={page} {flag} {config}'
     tests.run(cmd, mp=mp)
-
-    if vertical:
+    if vertical:  # pylint:disable=W0160
         mode = texmex.PageTextNavigatorMode.VERTICAL
     else:
         mode = texmex.PageTextNavigatorMode.HORIZONTAL
-
     loaded = serializeraw.ptn_frompath(root, mode=mode)[0]
     content = loaded[:]
     empty = [] == content

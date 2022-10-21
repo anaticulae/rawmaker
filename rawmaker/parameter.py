@@ -123,7 +123,7 @@ def print_layout(layout: ParsingConfiguration = None):
     ]
     for (text, value) in information:
         utila.log(
-            '%s %.2f' % (text, value),
+            '%s %.2f' % (text, value),  # pylint:disable=C0209
             end=' ',
             level=utila.Level.INFORMATION,
         )

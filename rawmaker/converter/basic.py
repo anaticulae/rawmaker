@@ -145,7 +145,7 @@ def figure_bounding(figure) -> tuple:
     figure = [item for item in figure if visible(item)]
     boundings = []
     for item in figure:
-        if isinstance(item, pdfminer.layout.LTFigure):
+        if isinstance(item, pdfminer.layout.LTFigure):  # pylint:disable=W0160
             # figure inside a figure
             bounding = figure_bounding(item)
         else:

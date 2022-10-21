@@ -12,7 +12,6 @@
 
 import functools
 import operator
-import typing
 
 import configo
 import iamraw
@@ -82,7 +81,7 @@ def determine_clusteritem(
 
 
 def determine_pageboxes(
-    clusters: typing.List[pdfminer.layout.LTLine],
+    clusters: list[pdfminer.layout.LTLine],
     page: int,
     rotated: bool = False,  # pylint:disable=W0613
     rectangle_width_min=RECTANGLE_WIDTH_MIN,
@@ -134,7 +133,7 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
         result, todo = result[0], result[1:]
         if not isinstance(result[0], list):
             result = [result]
-        while todo:
+        while todo:  # pylint:disable=W0149
             current = todo.pop()
             index = match(result, current)
             if index is None:
@@ -145,7 +144,7 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
         return result
 
     single = utila.Single()
-    while True:
+    while True:  # pylint:disable=W0149
         # Break when cluster does not change result Cluster till cluster
         # move does not change the result.
         result = cluster(result)

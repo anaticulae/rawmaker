@@ -108,7 +108,7 @@ def font_fromraw(font: str, scale: float = 0.0, flags: int = 0) -> iamraw.Font:
     """
     pdfref = font
     utila.call('rawmaker.fonts.parser.font_fromraw')
-    utila.debug('%s %.2f' % (str(font), scale))
+    utila.debug('%s %.2f' % (str(font), scale))  # pylint:disable=C0209
     flags = serializeraw.load_flags(flags)
     # remove white spaces to avoid missing PostScript 14 language cause of
     # containg white spaces, for example `Times - Roman` instead of

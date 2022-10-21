@@ -17,7 +17,6 @@ Features:
 
 import collections
 import contextlib
-import typing
 
 import iamraw
 import pdfminer.pdfdocument
@@ -30,7 +29,7 @@ import rawmaker.reader
 PagePageSize = collections.namedtuple('PagePageSize', 'size page')
 
 
-def work(document: str, pages: tuple = None) -> typing.Tuple[str, str]:
+def work(document: str, pages: tuple = None) -> tuple[str, str]:
     """Extract page size of `document` bounding boxes of page content.
 
     Args:
@@ -91,7 +90,7 @@ def determine_boundingboxes(
 def pagesizes(
     pdf: pdfminer.pdfdocument.PDFDocument,
     pages: tuple = None,
-) -> typing.List[iamraw.PageSize]:
+) -> list[iamraw.PageSize]:
     """Extract page sizes of `PDFDocument`.
 
     Args:
@@ -129,7 +128,7 @@ def pagesize_from_page(page: pdfminer.pdfdocument.PDFDocument) -> iamraw.PageSiz
     pageheight = utila.roundme(page.mediabox[3])
 
     rotate = page.rotate
-    if rotate in (90, 270):
+    if rotate in {90, 270}:
         # rotated page, flip page size
         pagewidth, pageheight = pageheight, pagewidth
     return iamraw.PageSize(width=pagewidth, height=pageheight)
@@ -162,10 +161,10 @@ def cropborder_from_page(content) -> iamraw.Border:
         return iamraw.Border(None, None, None, None)
 
     # left, top, right, bottom
-    x0 = min([item.bbox[0] for item in content])
-    y0 = min([item.bbox[1] for item in content])
-    x1 = max([item.bbox[2] for item in content])
-    y1 = max([item.bbox[3] for item in content])
+    x0 = min((item.bbox[0] for item in content))
+    y0 = min((item.bbox[1] for item in content))
+    x1 = max((item.bbox[2] for item in content))
+    y1 = max((item.bbox[3] for item in content))
     # left, right, top, bottom
     x0, y0, x1, y1 = utila.roundme((x0, y0, x1, y1))
     assert x0 <= x1, f'{x0} <= {x1}'

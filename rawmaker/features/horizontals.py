@@ -19,7 +19,6 @@ To ignore lines which are part of a box and can not be a horizontal line.
 
 import functools
 import operator
-import typing
 
 import configo
 import iamraw
@@ -34,7 +33,7 @@ import rawmaker.reader
 
 # TODO: LTLine - replace with own data structure to reduce dependencies to
 # rawmaker
-LineClusters = typing.List[typing.List[pdfminer.layout.LTLine]]
+LineClusters = list[list[pdfminer.layout.LTLine]]
 
 # minimal length of a horizontal line
 HORIZONTAL_WIDTH_MIN = configo.HV_FLOAT(default=0.2)

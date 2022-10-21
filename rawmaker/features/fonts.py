@@ -25,7 +25,6 @@ objects are ignored.
 
 import functools
 import math
-import typing
 
 import iamraw
 import serializeraw
@@ -49,7 +48,7 @@ def work(  # pylint:disable=W9015,W0613
     nostrip: bool = not rawmaker.parameter.STRIP,
     detect_vertical: bool = False,
     pages: list = None,
-) -> typing.Tuple[str, str]:
+) -> tuple[str, str]:
     """Extract structured text out of document
 
     Args:

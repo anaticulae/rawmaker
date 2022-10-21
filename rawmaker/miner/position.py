@@ -26,7 +26,7 @@ class DocumentItemHasher:
         hashid = hash(item)
         # assert that hashid is not saved before, 'collision %s'  % item
         # TODO: Investigate later, how to avoid collision
-        assert hashid not in self.data, 'collision "%s"' % item
+        assert hashid not in self.data, f'collision "{item}"'
         # while hashid in self.data:
         #     hashid += 1
         self.data[hashid] = position
@@ -43,10 +43,13 @@ class DocumentItemHasher:
     def __eq__(self, value):
         return value and (str(self) == str(value))
 
+    def __hash__(self):
+        return hash(str(self))
+
     def __str__(self):
-        result = ['DocumentItemHasher, size: %d' % len(self.data)]
+        result = [f'DocumentItemHasher, size: {len(self.data)}']
         for key, value in self.data.items():
-            result.append('%s %s' % (key, value))
+            result.append(f'{key} {value}')
         return utila.NEWLINE.join(result)
 
 

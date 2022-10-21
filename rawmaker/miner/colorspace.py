@@ -25,10 +25,10 @@ def parse(colorspace) -> str:  # pylint:disable=R0911
         return 'DeviceGray'
     colorspace = name(colorspace)
     # TODO: VERIFY R212!
-    if colorspace in ('DeviceRGB', 'RGB', 'R213'):
+    if colorspace in {'DeviceRGB', 'RGB', 'R213'}:
         # RGB is an abbreviation of DeviceRGB
         return 'DeviceRGB'
-    if colorspace in ('DeviceGray', 'G'):
+    if colorspace in {'DeviceGray', 'G'}:
         # G is an abbreviation of DeviceGray
         return 'DeviceGray'
     if 'CS' in colorspace:

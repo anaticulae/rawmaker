@@ -38,17 +38,15 @@ def read(path: str, password: str = None, verify: bool = True) -> PDFDocument:
         PDFDocument: open pdf file
     """
     if not exists(path):
-        raise FileNotFoundError('Path does not exists %s' % path)
+        raise FileNotFoundError(f'Path does not exists: {path}')
     if not isfile(path):
-        raise ValueError('Read requires an pdf document, not %s' % path)
-
+        raise ValueError(f'Read requires an pdf document, not {path}')
     if verify:
         header = open(path, 'rb').read(5)
         if header != b'%PDF-':
             # TODO: MOVE TO def before() method after upgrading utila
             utila.error('invalid pdf header')
             sys.exit(1)
-
     with open(path, 'rb') as fp:
         # Create a PDF parser object associated with the file object.
         parser = PDFParser(fp)

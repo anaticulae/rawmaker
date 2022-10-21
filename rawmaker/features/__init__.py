@@ -8,7 +8,6 @@
 #==============================================================================
 
 import collections
-import typing
 
 import iamraw
 import pdfminer.converter
@@ -64,7 +63,7 @@ def process_document(
     document: pdfminer.pdfdocument.PDFDocument,
     layout=None,
     pages=None,
-) -> typing.Tuple[int, pdfminer.layout.LTPage]:
+) -> tuple[int, pdfminer.layout.LTPage]:
     """Yield (pagenumber, LTPage) for every selected page of `PDFDocument`"""
     assert isinstance(
         document,
@@ -90,7 +89,7 @@ def process_pagecontent(
 def page_selection(document: iamraw.Document, pages: tuple):
     assert isinstance(document, iamraw.Document), type(document)
     if pages:
-        assert isinstance(pages, (list, tuple)), '%s %s' % (pages, type(pages))
+        assert isinstance(pages, (list, tuple)), '%s %s' % (pages, type(pages))  # pylint:disable=C0209
         return pages
     # if pages is None, every page must processed
     return list(range(len(document.pages)))

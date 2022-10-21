@@ -9,7 +9,6 @@
 """Extract text out of pdf document to gather information."""
 
 import os
-import typing
 
 import iamraw
 import serializeraw
@@ -35,7 +34,7 @@ def work(  # pylint:disable=W9015,W0613
     nostrip: bool = not rawmaker.parameter.STRIP,
     detect_vertical: bool = False,
     pages: tuple = None,
-) -> typing.Tuple[str, str]:
+) -> tuple[str, str]:
     """Extract structured text out of document
 
     Args:
@@ -50,7 +49,7 @@ def work(  # pylint:disable=W9015,W0613
     # with True as default.
     detect_vertical = True  # TODO: REMOVE?
     config = rawmaker.parameter.ParsingConfiguration.from_dict(**locals())
-    if rawmaker.cli.superfast():
+    if rawmaker.cli.superfast():  # pylint:disable=W0160
         document = rawmaker.text.superfast.superfast(
             document,
             config,

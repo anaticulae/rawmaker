@@ -85,7 +85,7 @@ def test_border_bounding_boxes():
         )[1]
     assert len(boxes) == 1, boxes
     boundings = boxes[0].boundings
-    ymax = max([item[1][2] for item in boundings])
+    ymax = max((item[1][2] for item in boundings))
     assert ymax < 450.0, f'{ymax} was not flipped'
 
 

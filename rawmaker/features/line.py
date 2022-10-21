@@ -18,7 +18,6 @@ Furthermore the lines are:
 """
 
 import operator
-import typing
 
 import configo
 import iamraw
@@ -315,7 +314,7 @@ def type_in_document(
     datatype: object,
     layout=None,
     pages: tuple = None,
-) -> typing.List[typing.Tuple[pdfminer.layout.LTPage, int]]:
+) -> list[tuple[pdfminer.layout.LTPage, int]]:
     """Extract defined `datatype` out of `PDFDocument`
 
     Args:

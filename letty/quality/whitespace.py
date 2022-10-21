@@ -9,13 +9,12 @@
 
 import collections
 import re
-import typing
 
 import serializeraw
 import utila
 
 PageWhitespace = collections.namedtuple('PageWhitespaces', 'page, content')
-PageWhitespaces = typing.List[PageWhitespace]
+PageWhitespaces = list[PageWhitespace]
 
 
 def determine(path: str, pages: tuple = None) -> PageWhitespaces:

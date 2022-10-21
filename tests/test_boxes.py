@@ -57,7 +57,7 @@ def test_determine_cluster_per_pages(linecluster):  # pylint:disable=W0621
     linecluster, _ = linecluster
     expected = [4, 2, 2, 1, 1, 1, 1, 1, 0]
     for index, item in enumerate(linecluster):
-        assert len(item) == expected[index], 'Page %d' % index
+        assert len(item) == expected[index], f'Page {index}'
 
 
 def test_determine_clusters():
@@ -113,7 +113,7 @@ def test_determine_textboxes():
     )
     # flatten boxes to compute box count of document
     boxes = [page.content for page in boxes]
-    count = sum([len(item) for item in boxes])
+    count = sum((len(item) for item in boxes))
     assert count == tests.resources.DOCU009_BOX_COUNT
 
 

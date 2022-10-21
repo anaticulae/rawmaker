@@ -80,7 +80,7 @@ def parse_page(
         pageannotation = list(getobj(page.annots.objid))
     pagelinks, hyperlinks = [], []
     for reference in pageannotation:
-        if isinstance(reference, dict):
+        if isinstance(reference, dict):  # pylint:disable=W0160
             # reference is already resolved
             pageobject = reference
         else:

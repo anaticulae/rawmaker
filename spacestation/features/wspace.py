@@ -7,8 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import typing
-
 import configo
 import iamraw
 import serializeraw
@@ -22,7 +20,7 @@ import rawmaker.reader
 CHAR_SAME_LINE_DIFF_MAX = configo.HV_FLOAT_PLUS(default=10.0)
 
 
-def work(source: str, pages: tuple = None) -> typing.Tuple[str, str]:
+def work(source: str, pages: tuple = None) -> tuple[str, str]:
     wordspaces, words = extract(source, pages=pages)
     dumped_space = serializeraw.dump_wspaces(wordspaces)
     dumped_words = serializeraw.dump_wwords(words)

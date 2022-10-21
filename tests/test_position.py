@@ -62,6 +62,6 @@ def test_hash_document(document: Document):  # pylint:disable=W0621
     hashed = hash_positions(document)
     assert len(hashed) == len(document)
     # sum all the data count of the page hasher
-    items = sum([len(item.content) for item in hashed])
+    items = sum((len(item.content) for item in hashed))
     # There are a lot of items in this document
     assert items > 30

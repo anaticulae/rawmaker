@@ -11,9 +11,7 @@
 Extract figures and convert to images
 """
 
-import typing
-
-DumpedFigureInformation = typing.List[typing.Tuple[str, bytes]]
+DumpedFigureInformation = list[tuple[str, bytes]]
 
 
 def work(  # pylint:disable=keyword-arg-before-vararg,W0613

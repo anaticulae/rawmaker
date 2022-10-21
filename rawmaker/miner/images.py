@@ -24,7 +24,6 @@ import array
 import collections
 import io
 import os
-import typing
 
 import pdfminer.converter
 import pdfminer.image
@@ -44,7 +43,7 @@ import rawmaker.miner.colorspace
 
 MergedImage = collections.namedtuple('MergedImage', 'image, ext, bounding')
 WrittenImage = collections.namedtuple('WrittenImage', 'filename, bounding')
-LTImages = typing.List[pdfminer.layout.LTImage]
+LTImages = list[pdfminer.layout.LTImage]
 
 
 def extract_images(

@@ -211,7 +211,7 @@ def render_char(
         value,
         fontname=item.fontname,
     )
-    if replaced is not None:
+    if replaced is not None:  # pylint:disable=W0160
         # Unicode character
         char = rawmaker.miner.rawchar.RawUnicodeChar(
             ltchar=item,

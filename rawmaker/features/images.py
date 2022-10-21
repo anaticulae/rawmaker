@@ -19,7 +19,6 @@ Support formats:
 import collections
 import io
 import os
-import typing
 
 import ghost
 import PIL.Image
@@ -32,9 +31,9 @@ import rawmaker.miner.images
 import rawmaker.reader
 
 PageContentImages = collections.namedtuple('PageContentImages', 'content, page')
-PageContentImagesList = typing.List[PageContentImages]
+PageContentImagesList = list[PageContentImages]
 
-DumpedImageInformations = typing.List[typing.Tuple[str, bytes]]
+DumpedImageInformations = list[tuple[str, bytes]]
 
 
 def work(document: str, pages: tuple = None) -> DumpedImageInformations:

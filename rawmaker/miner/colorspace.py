@@ -24,17 +24,16 @@ def parse(colorspace) -> str:  # pylint:disable=R0911
         # TODO: VERIFY THIS
         return 'DeviceGray'
     colorspace = name(colorspace)
-    assert isinstance(colorspace, str), f'{colorspace} {type(colorspace)}'
-    # TODO: VERIFY R212!
-    if colorspace in {'DeviceRGB', 'RGB', 'R213'}:
-        # RGB is an abbreviation of DeviceRGB
-        return 'DeviceRGB'
-    if colorspace in {'DeviceGray', 'G'}:
-        # G is an abbreviation of DeviceGray
-        return 'DeviceGray'
-    if 'CS' in colorspace:
-        return colorspace
     if isinstance(colorspace, str):
+        # TODO: VERIFY R212!
+        if colorspace in {'DeviceRGB', 'RGB', 'R213'}:
+            # RGB is an abbreviation of DeviceRGB
+            return 'DeviceRGB'
+        if colorspace in {'DeviceGray', 'G'}:
+            # G is an abbreviation of DeviceGray
+            return 'DeviceGray'
+        if 'CS' in colorspace:
+            return colorspace
         return colorspace
     typ = colorspace[0].name
     if typ == 'Indexed':

@@ -40,7 +40,7 @@ def underline_chars(
                 # TODO: REMOVE APPEND AFTER SHRINKING TEXTCONTAINER TO
                 # SINGLE LINE
                 # update chars
-                for char in utila.flatten(textcontainer, append=True):
+                for char in utila.flat(textcontainer, append=True):
                     char.underline = True
                 break
     return document

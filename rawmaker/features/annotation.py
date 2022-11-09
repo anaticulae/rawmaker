@@ -249,6 +249,6 @@ def parse_pagelink(pagelink):
 
 
 def determine_bounding(bounding):
-    bounding = utila.rectangle_ensure_bounding(bounding)
+    bounding = utila.rect_ensure_bounding(bounding)
     result = iamraw.BoundingBox.from_list(bounding)
     return result

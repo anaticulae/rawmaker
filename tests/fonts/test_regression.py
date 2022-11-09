@@ -17,7 +17,7 @@ import utilatest
 import tests
 
 
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 @pytest.mark.xfail(reason='incomplete font detection implementation')
 @utilatest.longrun
 def test_leftright_book_font_name(mp, capsys):
@@ -29,7 +29,7 @@ def test_leftright_book_font_name(mp, capsys):
     assert 'ERROR' not in stderr
 
 
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 @pytest.mark.xfail(reason='support ROMA')
 @utilatest.longrun
 def test_bachelor90_fontname(mp, capsys):
@@ -113,7 +113,7 @@ def test_regression_extract_text_and_fonts(pdf, strip, td, mp):
         assert all(item != (0, 0, 0) for item in items), f'{index} | {items}'
 
 
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 @utilatest.nightly
 def test_arabic_fonts(mp):
     """Line starts with a VirtualChar which crashed bounding box
@@ -123,7 +123,7 @@ def test_arabic_fonts(mp):
     tests.run(cmd, mp=mp)
 
 
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 @pytest.mark.xfail(reason='verify font size')
 def test_font_size_huge_master193(mp):
     cmd = f'-i {power.MASTER193_PDF} --fonts --text --pages=2'

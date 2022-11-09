@@ -25,7 +25,7 @@ import tests
 import tests.resources
 
 
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 @utilatest.longrun
 def test_mining_fonts():
     header, content = rawmaker.features.fonts.work(power.DOCU035_PDF)

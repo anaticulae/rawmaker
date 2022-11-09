@@ -15,7 +15,7 @@ import utilatest
 import tests
 
 
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 @utilatest.longrun  # requires installed package
 def test_cli_superfast(mp):
     source = power.DOCU027_PDF

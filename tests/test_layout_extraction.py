@@ -33,7 +33,7 @@ def test_layout_extraction_mine_mini_numbers(strip):
     text = serializeraw.load_document(text)
     firstpage = text[0]
     containers = utila.select_type(firstpage, iamraw.TextContainer)
-    lines = utila.flatten([item.lines for item in containers])
+    lines = utila.flat([item.lines for item in containers])
     footnotes = lines[-8:-1]
     first_rises = [item[0].rise for item in footnotes]
     # skip second line of first foot note

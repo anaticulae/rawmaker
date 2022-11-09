@@ -126,5 +126,5 @@ def sameline(
     # TODO: REMOVE AFTR HAVING STABLE LINE CLUSTER
     clusterd = sorted(clusterd, key=lambda x: x.center.bbox[3])
     result = [sorted(line, key=lambda x: x.bbox[0]) for line in clusterd]
-    result = utila.flatten(result)
+    result = utila.flat(result)
     return result

@@ -111,5 +111,5 @@ def test_boundingbox_figure_bounding_too_large():
             pages=(52,),
         )[1][0].boundings
         boundings = [item[1] for item in boundings]
-    rectangle = utila.rectangle_max(boundings)
+    rectangle = utila.rect_max(boundings)
     assert rectangle[1] >= 80.0  # positive y0

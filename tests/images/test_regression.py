@@ -54,7 +54,7 @@ def test_render_master75page0_10_28(mp, td):
     # ensure to define pages correctly
     images = serializeraw.images.load_image_informations_frompath('.')
     content = [[item.page for item in page.content] for page in images]
-    pages = utila.flatten(content)
+    pages = utila.flat(content)
     assert pages == [0, 8, 28, 28]
 
 
@@ -67,7 +67,7 @@ def test_render_master127page32(mp, td):
 
 
 @tests.ghost
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 def test_skip_huge_image(mp, capsys):
     """Skip image which is able to overload infrastructure cause it is
     very huge."""

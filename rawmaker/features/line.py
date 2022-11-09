@@ -58,7 +58,7 @@ def determine_lines(
     result = []
     for content, number in lines_:
         # left point is left above from right down point
-        content = [utila.rectangle_ensure_bounding(item) for item in content]
+        content = [utila.rect_ensure_bounding(item) for item in content]
         # top down, left right
         content.sort(key=operator.itemgetter(1, 0))
         # merge lines which are divided by pdf printer
@@ -168,7 +168,7 @@ def lines(
         # remove very short lines/dots
         page = [item for item in page if not utila.isdot(item, max_length=5.0)]
         # ensure left, top, right, down bounding
-        page = [utila.rectangle_ensure_bounding(item) for item in page]
+        page = [utila.rect_ensure_bounding(item) for item in page]
         # sort item top down; left right
         page.sort(key=operator.itemgetter(1, 0))
         # merges divided lines
@@ -295,8 +295,8 @@ def figure_special_line(figure: pdfminer.layout.LTFigure) -> bool:
     #  'width': 413.96, 'height': 8.54
     # TODO: ANALYZE IMAGE
     image = figure._objs[0]  # pylint:disable=W0212
-    height = utila.rectangle_height(image.bbox)
-    width = utila.rectangle_width(image.bbox)
+    height = utila.rect_height(image.bbox)
+    width = utila.rect_width(image.bbox)
     ratio = width / height
     if width <= HORIZONTAL_FIGURE_LINE_WIDTH_MIN:
         return False

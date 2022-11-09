@@ -26,7 +26,7 @@ from tests.resources import HELLO_WORLD
     ['-i', power.DOCU027_PDF, '-o', 'output'],
     ['-i', power.DOCU035_PDF, '-o', 'output'],
 ])
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 @utilatest.nightly
 def test_run_rawmaker(command, mp):
     """Run help and version and format command to reach basic test coverage"""
@@ -37,7 +37,7 @@ def test_run_rawmaker(command, mp):
     [],
     ['-i', '.', '-o', 'output'],
 ])
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 def test_run_rawmaker_failed_empty_folder(command, mp):
     """Run help and version and format command to reach basic test coverage"""
     failure(command, mp=mp)
@@ -58,7 +58,7 @@ def test_run_rawmaker_empty_input(td, capsys, mp):
         # DO NOT REMOVE A SINGLE SOURCE OF THIS TEST
         ['-i', power.DOCU009_PDF, '-o', 'output'],
     ])
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 @utilatest.nightly
 def test_run_rawmaker_for_regression(command, mp):
     """This test run the rawmaker with problematic resources which led to an
@@ -70,7 +70,7 @@ def test_run_rawmaker_for_regression(command, mp):
     '5:10',
     '0',
 ])
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 @utilatest.longrun
 def test_run_rawmaker_with_pages(mp, pages):
     """Extract special pages"""
@@ -100,7 +100,7 @@ def test_rawmaker_cli_run_file_without_extention(td, mp):
     tests.run(f'-i {source}', mp=mp)
 
 
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 @utilatest.nightly
 def test_rawmaker_with_prefix(mp):
     """Regression test to ensure that horizontal step loads the correct

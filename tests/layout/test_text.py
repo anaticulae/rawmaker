@@ -29,7 +29,7 @@ def test_bachelor63_text_extraction(td, mp):
 
     navigator = serializeraw.ptn_frompath(root)[0]
     text = [str(item).strip() for item in navigator]
-    unique = utila.make_unique(text)
+    unique = utila.unique(text)
     assert len(unique) == len(text), str(text)
 
 
@@ -52,7 +52,7 @@ def test_bachelor37_text_extraction_position_page4(td, mp):
     assert utila.near(371.04, second.x0), second.x0
 
 
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 @utilatest.longrun
 def test_diss264_text_extraction_position_page17(mp, capsys):
     """Log non correct char conversion as an error."""

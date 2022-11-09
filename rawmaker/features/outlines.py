@@ -68,7 +68,7 @@ def parse_outlines(document: str) -> list:
                 page = pagenumber(action, dest, pdf)
             except (AttributeError, ValueError) as error:
                 utila.error('PDF NOT FULLY SUPPORTED')
-                utila.log_stacktrace()
+                utila.print_stacktrace()
                 utila.error(error)
                 continue
             if not isinstance(page, int):

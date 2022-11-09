@@ -121,11 +121,11 @@ def test_determine_textboxes():
 def test_boxes_determine_horizontals_master72pages():
     horizontals = None
     lines = iamraw.path.line(power.link(power.MASTER072_PDF))
-    lines = serializeraw.load_lines(lines, pages=utila.ranged_tuple(0, 10))
+    lines = serializeraw.load_lines(lines, pages=utila.rtuple(0, 10))
     horizontals = rawmaker.features.horizontals.determine_horizontal(lines)
     # flatten boxes to compute horizontal count of document
     horizontals = [item.content for item in horizontals if item.content]
-    horizontals = utila.flatten(horizontals)
+    horizontals = utila.flat(horizontals)
     assert len(horizontals) == 6, horizontals
     yvalue = [item.box.y0 for item in horizontals]
     expects = [410, 690, 714, 745, 725, 760]

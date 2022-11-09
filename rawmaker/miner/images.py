@@ -291,7 +291,7 @@ def image_fromlt(image) -> PIL.Image:  # pylint:disable=R0912
     try:
         colorspace = rawmaker.miner.colorspace.parse(image.colorspace)
     except AttributeError as error:
-        utila.log_stacktrace()
+        utila.print_stacktrace()
         utila.error(error)
         colorspace = 'DeviceRGB'
     try:

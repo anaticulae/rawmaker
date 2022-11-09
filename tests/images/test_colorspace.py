@@ -30,7 +30,7 @@ def test_reg_image_colorspace_four_items(td):
 
 
 @tests.ghost
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 @pytest.mark.parametrize('source', [
     pytest.param(power.ORDER044_PDF, id='order44'),
     pytest.param((power.MASTER083_PDF, '83'), id='master83'),

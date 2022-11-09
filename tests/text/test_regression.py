@@ -50,7 +50,7 @@ def test_text_bachelor67page63(td, mp):
     assert text[13] == '[Arm+15]'
 
 
-@pytest.mark.usefixtures('testdir')
+@pytest.mark.usefixtures('td')
 def test_text_master099b_zero_bounding_char(mp):
     cmd = f'-i {power.MASTER099B_PDF} --text --pages=42'
     tests.run(cmd, mp=mp)

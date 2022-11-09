@@ -65,7 +65,7 @@ def test_line_merge_horizontals_bachelor90():
     pages = (13, 14)
     with rawmaker.reader.read(power.BACHELOR090_PDF) as pdf:
         lines = rawmaker.features.line.determine_lines(pdf, pages=pages)
-    lines = utila.flatten([item.content for item in lines])
+    lines = utila.flat([item.content for item in lines])
     assert len(lines) == 2
 
 
@@ -76,7 +76,7 @@ def test_curve_lines_bachelor90page39():
     """
     with rawmaker.reader.read(power.BACHELOR090_PDF) as pdf:
         lines = rawmaker.features.line.determine_lines(pdf, pages=39)
-    lines = utila.flatten([item.content for item in lines])
+    lines = utila.flat([item.content for item in lines])
     # there are one horizontal and three vertical lines
     assert len(lines) == 4
     # TODO: SHOULD WE SKIP THE OTHER 4 LINES?

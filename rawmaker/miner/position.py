@@ -54,7 +54,7 @@ class DocumentItemHasher:
 
 
 def load_hasher(content: str) -> DocumentItemHasher:
-    loaded = utila.yaml_from_raw_or_path(content)
+    loaded = utila.yaml_load(content)
     result = []
     for page in loaded:
         pagenumber = int(page['page'])

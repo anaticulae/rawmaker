@@ -89,7 +89,7 @@ def wordbox_boundings(page) -> rawmaker.text.data.WordBoxPage:
     result = []
     for line in page:
         for word in line:
-            bounding = utila.rectangle_max([char.bbox for char in word])
+            bounding = utila.rect_max([char.bbox for char in word])
             result.append(bounding)
     wordbox = rawmaker.text.data.WordBoxPage(content=result)
     return wordbox

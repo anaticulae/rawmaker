@@ -156,7 +156,7 @@ def figure_bounding(figure) -> tuple:
         boundings.append(bounding)
     if not boundings:
         return None
-    result = utila.rectangle_max(boundings)
+    result = utila.rect_max(boundings)
     return result
 
 

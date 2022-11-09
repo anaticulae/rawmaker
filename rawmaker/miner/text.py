@@ -720,7 +720,7 @@ def ensure_bounding(textcontainer: iamraw.TextContainer):
         current = iamraw.TextContainer()
         for item in collected:
             current.append(item)
-        current.box = utila.rectangle_max([item.box for item in collected])
+        current.box = utila.rect_max([item.box for item in collected])
         result.append(current)
     return result
 

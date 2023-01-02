@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-pdfminer.six>=20221105
+pdfminer.six>=20220000
 # Image extractor
 Pillow>=9.3.0<10.0.0
 # Table Extractor
@@ -19,4 +19,4 @@ configo>=0.25.3<1.0.0
 iamraw>=4.88.10<5.0.0
 protocol>=3.20.0<4.0.0
 ghost>=0.9.1<1.0.0
-pdfinfo>=0.1.6<1.0.0
+pdfinfo>=0.1.7<1.0.0

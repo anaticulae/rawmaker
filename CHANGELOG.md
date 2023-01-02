@@ -2,6 +2,22 @@
 
 Every noteable change is logged here.
 
+## v2.40.2 (2023-01-02)
+
+### Documentation
+
+* happy New Year! (3647812fee44)
+
+### Chore
+
+* use quick install (2a0ff15872f4)
+* upgrade requirements.txt (cf267c53cb42)
+* upgrade pre-step (42b6842807fb)
+* upgrade pipeline (bb0617fc6537)
+* remove outdated resources (d22190bb2289)
+* make requirement more flexible (d178a6572090)
+* upgrade requirements.txt (43a34ce61b4c)
+
 ## v2.40.1 (2022-10-21)
 
 ### Fix

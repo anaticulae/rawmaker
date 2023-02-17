@@ -16,6 +16,22 @@ import letty.quality.whitespace
 
 @utila.saveme
 def main() -> int:
+    parser = create_parser()
+    args = utila.parse(parser)  # pylint:disable=W0612
+    inpath, _ = utila.cli.sources(args, singleinput=True)  # pylint:disable=W0632
+    inpath = inpath[0]
+    if args['whitespace']:
+        pages = None
+        if args['pages'] is not None:
+            pages = utila.parse_pages(','.join(args['pages']))
+        white_spaces = letty.quality.whitespace.determine(inpath, pages=pages)
+        utila.log(white_spaces)
+        return utila.SUCCESS
+    parser.print_help()
+    return utila.FAILURE
+
+
+def create_parser():
     commands = [
         utila.cli.Flag('--whitespace', message='evalute number of whitespaces'),
     ]
@@ -31,16 +47,4 @@ def main() -> int:
         version=letty.__version__,
         prog=letty.PROCESS,
     )
-    args = utila.parse(parser)  # pylint:disable=W0612
-
-    inpath, _ = utila.cli.sources(args, singleinput=True)  # pylint:disable=W0632
-    inpath = inpath[0]
-    if args['whitespace']:
-        pages = None
-        if args['pages'] is not None:
-            pages = utila.parse_pages(','.join(args['pages']))
-        white_spaces = letty.quality.whitespace.determine(inpath, pages=pages)
-        utila.log(white_spaces)
-        return utila.SUCCESS
-    parser.print_help()
-    return utila.FAILURE
+    return parser

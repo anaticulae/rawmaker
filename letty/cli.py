@@ -18,17 +18,30 @@ import letty.quality.whitespace
 def main() -> int:
     parser = create_parser()
     args = utila.parse(parser)  # pylint:disable=W0612
-    inpath, _ = utila.cli.sources(args, singleinput=True)  # pylint:disable=W0632
-    inpath = inpath[0]
-    if args['whitespace']:
-        pages = None
-        if args['pages'] is not None:
-            pages = utila.parse_pages(','.join(args['pages']))
+    inpath, pages, whitespace = parse_args(args)
+    if whitespace:
         white_spaces = letty.quality.whitespace.determine(inpath, pages=pages)
         utila.log(white_spaces)
         return utila.SUCCESS
     parser.print_help()
     return utila.FAILURE
+
+
+def parse_args(args) -> tuple:
+    """\
+    >>> parse_args({})
+    ('...', None, False)
+    >>> parse_args(dict(pages=['3:10']))
+    ('...', (3, 4, 5, 6, 7, 8, 9), False)
+    """
+    inpath, _ = utila.cli.sources(args, singleinput=True)  # pylint:disable=W0632
+    inpath = inpath[0]
+    pages = None
+    if args.get('pages', None) is not None:
+        pages = utila.parse_pages(','.join(args['pages']))
+    whitespace = args.get('whitespace', False)
+    result = (inpath, pages, whitespace)
+    return result
 
 
 def create_parser():

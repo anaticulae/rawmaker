@@ -14,8 +14,7 @@ import power
 import serializeraw
 import utila
 
-import linero
-import linero.path
+import rawmaker
 
 CHAR_MARGIN = utila.ranged_exp(0.1, 50, steps=8)
 WORD_MARGIN = utila.ranged_exp(0.1, 80, steps=12)
@@ -32,11 +31,8 @@ def run(path: str, char_margin: float, word_margin: float, line_margin: float):
            f'--char_margin={char_margin} --word_margin={word_margin} '
            f'--line_margin={line_margin} '
            '--text --line')
-
     utila.run(cmd, cwd=path)
-    utila.run('linero', cwd=path)
-
-    path = linero.path.table(path)
+    utila.run('tablero', cwd=path)
     loaded = serializeraw.load_tables(path)
     utila.log(f'>>> {len(loaded)}')
     return len(loaded)
@@ -48,7 +44,7 @@ def present(result):
 
 
 if __name__ == "__main__":
-    TMPDIR = utila.tmpdir(linero.ROOT)
+    TMPDIR = utila.tmpdir(rawmaker.ROOT)
     utila.log(TMPDIR)
     utila.run(
         f'optimo -i {os.path.abspath(__file__)} -VV -j=8',

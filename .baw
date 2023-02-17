@@ -13,4 +13,5 @@ short = rawmaker
 name = Convert PDF to raw data
 
 source = letty
+    optimize
     spacestation

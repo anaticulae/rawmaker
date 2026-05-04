@@ -9,7 +9,7 @@
 
 import os
 
-import jam
+import jamer
 import pytest
 import utilotest
 
@@ -20,6 +20,6 @@ import tests
 @pytest.mark.security
 def test_badguy_longpdf_rawmaker(td, mp):
     very_long = os.path.join(td.tmpdir, 'balong.pdf')
-    jam.write_blank_pdf(1000, very_long)
+    jamer.write_blank_pdf(1000, very_long)
 
     tests.run(f'-i {very_long} -j=8', mp=mp)

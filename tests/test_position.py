@@ -7,8 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
-import utilatest
+import hoverpower
+import utilotest
 from iamraw import BoundingBox
 from iamraw import Document
 from pytest import fixture
@@ -51,13 +51,13 @@ def test_key_does_not_exists():
 @fixture
 def document() -> Document:
     extracted = None
-    with read(power.DOCU013_PDF) as pdf:
+    with read(hoverpower.DOCU013_PDF) as pdf:
         extracted = extract_content(pdf)
     assert extracted
     return extracted
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_hash_document(document: Document):  # pylint:disable=W0621
     hashed = hash_positions(document)
     assert len(hashed) == len(document)

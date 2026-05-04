@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 
 import rawmaker.text.chars
 import rawmaker.text.wordbox
@@ -35,7 +35,7 @@ def test_wordbox_extract_pagelines_helloworld():
 
 def test_wordbox_bachelor90page12():
     page = rawmaker.text.chars.extract_chars(
-        power.BACHELOR090_PDF,
+        hoverpower.BACHELOR090_PDF,
         pages=(12,),
     )
     pagelines = rawmaker.text.wordbox.extract_page(page[0])

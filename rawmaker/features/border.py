@@ -21,7 +21,7 @@ import contextlib
 import iamraw
 import pdfminer.pdfdocument
 import serializeraw
-import utila
+import utilo
 
 import rawmaker.features
 import rawmaker.reader
@@ -124,8 +124,8 @@ def boundingboxes_from_page(content: list, contentid: int) -> tuple:
 
 def pagesize_from_page(page: pdfminer.pdfdocument.PDFDocument) -> iamraw.PageSize:  # yapf:disable
     # x, y, width, height
-    pagewidth = utila.roundme(page.mediabox[2])
-    pageheight = utila.roundme(page.mediabox[3])
+    pagewidth = utilo.roundme(page.mediabox[2])
+    pageheight = utilo.roundme(page.mediabox[3])
 
     rotate = page.rotate
     if rotate in {90, 270}:
@@ -166,7 +166,7 @@ def cropborder_from_page(content) -> iamraw.Border:
     x1 = max((item.bbox[2] for item in content))
     y1 = max((item.bbox[3] for item in content))
     # left, right, top, bottom
-    x0, y0, x1, y1 = utila.roundme((x0, y0, x1, y1))
+    x0, y0, x1, y1 = utilo.roundme((x0, y0, x1, y1))
     assert x0 <= x1, f'{x0} <= {x1}'
     assert y0 <= y1, f'{y0} <= {y1}'
     return iamraw.Border(left=x0, right=x1, top=y0, bottom=y1)

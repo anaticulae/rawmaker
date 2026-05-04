@@ -7,28 +7,28 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 import pytest
-import utila
-import utilatest
+import utilo
+import utilotest
 
 import tests
 import tests.resources
 
 
 @tests.ghost
-@utilatest.longrun
+@utilotest.longrun
 def test_master_compare_vim(td, mp):
     """Update test data with `cmd` below. Copy from generated test."""
-    if not utila.hasprog('diff'):
+    if not utilo.hasprog('diff'):
         pytest.skip(reason='require `diff` tool')
-    cmd = f'-i {power.DOCU013_PDF} --images! --figures! -j8 --pages=1:4'
+    cmd = f'-i {hoverpower.DOCU013_PDF} --images! --figures! -j8 --pages=1:4'
     tests.run(cmd, mp=mp)
 
     golden = tests.resources.GOLDEN_VIM
     current = td.tmpdir
     diff = f'diff -rd --suppress-common-lines -y {golden} {current}'
 
-    completed = utila.run(diff)
-    utila.error(completed.stdout)
-    assert completed.returncode == utila.SUCCESS
+    completed = utilo.run(diff)
+    utilo.error(completed.stdout)
+    assert completed.returncode == utilo.SUCCESS

@@ -8,15 +8,15 @@
 # =============================================================================
 
 import hardcore
-import power
+import hoverpower
 import serializeraw
-import utilatest
+import utilotest
 
 import tests
 
 
 def test_mylayout_bachelor90page53(td, mp):
-    source = power.BACHELOR090_PDF
+    source = hoverpower.BACHELOR090_PDF
     cmd = f'-i {source} --text --pages=53'
     tests.run(cmd, mp=mp)
     # load
@@ -26,7 +26,7 @@ def test_mylayout_bachelor90page53(td, mp):
     assert page53_second_line == '4.3. Übersicht der praktischen Entwicklung'
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_mylayout_bounding_extraction_bug(td, mp):
     """Without sorting the boundings before connecting them by mylayout,
     the result is that the left x0 is greater than right x1. This is a

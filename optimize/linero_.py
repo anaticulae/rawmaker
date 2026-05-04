@@ -10,15 +10,15 @@
 
 import os
 
-import power
+import hoverpower
 import serializeraw
-import utila
+import utilo
 
 import rawmaker
 
-CHAR_MARGIN = utila.ranged_exp(0.1, 50, steps=8)
-WORD_MARGIN = utila.ranged_exp(0.1, 80, steps=12)
-LINE_MARGIN = utila.ranged_exp(0.01, 2.0, steps=5)
+CHAR_MARGIN = utilo.ranged_exp(0.1, 50, steps=8)
+WORD_MARGIN = utilo.ranged_exp(0.1, 80, steps=12)
+LINE_MARGIN = utilo.ranged_exp(0.01, 2.0, steps=5)
 
 
 def score(result, parameter) -> float:  # pylint:disable=W0613,C0103
@@ -27,26 +27,26 @@ def score(result, parameter) -> float:  # pylint:disable=W0613,C0103
 
 
 def run(path: str, char_margin: float, word_margin: float, line_margin: float):
-    cmd = (f'rawmaker -i {power.BACHELOR056_PDF} --pages=15 '
+    cmd = (f'rawmaker -i {hoverpower.BACHELOR056_PDF} --pages=15 '
            f'--char_margin={char_margin} --word_margin={word_margin} '
            f'--line_margin={line_margin} '
            '--text --line')
-    utila.run(cmd, cwd=path)
-    utila.run('tablero', cwd=path)
+    utilo.run(cmd, cwd=path)
+    utilo.run('tablero', cwd=path)
     loaded = serializeraw.load_tables(path)
-    utila.log(f'>>> {len(loaded)}')
+    utilo.log(f'>>> {len(loaded)}')
     return len(loaded)
 
 
 def present(result):
     for item in result:
-        utila.log(item)
+        utilo.log(item)
 
 
 if __name__ == "__main__":
-    TMPDIR = utila.tmpdir(rawmaker.ROOT)
-    utila.log(TMPDIR)
-    utila.run(
+    TMPDIR = utilo.tmpdir(rawmaker.ROOT)
+    utilo.log(TMPDIR)
+    utilo.run(
         f'optimo -i {os.path.abspath(__file__)} -VV -j=8',
         cwd=TMPDIR,
         live=True,

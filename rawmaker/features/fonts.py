@@ -28,7 +28,7 @@ import math
 
 import iamraw
 import serializeraw
-import utila
+import utilo
 
 import rawmaker.features
 import rawmaker.features.text
@@ -123,7 +123,7 @@ def process_page(  # pylint:disable=R0914
     position = (0, 0, 0)  # container, line, char
     current_font, current_scale = None, None
     current_flags = None
-    textcontainer = utila.select_type(page.children, iamraw.TextContainer)
+    textcontainer = utilo.select_type(page.children, iamraw.TextContainer)
     result = []
     for container_index, container in enumerate(textcontainer):
         rotated = isinstance(container, iamraw.VerticalTextContainer)
@@ -216,7 +216,7 @@ def scale_fromchar(char, vertical: bool = False) -> float:
     # TODO: INVESTIGATE 1.34??
     # NOTE: This works for POSTSCRIPT_14_DEFAULT's but not for
     # Calibri.
-    scale = utila.roundme(char.size / 1.34005)
+    scale = utilo.roundme(char.size / 1.34005)
     # TODO: THINK ABOUT VERTICAL HACK
     if scale < 0:
         rotated = not upright_fromchar(char)
@@ -225,5 +225,5 @@ def scale_fromchar(char, vertical: bool = False) -> float:
         if rotated and absolute > 4.0:  # TODO: HOLY VALUE
             # rotated char which is printed top down
             return absolute
-        utila.debug(f'negative font size: {scale} {char}')
+        utilo.debug(f'negative font size: {scale} {char}')
     return scale

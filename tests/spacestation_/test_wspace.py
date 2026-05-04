@@ -7,10 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 import pytest
 import serializeraw
-import utilatest
+import utilotest
 
 import spacestation
 import spacestation.features.wspace
@@ -18,7 +18,7 @@ import tests.spacestation_
 
 
 def test_wspace_extract_bachelor56page0():
-    source = power.BACHELOR056_PDF
+    source = hoverpower.BACHELOR056_PDF
     extracted, _ = spacestation.features.wspace.extract(source, (0,))
     extracted = extracted[0].content
     assert len(extracted) == 42  # VALIDATED!
@@ -29,15 +29,15 @@ def test_wspace_extract_bachelor56page0():
     (9, 287),
 ])
 def test_wspace_extract_diss266pagex(page, expected):
-    source = power.DISS266_PDF
+    source = hoverpower.DISS266_PDF
     extracted, _ = spacestation.features.wspace.extract(source, (page,))
     extracted = extracted[0].content
     assert len(extracted) == expected  # VALIDATED!
 
 
-@utilatest.nightly
+@utilotest.nightly
 def test_wspace_cli_bachelor56(td, mp):
-    source = power.BACHELOR056_PDF
+    source = hoverpower.BACHELOR056_PDF
     cmd = f'-i {source}'
     tests.spacestation_.run(cmd, mp=mp)
     loaded = serializeraw.load_wspaces(td.tmpdir)

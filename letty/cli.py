@@ -7,24 +7,24 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila
-import utila.cli
+import utilo
+import utilo.cli
 
 import letty
 import letty.quality.whitespace
 
 
-@utila.saveme
+@utilo.saveme
 def main() -> int:
     parser = create_parser()
-    args = utila.parse(parser)  # pylint:disable=W0612
+    args = utilo.parse(parser)  # pylint:disable=W0612
     inpath, pages, whitespace = parse_args(args)
     if whitespace:
         white_spaces = letty.quality.whitespace.determine(inpath, pages=pages)
-        utila.log(white_spaces)
-        return utila.SUCCESS
+        utilo.log(white_spaces)
+        return utilo.SUCCESS
     parser.print_help()
-    return utila.FAILURE
+    return utilo.FAILURE
 
 
 def parse_args(args) -> tuple:
@@ -34,11 +34,11 @@ def parse_args(args) -> tuple:
     >>> parse_args(dict(pages=['3:10']))
     ('...', (3, 4, 5, 6, 7, 8, 9), False)
     """
-    inpath, _ = utila.cli.sources(args, singleinput=True)  # pylint:disable=W0632
+    inpath, _ = utilo.cli.sources(args, singleinput=True)  # pylint:disable=W0632
     inpath = inpath[0]
     pages = None
     if args.get('pages', None) is not None:
-        pages = utila.parse_pages(','.join(args['pages']))
+        pages = utilo.parse_pages(','.join(args['pages']))
     whitespace = args.get('whitespace', False)
     result = (inpath, pages, whitespace)
     return result
@@ -46,11 +46,11 @@ def parse_args(args) -> tuple:
 
 def create_parser():
     commands = [
-        utila.cli.Flag('--whitespace', message='evalute number of whitespaces'),
+        utilo.cli.Flag('--whitespace', message='evalute number of whitespaces'),
     ]
-    parser = utila.cli.create_parser(
+    parser = utilo.cli.create_parser(
         todo=commands,
-        config=utila.ParserConfiguration(
+        config=utilo.ParserConfiguration(
             inputparameter=True,
             outputparameter=False,
             pages=True,

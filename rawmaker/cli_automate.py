@@ -11,19 +11,19 @@ import argparse
 import os
 import sys
 
-import utila
-import utilatest
+import utilo
+import utilotest
 
 DESCRIPTION = """\
 Collect pdf files of defined folders and use them to run rawmaker.
 """
 
 
-@utila.saveme
+@utilo.saveme
 def main():
     parameter = user_input()
     run(*parameter)
-    sys.exit(utila.SUCCESS)
+    sys.exit(utilo.SUCCESS)
 
 
 def user_input() -> tuple:
@@ -52,18 +52,18 @@ def user_input() -> tuple:
 
 def run(inpath: str, outpath: str, cores: int = 1):
     os.makedirs(outpath, exist_ok=True)
-    files = utila.file_list(inpath, include='pdf', absolute=True)
+    files = utilo.file_list(inpath, include='pdf', absolute=True)
     for item in files:
-        utila.log(item)
+        utilo.log(item)
     cmds = []
     for item in files:
         _, name = os.path.split(item)
         # use quotation marks to encapsulate file path white spaces
         item = f'"{item}"' if ' ' in str(item) else item
-        name = utilatest.simple(name)  # TODO: REPLACE WITH UTILA CODE
+        name = utilotest.simple(name)  # TODO: REPLACE WITH utilo CODE
         out = os.path.join(outpath, name)
         cmd = f'rawmaker -i {item} -o {out} -j4'
         cmds.append(cmd)
     for cmd in cmds:
-        utila.log(cmd, preserve_newlines=False)
-    utila.run_parallel(cmds, worker=cores, verbose=True)
+        utilo.log(cmd, preserve_newlines=False)
+    utilo.run_parallel(cmds, worker=cores, verbose=True)

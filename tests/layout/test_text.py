@@ -7,12 +7,12 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import hoverpower
 import iamraw
-import power
 import pytest
 import serializeraw
-import utila
-import utilatest
+import utilo
+import utilotest
 
 import tests
 
@@ -22,14 +22,14 @@ def test_bachelor63_text_extraction(td, mp):
     does no occurs again. There was a problem that some text was parsed
     twice and more."""
     root = td.tmpdir
-    source = power.BACHELOR063_PDF
+    source = hoverpower.BACHELOR063_PDF
     config = ''
     cmd = f'-i {source} --text --pages=0 {config}'
     tests.run(cmd, mp=mp)
 
     navigator = serializeraw.ptn_frompath(root)[0]
     text = [str(item).strip() for item in navigator]
-    unique = utila.unique(text)
+    unique = utilo.unique(text)
     assert len(unique) == len(text), str(text)
 
 
@@ -39,7 +39,7 @@ def test_bachelor37_text_extraction_position_page4(td, mp):
     correct behavior.
     """
     root = td.tmpdir
-    source = power.BACHELOR037_PDF
+    source = hoverpower.BACHELOR037_PDF
     cmd = f'-i {source} --text --pages=4'
     tests.run(cmd, mp=mp)
 
@@ -48,24 +48,24 @@ def test_bachelor37_text_extraction_position_page4(td, mp):
     first = navigator[0].bounding
     second = navigator[1].bounding
 
-    assert utila.near(70.92, first.x0), first.x0
-    assert utila.near(371.04, second.x0), second.x0
+    assert utilo.near(70.92, first.x0), first.x0
+    assert utilo.near(371.04, second.x0), second.x0
 
 
 @pytest.mark.usefixtures('td')
-@utilatest.longrun
+@utilotest.longrun
 def test_diss264_text_extraction_position_page17(mp, capsys):
     """Log non correct char conversion as an error."""
     # TODO: CHECK THIS TEST AFTER UPGRADING PDFMINER
-    source = power.DISS264_PDF
+    source = hoverpower.DISS264_PDF
     cmd = f'-i {source} --text --fonts --pages=17 -VVV'
     tests.run(cmd, mp=mp)
-    stdout = utilatest.stderr(capsys)
+    stdout = utilotest.stderr(capsys)
     assert stdout.count('could not convert:') >= 6, stdout
 
 
 def test_vertical_text_diss264page21(td, mp):
-    source = power.DISS264_PDF
+    source = hoverpower.DISS264_PDF
     cmd = f'-i {source} --text --pages=21'
     tests.run(cmd, mp=mp)
     # load result
@@ -79,7 +79,7 @@ def test_vertical_text_diss264page21(td, mp):
 
 
 def test_all_single_container(td, mp):
-    source = power.DISS143_PDF
+    source = hoverpower.DISS143_PDF
     cmd = f'-i {source} --text --pages=25'
     tests.run(cmd, mp=mp)
     document = serializeraw.load_document(td.tmpdir)[0]
@@ -92,7 +92,7 @@ def test_regression_number(td, mp):
 
     TODO: Check where this space token comes from.
     """
-    source = power.DISS406_PDF
+    source = hoverpower.DISS406_PDF
     cmd = f'-i {source} --text --pages=127'
     tests.run(cmd, mp=mp)
     document = serializeraw.load_document(td.tmpdir)[0]
@@ -102,9 +102,9 @@ def test_regression_number(td, mp):
 
 def test_text_double_text_detection(td, mp):
     """The page number are bad printed as 1 1; 4 4 instead of 1 or 4."""
-    source = power.HOME016A_PDF
+    source = hoverpower.HOME016A_PDF
     cmd = f'-i {source} --text --pages=3,15'
-    with utila.capture_stderr() as error:
+    with utilo.capture_stderr() as error:
         tests.run(cmd, mp=mp)
     document = serializeraw.load_document(td.tmpdir)
     page3last = document[0][-1]

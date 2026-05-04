@@ -7,9 +7,9 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 import pytest
-import utilatest
+import utilotest
 
 import tests.letty_
 
@@ -29,11 +29,11 @@ def test_letty_cli_failure(command, td, mp):  #pylint: disable=W0613
     tests.letty_.failure(command, mp=mp)
 
 
-@utilatest.requires(power.DOCU013_PDF)
+@utilotest.requires(hoverpower.DOCU013_PDF)
 def test_letty_whitespaces(mp, capsys):  #pylint: disable=W0613
-    cmd = f'-i {power.link(power.DOCU013_PDF)} --whitespace'
+    cmd = f'-i {hoverpower.link(hoverpower.DOCU013_PDF)} --whitespace'
     tests.letty_.run(cmd, mp=mp)
 
-    stdout = utilatest.stdout(capsys)
+    stdout = utilotest.stdout(capsys)
     number_of_whitespaces = int(stdout.strip())
     assert number_of_whitespaces > 300, stdout

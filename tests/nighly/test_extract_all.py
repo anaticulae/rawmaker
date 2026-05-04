@@ -15,10 +15,10 @@ repository are extractable by rawmaker and exit with exit code 0.
 
 import glob
 
-import power
+import hoverpower
 import pytest
-import utila
-import utilatest
+import utilo
+import utilotest
 
 import tests
 import tests.resources
@@ -26,7 +26,7 @@ import tests.resources
 
 def pdf():
     located = glob.glob(f'{tests.resources.RESOURCES}/**/*.pdf', recursive=True)
-    located.extend(power.PDF)
+    located.extend(hoverpower.PDF)
     result = []
     for item in located:
         if any((test in str(item) for test in SKIP)):
@@ -37,7 +37,7 @@ def pdf():
 
 def convert_path(path: str, name_length_max: int = 35) -> str:
     """Convert to relative and forward slashed path, remove leading slash."""
-    relative = utila.make_relative(path, power.REPO)
+    relative = utilo.make_relative(path, hoverpower.REPO)
     result = relative.replace('\\', '_')[1:]
     result = result.replace('/', '_')
     result = result.replace('.', '_')
@@ -58,7 +58,7 @@ UNSUPPORTED_DOCUMENTS = {}
 
 def sources():
     pdfs = pdf()
-    skip = pdfs[10:] if not utilatest.NIGHTLY else []
+    skip = pdfs[10:] if not utilotest.NIGHTLY else []
     result = [
         pytest.param(
             item,

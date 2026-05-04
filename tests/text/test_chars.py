@@ -7,14 +7,14 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 
 import rawmaker.text.chars
 
 
 def test_chars_extract():
     extracted = rawmaker.text.chars.extract_chars(
-        power.BACHELOR090_PDF,
+        hoverpower.BACHELOR090_PDF,
         pages=(12,),
     )
     assert len(extracted) == 1

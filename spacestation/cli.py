@@ -7,27 +7,27 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utila
+import utilo
 
 import spacestation
 
 WORKPLAN = [
-    utila.create_step(
+    utilo.create_step(
         name='wspace',
-        inputs=[utila.Pattern('*', 'pdf')],
+        inputs=[utilo.Pattern('*', 'pdf')],
         output=('wspace', 'words'),
     ),
-    utila.create_step(
+    utilo.create_step(
         name='chardist',
         inputs=[
-            utila.ResultFile(producer='spacestation', name='wspace_words'),
+            utilo.ResultFile(producer='spacestation', name='wspace_words'),
         ],
         output=('chardist',),
     ),
-    utila.create_step(
+    utilo.create_step(
         name='worddist',
         inputs=[
-            utila.ResultFile(producer='spacestation', name='wspace_wspace'),
+            utilo.ResultFile(producer='spacestation', name='wspace_wspace'),
         ],
         output=('worddist',),
     ),
@@ -35,11 +35,11 @@ WORKPLAN = [
 
 
 def main():
-    utila.featurepack(
+    utilo.featurepack(
         workplan=WORKPLAN,
         root=spacestation.ROOT,
         featurepackage='spacestation.features',
-        config=utila.FeaturePackConfig(
+        config=utilo.FeaturePackConfig(
             description=spacestation.DESCRIPTION,
             multiprocessed=True,
             name=spacestation.PROCESS,

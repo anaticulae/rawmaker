@@ -7,12 +7,12 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import hoverpower
 import iamraw
-import power
 import pytest
 import serializeraw
-import utila
-import utilatest
+import utilo
+import utilotest
 
 import rawmaker.features.border
 import rawmaker.features.boxes
@@ -24,9 +24,9 @@ import tests.resources
 
 @pytest.fixture
 def linecluster():
-    utilatest.fixture_requires(power.DOCU009_PDF)
+    utilotest.fixture_requires(hoverpower.DOCU009_PDF)
     result = []
-    with rawmaker.reader.read(power.DOCU009_PDF) as doc:
+    with rawmaker.reader.read(hoverpower.DOCU009_PDF) as doc:
         parsed = rawmaker.features.line.lines(doc)
         size = rawmaker.features.border.pagesizes(doc)[0].size
         for pagelines, _ in parsed:
@@ -36,7 +36,7 @@ def linecluster():
     return result, size
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_determine_boxes(linecluster):  # pylint:disable=W0621
     linecluster, _ = linecluster
     result = []
@@ -52,7 +52,7 @@ def test_determine_boxes(linecluster):  # pylint:disable=W0621
     assert len(result) == tests.resources.DOCU009_BOX_COUNT
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_determine_cluster_per_pages(linecluster):  # pylint:disable=W0621
     linecluster, _ = linecluster
     expected = [4, 2, 2, 1, 1, 1, 1, 1, 0]
@@ -87,7 +87,7 @@ def test_determine_single_cluster():
     assert len(result[0]) == 1
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
     linecluster, size = linecluster
     pagewidth = size.width
@@ -102,9 +102,9 @@ def test_determine_horizontal_lines(linecluster):  # pylint:disable=W0621
     assert len(lines) == tests.resources.DOCU009_HORIZONTAL_COUNT
 
 
-@utilatest.requires(power.DOCU009_PDF)
+@utilotest.requires(hoverpower.DOCU009_PDF)
 def test_determine_textboxes():
-    lines = iamraw.path.line(power.link(power.DOCU009_PDF))
+    lines = iamraw.path.line(hoverpower.link(hoverpower.DOCU009_PDF))
     lines = serializeraw.load_lines(lines)
     boxes = rawmaker.features.boxes.determine_boxes(
         lines,
@@ -117,24 +117,24 @@ def test_determine_textboxes():
     assert count == tests.resources.DOCU009_BOX_COUNT
 
 
-@utilatest.requires(power.MASTER072_PDF)
+@utilotest.requires(hoverpower.MASTER072_PDF)
 def test_boxes_determine_horizontals_master72pages():
     horizontals = None
-    lines = iamraw.path.line(power.link(power.MASTER072_PDF))
-    lines = serializeraw.load_lines(lines, pages=utila.rtuple(0, 10))
+    lines = iamraw.path.line(hoverpower.link(hoverpower.MASTER072_PDF))
+    lines = serializeraw.load_lines(lines, pages=utilo.rtuple(0, 10))
     horizontals = rawmaker.features.horizontals.determine_horizontal(lines)
     # flatten boxes to compute horizontal count of document
     horizontals = [item.content for item in horizontals if item.content]
-    horizontals = utila.flat(horizontals)
+    horizontals = utilo.flat(horizontals)
     assert len(horizontals) == 6, horizontals
     yvalue = [item.box.y0 for item in horizontals]
     expects = [410, 690, 714, 745, 725, 760]
-    assert utila.nears(yvalue, expects, diff=5.0), (f'{yvalue}; {expects}')
+    assert utilo.nears(yvalue, expects, diff=5.0), (f'{yvalue}; {expects}')
 
 
-@utilatest.requires(power.BACHELOR056_PDF)
+@utilotest.requires(hoverpower.BACHELOR056_PDF)
 def test_boxes_determine_boxes_bachelor56_titlepage():
-    lines = iamraw.path.line(power.link(power.BACHELOR056_PDF))
+    lines = iamraw.path.line(hoverpower.link(hoverpower.BACHELOR056_PDF))
     lines = serializeraw.load_lines(lines, pages=(0,))
     pages = rawmaker.features.boxes.determine_boxes(lines)
     boxes = pages[0].content

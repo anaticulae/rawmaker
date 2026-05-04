@@ -8,24 +8,24 @@
 # =============================================================================
 
 import hardcore
-import power
+import hoverpower
 import pytest
-import utila
-import utilatest
+import utilo
+import utilotest
 
 import rawmaker.miner.images
 import rawmaker.reader
 import tests
 
 
-@utilatest.nightly
+@utilotest.nightly
 def test_images_export_bachelor56(td):
     """Extract seven images out of four pages."""
-    source = power.BACHELOR056_PDF
+    source = hoverpower.BACHELOR056_PDF
     root = td.tmpdir
     pages = None
     expected = 5  # NOT VALIDATED
-    with utilatest.increased_filecount(
+    with utilotest.increased_filecount(
             root,
             mindiff=expected,
             maxdiff=expected,
@@ -40,14 +40,14 @@ def test_images_export_bachelor56(td):
     assert len(extracted) == four_image_pages, str(extracted)
 
 
-@utilatest.nightly
+@utilotest.nightly
 def test_images_export_bachelor63_complete(td):
     """Extract seven images out of four pages."""
-    source = power.BACHELOR063_PDF
+    source = hoverpower.BACHELOR063_PDF
     root = td.tmpdir
     pages = None
     expected = 41  # NOT VALIDATED
-    with utilatest.increased_filecount(
+    with utilotest.increased_filecount(
             root,
             mindiff=expected,
             maxdiff=expected,
@@ -61,16 +61,16 @@ def test_images_export_bachelor63_complete(td):
     assert extracted
 
 
-@utilatest.nightly
+@utilotest.nightly
 def test_images_export_master116(td):
-    source = power.MASTER116_PDF
+    source = hoverpower.MASTER116_PDF
     root = td.tmpdir
     pages = None
     # master116 contains **9?** extractable images, but on page 50 the png
     # extraction is broken. After fix this issue we have to increase
     # number of extracted images.
     expected = 11  # VALIDATED?
-    with utilatest.increased_filecount(
+    with utilotest.increased_filecount(
             root,
             mindiff=expected,
             maxdiff=expected,
@@ -93,7 +93,7 @@ def test_images_export_master116(td):
     (56, 1, 'png', 600),
     (57, 1, 'png', 600),
 ])
-@utilatest.longrun
+@utilotest.longrun
 def test_images_export_bachelor63_extract_images(
     page,
     expected,
@@ -101,10 +101,10 @@ def test_images_export_bachelor63_extract_images(
     expected_bounding_height,
     td,
 ):
-    source = power.BACHELOR063_PDF
+    source = hoverpower.BACHELOR063_PDF
     root = td.tmpdir
     pages = (page,)
-    with utilatest.increased_filecount(
+    with utilotest.increased_filecount(
             root,
             ext=ext,
             mindiff=expected,
@@ -128,22 +128,22 @@ def test_images_export_bachelor63_extract_images(
     'source, expected',
     [
         pytest.param(
-            power.BACHELOR111_PDF,
+            hoverpower.BACHELOR111_PDF,
             999,
             id='bachelor111',
             marks=pytest.mark.xfail(reason='not fully supported'),
         ),
-        # pytest.param(power.DOCU035_PDF, 0, id='twine'),
-        # pytest.param(power.TECH024_PDF, 8, id='technical24'),
-        pytest.param(power.TECH024_PDF, 6, id='technical24'),
+        # pytest.param(hoverpower.DOCU035_PDF, 0, id='twine'),
+        # pytest.param(hoverpower.TECH024_PDF, 8, id='technical24'),
+        pytest.param(hoverpower.TECH024_PDF, 6, id='technical24'),
         # pytest.param(tests.resources.REPORT19, 6, id='report19'),
-        pytest.param(power.PAPER18_PDF, 12, id='paper18'),  # NOT VALIDATED
+        pytest.param(hoverpower.PAPER18_PDF, 12, id='paper18'),  # NOT VALIDATED
     ])
-@utilatest.nightly
+@utilotest.nightly
 def test_images_export_document_complete(source, expected, td, mp):
     # for every image an additional image info file is extracted.
     root = td.tmpdir
-    with utilatest.increased_filecount(
+    with utilotest.increased_filecount(
             root,
             mindiff=expected,
             maxdiff=expected,
@@ -159,15 +159,15 @@ AUDACITY = hardcore.single('audacity')
 
 
 @pytest.mark.parametrize('source, pages, expected', [
-    pytest.param(power.BACHELOR063_PDF, 12, 1, id='bachelor063'),
-    pytest.param(power.BACHELOR090_PDF, (18, 58), 2, id='bachelor90'),
-    pytest.param(power.DISS218_PDF, 24, 1, id='diss218JPXregression'),
-    pytest.param(power.DISS218_PDF, 43, 1, id='diss218BitmapRegression'),
-    pytest.param(power.DISS233_PDF, 61, 1, id='diss233'),
-    pytest.param(power.MASTER099_PDF, 21, 1, id='master099'),
-    pytest.param(power.MASTER105_PDF, 34, 1, id='master105'),
-    pytest.param(power.MASTER116_PDF, (2, 3), 2, id='master116'),
-    pytest.param(AUDACITY, utila.rtuple(40, 100), 101, id='audacity'),
+    pytest.param(hoverpower.BACHELOR063_PDF, 12, 1, id='bachelor063'),
+    pytest.param(hoverpower.BACHELOR090_PDF, (18, 58), 2, id='bachelor90'),
+    pytest.param(hoverpower.DISS218_PDF, 24, 1, id='diss218JPXregression'),
+    pytest.param(hoverpower.DISS218_PDF, 43, 1, id='diss218BitmapRegression'),
+    pytest.param(hoverpower.DISS233_PDF, 61, 1, id='diss233'),
+    pytest.param(hoverpower.MASTER099_PDF, 21, 1, id='master099'),
+    pytest.param(hoverpower.MASTER105_PDF, 34, 1, id='master105'),
+    pytest.param(hoverpower.MASTER116_PDF, (2, 3), 2, id='master116'),
+    pytest.param(AUDACITY, utilo.rtuple(40, 100), 101, id='audacity'),
 ])
 def test_images_export_x(source, pages, expected, td):
     root = td.tmpdir
@@ -177,7 +177,7 @@ def test_images_export_x(source, pages, expected, td):
             root,
             pages=pages,
         )
-    extracted = utila.file_list(
+    extracted = utilo.file_list(
         root,
         absolute=True,
     )

@@ -27,7 +27,7 @@ import iamraw
 import pdfminer.pdfdocument
 import pdfminer.pdfpage
 import serializeraw
-import utila
+import utilo
 
 import rawmaker.destination
 import rawmaker.reader
@@ -46,9 +46,9 @@ def work(document: str) -> str:
         # toc to yaml
         dumped = serializeraw.dump_toc(toc)
     except TypeError:
-        utila.error('could not convert toc to YAML.')
-        utila.error('The toc may contain indirect references, buffer, etc.')
-        utila.error('Outline implementation seem not complete, yet.')
+        utilo.error('could not convert toc to YAML.')
+        utilo.error('The toc may contain indirect references, buffer, etc.')
+        utilo.error('Outline implementation seem not complete, yet.')
         dumped = None
     return dumped
 
@@ -62,20 +62,20 @@ def parse_outlines(document: str) -> list:
             pagelookup = rawmaker.destination.pageids(document)
         except pdfminer.pdfdocument.PDFNoOutlines:
             outlines = []
-            utila.error('could not locatate any outlines')
+            utilo.error('could not locatate any outlines')
         for (level, title, dest, action, _) in outlines:
             try:
                 page = pagenumber(action, dest, pdf)
             except (AttributeError, ValueError) as error:
-                utila.error('PDF NOT FULLY SUPPORTED')
-                utila.print_stacktrace()
-                utila.error(error)
+                utilo.error('PDF NOT FULLY SUPPORTED')
+                utilo.print_stacktrace()
+                utilo.error(error)
                 continue
             if not isinstance(page, int):
                 try:
                     page = pagelookup[page.objid]
                 except KeyError:
-                    utila.error(f'invalid page lookup: {page.objid} pdf is '
+                    utilo.error(f'invalid page lookup: {page.objid} pdf is '
                                 'maybe an invalid extraction out of an other '
                                 f'file: {pagelookup}')
                     continue
@@ -99,7 +99,7 @@ def pagenumber(action, dest, pdf) -> rawmaker.destination.ExplicitDestination:
             try:
                 resolved = pdf.get_dest(parsed.pdf_reference)
             except pdfminer.pdfdocument.PDFDestinationNotFound:
-                utila.error(f'invald pdf reference: {parsed.pdf_reference}')
+                utilo.error(f'invald pdf reference: {parsed.pdf_reference}')
                 return -1
             resolved = rawmaker.utils.resolve(resolved)
             parsed = rawmaker.destination.parse(resolved)

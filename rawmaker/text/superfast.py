@@ -10,9 +10,9 @@
 import os
 
 import iamraw
-import pdfinfo
+import pdflog
 import serializeraw
-import utila
+import utilo
 
 import rawmaker.parameter
 
@@ -24,20 +24,20 @@ def superfast(
     pages: list = None,
 ) -> iamraw.Document:
     if pages is None:
-        pagecount = pdfinfo.pagecount(document)
-        pages = utila.make_tuple(pagecount)
-    chunks = utila.chunks(pages, size=10)
+        pagecount = pdflog.pagecount(document)
+        pages = utilo.make_tuple(pagecount)
+    chunks = utilo.chunks(pages, size=10)
     parameter = config.cmdline()
     todo = []
     for index, chunk in enumerate(chunks):
-        joined_pages = utila.from_tuple(chunk, separator=',')
+        joined_pages = utilo.from_tuple(chunk, separator=',')
         cmd = (f'rawmaker -i {document} -o {workdir} --prefix {index}'
                f' --text --pages {joined_pages} {parameter}')
-        utila.log(cmd)
+        utilo.log(cmd)
         todo.append(cmd)
     # run in parallel
-    completed = utila.run_parallel(todo, workdir, worker=12)
-    assert completed == utila.SUCCESS, completed
+    completed = utilo.run_parallel(todo, workdir, worker=12)
+    assert completed == utilo.SUCCESS, completed
     # merge document
     document = merge_document(workdir, len(chunks))
     return document
@@ -61,8 +61,8 @@ def merge_document(path: str, size: int) -> iamraw.Document:
     positions = [serializeraw.load_textpositions(item) for item in posi_files]
 
     for item in text_files + posi_files:
-        utila.info(f'remove {item}')
-        utila.file_remove(item)
+        utilo.info(f'remove {item}')
+        utilo.file_remove(item)
 
     for docs, pos in zip(text, positions):
         for page in docs:
@@ -71,7 +71,7 @@ def merge_document(path: str, size: int) -> iamraw.Document:
                 if not isinstance(item, iamraw.TextContainer):
                     continue
                 # bounding, mean
-                bounding, mean = utila.select_page(pos, page.page).content[index] # yapf:disable
+                bounding, mean = utilo.select_page(pos, page.page).content[index] # yapf:disable
                 fake_text_mean_height(item, bounding, mean)
                 item.box = bounding
                 index += 1

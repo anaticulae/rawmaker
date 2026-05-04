@@ -15,7 +15,7 @@ import pdfminer.layout
 import pdfminer.pdfdocument
 import pdfminer.pdfinterp
 import pdfminer.pdfpage
-import utila
+import utilo
 
 import rawmaker.converter.basic
 import rawmaker.miner.text
@@ -48,10 +48,10 @@ def process_pdfpages(
     Yields:
         PDFPage: tuple of page content and pdf page number
     """
-    utila.call('process_pdfpages')
-    utila.asserts(document, pdfminer.pdfdocument.PDFDocument)
+    utilo.call('process_pdfpages')
+    utilo.asserts(document, pdfminer.pdfdocument.PDFDocument)
     create_pages = pdfminer.pdfpage.PDFPage.create_pages
-    with utila.SkipCollector(pages) as collector:
+    with utilo.SkipCollector(pages) as collector:
         for number, page in enumerate(create_pages(document), start=0):
             if collector.skip(number):
                 continue
@@ -81,7 +81,7 @@ def process_pagecontent(
     layout=None,
     pages=None,
 ) -> pdfminer.layout.LTPage:
-    utila.asserts(document, pdfminer.pdfdocument.PDFDocument)
+    utilo.asserts(document, pdfminer.pdfdocument.PDFDocument)
     for _, content in process_document(document, layout=layout, pages=pages):
         yield content
 
@@ -117,14 +117,14 @@ def extract_content(
     """
     if config is None:
         config = rawmaker.parameter.ParsingConfiguration()
-    utila.asserts(config, rawmaker.parameter.ParsingConfiguration)
+    utilo.asserts(config, rawmaker.parameter.ParsingConfiguration)
     # prepare parser
     device = converter(config=config)
     device.new_document()
     interpreter = pdfminer.pdfinterp.PDFPageInterpreter(device.rsrcmgr, device)
     # Processing layout
     create_pages = pdfminer.pdfpage.PDFPage.create_pages
-    with utila.SkipCollector(pages) as collector:
+    with utilo.SkipCollector(pages) as collector:
         for index, page in enumerate(create_pages(document)):
             if collector.skip(index):
                 continue

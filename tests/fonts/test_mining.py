@@ -9,12 +9,12 @@
 
 import operator
 
+import hoverpower
 import iamraw
-import power
 import pytest
 import serializeraw
-import utila
-import utilatest
+import utilo
+import utilotest
 
 import rawmaker
 import rawmaker.features
@@ -26,28 +26,28 @@ import tests.resources
 
 
 @pytest.mark.usefixtures('td')
-@utilatest.longrun
+@utilotest.longrun
 def test_mining_fonts():
-    header, content = rawmaker.features.fonts.work(power.DOCU035_PDF)
+    header, content = rawmaker.features.fonts.work(hoverpower.DOCU035_PDF)
     assert len(header) > 100
     assert len(content) > 300
-    utila.file_create('header.yaml', header)
-    utila.file_create('content.yaml', content)
+    utilo.file_create('header.yaml', header)
+    utilo.file_create('content.yaml', content)
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_mining_fonts_cporting():
-    header, content = rawmaker.features.fonts.work(power.DOCU009_PDF)
+    header, content = rawmaker.features.fonts.work(hoverpower.DOCU009_PDF)
     # XXX: Define good numbers
     assert len(header) > 100
     assert len(content) > 200
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_minining_fonts_cporting_first_page():
     """Mine the first font of the document at the first page"""
     # TODO: Test mining last font of document
-    with rawmaker.reader.read(power.DOCU009_PDF) as pdf:
+    with rawmaker.reader.read(hoverpower.DOCU009_PDF) as pdf:
         document = rawmaker.features.extract_content(pdf)
 
     fontstore = rawmaker.features.fonts.FontStore(rawmaker.fonts.parser.font_fromraw) # yapf:disable
@@ -60,7 +60,7 @@ def test_minining_fonts_cporting_first_page():
     first_font_key = first_font[3]
     first_font_scale = fontstore.font(first_font_key).scale
     # TODO: REMOVE AFTER CLARIFING FONT PARSER
-    first_font_expected = utila.roundme(24.7871 / 1.34005)
+    first_font_expected = utilo.roundme(24.7871 / 1.34005)
     assert first_font_scale == first_font_expected
 
 
@@ -71,7 +71,7 @@ def test_minining_fonts_rise():
     was flipped correctly. This was an effect cause VirtualChars have no
     BoundingBox.
     """
-    with rawmaker.reader.read(power.DOCU009_PDF) as pdf:
+    with rawmaker.reader.read(hoverpower.DOCU009_PDF) as pdf:
         document = rawmaker.features.extract_content(pdf)
     first_page = document[0]
     no_rise = first_page[0][0][-1]
@@ -83,7 +83,7 @@ def test_mining_increasing_fonts():
     result = rawmaker.features.fonts.work(tests.resources.INCREASING_FONT_A4)
     header, _ = result
 
-    font_sizes = [item['font']['scale'] for item in utila.yaml_load(header)]
+    font_sizes = [item['font']['scale'] for item in utilo.yaml_load(header)]
     font_sizes = font_sizes[0:-1]  # remove the last one(page number)
 
     increases = [
@@ -93,15 +93,15 @@ def test_mining_increasing_fonts():
     assert all(increases), str(font_sizes)
 
     expected_fontsizes = list(range(8, 21))
-    font_sizes = utila.roundme(font_sizes, digits=0)
+    font_sizes = utilo.roundme(font_sizes, digits=0)
     assert font_sizes == expected_fontsizes
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_mining_fonts_restruct_page_5():
     """Mine the fifths page, compare only `Weight` for not being to
     specific."""
-    header, content = rawmaker.features.fonts.work(power.DOCU027_PDF)
+    header, content = rawmaker.features.fonts.work(hoverpower.DOCU027_PDF)
     header = serializeraw.load_font_header(header)
     content = serializeraw.load_font_content(content)
     fifths_page = content[4]
@@ -195,7 +195,7 @@ def test_strip_correct_bounding_box(td, mp):
     there is a shortcut column and on the right side there is the
     description of the shortcut. Two item must have a near y-coordinate
     because there are on the same line."""
-    source = power.BACHELOR037_PDF
+    source = hoverpower.BACHELOR037_PDF
     config = rawmaker.parameter.ParsingConfiguration(line_margin=0.25)
     cmd = f'-i {source} --text --pages=1 {config.cmdline()}'
     tests.run(cmd, mp=mp)
@@ -214,7 +214,7 @@ def test_strip_correct_bounding_box(td, mp):
         ('Abb.', 'Abbildung'),
     ]
     for first, second in mapping:
-        assert utila.near(
+        assert utilo.near(
             bounding[first].y1,
             bounding[second].y1,
             diff=max_diff,
@@ -222,7 +222,7 @@ def test_strip_correct_bounding_box(td, mp):
 
 
 def test_strip_correct_bounding_box_master116(td, mp):
-    source = power.MASTER116_PDF
+    source = hoverpower.MASTER116_PDF
     config = rawmaker.parameter.ParsingConfiguration(line_margin=0.25)
     cmd = f'-i {source} --text --pages=96 {config.cmdline()}'
     tests.run(cmd, mp=mp)
@@ -247,7 +247,7 @@ def test_strip_correct_bounding_box_master116(td, mp):
         ('Velodyn', 'Vehicle Longitudinal Dynamics'),
     ]
     for first, second in mapping:
-        assert utila.near(
+        assert utilo.near(
             bounding[first].y1,
             bounding[second].y1,
             diff=max_diff,
@@ -255,7 +255,7 @@ def test_strip_correct_bounding_box_master116(td, mp):
 
 
 def test_mining_fonts_bachelor37(td, mp):
-    source = power.BACHELOR037_PDF
+    source = hoverpower.BACHELOR037_PDF
     tests.run(f'-i {source} --pages=5 --text --font', mp=mp)
     navigators = serializeraw.ptn_frompath(td.tmpdir)
     page5 = navigators[0]

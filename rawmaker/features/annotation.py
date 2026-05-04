@@ -12,7 +12,7 @@ broken/malformated links."""
 import iamraw
 import pdfminer.pdfdocument
 import serializeraw
-import utila
+import utilo
 
 import rawmaker.features
 import rawmaker.reader
@@ -96,7 +96,7 @@ def parse_page(
         if external:
             hyperlinks.append(external)
             continue
-        utila.error(f'Unhandeld annotation {pageobject}')
+        utilo.error(f'Unhandeld annotation {pageobject}')
     # flip boundings
     pageheight = float(page.mediabox[3])
     for item in pagelinks:
@@ -224,7 +224,7 @@ def hyperlink_decode(text: bytes) -> str:
     """
     result = rawmaker.utils.guess_decoding(text)
     if result is None:
-        utila.error(f'annotation: could not decode: {text}')
+        utilo.error(f'annotation: could not decode: {text}')
     return result
 
 
@@ -249,6 +249,6 @@ def parse_pagelink(pagelink):
 
 
 def determine_bounding(bounding):
-    bounding = utila.rect_ensure_bounding(bounding)
+    bounding = utilo.rect_ensure_bounding(bounding)
     result = iamraw.BoundingBox.from_list(bounding)
     return result

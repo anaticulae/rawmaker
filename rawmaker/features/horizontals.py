@@ -20,11 +20,11 @@ To ignore lines which are part of a box and can not be a horizontal line.
 import functools
 import operator
 
-import configo
+import configos
 import iamraw
 import pdfminer.layout
 import serializeraw
-import utila
+import utilo
 
 import rawmaker.features
 import rawmaker.features.border
@@ -36,9 +36,9 @@ import rawmaker.reader
 LineClusters = list[list[pdfminer.layout.LTLine]]
 
 # minimal length of a horizontal line
-HORIZONTAL_WIDTH_MIN = configo.HV_FLOAT(default=0.2)
+HORIZONTAL_WIDTH_MIN = configos.HV_FLOAT(default=0.2)
 # maximal difference in x-component
-HORIZONTAL_VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=5.0)
+HORIZONTAL_VERTICAL_DIFF_MAX = configos.HV_FLOAT_PLUS(default=5.0)
 
 
 def work(lines: str, pages: tuple) -> str:
@@ -98,24 +98,24 @@ def determine_pagehorizontals(  # pylint:disable=R0914
             # ignore boxed lines
             continue
         # convert from BoundingBox
-        x0, y0, x1, y1 = utila.roundme(tuple(merged[0]))
+        x0, y0, x1, y1 = utilo.roundme(tuple(merged[0]))
         height = abs(y1 - y0)
         width = abs(x1 - x0)
         # check roated
         if rotated:
             width, height = height, width  # flip
         if height > vertical_maxerror:
-            utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}'
+            utilo.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}'
                         f' vertical error: {height} > {vertical_maxerror}')
             continue
         if width < horizontal_minwidth:
-            utila.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}'
+            utilo.debug(f'no horizontal line {x0} {y0} {x1} {y1}; page: {page}'
                         f' too short: {width} < {horizontal_minwidth}')
             continue
         if not rotated:
-            y0 = y1 = utila.roundme((y0 + y1) / 2)
+            y0 = y1 = utilo.roundme((y0 + y1) / 2)
         else:
-            x0 = x1 = utila.roundme((x0 + x1) / 2)
+            x0 = x1 = utilo.roundme((x0 + x1) / 2)
         box = iamraw.BoundingBox(x0, y0, x1, y1)
         horizontal = iamraw.HorizontalLine(box=box)
         collected.append(horizontal)

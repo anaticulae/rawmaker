@@ -20,22 +20,22 @@ import contextlib
 import os
 import sys
 
-import protocol
-import utila
+import protoerror
+import utilo
 
 import rawmaker
 import rawmaker.error
 import rawmaker.features
 
-PDF = utila.Pattern('*', 'pdf')
+PDF = utilo.Pattern('*', 'pdf')
 
-CHAR_MARGIN = utila.Value('char_margin', float, defaultvar=2.0, minimum=0.1)
-LINE_OVERLAP = utila.Value('line_overlap', float, defaultvar=0.5, minimum=0.1)
-LINE_MARGIN = utila.Value('line_margin', float, defaultvar=0.5, minimum=0.1)
-WORD_MARGIN = utila.Value('word_margin', float, defaultvar=0.1, minimum=0.1)
-BOXES_FLOW = utila.Value('boxes_flow', float, defaultvar=0.5, minimum=0.1)
-NOSTRIP = utila.Bool('nostrip')
-DETECT_VERTICAL = utila.Bool('detect_vertical')
+CHAR_MARGIN = utilo.Value('char_margin', float, defaultvar=2.0, minimum=0.1)
+LINE_OVERLAP = utilo.Value('line_overlap', float, defaultvar=0.5, minimum=0.1)
+LINE_MARGIN = utilo.Value('line_margin', float, defaultvar=0.5, minimum=0.1)
+WORD_MARGIN = utilo.Value('word_margin', float, defaultvar=0.1, minimum=0.1)
+BOXES_FLOW = utilo.Value('boxes_flow', float, defaultvar=0.5, minimum=0.1)
+NOSTRIP = utilo.Bool('nostrip')
+DETECT_VERTICAL = utilo.Bool('detect_vertical')
 
 PDF_INPUT = [PDF]
 
@@ -50,12 +50,12 @@ CONFIG_INPUTS = [
 ]
 
 WORKPLAN = [
-    utila.create_step(
+    utilo.create_step(
         'annotation',
         inputs=PDF_INPUT,
         output=('annotation',),
     ),
-    utila.create_step(
+    utilo.create_step(
         'border',
         inputs=PDF_INPUT,
         output=(
@@ -63,32 +63,32 @@ WORKPLAN = [
             'boundingboxes',
         ),
     ),
-    utila.create_step(
+    utilo.create_step(
         'boxes',
         inputs=[
-            utila.ResultFile(producer='rawmaker', name='line_line'),
+            utilo.ResultFile(producer='rawmaker', name='line_line'),
         ],
         output=('boxes',),
     ),
-    utila.create_step(
+    utilo.create_step(
         'figures',
         inputs=PDF_INPUT + [
-            utila.ResultFile(producer='rawmaker', name='boxes_boxes'),
-            utila.Pattern('rawmaker__images_images/*', 'yaml'),
+            utilo.ResultFile(producer='rawmaker', name='boxes_boxes'),
+            utilo.Pattern('rawmaker__images_images/*', 'yaml'),
         ],
         output=[
             ('figures/{FILEHASH_1}', 'yaml'),
             ('figures/{FILEHASHS}', 'png'),
         ],
     ),
-    utila.create_step(
+    utilo.create_step(
         'horizontals',
         inputs=[
-            utila.ResultFile(producer='rawmaker', name='line_line'),
+            utilo.ResultFile(producer='rawmaker', name='line_line'),
         ],
         output=('horizontals',),
     ),
-    utila.create_step(
+    utilo.create_step(
         'fonts',
         inputs=[PDF] + CONFIG_INPUTS,
         output=(
@@ -96,12 +96,12 @@ WORKPLAN = [
             'content',
         ),
     ),
-    utila.create_step(
+    utilo.create_step(
         'formula',
         inputs=PDF_INPUT,
         output=('formula',),
     ),
-    utila.create_step(
+    utilo.create_step(
         'images',
         inputs=PDF_INPUT,
         output=[
@@ -109,18 +109,18 @@ WORKPLAN = [
             ('images/{FILEHASHS}', '???'),
         ],
     ),
-    utila.create_step(
+    utilo.create_step(
         'line',
         inputs=[
             PDF,
-            utila.ResultFile(producer='rawmaker', name='annotation_annotation'),
+            utilo.ResultFile(producer='rawmaker', name='annotation_annotation'),
         ],
         output=('line',),
     ),
-    utila.create_step(
+    utilo.create_step(
         'text',
         inputs=[PDF] + [
-            utila.ResultFile(
+            utilo.ResultFile(
                 producer='rawmaker',
                 name='horizontals_horizontals',
             ),
@@ -130,7 +130,7 @@ WORKPLAN = [
             'positions',
         ),
     ),
-    utila.create_step(
+    utilo.create_step(
         'outlines',
         inputs=PDF_INPUT,
         output=('outlines',),
@@ -150,7 +150,7 @@ def main():
         (LINTER_FLAG, 'write linter result'),
         (SUPERFAST_FLAG, 'use superfast to fork processes and merge results'),
     ]
-    config = utila.FeaturePackConfig(
+    config = utilo.FeaturePackConfig(
         configflag=True,
         description=RAWMAKER_DESCRIPTION,
         errorhook=errorhook,
@@ -164,7 +164,7 @@ def main():
         version=rawmaker.__version__,
     )
     with linter():
-        utila.featurepack(
+        utilo.featurepack(
             workplan=WORKPLAN,
             config=config,
             root=rawmaker.ROOT,
@@ -189,14 +189,14 @@ def linter():
     # path to write error report
     root = str(os.getcwd())
     # setup linter
-    solver = protocol.Solver()
-    for msg, solution in protocol.solution.SOLUTION.items():
+    solver = protoerror.Solver()
+    for msg, solution in protoerror.solution.SOLUTION.items():
         solver.add_solution(msg, solution)
 
-    active = [protocol.MessageStatus(msgid='F0000', active=True)]
+    active = [protoerror.MessageStatus(msgid='F0000', active=True)]
 
     # init linter
-    errorhook.linter = protocol.Linter(solver=solver, active=active)
+    errorhook.linter = protoerror.Linter(solver=solver, active=active)
 
     try:
         yield

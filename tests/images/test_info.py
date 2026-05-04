@@ -9,7 +9,7 @@
 
 import os
 
-import power
+import hoverpower
 
 import rawmaker.features.images
 import rawmaker.images.info
@@ -21,7 +21,7 @@ def test_image_information(td):
     """Extract image information for one image on first page of
     Bachelor56 example."""
     root = td.tmpdir
-    source = power.BACHELOR056_PDF
+    source = hoverpower.BACHELOR056_PDF
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.miner.images.extract_images(
             pdf,

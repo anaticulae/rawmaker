@@ -11,12 +11,12 @@ import os
 
 import jam
 import pytest
-import utilatest
+import utilotest
 
 import tests
 
 
-@utilatest.nightly
+@utilotest.nightly
 @pytest.mark.security
 def test_badguy_longpdf_rawmaker(td, mp):
     very_long = os.path.join(td.tmpdir, 'balong.pdf')

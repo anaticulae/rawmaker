@@ -14,7 +14,7 @@ import pdfminer.converter
 import pdfminer.layout
 import pdfminer.pdfinterp
 import pdfminer.pdfpage
-import utila
+import utilo
 
 
 class FlippedLayoutAnalyzer(pdfminer.converter.PDFLayoutAnalyzer):
@@ -47,13 +47,13 @@ class FlippedLayoutAnalyzer(pdfminer.converter.PDFLayoutAnalyzer):
         # TODO: FIX PAGE NUMBER
         try:
             char = MAPPING[cid]
-            utila.debug(f'could not convert: {font!r}, {cid!r} use backup: '
+            utilo.debug(f'could not convert: {font!r}, {cid!r} use backup: '
                         f'{char} on page: {self.pageno}')
         except KeyError:
-            utila.error(f'could not convert: {font!r}, {cid!r} '
+            utilo.error(f'could not convert: {font!r}, {cid!r} '
                         f'on page: {self.pageno} no backup char defined')
             # use warning to log only once
-            utila.warning(str(vars(font)))
+            utilo.warning(str(vars(font)))
             char = chr(cid)
         return char
 
@@ -106,12 +106,12 @@ def flip_object(item, page):
         return
     pageheight = page.height
     box[1], box[3] = pageheight - box[3], pageheight - box[1]
-    box = utila.roundme(box)  # pylint:disable=R0204
+    box = utilo.roundme(box)  # pylint:disable=R0204
     try:
         item.bbox = iamraw.BoundingBox(*box)
     except AssertionError:
-        utila.debug(f'invalid bounding on page {page}: {box}')
-        utila.debug(item)
+        utilo.debug(f'invalid bounding on page {page}: {box}')
+        utilo.debug(item)
     item.x0, item.y0, item.x1, item.y1 = box
     with contextlib.suppress(AttributeError):
         for obj in item._objs:  # pylint:disable=W0212
@@ -156,7 +156,7 @@ def figure_bounding(figure) -> tuple:
         boundings.append(bounding)
     if not boundings:
         return None
-    result = utila.rect_max(boundings)
+    result = utilo.rect_max(boundings)
     return result
 
 

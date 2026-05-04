@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-import power
+import hoverpower
 import serializeraw
 
 import tests
@@ -16,7 +16,7 @@ import tests
 @tests.ghost
 def test_bachelor085_any_content(td, mp):
     """Remove single figure content container."""
-    cmd = (f'-i {power.BACHELOR085_PDF} -o {td.tmpdir} --pages=0:5 --text '
+    cmd = (f'-i {hoverpower.BACHELOR085_PDF} -o {td.tmpdir} --pages=0:5 --text '
            '--line --horizontal --images')
     tests.run(cmd, mp=mp)
     text = serializeraw.ptn_frompath(td.tmpdir)
@@ -30,8 +30,9 @@ def test_bachelor085_any_content(td, mp):
 
 @tests.ghost
 def test_master116_any_content(td, mp):
-    cmd = (f'-i {power.MASTER116_PDF} -o {td.tmpdir} --pages=0,1,2,3 --text '
-           '--line --horizontal --images')
+    cmd = (
+        f'-i {hoverpower.MASTER116_PDF} -o {td.tmpdir} --pages=0,1,2,3 --text '
+        '--line --horizontal --images')
     tests.run(cmd, mp=mp)
     text = serializeraw.ptn_frompath(td.tmpdir)
     assert text

@@ -36,7 +36,7 @@ import PIL.Image
 import PIL.ImageDraw
 import PIL.ImageDraw2
 import PIL.PngImagePlugin
-import utila
+import utilo
 
 import rawmaker.converter.images
 import rawmaker.miner.colorspace
@@ -64,7 +64,7 @@ def extract_images(
     """
     # ensure that page computation works correct
     if pages:
-        pages = utila.ensure_tuple(pages)
+        pages = utilo.ensure_tuple(pages)
         pages = sorted(pages)
     # Processing layout
     content = pdfminer.pdfpage.PDFPage.create_pages(document)
@@ -76,7 +76,7 @@ def extract_images(
         firstpage=firstpage,
     )
     # iterate pages
-    with utila.SkipCollector(pages) as collector:
+    with utilo.SkipCollector(pages) as collector:
         for number, page in enumerate(content):
             if collector.skip(number):
                 continue
@@ -140,7 +140,7 @@ def write_image(extracted, write_to, page, index) -> WrittenImage:
             try:
                 extracted.image.save(output, format=ext)
             except Exception:  # pylint:disable=broad-except
-                utila.error(f'could not use save method: {filename}')
+                utilo.error(f'could not use save method: {filename}')
     else:
         try:
             # images writer add file extention bt themself
@@ -150,18 +150,18 @@ def write_image(extracted, write_to, page, index) -> WrittenImage:
             if rawimage.width < IMAGE_WIDTH_MAX and rawimage.height < IMAGE_HEIGHT_MAX:
                 raw_data = rawimage.stream.get_rawdata()
                 if not raw_data:
-                    utila.error(f'empty image data, {rawimage.name}')
+                    utilo.error(f'empty image data, {rawimage.name}')
                 else:
                     writer.export_image(rawimage)
             else:
                 msg = f'skip image size: {rawimage.srcsize} name: {rawimage.name}'
-                utila.info(msg)
+                utilo.info(msg)
         except pdfminer.pdftypes.PDFNotImplementedError as error:
-            utila.error(f'could not export: {error}')
+            utilo.error(f'could not export: {error}')
         except TypeError:
-            utila.error(f'empty export: {extracted.image.name}')
+            utilo.error(f'empty export: {extracted.image.name}')
         except ValueError:
-            utila.error(f'decompression error: {extracted.image.name}')
+            utilo.error(f'decompression error: {extracted.image.name}')
     return WrittenImage(filename=filename, bounding=extracted.bounding)
 
 
@@ -176,7 +176,7 @@ def merge_document_images(items):
 
 def merge_page(images: LTImages, page: int):
     todo = [
-        utila.roundme((image.x0, image.y0, image.x1, image.y1))
+        utilo.roundme((image.x0, image.y0, image.x1, image.y1))
         for image in images
     ]
     # cluster image parts into mergable image
@@ -189,28 +189,28 @@ def merge_page(images: LTImages, page: int):
     try:
         result = [raw_images_merge(item) for item in lines]
     except ValueError as error:
-        utila.error(f'could not parse images on page: {page}')
-        utila.error(error)
+        utilo.error(f'could not parse images on page: {page}')
+        utilo.error(error)
     return result
 
 
 def group_rectangles(rectangles):
     """Split potential images by distance in y-coordiante."""
     border = range(0, 1000, 10)
-    bucket = utila.Buckets(border, sorting=True)
+    bucket = utilo.Buckets(border, sorting=True)
     bucket.selector = lambda x: x[1]  # TODO: REMOVE THIS HACK
     for item in rectangles:
         bucket.add(item)
-    grouped = utila.groupby_empty(bucket)
+    grouped = utilo.groupby_empty(bucket)
     if not grouped:
         return []
     # merge neighbors which are huger than bucket size
     result = [list(grouped[0])]
     for current in grouped[1:]:
         before = result[-1][-1]
-        if utila.near(before[3], current[0][1], diff=5.0):
+        if utilo.near(before[3], current[0][1], diff=5.0):
             result[-1].extend(current)
-        elif any(utila.rectangles_intersecting(result[-1], item) for item in current): # yapf:disable
+        elif any(utilo.rectangles_intersecting(result[-1], item) for item in current): # yapf:disable
             # verify if any rectangle intersects to detect rectangles
             # inside each other
             result[-1].extend(current)
@@ -235,7 +235,7 @@ def raw_images_merge(images: LTImages) -> MergedImage:
         if ext != 'png':
             # no merge required
             return MergedImage(images[0], ext, bounding)
-        utila.debug(f'extraction not supported: {images[0]}')
+        utilo.debug(f'extraction not supported: {images[0]}')
     # determine rectangle bounding
     x00 = min(item.x0 for item in images)
     x11 = max(item.x1 for item in images)
@@ -291,21 +291,21 @@ def image_fromlt(image) -> PIL.Image:  # pylint:disable=R0912
     try:
         colorspace = rawmaker.miner.colorspace.parse(image.colorspace)
     except AttributeError as error:
-        utila.print_stacktrace()
-        utila.error(error)
+        utilo.print_stacktrace()
+        utilo.error(error)
         colorspace = 'DeviceRGB'
     try:
         data = image.stream.get_data()
     except ValueError as error:
-        utila.error(error)
+        utilo.error(error)
         return None
     except pdfminer.pdftypes.PDFNotImplementedError as error:
         if 'JPXDecode' in str(error):
-            utila.debug(error)
-            utila.debug('use own png converter')
+            utilo.debug(error)
+            utilo.debug('use own png converter')
             rawdata = image.stream.get_rawdata()
             return png_load(rawdata)
-        utila.error(error)
+        utilo.error(error)
         return None
     # try to load images
     mode = '1'  # default mode
@@ -338,7 +338,7 @@ def image_fromlt(image) -> PIL.Image:  # pylint:disable=R0912
         try:
             current = PIL.Image.frombytes(mode, size, data)
         except ValueError:
-            utila.error(f'could not decode: {image}')
+            utilo.error(f'could not decode: {image}')
             return None
     # convert to bitmap
     try:
@@ -360,8 +360,8 @@ def png_load(rawdata) -> PIL.Image:
         try:
             fp.save(converted, 'png')
         except OSError:
-            utila.error('invalid png file, maybe an other type')
-            utila.error(rawdata[0:50])
+            utilo.error('invalid png file, maybe an other type')
+            utilo.error(rawdata[0:50])
             return None
         converted.seek(0)
     loaded = PIL.Image.open(converted)
@@ -382,7 +382,7 @@ def rgb256_decoder(data, dataspace, bits=8):
                 dataspace[index + 2],
             ])
         except IndexError:
-            utila.debug('rgb256 decoder out of bounds')
+            utilo.debug('rgb256 decoder out of bounds')
             return data
     result = []
     for item in data:
@@ -397,7 +397,7 @@ def rgb256_decoder(data, dataspace, bits=8):
             else:
                 raise ValueError(f'{bits} bits not supported')
         except IndexError:
-            utila.debug('rgb256 decoder out of bounds')
+            utilo.debug('rgb256 decoder out of bounds')
             return data
     try:
         data = array.array("B", result).tobytes()
@@ -424,7 +424,7 @@ def extention(image) -> str:
         if isinstance(filters, list):
             # TODO: SUPPORT MULTIPLE FILTER
             if len(filters) > 1:
-                utila.error(f'more than one filter: {filters}')
+                utilo.error(f'more than one filter: {filters}')
             # assert len(filter_) == 1, str(filter_)
             filters = filters[0]
         imagefilter = filters.name

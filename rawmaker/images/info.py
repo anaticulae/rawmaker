@@ -9,7 +9,7 @@
 
 import iamraw
 import PIL.Image
-import utila
+import utilo
 
 DEFAULT_DPI = (96, 96)
 
@@ -20,7 +20,7 @@ def imageinfo(path: str, page: int, bounding: tuple) -> iamraw.ImageInformation:
         image = PIL.Image.open(path)
         image.load()
     except OSError as err:
-        utila.error(err)
+        utilo.error(err)
         return None
     width, height = image.size
     # add default DPI to distinguish images and figures

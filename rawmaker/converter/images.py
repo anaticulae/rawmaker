@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import configo
+import configos
 import pdfminer.converter
 import pdfminer.image
 import pdfminer.layout
@@ -15,7 +15,7 @@ import pdfminer.pdfdocument
 import pdfminer.pdfinterp
 import pdfminer.pdftypes
 import pdfminer.psparser
-import utila
+import utilo
 
 import rawmaker.converter.basic
 
@@ -27,7 +27,7 @@ class ImageConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         assert callable(imagewriter), imagewriter
         self.imagewriter = imagewriter
         # TODO avoid duplicated parsed, check if we require this?
-        self.parsed = utila.Single()
+        self.parsed = utilo.Single()
 
     def receive_layout(self, ltpage):
         super().receive_layout(ltpage)
@@ -77,7 +77,7 @@ class ImageConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
         self.render_result_image(image, pageid)
 
 
-SKIPME_RATE_MIN = configo.HV_PERCENT_PLUS(default=50.0)
+SKIPME_RATE_MIN = configos.HV_PERCENT_PLUS(default=50.0)
 
 
 def skipme(image) -> bool:

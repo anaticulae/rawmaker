@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 import serializeraw
 
 import rawmaker.features.text
@@ -15,7 +15,7 @@ import rawmaker.features.text
 
 def test_text_mining_convert_special_chars():
     parsed = rawmaker.features.text.work(
-        power.BACHELOR090_PDF,
+        hoverpower.BACHELOR090_PDF,
         boxes_flow=1.0,
         pages=(1,),
     )
@@ -38,7 +38,7 @@ def test_text_mining_convert_special_whitespace_between_special():
     Solution remove small white spaces before merging.
     """
     parsed = rawmaker.features.text.work(
-        power.BACHELOR090_PDF,
+        hoverpower.BACHELOR090_PDF,
         boxes_flow=1.0,
         pages=(5,),
     )
@@ -52,7 +52,7 @@ def test_text_mining_convert_special_whitespace_between_special():
 
 def test_special_chars_bachelor241():
     parsed = rawmaker.features.text.work(
-        power.BACHELOR241_PDF,
+        hoverpower.BACHELOR241_PDF,
         pages=(0,),
     )
     document = serializeraw.load_document(parsed[0])
@@ -62,7 +62,7 @@ def test_special_chars_bachelor241():
 def test_special_chars_hcdiss171_toc():
     """Before this test, special chars where not converted correctly."""
     parsed = rawmaker.features.text.work(
-        power.HC_DISS171,
+        hoverpower.HC_DISS171,
         pages=(9,),
     )
     document = serializeraw.load_document(parsed[0])

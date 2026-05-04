@@ -71,7 +71,7 @@ import contextlib
 import iamraw
 import iamraw.fonts
 import serializeraw
-import utila
+import utilo
 
 POSTSCRIPT_14_DEFAULT = {
     'Courier',
@@ -107,8 +107,8 @@ def font_fromraw(font: str, scale: float = 0.0, flags: int = 0) -> iamraw.Font:
     Font(pdfref='CFSJNQ+LinBiolinumTB',...weight=iamraw.fonts.Weight.BOLD,...)
     """
     pdfref = font
-    utila.call('rawmaker.fonts.parser.font_fromraw')
-    utila.debug('%s %.2f' % (str(font), scale))  # pylint:disable=C0209
+    utilo.call('rawmaker.fonts.parser.font_fromraw')
+    utilo.debug('%s %.2f' % (str(font), scale))  # pylint:disable=C0209
     flags = serializeraw.load_flags(flags)
     # remove white spaces to avoid missing PostScript 14 language cause of
     # containg white spaces, for example `Times - Roman` instead of
@@ -138,7 +138,7 @@ def font_fromraw(font: str, scale: float = 0.0, flags: int = 0) -> iamraw.Font:
     weight, style, stretch = style if style else (None, None, None)
     # inform about parsing problem
     if fontname is None or '+' in fontname or ',' in fontname:
-        utila.error(f'detected fontname {fontname}; input: {font}')
+        utilo.error(f'detected fontname {fontname}; input: {font}')
     font = iamraw.Font(
         name=fontname,
         scale=scale,
@@ -173,7 +173,7 @@ def parse_basefont(font: str):
         if not set(style) & set(styles):
             # nothing to replace
             continue
-        fontname = utila.rreplace(fontname, name, '')
+        fontname = utilo.rreplace(fontname, name, '')
     return fontname, style
 
 
@@ -309,7 +309,7 @@ def parse_style(raw_style):  # pylint:disable=R1260,R0912
             stretch = item[3]
     if raw_style:  # TODO: Remove before going live
         # at the end, everything must be replaced
-        utila.error(f'unsupported style {save}, maybe a name: {raw_style}')
+        utilo.error(f'unsupported style {save}, maybe a name: {raw_style}')
     if raw_style:
         return None
     return weight, style, stretch

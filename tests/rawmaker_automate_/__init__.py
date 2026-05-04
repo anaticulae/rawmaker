@@ -9,20 +9,20 @@
 
 import functools
 
-import utilatest
+import utilotest
 
 import rawmaker.cli_automate
 
 # pylint:disable=C0103
 run = functools.partial(
-    utilatest.run_command,
+    utilotest.run_command,
     main=rawmaker.cli_automate.main,
     process='rawmaker_automate',
     expect=True,
 )
 
 failure = functools.partial(
-    utilatest.run_command,
+    utilotest.run_command,
     main=rawmaker.cli_automate.main,
     process='rawmaker_automate',
     expect=False,

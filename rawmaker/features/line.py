@@ -19,28 +19,28 @@ Furthermore the lines are:
 
 import operator
 
-import configo
+import configos
 import iamraw
 import pdfminer.layout
 import pdfminer.pdfdocument
 import serializeraw
-import utila
+import utilo
 
 import rawmaker.reader
 
 # maximal difference in y-component
-HORIZONTAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=2.0)
+HORIZONTAL_DIFF_MAX = configos.HV_FLOAT_PLUS(default=2.0)
 # maximal difference in x-component
-VERTICAL_DIFF_MAX = configo.HV_FLOAT_PLUS(default=2.0)
+VERTICAL_DIFF_MAX = configos.HV_FLOAT_PLUS(default=2.0)
 # minimal number of minus signs which build a horizontal line
-REQUIRED_MINUS_SIGNS = configo.HV_INT_PLUS(default=40)
+REQUIRED_MINUS_SIGNS = configos.HV_INT_PLUS(default=40)
 
 
 def work(document: str, annotations: str, pages: tuple = None) -> str:
-    if utila.exists(annotations):
+    if utilo.exists(annotations):
         annotations = serializeraw.load_annotations(annotations, pages=pages)
     else:
-        utila.debug(f'missing {annotations} could not skip underlines')
+        utilo.debug(f'missing {annotations} could not skip underlines')
         annotations = []
     with rawmaker.reader.read(document) as pdf:
         extracted = determine_lines(pdf, pages=pages)
@@ -58,11 +58,11 @@ def determine_lines(
     result = []
     for content, number in lines_:
         # left point is left above from right down point
-        content = [utila.rect_ensure_bounding(item) for item in content]
+        content = [utilo.rect_ensure_bounding(item) for item in content]
         # top down, left right
         content.sort(key=operator.itemgetter(1, 0))
         # merge lines which are divided by pdf printer
-        merged = utila.merge_lines(content)
+        merged = utilo.merge_lines(content)
         contentline = iamraw.PageContentLine(
             content=merged,
             page=number,
@@ -92,7 +92,7 @@ def rotated(
 def skip_lines(linex, annotation) -> list:
     result = []
     for page in linex:
-        anno = utila.select_page(annotation, page.page)
+        anno = utilo.select_page(annotation, page.page)
         if not anno:
             result.append(page)
             continue
@@ -101,7 +101,7 @@ def skip_lines(linex, annotation) -> list:
         # hyperlinks which are produced by cray pdf printer.
         linex = [
             item for item in page.content
-            if not utila.rectangles_intersecting(invalid_area, item)
+            if not utilo.rectangles_intersecting(invalid_area, item)
         ]
         result.append(iamraw.PageContentLine(content=linex, page=page.page))
     return result
@@ -128,7 +128,7 @@ def lines(
     Returns:
         list of line objects[LTLine, LTRect, LTTextBoxHorizontal]
     """
-    utila.asserts(pdf, pdfminer.pdfdocument.PDFDocument)
+    utilo.asserts(pdf, pdfminer.pdfdocument.PDFDocument)
     possible_lines = type_in_document(
         pdf,
         datatype=(
@@ -159,24 +159,24 @@ def lines(
                     continue
                 page.append(item)
             except KeyError:
-                utila.error(f'unsupported strategy {item}')
+                utilo.error(f'unsupported strategy {item}')
         # convert bounding
         page = [(item.bbox[0], item.bbox[1], item.bbox[2], item.bbox[3])
                 for item in page]
         # round bounding
-        page = [utila.roundme(item) for item in page]
+        page = [utilo.roundme(item) for item in page]
         # remove very short lines/dots
-        page = [item for item in page if not utila.isdot(item, max_length=5.0)]
+        page = [item for item in page if not utilo.isdot(item, max_length=5.0)]
         # ensure left, top, right, down bounding
-        page = [utila.rect_ensure_bounding(item) for item in page]
+        page = [utilo.rect_ensure_bounding(item) for item in page]
         # sort item top down; left right
         page.sort(key=operator.itemgetter(1, 0))
         # merges divided lines
-        page = utila.merge_lines(page)
+        page = utilo.merge_lines(page)
         # remove duplicated lines which mainly produces out of bad figure
         # extraction
         # TODO: ADD LINE DENSITY CHECK?
-        page = utila.unique_lines(page, max_diff=3.0)
+        page = utilo.unique_lines(page, max_diff=3.0)
         result.append((page, pagenumber))
     return result
 
@@ -192,9 +192,9 @@ def accept_text_as_line(item: pdfminer.layout.LTTextBoxHorizontal):
             # use vertical centric position
             # TODO: CHECK THIS: Make it symbol dependend?
             if symbol in '_':
-                ypos = utila.roundme(max((item.bbox[1], item.bbox[3])))
+                ypos = utilo.roundme(max((item.bbox[1], item.bbox[3])))
             else:
-                ypos = utila.roundme((item.bbox[1] + item.bbox[3]) / 2)
+                ypos = utilo.roundme((item.bbox[1] + item.bbox[3]) / 2)
             # update bounding box
             item.bbox = (item.bbox[0], ypos, item.bbox[2], ypos)
             return True
@@ -232,9 +232,9 @@ def accept_ltline(
         except AttributeError:
             blueline = False
         if blueline:
-            utila.debug('skip horizontal blue line which is may part of a '
+            utilo.debug('skip horizontal blue line which is may part of a '
                         'hyperlink and destroys footnote detection')
-            utila.debug(item)
+            utilo.debug(item)
             return False
     return True
 
@@ -275,7 +275,7 @@ def accept_curve_as_line(curve: pdfminer.layout.LTCurve) -> bool:
     # more than two points in a row, check if point are on a line
     # [(437.04645, 259.38056), (437.04645, 293.26655), (437.04645, 269.60483999999997)]
     items = [(*first, *second) for first, second in zip(pts[:-1], pts[1:])]
-    merged = utila.merge_lines(items, diff=1.5)
+    merged = utilo.merge_lines(items, diff=1.5)
     if len(merged) == 1:
         # all lines in a row
         return True
@@ -283,9 +283,9 @@ def accept_curve_as_line(curve: pdfminer.layout.LTCurve) -> bool:
 
 
 # horizontal line which is rendered as a figure
-HORIZONTAL_FIGURE_LINE_WIDTH_MIN = configo.HV_FLOAT_PLUS(default=350.0)
+HORIZONTAL_FIGURE_LINE_WIDTH_MIN = configos.HV_FLOAT_PLUS(default=350.0)
 # the object have to be more width than height with this ratio
-HORIZONTAL_FIGURE_LINE_RATIO_MIN = configo.HV_FLOAT_PLUS(default=45.0)
+HORIZONTAL_FIGURE_LINE_RATIO_MIN = configos.HV_FLOAT_PLUS(default=45.0)
 
 
 def figure_special_line(figure: pdfminer.layout.LTFigure) -> bool:
@@ -295,8 +295,8 @@ def figure_special_line(figure: pdfminer.layout.LTFigure) -> bool:
     #  'width': 413.96, 'height': 8.54
     # TODO: ANALYZE IMAGE
     image = figure._objs[0]  # pylint:disable=W0212
-    height = utila.rect_height(image.bbox)
-    width = utila.rect_width(image.bbox)
+    height = utilo.rect_height(image.bbox)
+    width = utilo.rect_width(image.bbox)
     ratio = width / height
     if width <= HORIZONTAL_FIGURE_LINE_WIDTH_MIN:
         return False
@@ -304,7 +304,7 @@ def figure_special_line(figure: pdfminer.layout.LTFigure) -> bool:
         return False
     # adjust bounding of figure to middle line
     # TODO: USE IMAGE INFORMATION
-    middle = utila.roundme((figure.bbox[1] + figure.bbox[3]) / 2)
+    middle = utilo.roundme((figure.bbox[1] + figure.bbox[3]) / 2)
     figure.bbox = (figure.bbox[0], middle, figure.bbox[2], middle)
     return True
 
@@ -325,7 +325,7 @@ def type_in_document(
     Returns:
         List with selected `datatype`.
     """
-    utila.asserts(document, pdfminer.pdfdocument.PDFDocument)
+    utilo.asserts(document, pdfminer.pdfdocument.PDFDocument)
     result = []
     for page in rawmaker.features.process_pagecontent(
             document,

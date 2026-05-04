@@ -14,8 +14,8 @@ import math
 import os
 import sys
 
-import configo
-import utila
+import configos
+import utilo
 
 import letty.quality.whitespace
 
@@ -60,8 +60,8 @@ def threadpool(todo: list, path: str, pages: tuple):
                 quality = future.result()
                 result.append(quality)
             except Exception as error:  # pylint:disable=broad-except
-                utila.error(f'{future} failed.')
-                utila.error(error)
+                utilo.error(f'{future} failed.')
+                utilo.error(error)
     return result
 
 
@@ -69,25 +69,25 @@ def run_single(path: str, pages: tuple, config: dict):
     config = ' '.join([f'--{key}={value}' for key, value in config.items()])
     pages_raw = ','.join([str(item) for item in pages])
     pages_raw = f'--pages={pages_raw}' if pages is not None else ''
-    with utila.make_tmpdir(root=configo.tmp()) as cwd:
+    with utilo.make_tmpdir(root=configos.tmp()) as cwd:
         cmd = f'rawmaker -i {path} -o {cwd} {pages_raw} --text {config}'
         config_outpath = os.path.join(cwd, 'layout.ini')
-        utila.file_create(config_outpath, config)
-        completed = utila.run(cmd, cwd=cwd)
+        utilo.file_create(config_outpath, config)
+        completed = utilo.run(cmd, cwd=cwd)
         if completed.returncode:
-            utila.error(f'could not run: {cmd}')
-            utila.error(completed.stdout)
-            utila.error(completed.stderr)
-            sys.exit(utila.FAILURE)
+            utilo.error(f'could not run: {cmd}')
+            utilo.error(completed.stdout)
+            utilo.error(completed.stderr)
+            sys.exit(utilo.FAILURE)
     quality = letty.quality.whitespace.determine(cwd, pages=pages)
     return OptimizerResult(quality, config)
 
 
 def judge(result):
     ratio, best = result[0]
-    utila.log(result[0])
+    utilo.log(result[0])
     for item in result[1:]:
-        utila.log(item)
+        utilo.log(item)
         if item[0] < ratio:
             ratio, best = item
     return ratio, best
@@ -119,13 +119,13 @@ def strategy(
     return result
 
 
-# TODO: REPLACE WITH UTILA CODE
+# TODO: REPLACE WITH utilo CODE
 def ranges(mini: float, maxi: float, steps: int = 15):
     """Compute parameter.
 
-    >>> utila.roundme(ranges(0.1, 100, steps=10))
+    >>> utilo.roundme(ranges(0.1, 100, steps=10))
     [0.1, 0.12, 0.18, 0.34, 0.76, 1.92, 5.06, 13.61, 36.84, 99.99]
-    >>> utila.roundme(ranges(0.1, 20, steps=5))
+    >>> utilo.roundme(ranges(0.1, 20, steps=5))
     [0.1, 0.73, 2.43, 7.06, 19.64]
     """
     func = math.exp
@@ -133,6 +133,6 @@ def ranges(mini: float, maxi: float, steps: int = 15):
     result = []
     for index in range(steps):
         value = mini + (math.exp(index) - 1) / maxed
-        value = utila.roundme(value, digits=5)  # pylint:disable=R0204
+        value = utilo.roundme(value, digits=5)  # pylint:disable=R0204
         result.append(value)
     return result

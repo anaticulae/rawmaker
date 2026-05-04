@@ -7,10 +7,10 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 import pytest
-import utila
-import utilatest
+import utilo
+import utilotest
 
 import rawmaker.features.border
 import tests.resources
@@ -18,7 +18,7 @@ import tests.resources
 
 @pytest.fixture
 def boxdata_from_pdf():
-    with rawmaker.reader.read(power.DOCU035_PDF) as pdf:
+    with rawmaker.reader.read(hoverpower.DOCU035_PDF) as pdf:
         sizeandborders, boxes = rawmaker.features.border.determine_boundingboxes(
             pdf)
     assert sizeandborders
@@ -27,12 +27,12 @@ def boxdata_from_pdf():
     return sizeandborders, boxes
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_border_work(boxdata_from_pdf):  #pylint:disable=W0621
     assert len(boxdata_from_pdf) == 2
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_maximize_bounding_box(boxdata_from_pdf):  #pylint:disable=W0621
     # TODO: Remove this test?
     pageandborders, _ = boxdata_from_pdf
@@ -57,16 +57,16 @@ def test_page_size(increasing_fonts, expected_size_in_mm):
     with rawmaker.reader.read(increasing_fonts) as pdf:
         sizeandborders = rawmaker.features.border.determine_boundingboxes(pdf)
     size = sizeandborders[0][0].size  # First page
-    assert utila.millimeters(*size, digits=0) == expected_size_in_mm
+    assert utilo.millimeters(*size, digits=0) == expected_size_in_mm
 
-    expected = utila.roundme(size, digits=0)
-    current = utila.points(*utila.millimeters(*size), digits=0)
+    expected = utilo.roundme(size, digits=0)
+    current = utilo.points(*utilo.millimeters(*size), digits=0)
     assert current == expected
 
 
 def test_border_pagesize_both():
     pages = (0, 105)
-    with rawmaker.reader.read(power.MASTER116_PDF) as pdf:
+    with rawmaker.reader.read(hoverpower.MASTER116_PDF) as pdf:
         sizeandborders, _ = rawmaker.features.border.determine_boundingboxes(
             pdf,
             pages=pages,
@@ -93,7 +93,7 @@ def test_border_pagesize_bachelor76_top_regression():
     """The pdf printer produces a white space in every header. Therefore
     the border is to near to the top. This test ensures, that
     white spaces are not part of bounding detecting."""
-    with rawmaker.reader.read(power.BACHELOR076_PDF) as pdf:
+    with rawmaker.reader.read(hoverpower.BACHELOR076_PDF) as pdf:
         sizeandborders, _ = rawmaker.features.border.determine_boundingboxes(
             pdf,
             pages=(1,),
@@ -105,11 +105,11 @@ def test_border_pagesize_bachelor76_top_regression():
 def test_boundingbox_figure_bounding_too_large():
     """Rectangle of some bad printed figures where too large, we strip
     this bounding to real content."""
-    with rawmaker.reader.read(power.BACHELOR067_PDF) as pdf:
+    with rawmaker.reader.read(hoverpower.BACHELOR067_PDF) as pdf:
         boundings = rawmaker.features.border.determine_boundingboxes(
             pdf,
             pages=(52,),
         )[1][0].boundings
         boundings = [item[1] for item in boundings]
-    rectangle = utila.rect_max(boundings)
+    rectangle = utilo.rect_max(boundings)
     assert rectangle[1] >= 80.0  # positive y0

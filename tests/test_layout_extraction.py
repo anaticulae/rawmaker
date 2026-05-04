@@ -9,7 +9,7 @@
 import iamraw
 import pytest
 import serializeraw
-import utila
+import utilo
 
 import rawmaker.features.text
 import tests.examples.single
@@ -32,8 +32,8 @@ def test_layout_extraction_mine_mini_numbers(strip):
 
     text = serializeraw.load_document(text)
     firstpage = text[0]
-    containers = utila.select_type(firstpage, iamraw.TextContainer)
-    lines = utila.flat([item.lines for item in containers])
+    containers = utilo.select_type(firstpage, iamraw.TextContainer)
+    lines = utilo.flat([item.lines for item in containers])
     footnotes = lines[-8:-1]
     first_rises = [item[0].rise for item in footnotes]
     # skip second line of first foot note

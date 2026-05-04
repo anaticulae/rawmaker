@@ -7,11 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 import pytest
 import serializeraw
-import utila
-import utilatest
+import utilo
+import utilotest
 
 import rawmaker.features.annotation
 import rawmaker.reader
@@ -19,23 +19,23 @@ import rawmaker.reader
 
 def test_annotation_mining_annotations(capsys):
     extracted = None
-    with rawmaker.reader.read(power.DOCU013_PDF) as pdf:
+    with rawmaker.reader.read(hoverpower.DOCU013_PDF) as pdf:
         extracted = rawmaker.features.annotation.extract_annotations(pdf)
     # 8 pages with annotation, skip empty one
     assert len(extracted) == 8
     # no logging errors from unsupported annotation
-    assert not utilatest.stderr(capsys)
+    assert not utilotest.stderr(capsys)
 
 
 def test_annotation_work():
-    result = rawmaker.features.annotation.work(power.DOCU013_PDF)
+    result = rawmaker.features.annotation.work(hoverpower.DOCU013_PDF)
     assert len(result) > 200
 
 
 @pytest.fixture
 def vim_guide_annotation():
     extracted = None
-    with rawmaker.reader.read(power.DOCU013_PDF) as pdf:
+    with rawmaker.reader.read(hoverpower.DOCU013_PDF) as pdf:
         extracted = rawmaker.features.annotation.extract_annotations(pdf)
     return extracted
 
@@ -51,16 +51,16 @@ def test_annotation_dump_and_load(vim_guide_annotation):  #pylint:disable=W0621
 
 
 # TODO: Extend annotation parser to support book053
-SKIP = {power.BOOK053_PDF}
+SKIP = {hoverpower.BOOK053_PDF}
 TODO = [
-    pytest.param(pdf, id=utila.file_name(pdf))
-    for pdf in power.PDF
+    pytest.param(pdf, id=utilo.file_name(pdf))
+    for pdf in hoverpower.PDF
     if pdf not in SKIP
 ]
 
 
 @pytest.mark.parametrize('source', TODO)
-@utilatest.longrun
+@utilotest.longrun
 def test_annotation_x(source, capsys):
     with rawmaker.reader.read(source) as pdf:
         extracted = rawmaker.features.annotation.extract_annotations(pdf)
@@ -72,5 +72,5 @@ def test_annotation_x(source, capsys):
     extracted = serializeraw.dump_annotations(extracted)
     assert 'PDFObjRef' not in extracted, 'improve annotation parser'
     assert 'python/object' not in extracted, 'improve annotation parser'
-    error = utilatest.stderr(capsys)
+    error = utilotest.stderr(capsys)
     assert '[ERROR]' not in error, error

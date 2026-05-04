@@ -16,13 +16,13 @@ import contextlib
 import copy
 import math
 
-import configo
+import configos
 import iamraw
 import pdfminer.converter
 import pdfminer.layout
 import pdfminer.pdfinterp
 import pdfminer.utils
-import utila
+import utilo
 
 import rawmaker.converter.basic
 import rawmaker.miner.rawchar
@@ -30,9 +30,9 @@ import rawmaker.parameter
 import rawmaker.patch.ltchar
 
 # all rises lower this threshold are treated as noise, therefore zero.
-FONT_RISE_MIN = configo.HV_FLOAT_PLUS(default=1.0)
+FONT_RISE_MIN = configos.HV_FLOAT_PLUS(default=1.0)
 
-FIX_FONTRISE_OCCURENCE_MAX = configo.HolyTable(items=[
+FIX_FONTRISE_OCCURENCE_MAX = configos.HolyTable(items=[
     (1, 1),
     (2, 2),
     (3, 3),
@@ -75,12 +75,12 @@ class PrecisePDFConverter(rawmaker.converter.basic.FlippedLayoutAnalyzer):
 
         # TODO: Remove after upgrading pdfminer
         PrecisePDFConverter.render_char = rawmaker.patch.ltchar.render_char
-        self.done = utila.Single()
+        self.done = utilo.Single()
 
     def new_document(self):
         """Clear the current `Document` and initialze a new one"""
         self.document = iamraw.Document()
-        self.done = utila.Single()
+        self.done = utilo.Single()
 
     def finish_document(self) -> iamraw.Document:
         """Return the current `Document` and clear the current one"""
@@ -163,7 +163,7 @@ def page_size(document: iamraw.Document) -> iamraw.PageSize:
     """Determine maximum bounding of document. Iterate throw the page and
     determine the largest page"""
     # TODO ?support multiple page sizes in document?
-    width, height = -utila.INF, -utila.INF
+    width, height = -utilo.INF, -utilo.INF
     for page in document.pages:
         width = max(width, page.dimension[2])
         height = max(height, page.dimension[3])
@@ -200,9 +200,9 @@ def render_char(
         virtual = iamraw.VirtualChar(value=value)
         return virtual
     # chars with content
-    fontsize = utila.roundme(item.fontsize)
+    fontsize = utilo.roundme(item.fontsize)
     # distance to bottom y-coodinate
-    fontrise = utila.roundme(baseline - bounding.y1)
+    fontrise = utilo.roundme(baseline - bounding.y1)
     if math.fabs(fontsize) <= FONT_RISE_MIN:
         # add threshold to avoid noise in char-fontrise
         fontrise: float = 0.0
@@ -277,7 +277,7 @@ def render_textline(
         character = render_char(char, baseline=baseline)
         if transparent(character):
             # TODO: WRITE TO DEBUG FILE TO INFORM USER ABOUT BAD PRINTED PDF
-            utila.debug(f'white char, skip: {character}')
+            utilo.debug(f'white char, skip: {character}')
             result.chars.append(iamraw.VirtualChar(value=' '))
             continue
         if len(character.value) == 1:
@@ -367,8 +367,8 @@ def fix_fontrise(items):
     if not rises:
         # no fix is required
         return items
-    zero, non_zero = utila.partition(
-        key=lambda item: utila.near(
+    zero, non_zero = utilo.partition(
+        key=lambda item: utilo.near(
             item.rise,
             0.0,
             diff=FONT_RISE_MIN,
@@ -385,7 +385,7 @@ def fix_fontrise(items):
         return items
     if not non_zero:
         return items
-    mode = utila.mode(item.rise for item in non_zero)
+    mode = utilo.mode(item.rise for item in non_zero)
     for item in non_zero:
         item.rise = item.rise - mode
         item.box.y1 = item.box.y1 + mode
@@ -425,7 +425,7 @@ def ensure_leftright(items):
             boundings.append((current, item))
             # more than one virtual char in a row, don't know if possible
             current += 0.1
-            current: float = utila.roundme(current)
+            current: float = utilo.roundme(current)
     # sort from left to right
     boundings = sorted(boundings, key=lambda x: x[0])
     # remove mapped coordiante
@@ -465,7 +465,7 @@ def merge_special_char(items):  # pylint:disable=R1260
                 item.value = replaced
                 result.append(item)
             except KeyError:
-                utila.error(f'could not merge with after {item}')
+                utilo.error(f'could not merge with after {item}')
                 result.append(item)
             continue
         try:
@@ -480,7 +480,7 @@ def merge_special_char(items):  # pylint:disable=R1260
             replaced = MERGES[result[-1].value]
         except KeyError:
             # TODO: REMOVE ERROR LOG LATER
-            utila.debug(f'could not merge with before {item}')
+            utilo.debug(f'could not merge with before {item}')
             result.append(item)
             continue
         result[-1].value = replaced
@@ -531,7 +531,7 @@ def split_characters(char) -> list:
     charbounding = char.box
     charstep = charbounding.x1 - charbounding.x0
     if charstep <= 0.0:
-        utila.error(f'invalid charstep: {charstep}: {charbounding} - {char}')
+        utilo.error(f'invalid charstep: {charstep}: {charbounding} - {char}')
     assert charstep >= 0.0, f'{charstep}: {charbounding} - {char}'
     for index, text in enumerate(char.value):
         copied = copy.deepcopy(char)
@@ -706,7 +706,7 @@ def ensure_bounding(textcontainer: iamraw.TextContainer):
     for index, item in enumerate(textcontainer[1:], start=1):
         before = textcontainer[indexed[-1][0]].box
         cur = item.box
-        if (utila.near(before[0], cur[0]) and utila.near(before[2], cur[2])):
+        if (utilo.near(before[0], cur[0]) and utilo.near(before[2], cur[2])):
             indexed[-1].append(index)
         else:
             indexed.append([index])
@@ -720,7 +720,7 @@ def ensure_bounding(textcontainer: iamraw.TextContainer):
         current = iamraw.TextContainer()
         for item in collected:
             current.append(item)
-        current.box = utila.rect_max([item.box for item in collected])
+        current.box = utilo.rect_max([item.box for item in collected])
         result.append(current)
     return result
 
@@ -729,7 +729,7 @@ def mylayout(page: iamraw.Page) -> iamraw.Page:
     children = page.children
     if not children:
         return page
-    verticals, horizontal = utila.partition(
+    verticals, horizontal = utilo.partition(
         lambda x: isinstance(x, iamraw.VerticalTextContainer),
         children,
     )
@@ -785,19 +785,19 @@ def merge_neighbors(
                 # ensure that right border is more right than left border.
                 # In some cases, formulas for example, it can happen that
                 # this contraint is not given.
-                before.box = utila.update_tuple(
+                before.box = utilo.update_tuple(
                     data=tuple(before.box),  # REMOVE TUPLE LATER
                     value=item.box[2],
                     index=2,
                 )
             else:
-                utila.debug('HINT: no bounding box update required')
+                utilo.debug('HINT: no bounding box update required')
             before.box = iamraw.BoundingBox(*before.box)
             continue
         if required is None:
-            utila.error('duplicated bounding, bad printed layout')
-            utila.error(vars(before))
-            utila.error(vars(item))
+            utilo.error('duplicated bounding, bad printed layout')
+            utilo.error(vars(before))
+            utilo.error(vars(item))
         else:
             result.append(item)
     return result
@@ -816,18 +816,18 @@ def require_merge(
         completely covered by each other.
     """
     # TODO: MAKE THIS SIZE DEPENDENT
-    ynear = utila.near(current[3], before[3], diff=ydiff)
+    ynear = utilo.near(current[3], before[3], diff=ydiff)
     if not ynear:
         return False
-    if utila.rect_overlapping(current, before) > 0.98:  # TODO: HOLY VALUE
+    if utilo.rect_overlapping(current, before) > 0.98:  # TODO: HOLY VALUE
         # nearly equals objects
-        # power.HOME016A_PDF
+        # hoverpower.HOME016A_PDF
         # {'box': BoundingBox(x0=292.73, y0=789.45, x1=302.75, y1=799.41), 'lines': [Line(text="16")], 'state': None}
         # {'box': BoundingBox(x0=292.73, y0=789.57, x1=302.75, y1=799.53), 'lines': [Line(text="16")], 'state': None}
         # nearly equal bounding, we skip it. Bad printed pdf.
         # TODO: XXX
         return None
-    xnear = utila.near(current[0], before[2], diff=xdiff)
+    xnear = utilo.near(current[0], before[2], diff=xdiff)
     if xnear:
         return True
     return False

@@ -14,7 +14,7 @@ Hint: Pay attention to the public API on this file!
 
 import os
 
-import configo
+import configos
 
 # pylint:disable=W0613
 import rawmaker.__patch__
@@ -26,4 +26,4 @@ __version__ = '2.40.2'
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PROCESS = 'rawmaker'
 
-configo.cloud_lookup(PROCESS)
+configos.cloud_lookup(PROCESS)

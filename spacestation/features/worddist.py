@@ -12,7 +12,7 @@ import statistics
 
 import iamraw
 import serializeraw
-import utila
+import utilo
 
 
 def work(source: str, pages: tuple = None) -> str:
@@ -27,7 +27,7 @@ def document_worddist(pages):
     grouped = collections.defaultdict(list)
     for _, content in pages:
         for fontsize, distance in content.items():
-            fontsize = utila.roundme(fontsize, digits=2)
+            fontsize = utilo.roundme(fontsize, digits=2)
             grouped[fontsize].extend(distance)
     result = iamraw.DocumentWordDist()
     for var, operation in (
@@ -39,7 +39,7 @@ def document_worddist(pages):
         ('minn', min),
     ):
         current = {
-            fontsize: utila.roundme(operation(content), digits=3)
+            fontsize: utilo.roundme(operation(content), digits=3)
             for fontsize, content in grouped.items()
         }
         for fontsize, value in current.items():
@@ -50,8 +50,8 @@ def document_worddist(pages):
 def wordspace(page) -> dict:
     collected = collections.defaultdict(list)
     for wspace in page.content:
-        fontsize = utila.roundme(wspace[3] - wspace[1], digits=1)
-        width = utila.roundme(wspace[2] - wspace[0], digits=2)
+        fontsize = utilo.roundme(wspace[3] - wspace[1], digits=1)
+        width = utilo.roundme(wspace[2] - wspace[0], digits=2)
         collected[fontsize].append(width)
     collected: dict = dict(collected)
     return page.page, collected

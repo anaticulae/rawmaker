@@ -7,17 +7,17 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import configo
+import configos
 import iamraw
 import serializeraw
-import utila
+import utilo
 
 import rawmaker.features
 import rawmaker.miner.char
 import rawmaker.reader
 
 # two chars differ less than this to be merged to the same line
-CHAR_SAME_LINE_DIFF_MAX = configo.HV_FLOAT_PLUS(default=10.0)
+CHAR_SAME_LINE_DIFF_MAX = configos.HV_FLOAT_PLUS(default=10.0)
 
 
 def work(source: str, pages: tuple = None) -> tuple[str, str]:
@@ -38,7 +38,7 @@ def extract(document: str, pages: tuple = None):
     result = []
     words = []
     for page in document:
-        if utila.should_skip(page.page, pages):
+        if utilo.should_skip(page.page, pages):
             continue
         extracted = extract_page(page)
         if not extracted:
@@ -90,7 +90,7 @@ def extract_page(chars: list, maxdiff: callable = None) -> list:
     return result, chargroups
 
 
-MAXDIFF = configo.HolyTable(items=[
+MAXDIFF = configos.HolyTable(items=[
     (7.0, 1.4),
     (10.0, 1.4),
     (15.0, 3.0),
@@ -115,7 +115,7 @@ def sameline(
     # sort by y0
     chars = sorted(chars, key=lambda x: x.bbox[3])
     # run cluster
-    clusterd = utila.same_line_cluster(
+    clusterd = utilo.same_line_cluster(
         chars,
         min_elements=1,
         max_diff=diff_max.
@@ -126,5 +126,5 @@ def sameline(
     # TODO: REMOVE AFTR HAVING STABLE LINE CLUSTER
     clusterd = sorted(clusterd, key=lambda x: x.center.bbox[3])
     result = [sorted(line, key=lambda x: x.bbox[0]) for line in clusterd]
-    result = utila.flat(result)
+    result = utilo.flat(result)
     return result

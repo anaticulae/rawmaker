@@ -7,17 +7,17 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
-import utilatest
+import hoverpower
+import utilotest
 
 import letty.quality.whitespace
 import tests
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_whitespaces_count(td, mp):
     root = td.tmpdir
-    path = power.MASTER072_PDF
+    path = hoverpower.MASTER072_PDF
     pages = (3, 4, 5)
     pages_raw = ','.join([str(item) for item in pages])
     cmd = f'-i {path} --pages={pages_raw} --text'

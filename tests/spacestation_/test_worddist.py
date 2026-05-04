@@ -7,19 +7,19 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 import pytest
 import serializeraw
-import utila
-import utilatest
+import utilo
+import utilotest
 
 import tests.spacestation_
 
 
 # yapf:disable
 @pytest.mark.parametrize('source, pages, expected', [
-    pytest.param(power.BACHELOR051_PDF, '3', (12.0, 3.939), id='bachelor51'),
-    pytest.param(power.BACHELOR056_PDF, '3:40', (12.0, 7.481), id='bachelor56', marks=utilatest.longrun),
+    pytest.param(hoverpower.BACHELOR051_PDF, '3', (12.0, 3.939), id='bachelor51'),
+    pytest.param(hoverpower.BACHELOR056_PDF, '3:40', (12.0, 7.481), id='bachelor56', marks=utilotest.longrun),
 ])
 # yapf:enable
 def test_worddist(source, pages, expected, td, mp):
@@ -31,4 +31,4 @@ def test_worddist(source, pages, expected, td, mp):
     # verify
     fontsize, chardist = expected
     # TODO: REPLACE WITH VERY NEAR
-    assert utila.near(loaded.mean[fontsize], chardist, diff=0.01), str(loaded)
+    assert utilo.near(loaded.mean[fontsize], chardist, diff=0.01), str(loaded)

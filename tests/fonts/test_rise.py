@@ -7,16 +7,16 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 import serializeraw
-import utilatest
+import utilotest
 
 import tests
 
 
 def test_fontrise_bachelor90p3(td, mp):
     """See: text.fix_fontrise"""
-    source = power.BACHELOR090_PDF
+    source = hoverpower.BACHELOR090_PDF
     tests.run(f'-i {source} --pages=3 --text', mp=mp)
 
     loaded = serializeraw.ptn_frompath(td.tmpdir)[0]
@@ -28,7 +28,7 @@ def test_fontrise_bachelor90p3(td, mp):
 
 def test_regression_font_rise_bachelor75p16(td, mp):
     """Obviously, this page does not contain any valid font rise."""
-    cmd = f'-i {power.BACHELOR075_PDF} -o {td.tmpdir} --text --pages=16'
+    cmd = f'-i {hoverpower.BACHELOR075_PDF} -o {td.tmpdir} --text --pages=16'
     tests.run(cmd, mp=mp)
     ptn = serializeraw.ptn_frompath(td.tmpdir)[0]
     norise, rises = 0, 0
@@ -43,9 +43,9 @@ def test_regression_font_rise_bachelor75p16(td, mp):
     assert not rises
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_regression_font_rise_bachelor75p1718(td, mp):
-    cmd = f'-i {power.BACHELOR075_PDF} -o {td.tmpdir} --text --pages=17,18'
+    cmd = f'-i {hoverpower.BACHELOR075_PDF} -o {td.tmpdir} --text --pages=17,18'
     tests.run(cmd, mp=mp)
     ptn = serializeraw.ptn_frompath(td.tmpdir)[0]
     norise, rises = 0, 0
@@ -61,7 +61,7 @@ def test_regression_font_rise_bachelor75p1718(td, mp):
 
 
 def test_regression_diss273p38_footer_rise(td, mp):
-    cmd = f'-i {power.DISS273_PDF} -o {td.tmpdir} --text --pages=38'
+    cmd = f'-i {hoverpower.DISS273_PDF} -o {td.tmpdir} --text --pages=38'
     tests.run(cmd, mp=mp)
     ptn = serializeraw.ptn_frompath(td.tmpdir)[0]
     line = ptn[36]
@@ -71,7 +71,7 @@ def test_regression_diss273p38_footer_rise(td, mp):
 
 
 def test_regression_master72page14_footer_rise(td, mp):
-    cmd = f'-i {power.MASTER072_PDF} -o {td.tmpdir} --text --pages=14'
+    cmd = f'-i {hoverpower.MASTER072_PDF} -o {td.tmpdir} --text --pages=14'
     tests.run(cmd, mp=mp)
     ptn = serializeraw.ptn_frompath(td.tmpdir)[0]
     line = ptn[30]
@@ -81,7 +81,7 @@ def test_regression_master72page14_footer_rise(td, mp):
 
 
 def test_regression_hcdiss171p134(td, mp):
-    cmd = f'-i {power.HC_DISS171} -o {td.tmpdir} --text --pages=134'
+    cmd = f'-i {hoverpower.HC_DISS171} -o {td.tmpdir} --text --pages=134'
     tests.run(cmd, mp=mp)
     ptn = serializeraw.ptn_frompath(td.tmpdir)[0]
     line = ptn[61]
@@ -91,7 +91,7 @@ def test_regression_hcdiss171p134(td, mp):
 
 
 def test_regression_master127p20(td, mp):
-    cmd = f'-i {power.MASTER127_PDF} -o {td.tmpdir} --text --pages=20'
+    cmd = f'-i {hoverpower.MASTER127_PDF} -o {td.tmpdir} --text --pages=20'
     tests.run(cmd, mp=mp)
     ptn = serializeraw.ptn_frompath(td.tmpdir)[0]
     line = ptn[-2]

@@ -9,20 +9,20 @@
 
 import functools
 
-import utilatest
+import utilotest
 
 import spacestation
 import spacestation.cli
 
 run = functools.partial(  # pylint:disable=C0103
-    utilatest.run_command,
+    utilotest.run_command,
     main=spacestation.cli.main,
     process=spacestation.PROCESS,
     expect=True,
 )
 
 failure = functools.partial(  # pylint:disable=C0103
-    utilatest.run_command,
+    utilotest.run_command,
     main=spacestation.cli.main,
     process=spacestation.PROCESS,
     expect=False,

@@ -12,7 +12,7 @@ import statistics
 
 import iamraw
 import serializeraw
-import utila
+import utilo
 
 
 def work(source: str, pages: tuple = None) -> str:
@@ -28,7 +28,7 @@ def group_chardist(pages):
     grouped = collections.defaultdict(list)
     for _, content in pages:
         for fontsize, distances in content:
-            fontsize = utila.roundme(fontsize, digits=2)
+            fontsize = utilo.roundme(fontsize, digits=2)
             for distance in distances:
                 grouped[fontsize].append(distance)
     result = iamraw.DocumentCharDist()
@@ -41,7 +41,7 @@ def group_chardist(pages):
         ('minn', min),
     ):
         current = {
-            fontsize: utila.roundme(operation(content), digits=3)
+            fontsize: utilo.roundme(operation(content), digits=3)
             for fontsize, content in grouped.items()
         }
         for fontsize, value in current.items():
@@ -80,6 +80,6 @@ def chardist(word):
         result.append(xdiff)
         x1 = bounding[2]
         fontsizes.append(fontsize)
-    fontsize = utila.mode(fontsizes)
-    result: tuple = utila.roundme(result, digits=5, convert=False)
+    fontsize = utilo.mode(fontsizes)
+    result: tuple = utilo.roundme(result, digits=5, convert=False)
     return fontsize, result

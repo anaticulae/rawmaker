@@ -9,11 +9,11 @@
 
 import os
 
-import power
+import hoverpower
 
 import rawmaker
 
-power.setup(rawmaker.ROOT)
+hoverpower.setup(rawmaker.ROOT)
 
 RESOURCES = os.path.join(rawmaker.ROOT, 'tests/resources')
 assert os.path.exists(RESOURCES), RESOURCES
@@ -46,7 +46,7 @@ INCREASING_ZZZ = os.path.join(INCREASING_FONT, 'increasing_fonts_a4_10_20_30_40.
 IMAGE_HUGEMONO = os.path.join(RESOURCES, 'image/hugemono.pdf')
 
 FONTS_SCALED_PDF = os.path.join(FONTS, 'scaled.pdf')
-FONTS_SCALED = power.generated(folder='scaled')
+FONTS_SCALED = hoverpower.generated(folder='scaled')
 FONTS_SCALED_PERCENT033 = os.path.join(FONTS_SCALED, 'page0_first.pdf')
 FONTS_SCALED_PERCENT050 = os.path.join(FONTS_SCALED, 'page0_second.pdf')
 FONTS_SCALED_PERCENT200 = os.path.join(FONTS_SCALED, 'page1_first.pdf')
@@ -73,7 +73,7 @@ REQUIRED_RESOURCES = [
     NO_PDF,
     PDF2008,
     RESOURCES,
-    # power.link(power.BACHELOR090_PDF),
-    # power.link(power.BOOK007_PDF),
-    # power.link(power.DOCU013_PDF),
+    # hoverpower.link(hoverpower.BACHELOR090_PDF),
+    # hoverpower.link(hoverpower.BOOK007_PDF),
+    # hoverpower.link(hoverpower.DOCU013_PDF),
 ]

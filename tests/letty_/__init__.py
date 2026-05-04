@@ -7,8 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import utilatest
+import utilotest
 
 import letty
 
-run, failure = utilatest.create_cli_runner(letty)
+run, failure = utilotest.create_cli_runner(letty)

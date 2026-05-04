@@ -13,18 +13,18 @@
 import functools
 import operator
 
-import configo
+import configos
 import iamraw
 import pdfminer.layout
 import serializeraw
-import utila
+import utilo
 
 # width of box
-RECTANGLE_WIDTH_MIN = configo.HV_FLOAT_PLUS(default=50.0)
+RECTANGLE_WIDTH_MIN = configos.HV_FLOAT_PLUS(default=50.0)
 # height of box
-RECTANGLE_HEIGHT_MIN = configo.HV_FLOAT_PLUS(default=50.0)
+RECTANGLE_HEIGHT_MIN = configos.HV_FLOAT_PLUS(default=50.0)
 # distance of two merging boxes/rectangles
-ENDING_DISTANCE_MAX = configo.HV_FLOAT_PLUS(default=3)
+ENDING_DISTANCE_MAX = configos.HV_FLOAT_PLUS(default=3)
 
 
 def work(lines: str, pages: tuple) -> str:
@@ -66,10 +66,10 @@ def determine_clusteritem(
         lines_in_page, page = paged.content, paged.page
         # remove lines which are to short and represent a dot
         lines_in_page = [
-            item for item in lines_in_page if not utila.isdot(item)
+            item for item in lines_in_page if not utilo.isdot(item)
         ]
         # remove duplicated lines
-        lines_in_page = utila.unique_lines(lines_in_page)
+        lines_in_page = utilo.unique_lines(lines_in_page)
         grouped = determine_cluster(lines_in_page)
         collected = collector(
             grouped,
@@ -121,7 +121,7 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
         for clusterindex, cluster in enumerate(result):
             for clusteritem in cluster:
                 for test in current:
-                    if utila.intersecting_ending(
+                    if utilo.intersecting_ending(
                             clusteritem,
                             test,
                             tol=ENDING_DISTANCE_MAX,
@@ -143,7 +143,7 @@ def determine_cluster(items: iamraw.BoundingBoxes) -> iamraw.BoundingBoxes:  # p
                 result[index].extend(current)
         return result
 
-    single = utila.Single()
+    single = utilo.Single()
     while True:  # pylint:disable=W0149
         # Break when cluster does not change result Cluster till cluster
         # move does not change the result.

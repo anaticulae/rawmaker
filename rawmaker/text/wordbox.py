@@ -7,13 +7,13 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import configo
-import utila
+import configos
+import utilo
 
 import rawmaker.text.chars
 import rawmaker.text.data
 
-DIFF_MAX = configo.HolyTable(items=[
+DIFF_MAX = configos.HolyTable(items=[
     (6, 1.0),
     (12, 1.0),
     (16, 1.0),
@@ -27,7 +27,7 @@ def parses(
     source: str,
     pages: tuple,
     word_length_min: int = 1,
-    difftable: configo.HolyTable = DIFF_MAX,
+    difftable: configos.HolyTable = DIFF_MAX,
 ) -> rawmaker.text.data.WordBoxPages:
     extracted = rawmaker.text.chars.extract_chars(source, pages)
     pages = [
@@ -48,12 +48,12 @@ def parses(
 def extract_page(
     page,
     word_length_min: int = 1,
-    difftable: configo.HolyTable = DIFF_MAX,
+    difftable: configos.HolyTable = DIFF_MAX,
 ) -> rawmaker.text.data.PageLines:
     # remove white space
     page = [item for item in page if item.get_text().strip()]
 
-    lines = utila.same_line_cluster(
+    lines = utilo.same_line_cluster(
         page,
         min_elements=word_length_min,  # support single chars
         matcher=lambda x: x.bbox[3],
@@ -70,7 +70,7 @@ def extract_page(
     return rawmaker.text.data.PageLines(lines=result)
 
 
-def merge_line(line, difftable: configo.HolyTable):
+def merge_line(line, difftable: configos.HolyTable):
     if not line:
         return []
     diffs = [
@@ -89,7 +89,7 @@ def wordbox_boundings(page) -> rawmaker.text.data.WordBoxPage:
     result = []
     for line in page:
         for word in line:
-            bounding = utila.rect_max([char.bbox for char in word])
+            bounding = utilo.rect_max([char.bbox for char in word])
             result.append(bounding)
     wordbox = rawmaker.text.data.WordBoxPage(content=result)
     return wordbox

@@ -7,12 +7,12 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import hoverpower
 import pdfminer
-import power
 import pytest
 import serializeraw
-import utila
-import utilatest
+import utilo
+import utilotest
 
 import rawmaker.error
 import rawmaker.features.outlines
@@ -30,13 +30,13 @@ def test_outlines_from_document_no_outlines(mp, capsys):
             'get_outlines',
             get_outlines,
         )
-        rawmaker.features.outlines.work(power.DOCU013_PDF)
+        rawmaker.features.outlines.work(hoverpower.DOCU013_PDF)
 
     present_inerror('error', 'outlines', captured=capsys)
 
 
 def test_outlines_without_outlines():
-    source = power.MASTER072_PDF
+    source = hoverpower.MASTER072_PDF
     extracted = rawmaker.features.outlines.work(source)
     # no toc extraction
     # level: 0
@@ -45,7 +45,7 @@ def test_outlines_without_outlines():
 
 
 def present_inerror(*items, captured):
-    # TODO: MOVE TO UTILA>TEST
+    # TODO: MOVE TO utilo>TEST
     # TODO: SUPPORT SINGLE STRING?
     stdout, error = captured.readouterr()
     error = error.lower()
@@ -56,10 +56,10 @@ def present_inerror(*items, captured):
         collected.append(item)
 
     if collected:
-        utila.log(stdout)
-        utila.log(error)
+        utilo.log(stdout)
+        utilo.log(error)
         for item in collected:
-            utila.error(f'missing: {item}')
+            utilo.error(f'missing: {item}')
     assert not collected, 'see error log'
 
 
@@ -93,14 +93,14 @@ def book173(toc):
 
 
 @pytest.mark.parametrize('source, validate', [
-    pytest.param(power.DOCU013_PDF, vim, id='vim'),
-    pytest.param(power.BACHELOR037_PDF, bachelor37, id='bachelor37'),
-    pytest.param(power.MASTER116_PDF, master116, id='master116'),
-    pytest.param(power.BACHELOR111_PDF, bachelor111, id='bachelor111'),
-    pytest.param(power.DISS264_PDF, diss264, id='diss264'),
-    pytest.param(power.BOOK173_PDF, book173, id='book173'),
+    pytest.param(hoverpower.DOCU013_PDF, vim, id='vim'),
+    pytest.param(hoverpower.BACHELOR037_PDF, bachelor37, id='bachelor37'),
+    pytest.param(hoverpower.MASTER116_PDF, master116, id='master116'),
+    pytest.param(hoverpower.BACHELOR111_PDF, bachelor111, id='bachelor111'),
+    pytest.param(hoverpower.DISS264_PDF, diss264, id='diss264'),
+    pytest.param(hoverpower.BOOK173_PDF, book173, id='book173'),
 ])
-@utilatest.nightly
+@utilotest.nightly
 def test_outlines_validate(source, validate):
     extracted = rawmaker.features.outlines.work(source)
     toc = serializeraw.load_toc(extracted)
@@ -112,7 +112,7 @@ def test_outlines_docu009_argparse():
     """Some NamedDestinations are store as hexadecimal numbers. This test
     ensures, that parsing, lookup in pdf dest dict and converting the
     page number works correctly."""
-    source = power.DOCU014_PDF
+    source = hoverpower.DOCU014_PDF
     extracted = rawmaker.features.outlines.work(source)
     toc = serializeraw.load_toc(extracted)
     first_level = [(item.page, item.title) for item in toc]

@@ -12,7 +12,7 @@ import contextlib
 import statistics
 
 import iamraw
-import utila
+import utilo
 
 
 class DocumentItemHasher:
@@ -50,11 +50,11 @@ class DocumentItemHasher:
         result = [f'DocumentItemHasher, size: {len(self.data)}']
         for key, value in self.data.items():
             result.append(f'{key} {value}')
-        return utila.NEWLINE.join(result)
+        return utilo.NEWLINE.join(result)
 
 
 def load_hasher(content: str) -> DocumentItemHasher:
-    loaded = utila.yaml_load(content)
+    loaded = utilo.yaml_load(content)
     result = []
     for page in loaded:
         pagenumber = int(page['page'])
@@ -72,7 +72,7 @@ def hash_positions(
 ) -> iamraw.PageContentTextPositions:
     assert isinstance(document, iamraw.Document), type(document)
     collected = []
-    with utila.SkipCollector(pages) as collector:
+    with utilo.SkipCollector(pages) as collector:
         for page in document:
             pagenumber = page.page
             if collector.skip(pagenumber):
@@ -114,7 +114,7 @@ def mean_height(chars):
     if not height:
         return 0.0
     mean = statistics.mean(height)
-    return utila.roundme(mean)
+    return utilo.roundme(mean)
 
 
 class ItemNotFound(ValueError):

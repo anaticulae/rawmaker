@@ -23,7 +23,7 @@ import os
 import ghost
 import PIL.Image
 import serializeraw
-import utila
+import utilo
 
 import rawmaker
 import rawmaker.images.info
@@ -52,9 +52,9 @@ def extract_images(
     outputfolder: str = None,
     pages=None,
 ) -> PageContentImagesList:
-    # TODO: REPLACE AFTER UPGRADING UTILA
+    # TODO: REPLACE AFTER UPGRADING utilo
     if outputfolder is None:
-        outputfolder = utila.tmpfile(rawmaker.ROOT)
+        outputfolder = utilo.tmpfile(rawmaker.ROOT)
     with rawmaker.reader.read(document) as loaded:
         extracted = rawmaker.miner.images.extract_images(
             loaded,
@@ -84,14 +84,14 @@ def convert_images(
             path = os.path.join(outputfolder, parsed.filename)
             if not os.path.exists(path):
                 # TODO: FIX IMAGE EXTRACTION
-                utila.error(f'missing image: {path}')
+                utilo.error(f'missing image: {path}')
                 continue
-            loaded = utila.file_read_binary(path)
+            loaded = utilo.file_read_binary(path)
             info = rawmaker.images.info.imageinfo(path, page, bounding)
             if info is None:
-                utila.error(f'could not extract {path}, {page}, {bounding}')
+                utilo.error(f'could not extract {path}, {page}, {bounding}')
                 continue
-            ext = utila.file_ext(path)
+            ext = utilo.file_ext(path)
             pagecontent.append((info, (loaded, ext)))
         if not pagecontent:
             continue
@@ -120,7 +120,7 @@ def run_ghost(path: str, boundings: list) -> list:
     if ghost.HAS_GHOST:
         extracted = ghost.images(path, boundings)
         return extracted
-    utila.error('could not beautify images: install ghost')
+    utilo.error('could not beautify images: install ghost')
     result = []
     for bounding in boundings:
         size = (int(bounding.width), int(bounding.height))

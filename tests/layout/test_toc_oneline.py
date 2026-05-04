@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 import serializeraw
 
 import rawmaker.features
@@ -21,7 +21,7 @@ def test_toc_parametrization():
     This test is more for finding a good parameter, than for really testing.
     TODO: Improve this later. Don't know how to, yet.
     """
-    with rawmaker.reader.read(power.DOCU027_PDF) as pdf:
+    with rawmaker.reader.read(hoverpower.DOCU027_PDF) as pdf:
         # Diff between chars which build a word
         config = rawmaker.parameter.ParsingConfiguration(char_margin=10.0)
         document = rawmaker.features.extract_content(pdf, config=config)
@@ -38,7 +38,7 @@ ONELINE = ('--prefix=oneline '
 def test_regression_oneline_master078_toc(td, mp):
     """Do not skip chars which are detected as duplicated but the
     checker was not specific enough."""
-    cmd = f'-i {power.MASTER078_PDF} --pages=2 ' + ONELINE
+    cmd = f'-i {hoverpower.MASTER078_PDF} --pages=2 ' + ONELINE
     tests.run(cmd, mp=mp)
 
     loaded = serializeraw.ptn_frompath(

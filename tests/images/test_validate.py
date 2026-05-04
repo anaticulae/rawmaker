@@ -9,33 +9,33 @@
 
 import functools
 
-import power
+import hoverpower
 import pytest
 import serializeraw
-import utila
-import utilatest
+import utilo
+import utilotest
 
 import rawmaker
 import tests
 
-ARCHIVE = utila.join(rawmaker.ROOT, 'tests/images/expected', exist=True)
+ARCHIVE = utilo.join(rawmaker.ROOT, 'tests/images/expected', exist=True)
 
 
 @tests.ghost
 @pytest.mark.parametrize('source, pages', [
-    pytest.param(power.MASTER105_PDF, '30:40', id='master105'),
+    pytest.param(hoverpower.MASTER105_PDF, '30:40', id='master105'),
 ])
 def test_validate_images(source, pages, td, mp):
     Evaluate(
         source=source,
         pages=pages,
-        expected=utila.file_name(source),
+        expected=utilo.file_name(source),
         workdir=td.tmpdir,
         mp=mp,
     ).evaluate()
 
 
-class Evaluate(utilatest.BaseLiner):
+class Evaluate(utilotest.BaseLiner):
 
     def __init__(self, source, pages, expected, workdir, mp):
         super().__init__(
@@ -51,17 +51,17 @@ class Evaluate(utilatest.BaseLiner):
         )
 
     def load_images(self, _):  # pylint:disable=W0613
-        path = utila.join(self.workdir, 'rawmaker__images_images')
+        path = utilo.join(self.workdir, 'rawmaker__images_images')
         images = serializeraw.load_image_infos_frompath(path)
-        result = utila.flatten_content(images)
+        result = utilo.flatten_content(images)
         return result
 
     def raw(self, value) -> str:
-        return utila.NEWLINE.join(rawline(item) for item in value)
+        return utilo.NEWLINE.join(rawline(item) for item in value)
 
 
 def rawline(image) -> str:
     page = str(image.page).zfill(3)
-    bounding = utila.from_tuple(utila.roundme(image.bounding))
+    bounding = utilo.from_tuple(utilo.roundme(image.bounding))
     line = f'{page} {bounding}'
     return line

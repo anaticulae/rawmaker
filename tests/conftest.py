@@ -9,13 +9,13 @@
 
 import os
 
-import configo
-import genex
-import power
+import configos
+# import genex
+import hoverpower
 import pytest
-import utila
-from utilatest import mp  # pylint:disable=W0611
-from utilatest import td  # pylint:disable=W0611
+import utilo
+from utilotest import mp  # pylint:disable=W0611
+from utilotest import td  # pylint:disable=W0611
 
 import rawmaker
 import tests.resources
@@ -25,35 +25,36 @@ pytest_plugins = ['pytester', 'xdist']  # pylint: disable=invalid-name
 PACKAGE = rawmaker.PROCESS
 WORKER = 6
 
-power.setup(rawmaker.ROOT)
+hoverpower.setup(rawmaker.ROOT)
 
 RESOURCES = [
-    (power.BACHELOR051_PDF, '25:35'),
-    (power.BACHELOR056_PDF, '0:34'),
-    (power.BACHELOR063_PDF, '24:28'),
-    (power.BACHELOR090_PDF, '76:81'),
-    (power.DISS143_PDF, '27'),
-    (power.MASTER072_PDF, '0:10'),
-    (power.MASTER116_PDF, '18'),
-    power.BOOK007_PDF,
-    power.DOCU009_PDF,
-    power.DOCU013_PDF,
+    (hoverpower.BACHELOR051_PDF, '25:35'),
+    (hoverpower.BACHELOR056_PDF, '0:34'),
+    (hoverpower.BACHELOR063_PDF, '24:28'),
+    (hoverpower.BACHELOR090_PDF, '76:81'),
+    (hoverpower.DISS143_PDF, '27'),
+    (hoverpower.MASTER072_PDF, '0:10'),
+    (hoverpower.MASTER116_PDF, '18'),
+    hoverpower.BOOK007_PDF,
+    hoverpower.DOCU009_PDF,
+    hoverpower.DOCU013_PDF,
 ]
 
 
 @pytest.mark.usefixtures('session')
 def pytest_sessionstart():
-    setup_configo()
-    power.run(tests.resources.REQUIRED_RESOURCES)
+    setup_configos()
+    hoverpower.run(tests.resources.REQUIRED_RESOURCES)
 
 
 def extract(resources):
-    genex.extract(
-        files=resources,
-        dest=power.generated(),
-        oneline=None,
-        worker=WORKER,
-    )
+    pass
+    # genex.extract(
+    #     files=resources,
+    #     dest=hoverpower.generated(),
+    #     oneline=None,
+    #     worker=WORKER,
+    # )
 
 
 # yapf:disable
@@ -66,15 +67,15 @@ RESOURCES_SCALED = [
 
 
 def extract_scaled(resources):
-    dest = power.generated(folder='scaled')
+    dest = hoverpower.generated(folder='scaled')
     if os.path.exists(dest):
         return
     os.makedirs(dest)
     for source, (script, name) in resources:
         outpath = os.path.join(dest, f'{name}.pdf')
-        tmp = utila.tmpfile(power.ROOT)
-        utila.file_replace(tmp, script)
-        utila.run(f'jam -i {source} --script {tmp} -o {outpath}')
+        tmp = utilo.tmpfile(hoverpower.ROOT)
+        utilo.file_replace(tmp, script)
+        utilo.run(f'jam -i {source} --script {tmp} -o {outpath}')
 
 
 def validate_scaled(_):  # pylint:disable=W0613
@@ -83,19 +84,19 @@ def validate_scaled(_):  # pylint:disable=W0613
 
 
 RESOURCES_SHORTEN = [
-    (power.MASTER105_PDF, '86 87'),
+    (hoverpower.MASTER105_PDF, '86 87'),
 ]
 
 
 def extract_shorten(resources):
-    dest = power.generated(folder='shorten')
+    dest = hoverpower.generated(folder='shorten')
     if os.path.exists(dest):
         return
     os.makedirs(dest)
     for source, pages in resources:
-        filename = utila.file_name(source)
+        filename = utilo.file_name(source)
         outpath = os.path.join(dest, f'{filename}.pdf')
-        utila.run(f'pdfcat {source} {pages} > {outpath}')
+        utilo.run(f'pdfcat {source} {pages} > {outpath}')
 
 
 def validate_shorten(_):  # pylint:disable=W0613
@@ -103,19 +104,19 @@ def validate_shorten(_):  # pylint:disable=W0613
     pass
 
 
-CONFIGO = os.path.join(rawmaker.ROOT, 'tests/resources/configo')
+CONFIGOS = os.path.join(rawmaker.ROOT, 'tests/resources/configos')
 
 NAMES = ['rawmaker']
 
 
-def setup_configo():
-    os.makedirs(CONFIGO, exist_ok=True)
+def setup_configos():
+    os.makedirs(CONFIGOS, exist_ok=True)
     for name in NAMES:
-        config = os.path.join(CONFIGO, f'{name}.hv')
+        config = os.path.join(CONFIGOS, f'{name}.hv')
         if not os.path.exists(config):
-            utila.log(f'generate hv config: {name}')
+            utilo.log(f'generate hv config: {name}')
             source = os.path.join(rawmaker.ROOT, name)
-            utila.run(f'configo --generate -i {source} >> {config}')
-    configo.init(CONFIGO)
+            utilo.run(f'configos --generate -i {source} >> {config}')
+    configos.init(CONFIGOS)
     for name in NAMES:
-        configo.load(name)
+        configos.load(name)

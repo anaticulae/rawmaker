@@ -9,9 +9,9 @@
 
 import dataclasses
 
-import configo
+import configos
 import pdfminer.layout
-import utila
+import utilo
 
 STRIP = True
 
@@ -45,7 +45,7 @@ class ParsingConfiguration:
                     parameter.append(f'--{item}')
                 continue
             parameter.append(f'--{item}={value}')
-        return utila.from_tuple(parameter)
+        return utilo.from_tuple(parameter)
 
     def laparams(self) -> pdfminer.layout.LAParams:
         result = pdfminer.layout.LAParams(
@@ -80,7 +80,7 @@ class ParsingConfiguration:
         return str(self)
 
 
-LAYOUT_CHAR_MARGIN = configo.HV_FLOAT_PLUS(default=1.1)
+LAYOUT_CHAR_MARGIN = configos.HV_FLOAT_PLUS(default=1.1)
 
 LAYOUT = ParsingConfiguration(char_margin=LAYOUT_CHAR_MARGIN)
 
@@ -113,7 +113,7 @@ def from_config(config: ParsingConfiguration) -> pdfminer.layout.LAParams:
 def print_layout(layout: ParsingConfiguration = None):
     assert layout, 'missing layout'
     layout = from_config(layout)
-    utila.log('   layout:', end=' ', level=utila.Level.INFORMATION)
+    utilo.log('   layout:', end=' ', level=utilo.Level.INFORMATION)
     information = [
         ('boxes_flow', layout.boxes_flow),
         ('char_margin', layout.char_margin),
@@ -122,9 +122,9 @@ def print_layout(layout: ParsingConfiguration = None):
         ('word_margin', layout.word_margin),
     ]
     for (text, value) in information:
-        utila.log(
+        utilo.log(
             '%s %.2f' % (text, value),  # pylint:disable=C0209
             end=' ',
-            level=utila.Level.INFORMATION,
+            level=utilo.Level.INFORMATION,
         )
-    utila.log(level=utila.Level.INFORMATION)  # newline
+    utilo.log(level=utilo.Level.INFORMATION)  # newline

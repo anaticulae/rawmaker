@@ -7,16 +7,16 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 import pytest
-import utilatest
+import utilotest
 
 import tests
 
 
-@utilatest.nightly
+@utilotest.nightly
 def test_book636(td, mp):
     pytest.skip('we require a weekly decorator')
     # TODO: CONVERT TO WEEKLY
-    cmd = f'-i {power.HC_BOOK636} -o {td.tmpdir} -j1'
+    cmd = f'-i {hoverpower.HC_BOOK636} -o {td.tmpdir} -j1'
     tests.run(cmd, mp=mp)

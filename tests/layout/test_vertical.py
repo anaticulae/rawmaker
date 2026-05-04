@@ -7,11 +7,11 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
+import hoverpower
 import pytest
 import serializeraw
 import texmex
-import utilatest
+import utilotest
 
 import tests
 
@@ -21,7 +21,7 @@ import tests
     (8, False, False),
     (7, True, True),
 ])
-@utilatest.longrun
+@utilotest.longrun
 def test_parse_docu009_vertically(
     page,
     vertical,
@@ -30,7 +30,7 @@ def test_parse_docu009_vertically(
     mp,
 ):
     root = td.tmpdir
-    source = power.ORDER009_PDF
+    source = hoverpower.ORDER009_PDF
     flag = '--detect_vertical' if vertical else ''
     config = '--char_margin=2.0 --word_margin=0.1 --line_margin=0.001'
     cmd = f'-i {source} --text --pages={page} {flag} {config}'

@@ -8,13 +8,13 @@
 # =============================================================================
 
 import serializeraw
-import utilatest
+import utilotest
 
 import rawmaker.features.fonts
 import tests.resources
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_extract_font_flag():
     header, content = rawmaker.features.fonts.work(
         tests.resources.PDF2008,

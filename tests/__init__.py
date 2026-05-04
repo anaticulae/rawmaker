@@ -9,14 +9,14 @@
 
 import ghost as gs
 import pytest
-import utilatest
+import utilotest
 
 import rawmaker
 
-run, failure = utilatest.create_cli_runner(rawmaker)
+run, failure = utilotest.create_cli_runner(rawmaker)
 
-security = utilatest.register_marker('security')
-font = utilatest.register_marker('font')
+security = utilotest.register_marker('security')
+font = utilotest.register_marker('font')
 
 # do not skip ghost
 ghost = pytest.mark.skipif(False, reason='require ghost')

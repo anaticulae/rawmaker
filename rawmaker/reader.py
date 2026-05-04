@@ -12,7 +12,7 @@ from contextlib import contextmanager
 from os.path import exists
 from os.path import isfile
 
-import utila
+import utilo
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfdocument import PDFEncryptionError
 from pdfminer.pdfdocument import PDFSyntaxError
@@ -44,8 +44,8 @@ def read(path: str, password: str = None, verify: bool = True) -> PDFDocument:
     if verify:
         header = open(path, 'rb').read(5)
         if header != b'%PDF-':
-            # TODO: MOVE TO def before() method after upgrading utila
-            utila.error('invalid pdf header')
+            # TODO: MOVE TO def before() method after upgrading utilo
+            utilo.error('invalid pdf header')
             sys.exit(1)
     with open(path, 'rb') as fp:
         # Create a PDF parser object associated with the file object.
@@ -73,25 +73,25 @@ def open_document(parser: PDFParser, password: str) -> PDFDocument:
     except PDFSyntaxError:
         pass  # try with fallback again
     except PDFEncryptionError as encryption:
-        utila.error('encryption not supported')
-        utila.debug(encryption)
+        utilo.error('encryption not supported')
+        utilo.debug(encryption)
         sys.exit(1)
     except Exception:  # pylint:disable=broad-except
-        utila.print_stacktrace()
+        utilo.print_stacktrace()
         sys.exit(2)
         # raise PDFParserImplementationError(path) from exc
     else:
         return document
 
     try:
-        utila.info('try to use `fallback` pdf loader')
+        utilo.info('try to use `fallback` pdf loader')
         document = PDFDocument(parser, password, fallback=True)
     except PDFSyntaxError:
-        utila.print_stacktrace()
+        utilo.print_stacktrace()
         sys.exit(3)
         # raise InvalidPDF(path) from exc
     except Exception:  # pylint:disable=broad-except
         # raise PDFParserImplementationError(path) from exc
-        utila.print_stacktrace()
+        utilo.print_stacktrace()
         sys.exit(2)
     return document

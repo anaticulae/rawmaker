@@ -7,8 +7,8 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
+import hoverpower
 import iamraw.path
-import power
 import serializeraw
 
 import tests
@@ -16,7 +16,7 @@ import tests
 
 def test_whitespace_extractor_bachelor56page49(td, mp):
     root = td.tmpdir
-    source = power.BACHELOR056_PDF
+    source = hoverpower.BACHELOR056_PDF
     # oneline
     config = '--boxes_flow=1.0 --char_margin=100.0 --line_margin=0.0001'
     cmd = f'-i {source} --text --pages=49 --prefix=oneline {config}'

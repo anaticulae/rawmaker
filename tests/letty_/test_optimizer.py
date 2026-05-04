@@ -7,23 +7,23 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import power
-import utilatest
+import hoverpower
+import utilotest
 
 import letty.optimizer
 
 
-@utilatest.longrun
+@utilotest.longrun
 def test_optimizer():
-    path = power.MASTER072_PDF
+    path = hoverpower.MASTER072_PDF
     pages = (3,)
     result = letty.optimizer.run(path, pages=pages, chars=10)
     assert result
 
 
-@utilatest.nightly
+@utilotest.nightly
 def test_optimizer_hardtoread():
-    path = power.BACHELOR037_PDF
+    path = hoverpower.BACHELOR037_PDF
     pages = (6,)
     result = letty.optimizer.run(
         path,

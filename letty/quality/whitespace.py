@@ -11,7 +11,7 @@ import collections
 import re
 
 import serializeraw
-import utila
+import utilo
 
 PageWhitespace = collections.namedtuple('PageWhitespaces', 'page, content')
 PageWhitespaces = list[PageWhitespace]
@@ -39,7 +39,7 @@ def analyse_page(page) -> PageWhitespace:
     for line in page:
         text = line.text
         for item in re.finditer(COMMON, text):
-            counter[len(utila.extract_match(item))] += 1
+            counter[len(utilo.extract_match(item))] += 1
     counter[2] += len(page)
     result = PageWhitespace(page=page.page, content=counter.most_common())
     return result

@@ -11,7 +11,7 @@ import sys
 
 import pdfminer.glyphlist
 import pdfminer.pdfpage
-import utila
+import utilo
 
 before = pdfminer.pdfpage.PDFPage.create_pages  # pylint:disable=C0103
 
@@ -20,10 +20,10 @@ def create_pages(document):
     try:
         yield from before(document)
     except IndexError:
-        utila.error('pdfminer parsing error: IndexError')
+        utilo.error('pdfminer parsing error: IndexError')
         sys.exit(1)
     except RecursionError:
-        utila.error('pdfminer parsing error: RecursionError')
+        utilo.error('pdfminer parsing error: RecursionError')
         sys.exit(1)
 
 

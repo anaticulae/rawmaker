@@ -9,17 +9,17 @@
 
 import os
 
-import utila
-import utilatest
+import utilo
+import utilotest
 
 import tests.rawmaker_automate_
 import tests.resources
 
 
-@utilatest.nightly
+@utilotest.nightly
 def test_cli_automate(td, mp):
     source = os.path.join(tests.resources.RESOURCES, 'increasing_fonts')
     cmd = f'-i {source} -o {td.tmpdir} -n3'
     assert os.path.exists(source)
     tests.rawmaker_automate_.run(cmd, mp=mp)
-    assert len(utila.directory_list(td.tmpdir)) == 3
+    assert len(utilo.directory_list(td.tmpdir)) == 3

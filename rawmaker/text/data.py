@@ -10,7 +10,7 @@
 import dataclasses
 
 import iamraw
-import utila
+import utilo
 
 
 @dataclasses.dataclass
@@ -43,5 +43,5 @@ class PageLines:
     def __str__(self):
         word = lambda x: ''.join([char.text for char in x])  # pylint:disable=C3001
         line = lambda x: ' '.join([word(item) for item in x])  # pylint:disable=C3001
-        lines = utila.NEWLINE.join(line(item) for item in self.lines)  # pylint:disable=E1133
+        lines = utilo.NEWLINE.join(line(item) for item in self.lines)  # pylint:disable=E1133
         return f'PageLines: {len(self.lines)}\n{lines}'

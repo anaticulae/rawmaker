@@ -40,7 +40,7 @@ dev = [
     "hoverpower>=1.1.0,<2.0.0",
     # hardcore==0.11.0
 
-    # jam==0.5.5
+    "jamer>=1.0.1,<2.0.0",
 
     "utilotest>=1.0.3,<2.0.0",
 

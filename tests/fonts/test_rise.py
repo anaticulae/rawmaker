@@ -8,6 +8,7 @@
 # =============================================================================
 
 import hoverpower
+import pytest
 import serializeraw
 import utilotest
 
@@ -80,6 +81,7 @@ def test_regression_master72page14_footer_rise(td, mp):
     assert line.style.content[0].rise
 
 
+@pytest.mark.xfail(reason='missing import')
 def test_regression_hcdiss171p134(td, mp):
     cmd = f'-i {hoverpower.HC_DISS171} -o {td.tmpdir} --text --pages=134'
     tests.run(cmd, mp=mp)

@@ -7,7 +7,6 @@
 # be prosecuted under federal law. Its content is company confidential.
 #==============================================================================
 
-import ghost as gs
 import pytest
 import utilotest
 

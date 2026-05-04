@@ -20,7 +20,7 @@ import collections
 import io
 import os
 
-import ghost
+# import ghost
 import PIL.Image
 import serializeraw
 import utilo

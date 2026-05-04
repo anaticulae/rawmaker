@@ -42,7 +42,7 @@ dev = [
 
     # jam==0.5.5
 
-    "utilotest>=1.0.2,<2.0.0",
+    "utilotest>=1.0.3,<2.0.0",
 
     # optimo==0.3.0
     # genex==0.40.0

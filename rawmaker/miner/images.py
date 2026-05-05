@@ -237,10 +237,10 @@ def raw_images_merge(images: LTImages) -> MergedImage:
             return MergedImage(images[0], ext, bounding)
         utilo.debug(f'extraction not supported: {images[0]}')
     # determine rectangle bounding
-    x00 = min(item.x0 for item in images)
-    x11 = max(item.x1 for item in images)
-    y00 = min(item.y0 for item in images)
-    y11 = max(item.y1 for item in images)
+    x00 = min(item.x0 for item in images)  # pylint:disable=no-member
+    x11 = max(item.x1 for item in images)  # pylint:disable=no-member
+    y00 = min(item.y0 for item in images)  # pylint:disable=no-member
+    y11 = max(item.y1 for item in images)  # pylint:disable=no-member
     # create empty image to render sub images into
     image_width = x11 - x00
     image_height = y11 - y00
@@ -256,7 +256,7 @@ def raw_images_merge(images: LTImages) -> MergedImage:
             continue
         # render to common image
         current = ensure_bitmap(current)
-        renderer.bitmap((image.x0 - x00, image.y0 - y00), bitmap=current)
+        renderer.bitmap((image.x0 - x00, image.y0 - y00), bitmap=current)  # pylint:disable=no-member
     # update bottom bounding of merged rectangle
     multi_bounding = (x00, y00, x11, y11)
     return MergedImage(result, ext, multi_bounding)

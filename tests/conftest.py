@@ -47,7 +47,7 @@ def pytest_sessionstart():
     hoverpower.run(tests.resources.REQUIRED_RESOURCES)
 
 
-def extract(resources):
+def extract(resources):  # pylint:disable=unused-argument
     pass
     # genex.extract(
     #     files=resources,

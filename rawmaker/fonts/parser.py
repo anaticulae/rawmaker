@@ -243,7 +243,7 @@ def parse_font_styled(font: str):
 
 
 def parse_font_simple(font: str):
-    if any(char in font for char in ['+', '-', ',']):
+    if any(char in font for char in {'+', '-', ','}):  # pylint:disable=use-sequence-for-iteration
         return None
     styles = []
     for item in STYLES:

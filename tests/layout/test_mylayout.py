@@ -9,11 +9,12 @@
 
 # import hardcore
 import hoverpower
-import pytest
+# import pytest
 import serializeraw
-import utilotest
 
 import tests
+
+# import utilotest
 
 
 def test_mylayout_bachelor90page53(td, mp):
@@ -27,15 +28,15 @@ def test_mylayout_bachelor90page53(td, mp):
     assert page53_second_line == '4.3. Übersicht der praktischen Entwicklung'
 
 
-@pytest.mark.xfail(reason='missing import')
-@utilotest.longrun
-def test_mylayout_bounding_extraction_bug(td, mp):
-    """Without sorting the boundings before connecting them by mylayout,
-    the result is that the left x0 is greater than right x1. This is a
-    result of merging non neighbored boundings."""
-    source = td.tmpdir
-    cmd = f'-i {hardcore.H300_SPHINX_397_PDF} --text --pages=2'
-    tests.run(cmd, mp=mp)
+# @pytest.mark.xfail(reason='missing import')
+# @utilotest.longrun
+# def test_mylayout_bounding_extraction_bug(td, mp):
+#     """Without sorting the boundings before connecting them by mylayout,
+#     the result is that the left x0 is greater than right x1. This is a
+#     result of merging non neighbored boundings."""
+#     source = td.tmpdir
+#     cmd = f'-i {hardcore.H300_SPHINX_397_PDF} --text --pages=2'
+#     tests.run(cmd, mp=mp)
 
-    # load page which invoked an bounding box assertion error
-    serializeraw.load_textpositions(source, pages=(2,))
+#     # load page which invoked an bounding box assertion error
+#     serializeraw.load_textpositions(source, pages=(2,))

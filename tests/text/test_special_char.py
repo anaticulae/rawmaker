@@ -9,6 +9,7 @@
 
 import hoverpower
 import serializeraw
+import utilotest
 
 import rawmaker.features.text
 
@@ -59,6 +60,7 @@ def test_special_chars_bachelor241():
     assert 'Ludwig-Maximilians-Universität München' in document.text
 
 
+@utilotest.requires(hoverpower.HC_DISS171)
 def test_special_chars_hcdiss171_toc():
     """Before this test, special chars where not converted correctly."""
     parsed = rawmaker.features.text.work(

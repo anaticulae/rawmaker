@@ -7,14 +7,14 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-import os
+# import os
 
 # import hardcore
-import iamraw.path
-import pytest
-import serializeraw
+# import iamraw.path
+# import pytest
+# import serializeraw
 
-import tests
+# import tests
 
 P50_SPD = """\
 Sammelmappe2.pdf

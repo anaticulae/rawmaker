@@ -15,6 +15,7 @@ import tests
 
 
 @utilotest.nightly
+@utilotest.requires(hoverpower.HC_BOOK636)
 def test_book636(td, mp):
     pytest.skip('we require a weekly decorator')
     # TODO: CONVERT TO WEEKLY

@@ -10,6 +10,7 @@
 import hoverpower
 import pytest
 import serializeraw
+import utilotest
 
 import rawmaker
 import tests
@@ -77,6 +78,7 @@ def rawpage(source, pages: str, td, mp):
     return raw
 
 
+@utilotest.requires(hoverpower.HC_DISS193)
 def test_text_hidden_chars_hcdiss193(td, mp):
     raw = rawpage(hoverpower.HC_DISS193, '11', td, mp)
     assert '9292' not in raw

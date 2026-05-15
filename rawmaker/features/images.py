@@ -20,9 +20,9 @@ import collections
 import io
 import os
 
-# import ghost
 import PIL.Image
 import serializeraw
+import ughost
 import utilo
 
 import rawmaker
@@ -117,8 +117,8 @@ def run_ghost(path: str, boundings: list) -> list:
 
     If ghost is not installed, we return a empty white image.
     """
-    if ghost.HAS_GHOST:
-        extracted = ghost.images(path, boundings)
+    if ughost.HAS_GHOST:
+        extracted = ughost.images(path, boundings)
         return extracted
     utilo.error('could not beautify images: install ghost')
     result = []

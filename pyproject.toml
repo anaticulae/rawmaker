@@ -10,9 +10,9 @@ dependencies = [
     "pdfminer.six>=20260107,<20270000",
     "pillow>=12.2.0,<13.0.0",
     "camelot_py>=1.0.9,<2.0.0",
-    "utilo>=2.105.0,<3.0.0",
+    "utilo>=2.107.5,<3.0.0",
     "configos>=1.0.4,<2.0.0",
-    "iamraw>=4.91.0,<5.0.0",
+    "iamraw>=4.91.4,<5.0.0",
     "protoerror>=3.20.2,<4.0.0",
     "ughost>=1.0.1,<2.0.0",
     "pdflog>=1.0.2,<2.0.0",
@@ -34,9 +34,9 @@ content-type = "text/markdown"
 
 [project.optional-dependencies]
 dev = [
-    "hoverpower>=1.1.0,<2.0.0",
+    "hoverpower>=1.2.0,<2.0.0",
     "jamer>=1.0.1,<2.0.0",
-    "utilotest>=1.0.2,<2.0.0",
+    "utilotest>=1.0.4,<2.0.0",
     "gennex>=1.0.1,<2.0.0",
 ]
 

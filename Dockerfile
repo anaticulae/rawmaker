@@ -7,7 +7,7 @@
 # be prosecuted under federal law. Its content is company confidential.
 # =============================================================================
 
-FROM ghcr.io/anaticulae/baw:ef9bbea-python
+FROM ghcr.io/anaticulae/baw:ef9bbea
 
 ENV SHARED_TMP=/tmp/rawmaker/
 ENV HOVERPOWER_STORE=/var/workdir/hoverpower/repo

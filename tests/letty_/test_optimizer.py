@@ -12,14 +12,12 @@
 
 # import letty.optimizer
 
-
 # @utilotest.longrun
 # def test_optimizer():
 #     path = hoverpower.MASTER072_PDF
 #     pages = (3,)
 #     result = letty.optimizer.run(path, pages=pages, chars=10)
 #     assert result
-
 
 # @utilotest.nightly
 # def test_optimizer_hardtoread():

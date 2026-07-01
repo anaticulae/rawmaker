@@ -27,6 +27,8 @@ def test_master_compare_vim(td, mp):
 
     golden = tests.resources.GOLDEN_VIM
     current = td.tmpdir
+    # run yamlfix to compare to golden master correctly
+    utilo.run(f'yamlfix {current}', cwd=td.tmpdir)
     diff = f'diff -rd --suppress-common-lines -y {golden} {current}'
 
     completed = utilo.run(diff)

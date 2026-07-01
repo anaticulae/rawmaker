@@ -2,5 +2,6 @@
 .github
 
 venv
+hoverpower
 
 *.egg-info

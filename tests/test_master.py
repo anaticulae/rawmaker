@@ -27,8 +27,19 @@ def test_master_compare_vim(td, mp):
 
     golden = tests.resources.GOLDEN_VIM
     current = td.tmpdir
-    diff = f'diff -rd --suppress-common-lines -y {golden} {current}'
+    # run yamlfix to compare to golden master correctly
+    utilo.run(f'yamlfix {current}', cwd=td.tmpdir)
 
+    if is_busybox():
+        diff = f'diff -ru {golden} {current}'
+    else:
+        diff = f'diff -rd --suppress-common-lines -y {golden} {current}'
     completed = utilo.run(diff)
+
     utilo.error(completed.stdout)
     assert completed.returncode == utilo.SUCCESS
+
+
+def is_busybox() -> bool:
+    completed = utilo.run('diff --help')
+    return 'BusyBox' in completed.stderr

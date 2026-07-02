@@ -30,5 +30,4 @@ def test_worddist(source, pages, expected, td, mp):
     loaded = serializeraw.load_document_worddist(td.tmpdir)
     # verify
     fontsize, chardist = expected
-    # TODO: REPLACE WITH VERY NEAR
     assert utilo.near(loaded.mean[fontsize], chardist, diff=0.01), str(loaded)

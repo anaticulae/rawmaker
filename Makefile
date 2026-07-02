@@ -61,7 +61,7 @@ docker-release: docker-build
 	else \
 		docker run\
 			-v $(CURDIR):/var/workdir\
-			-e GH_TOKEN=$(GH_TOKEN)\
+			-e GH_TOKEN\
 			$(IMAGE_NAME)\
 			"baw release --no_test --no_linter";\
 	fi

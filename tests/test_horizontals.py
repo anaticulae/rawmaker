@@ -88,9 +88,7 @@ def test_lines_master099c(td, mp):
     cmd = f'-i {hoverpower.MASTER099C_PDF} --pages=7,8,9,10,80,81,82 --line --horizontals'
     tests.run(cmd, mp=mp)
     lines = serializeraw.load_horizontals(td.tmpdir)
-    boundings = []
-    for page in lines:
-        boundings.append((page.page, page.content[0].box[3]))
+    boundings = [(page.page, page.content[0].box[3]) for page in lines]
     # page, horizontal y1 bounding
     expected = [
         (7, 618.6),

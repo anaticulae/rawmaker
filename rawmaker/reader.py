@@ -44,9 +44,8 @@ def read(path: str, password: str = None, verify: bool = True) -> PDFDocument:
     if verify:
         header = open(path, 'rb').read(5)
         if header != b'%PDF-':
-            # TODO: MOVE TO def before() method after upgrading utilo
-            utilo.error('invalid pdf header')
-            sys.exit(1)
+            # TODO: MOVE TO def before() method after upgrading utilo ?
+            utilo.exitx('invalid pdf header')
     with open(path, 'rb') as fp:
         # Create a PDF parser object associated with the file object.
         parser = PDFParser(fp)

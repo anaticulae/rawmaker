@@ -10,7 +10,6 @@
 import collections
 import concurrent
 import itertools
-import math
 import os
 import sys
 
@@ -99,10 +98,10 @@ def strategy(
     lines: int = 1,
     boxes: int = 1,
 ):
-    boxes_flow = ranges(0.5, 1.0, boxes)
-    char_margin = ranges(0.5, 20.0, chars)
-    line_margin = ranges(0.01, 5.0, lines)
-    word_margin = ranges(1.5, 5.0, words)
+    boxes_flow = utilo.ranged_exp(0.5, 1.0, boxes)
+    char_margin = utilo.ranged_exp(0.5, 20.0, chars)
+    line_margin = utilo.ranged_exp(0.01, 5.0, lines)
+    word_margin = utilo.ranged_exp(1.5, 5.0, words)
     result = []
     for char, word, box, line, in itertools.product(
             char_margin,
@@ -116,23 +115,4 @@ def strategy(
             'word_margin': word,
             'line_margin': line,
         })
-    return result
-
-
-# TODO: REPLACE WITH utilo CODE
-def ranges(mini: float, maxi: float, steps: int = 15):
-    """Compute parameter.
-
-    >>> utilo.roundme(ranges(0.1, 100, steps=10))
-    [0.1, 0.12, 0.18, 0.34, 0.76, 1.92, 5.06, 13.61, 36.84, 99.99]
-    >>> utilo.roundme(ranges(0.1, 20, steps=5))
-    [0.1, 0.73, 2.43, 7.06, 19.64]
-    """
-    func = math.exp
-    maxed = func(steps - 1) / (maxi - mini)
-    result = []
-    for index in range(steps):
-        value = mini + (math.exp(index) - 1) / maxed
-        value = utilo.roundme(value, digits=5)  # pylint:disable=R0204
-        result.append(value)
     return result

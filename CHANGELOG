@@ -1,15 +1,89 @@
 # CHANGELOG
 
 
+## v2.40.5 (2026-07-02)
+
+### Bug Fixes
+
+- **make**: Do not expose key in log file
+  ([`72d9ed2`](https://github.com/anaticulae/rawmaker/commit/72d9ed29d14c59879514e4810ca7042f4d773571))
+
+- **make**: Simplify code
+  ([`dd893b3`](https://github.com/anaticulae/rawmaker/commit/dd893b3b5f48d5ac02b05024c8dcf22a8730ac74))
+
+### Chores
+
+- **release**: Skip release if already done
+  ([`730d0e5`](https://github.com/anaticulae/rawmaker/commit/730d0e560c6f949d307fae28450a739d39a9d8e1))
+
+- **requirements**: Upgrade pyproject.toml
+  ([`57bbc47`](https://github.com/anaticulae/rawmaker/commit/57bbc47dee423483b1d714d362fbf00b77424e2c))
+
+### Refactoring
+
+- **cli**: Replace with utilo code
+  ([`19915da`](https://github.com/anaticulae/rawmaker/commit/19915dabd9c2c265a0e32c26bb97e14a6ec24ccc))
+
+- **optimizer**: Replace with utilo code
+  ([`d27ab2d`](https://github.com/anaticulae/rawmaker/commit/d27ab2d6b9b99b9926291b3aa37f8b0fcf030452))
+
+- **reader**: Replace with utilo code
+  ([`6d04771`](https://github.com/anaticulae/rawmaker/commit/6d047716522a35136b4b41509c3aa88b91385f2c))
+
+- **test**: Replace with utilo code
+  ([`a1c980c`](https://github.com/anaticulae/rawmaker/commit/a1c980c44254b94f31b33d4e2763d51e706d22df))
+
+- **test**: Simplify code
+  ([`10da405`](https://github.com/anaticulae/rawmaker/commit/10da4057ff3b31f2706255682f998569926d6882))
+
+
 ## v2.40.4 (2026-07-02)
+
+### Bug Fixes
+
+- **pyproject**: Make optional table step
+  ([`7a92458`](https://github.com/anaticulae/rawmaker/commit/7a9245841589e5c5a4e6380b6059df32dac3841b))
+
+### Chores
+
+- **docker**: Extend git ignore
+  ([`c49f747`](https://github.com/anaticulae/rawmaker/commit/c49f7471f7be545bf5e57c8cb7c17d4bf90fcc4f))
+
+- **docker**: Reduce environment
+  ([`eb46724`](https://github.com/anaticulae/rawmaker/commit/eb467240ce22d16537071a94524689e20ef8acb6))
+
+- **github**: Do not run test twice
+  ([`f05ddb1`](https://github.com/anaticulae/rawmaker/commit/f05ddb148a9c279be32acacaea524f22b89feed2))
+
+- **make**: Adjust tmp path
+  ([`acbf271`](https://github.com/anaticulae/rawmaker/commit/acbf27173bd081d51a8fad51618e631c64bcc107))
+
+- **release**: Do not run release twice
+  ([`3b67f1e`](https://github.com/anaticulae/rawmaker/commit/3b67f1ee520db3fc5cdd4ea1c7e3f5f7472c07d1))
+
+### Code Style
+
+- **test**: Format code
+  ([`bd94b11`](https://github.com/anaticulae/rawmaker/commit/bd94b1127db2f4b1dff3b641f08a0c6ecf8d21ee))
+
+### Testing
+
+- **fix**: Support two different diff tools
+  ([`0be5b03`](https://github.com/anaticulae/rawmaker/commit/0be5b032c328219635b94417e7801a5d378e9e6d))
+
+- **golden**: Format code
+  ([`8c676c4`](https://github.com/anaticulae/rawmaker/commit/8c676c49844919ea5af33180622f65ab64a2c758))
+
+- **master**: Format generated yaml to pass test
+  ([`760ef59`](https://github.com/anaticulae/rawmaker/commit/760ef5917f3200225c61723b680c543b8f77a532))
+
+
+## v2.40.3 (2026-07-02)
 
 ### Bug Fixes
 
 - **optimize**: Adjust linero API
   ([`3fdcf0f`](https://github.com/anaticulae/rawmaker/commit/3fdcf0fc2e62fd748e9fee5996c090dc0e74d5eb))
-
-- **pyproject**: Make optional table step
-  ([`7a92458`](https://github.com/anaticulae/rawmaker/commit/7a9245841589e5c5a4e6380b6059df32dac3841b))
 
 - **refactor**: Adjust pass unit tests
   ([`48e473f`](https://github.com/anaticulae/rawmaker/commit/48e473fb462d33d9b06fa005a15436e0514e7f55))
@@ -37,12 +111,6 @@
 - **docker**: Add tmp folder
   ([`0d9b26f`](https://github.com/anaticulae/rawmaker/commit/0d9b26f07cb031414757a387760e2b85be9f30bf))
 
-- **docker**: Extend git ignore
-  ([`c49f747`](https://github.com/anaticulae/rawmaker/commit/c49f7471f7be545bf5e57c8cb7c17d4bf90fcc4f))
-
-- **docker**: Reduce environment
-  ([`eb46724`](https://github.com/anaticulae/rawmaker/commit/eb467240ce22d16537071a94524689e20ef8acb6))
-
 - **docker**: Use other base image to install opencv
   ([`e9a334a`](https://github.com/anaticulae/rawmaker/commit/e9a334a9683c34c410e364e9399c45132713f80b))
 
@@ -51,9 +119,6 @@
 
 - **github**: Add workflow
   ([`7ca9740`](https://github.com/anaticulae/rawmaker/commit/7ca9740a8b45512bf82cabcc407e8a267640d0e8))
-
-- **github**: Do not run test twice
-  ([`f05ddb1`](https://github.com/anaticulae/rawmaker/commit/f05ddb148a9c279be32acacaea524f22b89feed2))
 
 - **Jenkins**: Add cov step
   ([`0f14fc7`](https://github.com/anaticulae/rawmaker/commit/0f14fc767d4af12c91973d4dcd322652e36b7bb5))
@@ -69,9 +134,6 @@
 
 - **Jenkins**: Use modern steps
   ([`d52d374`](https://github.com/anaticulae/rawmaker/commit/d52d3748a97d9b19291f38181568c473a6dea7d1))
-
-- **make**: Adjust tmp path
-  ([`acbf271`](https://github.com/anaticulae/rawmaker/commit/acbf27173bd081d51a8fad51618e631c64bcc107))
 
 - **markdown**: Rename files
   ([`7e8e7bb`](https://github.com/anaticulae/rawmaker/commit/7e8e7bb7ff23ddb0746e3ce59feaa5e0e720cfc7))
@@ -90,9 +152,6 @@
 
 - **pyproject**: Upgrade utilotest
   ([`0aeef8d`](https://github.com/anaticulae/rawmaker/commit/0aeef8da6275fd3f18fabddc1c48a1c0af3a2569))
-
-- **release**: Do not run release twice
-  ([`3b67f1e`](https://github.com/anaticulae/rawmaker/commit/3b67f1ee520db3fc5cdd4ea1c7e3f5f7472c07d1))
 
 - **requirements**: Add tablero
   ([`cbb5005`](https://github.com/anaticulae/rawmaker/commit/cbb500545cc36f518b3ff3ac603527102839d686))
@@ -123,9 +182,6 @@
 - **baw**: Add copyright header
   ([`19f481e`](https://github.com/anaticulae/rawmaker/commit/19f481e3b68e0a6156d8a379265a5dfcaa7b518b))
 
-- **test**: Format code
-  ([`bd94b11`](https://github.com/anaticulae/rawmaker/commit/bd94b1127db2f4b1dff3b641f08a0c6ecf8d21ee))
-
 ### Refactoring
 
 - **cli**: Move args parser into separate method
@@ -154,17 +210,8 @@
 - **fix**: Skip tests if resources are not available
   ([`479f085`](https://github.com/anaticulae/rawmaker/commit/479f08536697c0fbf9abafa8c56b456c4b2ee2d7))
 
-- **fix**: Support two different diff tools
-  ([`0be5b03`](https://github.com/anaticulae/rawmaker/commit/0be5b032c328219635b94417e7801a5d378e9e6d))
-
-- **golden**: Format code
-  ([`8c676c4`](https://github.com/anaticulae/rawmaker/commit/8c676c49844919ea5af33180622f65ab64a2c758))
-
 - **horizontals**: Skip test to make it run
   ([`cd09549`](https://github.com/anaticulae/rawmaker/commit/cd095497d536e6277c159169b0164c3c473ca080))
-
-- **master**: Format generated yaml to pass test
-  ([`760ef59`](https://github.com/anaticulae/rawmaker/commit/760ef5917f3200225c61723b680c543b8f77a532))
 
 - **optimizer**: Verify later
   ([`e49e2ea`](https://github.com/anaticulae/rawmaker/commit/e49e2ea00d655764df47671e8e6424be59d6447d))

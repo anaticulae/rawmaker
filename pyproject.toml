@@ -1,6 +1,6 @@
 [project]
 name = "rawmaker"
-version = "2.40.4"
+version = "2.40.5"
 description = ""
 requires-python = ">=3.12"
 authors = [

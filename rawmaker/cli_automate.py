@@ -12,7 +12,6 @@ import os
 import sys
 
 import utilo
-import utilotest
 
 DESCRIPTION = """\
 Collect pdf files of defined folders and use them to run rawmaker.
@@ -60,7 +59,7 @@ def run(inpath: str, outpath: str, cores: int = 1):
         _, name = os.path.split(item)
         # use quotation marks to encapsulate file path white spaces
         item = f'"{item}"' if ' ' in str(item) else item
-        name = utilotest.simple(name)  # TODO: REPLACE WITH utilo CODE
+        name = utilo.simple(name)
         out = os.path.join(outpath, name)
         cmd = f'rawmaker -i {item} -o {out} -j4'
         cmds.append(cmd)
